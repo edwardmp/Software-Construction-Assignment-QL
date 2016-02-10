@@ -1,9 +1,9 @@
 package expr
 
 type GEq struct {
-	Lhs, Rhs int
+	Lhs, Rhs Expr
 }
 
 func (geq GEq) Eval() interface{} {
-	return geq.Lhs >= geq.Rhs
+	return geq.Lhs.Eval().(int) >= geq.Rhs.Eval().(int)
 }

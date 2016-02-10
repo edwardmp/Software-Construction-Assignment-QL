@@ -1,9 +1,9 @@
 package expr
 
 type Add struct {
-	Lhs, Rhs int
+	Lhs, Rhs interface{}
 }
 
 func (add Add) Eval() interface{} {
-	return add.Lhs + add.Rhs
+	return add.Lhs.(Expr).Eval().(int) + add.Rhs.(Expr).Eval().(int)
 }

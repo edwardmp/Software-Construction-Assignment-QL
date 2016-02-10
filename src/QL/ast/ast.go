@@ -4,86 +4,76 @@ import (
 	"QL/ast/expr"
 )
 
-/* Convert interface to correct type, either int or bool */
-func convertToCorrectType(lhs interface{}, rhs interface{}) (lhsTypeConverted interface{}, rhsTypeConverted interface{}) {
-	var lhsTyped interface{}
-	var rhsTyped interface{}
-
-	switch lhs.(type) {
-	case int64:
-		lhsTyped = int(lhs.(int64))
-		rhsTyped = int(rhs.(int64))
-	case bool:
-		lhsTyped = lhs
-		rhsTyped = rhs
-	}
-
-	return lhsTyped, rhsTyped
-}
-
 var (
 	TRUE  = bool(true)
 	FALSE = bool(false)
 )
 
-func NewPos(val interface{}) (expr.Expr, error) {
-	return expr.Pos{int(val.(int64))}, nil
+func NewPos(value interface{}) (expr.Expr, error) {
+	return expr.Pos{value.(expr.Expr)}, nil
 }
 
 func NewNeg(value interface{}) (expr.Expr, error) {
-	return expr.Neg{int(value.(int64))}, nil
+	return expr.Neg{value.(expr.Expr)}, nil
 }
 
 func NewNot(value interface{}) (expr.Expr, error) {
-	return expr.Not{bool(value.(bool))}, nil
+	return expr.Not{value.(expr.Expr)}, nil
 }
 
 func NewMul(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Mul{int(lhs.(int64)), int(rhs.(int64))}, nil
+	return expr.Mul{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewDiv(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Div{int(lhs.(int64)), int(rhs.(int64))}, nil
+	return expr.Div{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewAdd(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Add{int(lhs.(int64)), int(rhs.(int64))}, nil
+	return expr.Add{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewSub(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Sub{int(lhs.(int64)), int(rhs.(int64))}, nil
+	return expr.Sub{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	lhs, rhs = convertToCorrectType(lhs, rhs)
-	return expr.Eq{lhs, rhs}, nil
+	return expr.Eq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewNEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	lhs, rhs = convertToCorrectType(lhs, rhs)
-	return expr.NEq{lhs, rhs}, nil
+	return expr.NEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewGT(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.GT{int(lhs.(int64)), int(rhs.(int64))}, nil
+	return expr.GT{lhs.(expr.Expr).(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewLT(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.LT{int(lhs.(int64)), int(rhs.(int64))}, nil
+	return expr.LT{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewGEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.GEq{int(lhs.(int64)), int(rhs.(int64))}, nil
+	return expr.GEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewLEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.LEq{int(lhs.(int64)), int(rhs.(int64))}, nil
+	return expr.LEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewAnd(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.And{lhs.(bool), rhs.(bool)}, nil
+	return expr.And{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewOr(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Or{lhs.(bool), rhs.(bool)}, nil
+	return expr.Or{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+}
+
+/* Literals */
+func NewIntLit(value int64, e error) (expr.Expr, error) {
+	return expr.IntLit{int(value)}, nil
+}
+
+func NewBoolLit(value bool) (expr.Expr, error) {
+	return expr.BoolLit{value}, nil
 }

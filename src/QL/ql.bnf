@@ -1,4 +1,4 @@
-/* Lexical elements */
+/** Lexical elements **/
 
 /* stuff to ignore */
 !whitespace : ' ' | '\t' | '\n' | '\r' ;
@@ -12,8 +12,8 @@ int 			: _int;
 _integer_lit	: _int ;
 _float_lit 		: _int '.' _int ;
 _money_lit 		: _int ',' _int ;
-_bool_lit		: 't' 'r' 'u' 'e' | 'f' 'a' 'l' 's' 'e' ;
 _str_lit		: '"' {.} '"' ;
+_bool_lit		: 't' 'r' 'u' 'e' | 'f' 'a' 'l' 's' 'e' ;
 _literals 		: _integer_lit | _float_lit | _money_lit | _bool_lit | _str_lit;
 literal 		: _literals ;
 num_literal		: _integer_lit | _float_lit;
@@ -23,67 +23,60 @@ addop 	: '+' ;
 mulop 	: '*' ;
 subop 	: '-' ;
 divop 	: '/' ;
-//mathop 	: _addop | _mulop | _subop | _divop ;
 
 /* logical operators */
-_andop 	: '&' '&' ;
-andop 	: _andop ;
-_orop	: '|' '|' ;
-orop 	: _orop ;
-_notop	: '!' ;
-notop 	: _notop ;
-logop 	: _andop | _orop | _notop ;
+andop 	: '&' '&' ;
+orop 	: '|' '|' ;
+notop 	:  '!' ;
 
 /* comparison operators */
-_ltop 	: '<' ;
-ltop 	: _ltop ;
-_lteop 	: '<' '=' ;
-leqop 	: _lteop;
-_gtop 	: '>' ;
-gtop	: _gtop ;
-_gteop	: '>' '=' ;
-geqop	: _gteop;
-_neqop  : '!' '=' ;
-neqop	: _neqop ;
-_eqop	: '=' '=' ;
-eqop	: _eqop;
-compop 	: _ltop | _lteop | _gtop | _gteop | _neqop | _eqop ;
+ltop 	: '<' ;
+leqop 	: '<' '=' ;
+gtop	: '>' ;
+geqop	: '>' '=' ;
+neqop	: '!' '=' ;
+eqop	: '=' '=' ;
 
-_tdec 		: 'd' 'e' 'c' 'i' 'm' 'a' 'l' ;
+/* types */
 _tint 		: 'i' 'n' 't' 'e' 'g' 'e' 'r' ;
 _tbool 		: 'b' 'o' 'o' 'l' 'e' 'a' 'n' ;
 _tstring	: 's' 't' 'r' 'i' 'n' 'g' ;
 _tmoney 	: 'm' 'o' 'n' 'e' 'y' ;
-_tcurr		: 'c' 'u' 'r' 'r' 'e' 'n' 'c' 'y' ;
 _tdate		: 'd' 'a' 't' 'e' ;
-type 		: _tdec | _tint | _tbool | _tstring | _tmoney | _tcurr | _tdate ;
+type 		: _tint | _tbool | _tstring | _tmoney | _tdate ;
 
+/* special characters */
 lbrace	: '{' ;
 rbrace	: '}' ;
 lpar 	: '(' ;
 rpar 	: ')' ;
 semicol : ';' ;
 col		: ':' ;
-equals 	: '=' ;
+assign 	: '=' ;
 
+/* statements */
 form 	: 'f' 'o' 'r' 'm' ;
 if		: 'i' 'f' ;
 else 	: 'e' 'l' 's' 'e' ;
 
-_ident 	: ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
-ident : _ident;
+/* identifiers */
+ident : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 
-/* Syntax elements */
+/** Syntax elements **/
 
-<< import 'QL/ast' >>
+<< import(
+	"QL/ast"
+	"QL/token"
+	"QL/util"
+) 
+>>
 
 Expr 	: addop Expr 		<< ast.NewPos($1) >>
 		| subop Expr 		<< ast.NewNeg($1) >>
 		| notop Expr		<< ast.NewNot($1) >>
-		| Expr mulop Expr	<< ast.NewMul($0, $2) >>
-		| Expr divop Expr	<< ast.NewDiv($0, $2) >>
-		| Expr addop Expr 	<< ast.NewAdd($0, $2) >>
-		| Expr subop Expr	<< ast.NewSub($0, $2) >>
+        | Expr addop Term   << ast.NewAdd($0, $2) >>
+        | Expr subop Expr   << ast.NewSub($0, $2) >>
+        | Term
 		| Expr eqop Expr	<< ast.NewEq($0, $2) >>
 		| Expr neqop Expr	<< ast.NewNEq($0, $2) >>
 		| Expr gtop Expr	<< ast.NewGT($0, $2) >>
@@ -93,14 +86,31 @@ Expr 	: addop Expr 		<< ast.NewPos($1) >>
 		| Expr andop Expr	<< ast.NewAnd($0, $2) >>
 	    | Expr orop Expr  	<< ast.NewOr($0, $2) >>
 	    | lpar Expr rpar	<< $1, nil >>
-		| int 				<< util.IntValue($0.(*token.Token).Lit) >>
-		| Val
+		| Bool
+		| ident
 		;
 
-Val
-	: "true"				<< ast.TRUE, nil >>
-	| "false"				<< ast.FALSE, nil >>
-	;
+Term    : Term mulop Factor << ast.NewMul($0, $2) >>
+        | Term divop Factor << ast.NewDiv($0, $2) >>
+        | Factor 
+        ;
+
+Factor  : int   << ast.NewIntLit((util.IntValue($0.(*token.Token).Lit))) >> 
+        ;
+
+Bool    : "true"    << ast.NewBoolLit(ast.TRUE) >>
+        | "false"   <<ast.NewBoolLit(ast.FALSE) >>
+        ;
+
+Form : ident lbrace Body rbrace ;
+
+Question : _str_lit ident type ;
+
+Ifstmt : if Expr Body Elsestmt ;
+
+Elsestmt : else Body ;
+
+Body : Ifstmt | Question ;
 
 /*
 << import 'QL/ast' >>

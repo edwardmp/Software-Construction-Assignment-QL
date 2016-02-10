@@ -1,9 +1,9 @@
 package expr
 
 type LEq struct {
-	Lhs, Rhs int
+	Lhs, Rhs Expr
 }
 
 func (leq LEq) Eval() interface{} {
-	return leq.Lhs <= leq.Rhs
+	return leq.Lhs.Eval().(int) <= leq.Rhs.Eval().(int)
 }

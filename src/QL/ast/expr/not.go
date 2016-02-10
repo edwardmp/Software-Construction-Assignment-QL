@@ -1,9 +1,9 @@
 package expr
 
 type Not struct {
-	Value bool
+	Value Expr
 }
 
 func (not Not) Eval() interface{} {
-	return !not.Value
+	return !not.Eval().(bool)
 }

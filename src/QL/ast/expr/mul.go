@@ -1,9 +1,9 @@
 package expr
 
 type Mul struct {
-	Lhs, Rhs int
+	Lhs, Rhs Expr
 }
 
 func (mul Mul) Eval() interface{} {
-	return mul.Lhs * mul.Rhs
+	return mul.Lhs.Eval().(int) * mul.Rhs.Eval().(int)
 }

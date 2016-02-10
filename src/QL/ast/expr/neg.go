@@ -1,9 +1,11 @@
 package expr
 
+import "math"
+
 type Neg struct {
-	Value int
+	Value Expr
 }
 
 func (neg Neg) Eval() interface{} {
-	return -neg.Value
+	return int(math.Abs(float64(neg.Value.Eval().(int))) * -1)
 }

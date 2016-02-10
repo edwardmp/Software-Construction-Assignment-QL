@@ -1,9 +1,9 @@
 package expr
 
 type And struct {
-	Lhs, Rhs bool
+	Lhs, Rhs Expr
 }
 
 func (and And) Eval() interface{} {
-	return and.Lhs && and.Rhs
+	return and.Lhs.Eval().(bool) && and.Rhs.Eval().(bool)
 }

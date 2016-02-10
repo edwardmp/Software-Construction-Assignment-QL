@@ -1,9 +1,16 @@
 package expr
 
 type NEq struct {
-	Lhs, Rhs interface{}
+	Lhs, Rhs Expr
 }
 
 func (neq NEq) Eval() interface{} {
-	return neq.Lhs != neq.Rhs
+	switch neq.Lhs.Eval().(type) {
+	case int:
+		return neq.Lhs.Eval().(int) != neq.Rhs.Eval().(int)
+	case bool:
+		return neq.Lhs.Eval().(bool) != neq.Rhs.Eval().(bool)
+	default:
+		panic("Eq error: comparing unknown types")
+	}
 }

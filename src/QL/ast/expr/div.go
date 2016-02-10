@@ -1,9 +1,9 @@
 package expr
 
 type Div struct {
-	Lhs, Rhs int
+	Lhs, Rhs Expr
 }
 
 func (div Div) Eval() interface{} {
-	return div.Lhs / div.Rhs
+	return div.Lhs.Eval().(int) / div.Rhs.Eval().(int)
 }

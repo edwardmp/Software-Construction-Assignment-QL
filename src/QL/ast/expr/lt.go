@@ -1,9 +1,9 @@
 package expr
 
 type LT struct {
-	Lhs, Rhs int
+	Lhs, Rhs Expr
 }
 
 func (lt LT) Eval() interface{} {
-	return lt.Lhs < lt.Rhs
+	return lt.Lhs.Eval().(int) < lt.Rhs.Eval().(int)
 }
