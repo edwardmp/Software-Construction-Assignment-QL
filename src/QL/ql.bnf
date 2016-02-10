@@ -8,15 +8,10 @@ _blockComment : '/' '*' {. | '*'} '*' '/' ;
 
 /* literals */
 _int 			: '0'-'9' {'0'-'9'} ;
-int 			: _int;
-_integer_lit	: _int ;
-_float_lit 		: _int '.' _int ;
-_money_lit 		: _int ',' _int ;
-_str_lit		: '"' {.} '"' ;
-_bool_lit		: 't' 'r' 'u' 'e' | 'f' 'a' 'l' 's' 'e' ;
-_literals 		: _integer_lit | _float_lit | _money_lit | _bool_lit | _str_lit;
-literal 		: _literals ;
-num_literal		: _integer_lit | _float_lit;
+integer_lit	: _int ;
+money_lit 		: _int ',' _int ;
+str_lit		: '"' {.} '"' ;
+bool_lit		: 't' 'r' 'u' 'e' | 'f' 'a' 'l' 's' 'e' ;
 
 /* number operators */
 addop 	: '+' ;
@@ -38,12 +33,11 @@ neqop	: '!' '=' ;
 eqop	: '=' '=' ;
 
 /* types */
-_tint 		: 'i' 'n' 't' 'e' 'g' 'e' 'r' ;
-_tbool 		: 'b' 'o' 'o' 'l' 'e' 'a' 'n' ;
-_tstring	: 's' 't' 'r' 'i' 'n' 'g' ;
-_tmoney 	: 'm' 'o' 'n' 'e' 'y' ;
-_tdate		: 'd' 'a' 't' 'e' ;
-type 		: _tint | _tbool | _tstring | _tmoney | _tdate ;
+tint 		: 'i' 'n' 't' 'e' 'g' 'e' 'r' ;
+tbool 		: 'b' 'o' 'o' 'l' 'e' 'a' 'n' ;
+tstring	: 's' 't' 'r' 'i' 'n' 'g' ;
+tmoney 	: 'm' 'o' 'n' 'e' 'y' ;
+tdate		: 'd' 'a' 't' 'e' ;
 
 /* special characters */
 lbrace	: '{' ;
@@ -68,58 +62,69 @@ ident : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 	"QL/ast"
 	"QL/token"
 	"QL/util"
+    "QL/ast/stmt"
 ) 
 >>
 
-Expr 	: addop Expr 		<< ast.NewPos($1) >>
-		| subop Expr 		<< ast.NewNeg($1) >>
-		| notop Expr		<< ast.NewNot($1) >>
-        | Expr addop Term   << ast.NewAdd($0, $2) >>
-        | Expr subop Expr   << ast.NewSub($0, $2) >>
-        | Term
-		| Expr eqop Expr	<< ast.NewEq($0, $2) >>
-		| Expr neqop Expr	<< ast.NewNEq($0, $2) >>
-		| Expr gtop Expr	<< ast.NewGT($0, $2) >>
-		| Expr ltop Expr	<< ast.NewLT($0, $2) >>
-		| Expr geqop Expr	<< ast.NewGEq($0, $2) >>
-		| Expr leqop Expr	<< ast.NewLEq($0, $2) >>
-		| Expr andop Expr	<< ast.NewAnd($0, $2) >>
-	    | Expr orop Expr  	<< ast.NewOr($0, $2) >>
-	    | lpar Expr rpar	<< $1, nil >>
-		| Bool
-		| ident
-		;
+Form    : form ident Block << ast.NewForm($1, $2) >> ;
+
+Type    : tint  << stmt.INT, nil >>
+        | tbool << stmt.BOOLEAN, nil >>
+        | tstring  << stmt.STRING, nil >>
+        | tmoney << stmt.MONEY, nil >>
+        | tdate << stmt.DATE, nil >> 
+        ;
+
+Literal     : integer_lit | money_lit | bool_lit | str_lit;
+NumLiteral  : integer_lit ;
+StrLiteral  : str_lit ;
 
 Term    : Term mulop Factor << ast.NewMul($0, $2) >>
         | Term divop Factor << ast.NewDiv($0, $2) >>
         | Factor 
         ;
 
-Factor  : int   << ast.NewIntLit((util.IntValue($0.(*token.Token).Lit))) >> 
-        ;
+Factor  : NumLiteral   << ast.NewIntLit((util.IntValue($0.(*token.Token).Lit))) >> ;
 
 Bool    : "true"    << ast.NewBoolLit(ast.TRUE) >>
-        | "false"   <<ast.NewBoolLit(ast.FALSE) >>
+        | "false"   << ast.NewBoolLit(ast.FALSE) >>
         ;
 
-Form : ident lbrace Body rbrace ;
+Expr    : addop Expr        << ast.NewPos($1) >>
+        | subop Expr        << ast.NewNeg($1) >>
+        | notop Expr        << ast.NewNot($1) >>
+        | Expr addop Term   << ast.NewAdd($0, $2) >>
+        | Expr subop Term   << ast.NewSub($0, $2) >>
+        | Term
+        | Expr eqop Expr    << ast.NewEq($0, $2) >>
+        | Expr neqop Expr   << ast.NewNEq($0, $2) >>
+        | Expr gtop Expr    << ast.NewGT($0, $2) >>
+        | Expr ltop Expr    << ast.NewLT($0, $2) >>
+        | Expr geqop Expr   << ast.NewGEq($0, $2) >>
+        | Expr leqop Expr   << ast.NewLEq($0, $2) >>
+        | Expr andop Expr   << ast.NewAnd($0, $2) >>
+        | Expr orop Expr    << ast.NewOr($0, $2) >>
+        | lpar Expr rpar    << $1, nil >>
+        | Bool
+        | ident
+        ;
 
-Question : _str_lit ident type ;
+IfStmt  : if lpar Expr rpar Block               << ast.NewIf($2, $4) >>
+        | if lpar Expr rpar Block else Block    << ast.NewIfElse($2, $4, $5) >>
+        ;
 
-Ifstmt : if Expr Body Elsestmt ;
+Question    : StrLiteral ident col Type  << ast.NewQuestion($0, $1, $3) >> ;
 
-Elsestmt : else Body ;
+Block   : lbrace StmtList rbrace    << $1, nil >>
+        ;
 
-Body : Ifstmt | Question ;
+StmtList    : Stmt        << ast.NewStmtList($0) >>
+            | StmtList Stmt   << ast.AppendStmt($0, $1) >>
+            ;
 
-/*
-<< import 'QL/ast' >>
-StmtList : 
-      Stmt             << ast.NewStmtList($0) >>
-    | StmtList Stmt    << ast.AppendStmt($0, $1) >>
-;
+Stmt    : Question 
+        | IfStmt
+        ;
 
-Stmt : 
-      id               << ast.NewStmt($0) >>
-;
-*/
+
+

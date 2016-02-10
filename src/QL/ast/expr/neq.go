@@ -11,6 +11,6 @@ func (neq NEq) Eval() interface{} {
 	case bool:
 		return neq.Lhs.Eval().(bool) != neq.Rhs.Eval().(bool)
 	default:
-		panic("Eq error: comparing unknown types")
+		panic("NEq error: comparing unknown types")
 	}
 }

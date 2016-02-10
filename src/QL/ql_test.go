@@ -6,21 +6,24 @@ import (
 	"QL/parser"
 	"QL/token"
 	"fmt"
+	//"io/ioutil"
 	"testing"
 )
 
-func testEval(t *testing.T, exampleStr string, output interface{}) {
-	lex := lexer.NewLexer([]byte(exampleStr))
+func testExprEval(t *testing.T, exampleExpr interface{}, expectedOutput interface{}) {
+	if eval, expectedOutputEval := exampleExpr.(expr.Expr).Eval(), expectedOutput.(expr.Expr).Eval(); eval != expectedOutputEval {
+		t.Fatalf("Should be %v (%T) for %v but is %v (%T)", expectedOutputEval, expectedOutputEval, exampleExpr, eval, eval)
+	}
+}
+
+func testStmt(t *testing.T, exampleStmt string, expectedOutput interface{}) {
+	lex := lexer.NewLexer([]byte(exampleStmt))
 	//printLexerTokens(lex)
 	p := parser.NewParser()
-	st, err := p.Parse(lex)
+	_, err := p.Parse(lex)
 
 	if err != nil {
 		panic(err)
-	}
-	fmt.Printf("EVAL %v\n", st)
-	if eval := st.(expr.Expr).Eval(); eval != output {
-		t.Fatalf("Should be %v (%T) for %v but is %v (%T)", output, output, exampleStr, eval, eval)
 	}
 }
 
@@ -37,73 +40,74 @@ func printLexerTokens(lexer *lexer.Lexer) {
 }
 
 func TestAdd(t *testing.T) {
-	testEval(t, "1 + 2", 3)
+	addition := expr.Add{expr.IntLit{1}, expr.IntLit{2}}
+	testExprEval(t, addition, expr.IntLit{3})
 }
 
 func TestMul(t *testing.T) {
-	testEval(t, "3 * 2 + 1", 7)
+	testExprEval(t, expr.Mul{expr.IntLit{3}, expr.IntLit{2}}, expr.IntLit{6})
 }
 
 func TestMulAddPrecedence(t *testing.T) {
-	testEval(t, "2 * 3 + 10", 16)
+	testExprEval(t, expr.Add{expr.Mul{expr.IntLit{3}, expr.IntLit{2}}, expr.IntLit{1}}, expr.IntLit{7})
 }
 
 func TestSub(t *testing.T) {
-	testEval(t, "1 - 2", -1)
+	testExprEval(t, expr.Sub{expr.IntLit{1}, expr.IntLit{2}}, expr.IntLit{-1})
 }
 
 func TestDiv(t *testing.T) {
-	testEval(t, "9 / 3", 3)
+	testExprEval(t, expr.Div{expr.IntLit{9}, expr.IntLit{3}}, expr.IntLit{3})
 }
 
 func TestGT(t *testing.T) {
-	testEval(t, "3 > 2", true)
+	testExprEval(t, expr.GT{expr.IntLit{3}, expr.IntLit{2}}, expr.BoolLit{true})
 }
 
 func TestLT(t *testing.T) {
-	testEval(t, "3 < 2", false)
+	testExprEval(t, expr.LT{expr.IntLit{3}, expr.IntLit{2}}, expr.BoolLit{false})
 }
 
 func TestGEq(t *testing.T) {
-	testEval(t, "3 >= 3", true)
+	testExprEval(t, expr.GEq{expr.IntLit{3}, expr.IntLit{3}}, expr.BoolLit{true})
 }
 
 func TestLEq(t *testing.T) {
-	testEval(t, "3 <= 3", true)
+	testExprEval(t, expr.LEq{expr.IntLit{3}, expr.IntLit{3}}, expr.BoolLit{true})
 }
 
 func TestAnd(t *testing.T) {
-	testEval(t, "true && false", false)
+	testExprEval(t, expr.And{expr.BoolLit{true}, expr.BoolLit{false}}, expr.BoolLit{false})
 }
 
 func TestOr(t *testing.T) {
-	testEval(t, "true || false", true)
+	testExprEval(t, expr.Or{expr.BoolLit{true}, expr.BoolLit{false}}, expr.BoolLit{true})
+}
+
+func TestAndOr(t *testing.T) {
+	testExprEval(t, expr.And{expr.Or{expr.BoolLit{true}, expr.BoolLit{false}}, expr.And{expr.BoolLit{true}, expr.BoolLit{false}}}, expr.BoolLit{false})
 }
 
 func TestEq(t *testing.T) {
-	testEval(t, "true == false", false)
+	testExprEval(t, expr.Eq{expr.BoolLit{true}, expr.BoolLit{false}}, expr.BoolLit{false})
 }
 
 func TestNEq(t *testing.T) {
-	testEval(t, "true != false", true)
+	testExprEval(t, expr.NEq{expr.BoolLit{true}, expr.BoolLit{false}}, expr.BoolLit{true})
 }
 
 func TestPos(t *testing.T) {
-	testEval(t, "+10", 10)
+	testExprEval(t, expr.Pos{expr.IntLit{-10}}, expr.IntLit{10})
 }
 
 func TestNeg(t *testing.T) {
-	testEval(t, "-10", -10)
+	testExprEval(t, expr.Neg{expr.IntLit{10}}, expr.IntLit{-10})
 }
 
 func TestPosNeg(t *testing.T) {
-	testEval(t, "+-10", 10)
+	testExprEval(t, expr.Pos{expr.Neg{expr.IntLit{-10}}}, expr.IntLit{10})
 }
 
 func TestNegPos(t *testing.T) {
-	testEval(t, "-+10", -10)
-}
-
-func TestPar(t *testing.T) {
-	testEval(t, "(+10)", 10)
+	testExprEval(t, expr.Neg{expr.Pos{expr.IntLit{10}}}, expr.IntLit{-10})
 }

@@ -2,7 +2,7 @@ package stmt
 
 import "QL/ast/expr"
 
-If struct {
-	Cond expr
+type If struct {
+	Cond expr.Expr
 	Body Stmt
 }

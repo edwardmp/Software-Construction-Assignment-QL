@@ -2,8 +2,8 @@ package stmt
 
 import "QL/ast/expr"
 
-IfElse struct {
-	Cond expr
-	IfBody Stmt
+type IfElse struct {
+	Cond     expr.Expr
+	IfBody   Stmt
 	ElseBody Stmt
 }
