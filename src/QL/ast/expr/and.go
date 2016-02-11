@@ -1,17 +1,23 @@
 package expr
 
+import "ql/ast/visit"
+
 type And struct {
 	Lhs, Rhs Expr
 }
 
-func (and And) getLhs() Expr {
-	return and.Lhs
+func (a And) getLhs() Expr {
+	return a.Lhs
 }
 
-func (and And) getRhs() Expr {
-	return and.Rhs
+func (a And) getRhs() Expr {
+	return a.Rhs
 }
 
-func (and And) Eval() interface{} {
-	return and.getLhs().(Expr).Eval().(bool) && and.getRhs().(Expr).Eval().(bool)
+func (a And) Eval() interface{} {
+	return a.getLhs().(Expr).Eval().(bool) && a.getRhs().(Expr).Eval().(bool)
+}
+
+func (a And) Accept(v visit.Visitor) interface{} {
+	return v.Visit(a)
 }

@@ -1,17 +1,23 @@
 package expr
 
+import "ql/ast/visit"
+
 type Mul struct {
 	Lhs, Rhs Expr
 }
 
-func (mul Mul) getLhs() Expr {
-	return mul.Lhs
+func (m Mul) getLhs() Expr {
+	return m.Lhs
 }
 
-func (mul Mul) getRhs() Expr {
-	return mul.Rhs
+func (m Mul) getRhs() Expr {
+	return m.Rhs
 }
 
-func (mul Mul) Eval() interface{} {
-	return mul.getLhs().Eval().(int) * mul.getRhs().Eval().(int)
+func (m Mul) Eval() interface{} {
+	return m.getLhs().Eval().(int) * m.getRhs().Eval().(int)
+}
+
+func (m Mul) Accept(v visit.Visitor) interface{} {
+	return v.Visit(m)
 }

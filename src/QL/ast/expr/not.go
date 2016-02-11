@@ -1,13 +1,19 @@
 package expr
 
+import "ql/ast/visit"
+
 type Not struct {
 	Value Expr
 }
 
-func (not Not) getValue() Expr {
-	return not.Value
+func (n Not) getValue() Expr {
+	return n.Value
 }
 
-func (not Not) Eval() interface{} {
-	return !not.getValue().Eval().(bool)
+func (n Not) Eval() interface{} {
+	return !n.getValue().Eval().(bool)
+}
+
+func (n Not) Accept(v visit.Visitor) interface{} {
+	return v.Visit(n)
 }

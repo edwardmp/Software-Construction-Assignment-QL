@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"ql/ast/expr"
 	"ql/ast/vari"
+	"ql/ast/visit"
 )
 
 type InputQuestion struct {
@@ -15,10 +16,14 @@ func (q InputQuestion) String() string {
 	return fmt.Sprintf("A question with label %s, var decl %s", q.Label, q.VarDecl)
 }
 
-func (q InputQuestion) getLabel() expr.StrLit {
+func (q InputQuestion) GetLabel() expr.StrLit {
 	return q.Label
 }
 
-func (q InputQuestion) getVarDecl() vari.VarDecl {
+func (q InputQuestion) GetVarDecl() vari.VarDecl {
 	return q.VarDecl
+}
+
+func (q InputQuestion) Accept(v visit.Visitor) interface{} {
+	return v.Visit(q)
 }

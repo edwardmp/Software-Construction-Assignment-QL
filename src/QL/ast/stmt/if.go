@@ -3,6 +3,7 @@ package stmt
 import (
 	"fmt"
 	"ql/ast/expr"
+	"ql/ast/visit"
 )
 
 type If struct {
@@ -10,10 +11,14 @@ type If struct {
 	Body StmtList
 }
 
-func (ifStmt If) String() string {
-	return fmt.Sprintf("An if statement with condition %s and statement list %s", ifStmt.Cond, ifStmt.Body)
+func (i If) String() string {
+	return fmt.Sprintf("An if statement with condition %s and statement list %s", i.Cond, i.Body)
 }
 
-func (ifStmt If) EvalCondition() bool {
-	return ifStmt.Cond.Eval().(bool)
+func (i If) EvalCondition() bool {
+	return i.Cond.Eval().(bool)
+}
+
+func (i If) Accept(v visit.Visitor) interface{} {
+	return v.Visit(i)
 }

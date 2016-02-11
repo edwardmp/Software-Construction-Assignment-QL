@@ -1,8 +1,7 @@
-package expr
+package ast
 
 import "ql/ast/visit"
 
-type Expr interface {
-	Eval() interface{}
+type Node interface {
 	Accept(v visit.Visitor) interface{}
 }

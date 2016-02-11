@@ -3,9 +3,11 @@ package stmt
 import (
 	"ql/ast/expr"
 	"ql/ast/vari"
+	"ql/ast/visit"
 )
 
 type Question interface {
-	getLabel() expr.StrLit
-	getVarDecl() vari.VarDecl
+	GetLabel() expr.StrLit
+	GetVarDecl() vari.VarDecl
+	Accept(v visit.Visitor) interface{}
 }

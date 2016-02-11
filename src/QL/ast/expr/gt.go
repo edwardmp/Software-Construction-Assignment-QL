@@ -1,17 +1,23 @@
 package expr
 
+import "ql/ast/visit"
+
 type GT struct {
 	Lhs, Rhs Expr
 }
 
-func (gt GT) getLhs() Expr {
-	return gt.Lhs
+func (g GT) getLhs() Expr {
+	return g.Lhs
 }
 
-func (gt GT) getRhs() Expr {
-	return gt.Rhs
+func (g GT) getRhs() Expr {
+	return g.Rhs
 }
 
-func (gt GT) Eval() interface{} {
-	return gt.getLhs().Eval().(int) > gt.getRhs().Eval().(int)
+func (g GT) Eval() interface{} {
+	return g.getLhs().Eval().(int) > g.getRhs().Eval().(int)
+}
+
+func (g GT) Accept(v visit.Visitor) interface{} {
+	return v.Visit(g)
 }

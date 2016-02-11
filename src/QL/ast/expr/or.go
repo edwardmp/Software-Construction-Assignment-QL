@@ -1,17 +1,23 @@
 package expr
 
+import "ql/ast/visit"
+
 type Or struct {
 	Lhs, Rhs Expr
 }
 
-func (or Or) getLhs() Expr {
-	return or.Lhs
+func (o Or) getLhs() Expr {
+	return o.Lhs
 }
 
-func (or Or) getRhs() Expr {
-	return or.Rhs
+func (o Or) getRhs() Expr {
+	return o.Rhs
 }
 
-func (or Or) Eval() interface{} {
-	return or.getLhs().Eval().(bool) || or.getRhs().Eval().(bool)
+func (o Or) Eval() interface{} {
+	return o.getLhs().Eval().(bool) || o.getRhs().Eval().(bool)
+}
+
+func (o Or) Accept(v visit.Visitor) interface{} {
+	return v.Visit(o)
 }

@@ -71,10 +71,42 @@ func printLexerTokens(lexer *lexer.Lexer) {
 	}
 }
 
-func testExprEval(t *testing.T, exampleExpr interface{}, expectedOutput interface{}) {
-	if eval, expectedOutputEval := exampleExpr.(expr.Expr).Eval(), expectedOutput.(expr.Expr).Eval(); eval != expectedOutputEval {
-		t.Fatalf("Should be %v (%T) for %v but is %v (%T)", expectedOutputEval, expectedOutputEval, exampleExpr, eval, eval)
+type VisitorAdapter struct {
+}
+
+func (v VisitorAdapter) Visit(t interface{}) interface{} {
+	switch t.(type) {
+	default:
+		fmt.Printf("unexpected node type %T\n", t)
+	case stmt.Form:
+		t.(stmt.Form).Identifier.Accept(v)
+		t.(stmt.Form).Content.Accept(v)
+	case vari.VarId:
+		fmt.Printf("Varid")
+	case stmt.StmtList:
+		for i, _ := range t.(stmt.StmtList).Questions {
+			t.(stmt.StmtList).Questions[i].(stmt.Question).Accept(v)
+		}
+		for i, _ := range t.(stmt.StmtList).Conditionals {
+			t.(stmt.StmtList).Conditionals[i].(stmt.Conditional).Accept(v)
+		}
+	case stmt.InputQuestion:
+		t.(stmt.InputQuestion).Label.Accept(v)
+		t.(stmt.InputQuestion).VarDecl.Accept(v)
+	case stmt.ComputedQuestion:
+		t.(stmt.ComputedQuestion).Label.Accept(v)
+		t.(stmt.ComputedQuestion).VarDecl.Accept(v)
+		t.(stmt.ComputedQuestion).Computation.Accept(v)
+	case stmt.If:
+		t.(stmt.If).Cond.Accept(v)
+		t.(stmt.If).Body.Accept(v)
+	case stmt.IfElse:
+		t.(stmt.IfElse).Cond.Accept(v)
+		t.(stmt.IfElse).IfBody.Accept(v)
+		t.(stmt.IfElse).ElseBody.Accept(v)
 	}
+
+	return false
 }
 
 func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}) stmt.Form {
@@ -88,6 +120,7 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 	}
 
 	if f, fOk := r.(stmt.Form); fOk {
+		f.Accept(VisitorAdapter{})
 		if e, eOk := expectedOutput.(stmt.Form); eOk {
 			if f.Identifier != e.Identifier {
 				t.Errorf("Form identifiers not equal")
@@ -117,7 +150,7 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 func TestFormIdentifierExtraction(t *testing.T) {
 	exampleEmptyForm := "form TestForm {}"
 
-	var exampleOutputForm stmt.Form = stmt.Form{"TestForm", stmt.StmtList{}}
+	var exampleOutputForm stmt.Form = stmt.Form{vari.VarId{"TestForm"}, stmt.StmtList{}}
 	testStmtParse(t, exampleEmptyForm, exampleOutputForm)
 }
 
@@ -127,7 +160,7 @@ func TestFormQuestion(t *testing.T) {
 	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
 	secondQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.BOOLEAN}}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput, secondQuestionOutput}, []stmt.Conditional{}}
-	exampleOutputForm := stmt.Form{"TestForm", exampleBodyOutput}
+	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
@@ -140,7 +173,7 @@ func TestFormComputedQuestion(t *testing.T) {
 	secondQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.INT}}
 	computedQuestion := stmt.ComputedQuestion{expr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.INT}, expr.Sub{vari.VarId{"hasSoldHouse"}, vari.Varid{"hasMaintLoan"}}}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput, secondQuestionOutput, computedQuestion}, []stmt.Conditional{}}
-	exampleOutputForm := stmt.Form{"TestForm", exampleBodyOutput}
+	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
@@ -154,7 +187,7 @@ func TestFormIf(t *testing.T) {
 	ifBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionBodyInput}, []stmt.Conditional{}}
 	ifOutput := stmt.If{expr.BoolLit{true}, ifBodyOutput}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput}, []stmt.Conditional{ifOutput}}
-	exampleOutputForm := stmt.Form{"TestForm", exampleBodyOutput}
+	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
@@ -168,86 +201,7 @@ func TestFormIfElse(t *testing.T) {
 	elseBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionBodyInput}, []stmt.Conditional{}}
 	ifOutput := stmt.IfElse{expr.BoolLit{true}, ifBodyOutput, elseBodyOutput}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput}, []stmt.Conditional{ifOutput}}
-	exampleOutputForm := stmt.Form{"TestForm", exampleBodyOutput}
+	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
-}
-
-/* Tests for expressions */
-
-func TestAdd(t *testing.T) {
-	addition := expr.Add{expr.IntLit{1}, expr.IntLit{2}}
-	testExprEval(t, addition, expr.IntLit{3})
-}
-
-func TestMul(t *testing.T) {
-	testExprEval(t, expr.Mul{expr.IntLit{3}, expr.IntLit{2}}, expr.IntLit{6})
-}
-
-func TestMulAddPrecedence(t *testing.T) {
-	testExprEval(t, expr.Add{expr.Mul{expr.IntLit{3}, expr.IntLit{2}}, expr.IntLit{1}}, expr.IntLit{7})
-}
-
-func TestSub(t *testing.T) {
-	testExprEval(t, expr.Sub{expr.IntLit{1}, expr.IntLit{2}}, expr.IntLit{-1})
-}
-
-func TestDiv(t *testing.T) {
-	testExprEval(t, expr.Div{expr.IntLit{9}, expr.IntLit{3}}, expr.IntLit{3})
-}
-
-func TestGT(t *testing.T) {
-	testExprEval(t, expr.GT{expr.IntLit{3}, expr.IntLit{2}}, expr.BoolLit{true})
-}
-
-func TestLT(t *testing.T) {
-	testExprEval(t, expr.LT{expr.IntLit{3}, expr.IntLit{2}}, expr.BoolLit{false})
-}
-
-func TestGEq(t *testing.T) {
-	testExprEval(t, expr.GEq{expr.IntLit{3}, expr.IntLit{3}}, expr.BoolLit{true})
-}
-
-func TestLEq(t *testing.T) {
-	testExprEval(t, expr.LEq{expr.IntLit{3}, expr.IntLit{3}}, expr.BoolLit{true})
-}
-
-func TestAnd(t *testing.T) {
-	testExprEval(t, expr.And{expr.BoolLit{true}, expr.BoolLit{false}}, expr.BoolLit{false})
-}
-
-func TestOr(t *testing.T) {
-	testExprEval(t, expr.Or{expr.BoolLit{true}, expr.BoolLit{false}}, expr.BoolLit{true})
-}
-
-func TestAndOr(t *testing.T) {
-	testExprEval(t, expr.And{expr.Or{expr.BoolLit{true}, expr.BoolLit{false}}, expr.And{expr.BoolLit{true}, expr.BoolLit{false}}}, expr.BoolLit{false})
-}
-
-func TestNot(t *testing.T) {
-	testExprEval(t, expr.Not{expr.BoolLit{true}}, expr.BoolLit{false})
-}
-
-func TestEq(t *testing.T) {
-	testExprEval(t, expr.Eq{expr.BoolLit{true}, expr.BoolLit{false}}, expr.BoolLit{false})
-}
-
-func TestNEq(t *testing.T) {
-	testExprEval(t, expr.NEq{expr.BoolLit{true}, expr.BoolLit{false}}, expr.BoolLit{true})
-}
-
-func TestPos(t *testing.T) {
-	testExprEval(t, expr.Pos{expr.IntLit{-10}}, expr.IntLit{10})
-}
-
-func TestNeg(t *testing.T) {
-	testExprEval(t, expr.Neg{expr.IntLit{10}}, expr.IntLit{-10})
-}
-
-func TestPosNeg(t *testing.T) {
-	testExprEval(t, expr.Pos{expr.Neg{expr.IntLit{-10}}}, expr.IntLit{10})
-}
-
-func TestNegPos(t *testing.T) {
-	testExprEval(t, expr.Neg{expr.Pos{expr.IntLit{10}}}, expr.IntLit{-10})
 }

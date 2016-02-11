@@ -1,17 +1,23 @@
 package expr
 
+import "ql/ast/visit"
+
 type LT struct {
 	Lhs, Rhs Expr
 }
 
-func (lt LT) getLhs() Expr {
-	return lt.Lhs
+func (l LT) getLhs() Expr {
+	return l.Lhs
 }
 
-func (lt LT) getRhs() Expr {
-	return lt.Rhs
+func (l LT) getRhs() Expr {
+	return l.Rhs
 }
 
-func (lt LT) Eval() interface{} {
-	return lt.getLhs().Eval().(int) < lt.getRhs().Eval().(int)
+func (l LT) Eval() interface{} {
+	return l.getLhs().Eval().(int) < l.getRhs().Eval().(int)
+}
+
+func (l LT) Accept(v visit.Visitor) interface{} {
+	return v.Visit(l)
 }

@@ -66,7 +66,7 @@ var gotoTab = gotoTable{
 		-1, // Factor
 		-1, // Bool
 		-1, // VarDecl
-		-1, // VarId
+		3, // VarId
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -92,7 +92,7 @@ var gotoTab = gotoTable{
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
-		4, // Block
+		5, // Block
 		-1, // StmtList
 		-1, // Stmt
 		
@@ -127,28 +127,6 @@ var gotoTab = gotoTable{
 		-1, // Type
 		-1, // Literal
 		-1, // NumLiteral
-		7, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
-		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
-		8, // IfStmt
-		10, // Question
-		-1, // Block
-		11, // StmtList
-		13, // Stmt
-		
-
-	},
-	gotoRow{ // S6
-		
-		-1, // S'
-		-1, // Form
-		-1, // Type
-		-1, // Literal
-		-1, // NumLiteral
 		-1, // StrLiteral
 		-1, // Term
 		-1, // Factor
@@ -164,6 +142,28 @@ var gotoTab = gotoTable{
 		
 
 	},
+	gotoRow{ // S6
+		
+		-1, // S'
+		-1, // Form
+		-1, // Type
+		-1, // Literal
+		-1, // NumLiteral
+		8, // StrLiteral
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
+		-1, // VarDecl
+		-1, // VarId
+		-1, // Expr
+		9, // IfStmt
+		11, // Question
+		-1, // Block
+		12, // StmtList
+		14, // Stmt
+		
+
+	},
 	gotoRow{ // S7
 		
 		-1, // S'
@@ -175,8 +175,8 @@ var gotoTab = gotoTable{
 		-1, // Term
 		-1, // Factor
 		-1, // Bool
-		15, // VarDecl
-		16, // VarId
+		-1, // VarDecl
+		-1, // VarId
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -197,8 +197,8 @@ var gotoTab = gotoTable{
 		-1, // Term
 		-1, // Factor
 		-1, // Bool
-		-1, // VarDecl
-		-1, // VarId
+		16, // VarDecl
+		15, // VarId
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -259,28 +259,6 @@ var gotoTab = gotoTable{
 		-1, // Type
 		-1, // Literal
 		-1, // NumLiteral
-		7, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
-		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
-		8, // IfStmt
-		10, // Question
-		-1, // Block
-		-1, // StmtList
-		19, // Stmt
-		
-
-	},
-	gotoRow{ // S12
-		
-		-1, // S'
-		-1, // Form
-		-1, // Type
-		-1, // Literal
-		-1, // NumLiteral
 		-1, // StrLiteral
 		-1, // Term
 		-1, // Factor
@@ -293,6 +271,28 @@ var gotoTab = gotoTable{
 		-1, // Block
 		-1, // StmtList
 		-1, // Stmt
+		
+
+	},
+	gotoRow{ // S12
+		
+		-1, // S'
+		-1, // Form
+		-1, // Type
+		-1, // Literal
+		-1, // NumLiteral
+		8, // StrLiteral
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
+		-1, // VarDecl
+		-1, // VarId
+		-1, // Expr
+		9, // IfStmt
+		11, // Question
+		-1, // Block
+		-1, // StmtList
+		20, // Stmt
 		
 
 	},
@@ -390,14 +390,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		-1, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
 		-1, // VarDecl
-		30, // VarId
-		31, // Expr
+		-1, // VarId
+		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -412,14 +412,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		-1, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
+		23, // VarId
+		32, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -456,14 +456,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		-1, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
 		-1, // VarDecl
-		44, // VarId
-		45, // Expr
+		-1, // VarId
+		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -476,7 +476,7 @@ var gotoTab = gotoTable{
 		
 		-1, // S'
 		-1, // Form
-		50, // Type
+		37, // Type
 		-1, // Literal
 		-1, // NumLiteral
 		-1, // StrLiteral
@@ -500,14 +500,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		-1, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
+		43, // VarId
+		52, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -720,14 +720,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		-1, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
 		-1, // VarDecl
-		30, // VarId
-		69, // Expr
+		-1, // VarId
+		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -742,13 +742,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		70, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -764,13 +764,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		71, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -786,13 +786,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		72, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -808,14 +808,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		-1, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
+		23, // VarId
+		73, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1028,14 +1028,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		-1, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
 		-1, // VarDecl
-		44, // VarId
-		85, // Expr
+		-1, // VarId
+		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1050,14 +1050,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		-1, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
 		-1, // VarDecl
-		44, // VarId
-		86, // Expr
+		-1, // VarId
+		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1072,14 +1072,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		-1, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
 		-1, // VarDecl
-		44, // VarId
-		87, // Expr
+		-1, // VarId
+		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1094,14 +1094,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		-1, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
 		-1, // VarDecl
-		30, // VarId
-		88, // Expr
+		-1, // VarId
+		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1182,14 +1182,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		-1, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
+		43, // VarId
+		86, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1204,14 +1204,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		-1, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
+		43, // VarId
+		87, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1226,14 +1226,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		-1, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
+		43, // VarId
+		88, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1248,14 +1248,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		-1, // Term
-		89, // Factor
-		-1, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
+		23, // VarId
+		89, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1270,7 +1270,7 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
 		-1, // Term
 		90, // Factor
@@ -1292,10 +1292,10 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		91, // Term
-		26, // Factor
+		-1, // Term
+		91, // Factor
 		-1, // Bool
 		-1, // VarDecl
 		-1, // VarId
@@ -1314,10 +1314,10 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
 		92, // Term
-		26, // Factor
+		27, // Factor
 		-1, // Bool
 		-1, // VarDecl
 		-1, // VarId
@@ -1336,14 +1336,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		93, // Term
+		27, // Factor
+		-1, // Bool
 		-1, // VarDecl
-		30, // VarId
-		93, // Expr
+		-1, // VarId
+		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1358,13 +1358,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		94, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1380,13 +1380,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		95, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1402,13 +1402,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		96, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1424,13 +1424,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		97, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1446,13 +1446,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		98, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1468,13 +1468,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		99, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1490,13 +1490,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		24, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		25, // Term
-		26, // Factor
-		27, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		30, // VarId
+		23, // VarId
 		100, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1512,17 +1512,17 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		-1, // NumLiteral
+		25, // NumLiteral
 		-1, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
+		26, // Term
+		27, // Factor
+		28, // Bool
 		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
+		23, // VarId
+		101, // Expr
 		-1, // IfStmt
 		-1, // Question
-		101, // Block
+		-1, // Block
 		-1, // StmtList
 		-1, // Stmt
 		
@@ -1544,7 +1544,7 @@ var gotoTab = gotoTable{
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
-		-1, // Block
+		102, // Block
 		-1, // StmtList
 		-1, // Stmt
 		
@@ -1622,10 +1622,10 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		-1, // NumLiteral
 		-1, // StrLiteral
 		-1, // Term
-		104, // Factor
+		-1, // Factor
 		-1, // Bool
 		-1, // VarDecl
 		-1, // VarId
@@ -1644,7 +1644,7 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
 		-1, // Term
 		105, // Factor
@@ -1666,10 +1666,10 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		106, // Term
-		40, // Factor
+		-1, // Term
+		106, // Factor
 		-1, // Bool
 		-1, // VarDecl
 		-1, // VarId
@@ -1688,10 +1688,10 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
 		107, // Term
-		40, // Factor
+		47, // Factor
 		-1, // Bool
 		-1, // VarDecl
 		-1, // VarId
@@ -1710,14 +1710,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		108, // Term
+		47, // Factor
+		-1, // Bool
 		-1, // VarDecl
-		44, // VarId
-		108, // Expr
+		-1, // VarId
+		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -1732,13 +1732,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		44, // VarId
+		43, // VarId
 		109, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1754,13 +1754,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		44, // VarId
+		43, // VarId
 		110, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1776,13 +1776,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		44, // VarId
+		43, // VarId
 		111, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1798,13 +1798,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		44, // VarId
+		43, // VarId
 		112, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1820,13 +1820,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		44, // VarId
+		43, // VarId
 		113, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1842,13 +1842,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		44, // VarId
+		43, // VarId
 		114, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1864,13 +1864,13 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		38, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		39, // Term
-		40, // Factor
-		41, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		44, // VarId
+		43, // VarId
 		115, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1886,14 +1886,14 @@ var gotoTab = gotoTable{
 		-1, // Form
 		-1, // Type
 		-1, // Literal
-		-1, // NumLiteral
+		45, // NumLiteral
 		-1, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
+		46, // Term
+		47, // Factor
+		48, // Bool
 		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
+		43, // VarId
+		116, // Expr
 		-1, // IfStmt
 		-1, // Question
 		-1, // Block
@@ -2261,28 +2261,6 @@ var gotoTab = gotoTable{
 		-1, // Type
 		-1, // Literal
 		-1, // NumLiteral
-		7, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
-		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
-		8, // IfStmt
-		10, // Question
-		-1, // Block
-		118, // StmtList
-		13, // Stmt
-		
-
-	},
-	gotoRow{ // S103
-		
-		-1, // S'
-		-1, // Form
-		-1, // Type
-		-1, // Literal
-		-1, // NumLiteral
 		-1, // StrLiteral
 		-1, // Term
 		-1, // Factor
@@ -2295,6 +2273,28 @@ var gotoTab = gotoTable{
 		-1, // Block
 		-1, // StmtList
 		-1, // Stmt
+		
+
+	},
+	gotoRow{ // S103
+		
+		-1, // S'
+		-1, // Form
+		-1, // Type
+		-1, // Literal
+		-1, // NumLiteral
+		8, // StrLiteral
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
+		-1, // VarDecl
+		-1, // VarId
+		-1, // Expr
+		9, // IfStmt
+		11, // Question
+		-1, // Block
+		119, // StmtList
+		14, // Stmt
 		
 
 	},
@@ -2600,35 +2600,13 @@ var gotoTab = gotoTable{
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
-		120, // Block
+		-1, // Block
 		-1, // StmtList
 		-1, // Stmt
 		
 
 	},
 	gotoRow{ // S118
-		
-		-1, // S'
-		-1, // Form
-		-1, // Type
-		-1, // Literal
-		-1, // NumLiteral
-		7, // StrLiteral
-		-1, // Term
-		-1, // Factor
-		-1, // Bool
-		-1, // VarDecl
-		-1, // VarId
-		-1, // Expr
-		8, // IfStmt
-		10, // Question
-		-1, // Block
-		-1, // StmtList
-		19, // Stmt
-		
-
-	},
-	gotoRow{ // S119
 		
 		-1, // S'
 		-1, // Form
@@ -2644,9 +2622,31 @@ var gotoTab = gotoTable{
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
-		-1, // Block
+		121, // Block
 		-1, // StmtList
 		-1, // Stmt
+		
+
+	},
+	gotoRow{ // S119
+		
+		-1, // S'
+		-1, // Form
+		-1, // Type
+		-1, // Literal
+		-1, // NumLiteral
+		8, // StrLiteral
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
+		-1, // VarDecl
+		-1, // VarId
+		-1, // Expr
+		9, // IfStmt
+		11, // Question
+		-1, // Block
+		-1, // StmtList
+		20, // Stmt
 		
 
 	},
@@ -2679,18 +2679,18 @@ var gotoTab = gotoTable{
 		-1, // Type
 		-1, // Literal
 		-1, // NumLiteral
-		7, // StrLiteral
+		-1, // StrLiteral
 		-1, // Term
 		-1, // Factor
 		-1, // Bool
 		-1, // VarDecl
 		-1, // VarId
 		-1, // Expr
-		8, // IfStmt
-		10, // Question
+		-1, // IfStmt
+		-1, // Question
 		-1, // Block
-		123, // StmtList
-		13, // Stmt
+		-1, // StmtList
+		-1, // Stmt
 		
 
 	},
@@ -2701,18 +2701,18 @@ var gotoTab = gotoTable{
 		-1, // Type
 		-1, // Literal
 		-1, // NumLiteral
-		-1, // StrLiteral
+		8, // StrLiteral
 		-1, // Term
 		-1, // Factor
 		-1, // Bool
 		-1, // VarDecl
 		-1, // VarId
 		-1, // Expr
-		-1, // IfStmt
-		-1, // Question
+		9, // IfStmt
+		11, // Question
 		-1, // Block
-		-1, // StmtList
-		-1, // Stmt
+		124, // StmtList
+		14, // Stmt
 		
 
 	},
@@ -2723,22 +2723,44 @@ var gotoTab = gotoTable{
 		-1, // Type
 		-1, // Literal
 		-1, // NumLiteral
-		7, // StrLiteral
+		-1, // StrLiteral
 		-1, // Term
 		-1, // Factor
 		-1, // Bool
 		-1, // VarDecl
 		-1, // VarId
 		-1, // Expr
-		8, // IfStmt
-		10, // Question
+		-1, // IfStmt
+		-1, // Question
 		-1, // Block
 		-1, // StmtList
-		19, // Stmt
+		-1, // Stmt
 		
 
 	},
 	gotoRow{ // S124
+		
+		-1, // S'
+		-1, // Form
+		-1, // Type
+		-1, // Literal
+		-1, // NumLiteral
+		8, // StrLiteral
+		-1, // Term
+		-1, // Factor
+		-1, // Bool
+		-1, // VarDecl
+		-1, // VarId
+		-1, // Expr
+		9, // IfStmt
+		11, // Question
+		-1, // Block
+		-1, // StmtList
+		20, // Stmt
+		
+
+	},
+	gotoRow{ // S125
 		
 		-1, // S'
 		-1, // Form
@@ -2760,7 +2782,7 @@ var gotoTab = gotoTable{
 		
 
 	},
-	gotoRow{ // S125
+	gotoRow{ // S126
 		
 		-1, // S'
 		-1, // Form

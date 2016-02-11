@@ -1,24 +1,30 @@
 package expr
 
+import "ql/ast/visit"
+
 type Eq struct {
 	Lhs, Rhs Expr
 }
 
-func (eq Eq) getLhs() Expr {
-	return eq.Lhs
+func (e Eq) getLhs() Expr {
+	return e.Lhs
 }
 
-func (eq Eq) getRhs() Expr {
-	return eq.Rhs
+func (e Eq) getRhs() Expr {
+	return e.Rhs
 }
 
-func (eq Eq) Eval() interface{} {
-	switch eq.Lhs.Eval().(type) {
+func (e Eq) Eval() interface{} {
+	switch e.Lhs.Eval().(type) {
 	case int:
-		return eq.getLhs().Eval().(int) == eq.getRhs().Eval().(int)
+		return e.getLhs().Eval().(int) == e.getRhs().Eval().(int)
 	case bool:
-		return eq.getLhs().Eval().(bool) == eq.getRhs().Eval().(bool)
+		return e.getLhs().Eval().(bool) == e.getRhs().Eval().(bool)
 	default:
 		panic("Eq error: comparing unknown types")
 	}
+}
+
+func (e Eq) Accept(v visit.Visitor) interface{} {
+	return v.Visit(e)
 }

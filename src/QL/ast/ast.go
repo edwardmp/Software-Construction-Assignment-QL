@@ -101,17 +101,17 @@ func NewStrLit(value interface{}) (expr.Expr, error) {
 }
 
 /* statements */
+
+func NewForm(identifier interface{}, body interface{}) (stmt.Form, error) {
+	return stmt.Form{identifier.(vari.VarId), body.(stmt.StmtList)}, nil
+}
+
 func NewInputQuestion(label interface{}, varDecl interface{}) (stmt.InputQuestion, error) {
 	return stmt.InputQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl)}, nil
 }
 
 func NewComputedQuestion(label interface{}, varDecl interface{}, computation interface{}) (stmt.ComputedQuestion, error) {
 	return stmt.ComputedQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(expr.Expr)}, nil
-}
-
-func NewForm(identifier interface{}, body interface{}) (stmt.Form, error) {
-	identifierString := string(identifier.(*token.Token).Lit)
-	return stmt.Form{identifierString, body.(stmt.StmtList)}, nil
 }
 
 func NewStmtList(stmtElt interface{}) (stmt.StmtList, error) {

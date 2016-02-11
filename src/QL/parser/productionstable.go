@@ -35,7 +35,7 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Form : "form" ident Block	<< ast.NewForm(X[1], X[2]) >>`,
+		String: `Form : "form" VarId Block	<< ast.NewForm(X[1], X[2]) >>`,
 		Id: "Form",
 		NTType: 1,
 		Index: 1,

@@ -53,7 +53,7 @@ ident : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 ) 
 >>
 
-Form    : "form" ident Block << ast.NewForm($1, $2) >> ;
+Form    : "form" VarId Block << ast.NewForm($1, $2) >> ;
 
 /* types */
 Type    : "integer" << vari.INT, nil >>

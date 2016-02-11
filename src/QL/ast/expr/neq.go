@@ -1,24 +1,30 @@
 package expr
 
+import "ql/ast/visit"
+
 type NEq struct {
 	Lhs, Rhs Expr
 }
 
-func (neq NEq) getLhs() Expr {
-	return neq.Lhs
+func (n NEq) getLhs() Expr {
+	return n.Lhs
 }
 
-func (neq NEq) getRhs() Expr {
-	return neq.Rhs
+func (n NEq) getRhs() Expr {
+	return n.Rhs
 }
 
-func (neq NEq) Eval() interface{} {
-	switch neq.Lhs.Eval().(type) {
+func (n NEq) Eval() interface{} {
+	switch n.Lhs.Eval().(type) {
 	case int:
-		return neq.getLhs().Eval().(int) != neq.getRhs().Eval().(int)
+		return n.getLhs().Eval().(int) != n.getRhs().Eval().(int)
 	case bool:
-		return neq.getLhs().Eval().(bool) != neq.getRhs().Eval().(bool)
+		return n.getLhs().Eval().(bool) != n.getRhs().Eval().(bool)
 	default:
 		panic("NEq error: comparing unknown types")
 	}
+}
+
+func (n NEq) Accept(v visit.Visitor) interface{} {
+	return v.Visit(n)
 }

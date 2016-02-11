@@ -1,6 +1,9 @@
 package stmt
 
-import "fmt"
+import (
+	"fmt"
+	"ql/ast/visit"
+)
 
 type StmtList struct {
 	Questions    []Question
@@ -24,4 +27,8 @@ func (s StmtList) AddToCorrectSlice(i interface{}) StmtList {
 
 func (s StmtList) String() string {
 	return fmt.Sprintf("A statement list with %d questions and %d conditionals", len(s.Questions), len(s.Conditionals))
+}
+
+func (s StmtList) Accept(v visit.Visitor) interface{} {
+	return v.Visit(s)
 }
