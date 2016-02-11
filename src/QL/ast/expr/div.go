@@ -4,6 +4,14 @@ type Div struct {
 	Lhs, Rhs Expr
 }
 
+func (div Div) getLhs() Expr {
+	return div.Lhs
+}
+
+func (div Div) getRhs() Expr {
+	return div.Rhs
+}
+
 func (div Div) Eval() interface{} {
-	return div.Lhs.Eval().(int) / div.Rhs.Eval().(int)
+	return div.getLhs().Eval().(int) / div.getRhs().Eval().(int)
 }

@@ -5,5 +5,5 @@ type IntLit struct {
 }
 
 func (i IntLit) Eval() interface{} {
-	return int(i.Value)
+	return i.Value
 }

@@ -4,6 +4,14 @@ type GEq struct {
 	Lhs, Rhs Expr
 }
 
+func (geq GEq) getLhs() Expr {
+	return geq.Lhs
+}
+
+func (geq GEq) getRhs() Expr {
+	return geq.Rhs
+}
+
 func (geq GEq) Eval() interface{} {
-	return geq.Lhs.Eval().(int) >= geq.Rhs.Eval().(int)
+	return geq.getLhs().Eval().(int) >= geq.getRhs().Eval().(int)
 }

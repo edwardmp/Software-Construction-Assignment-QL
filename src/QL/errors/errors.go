@@ -4,7 +4,7 @@ package errors
 import(
 	"bytes"
 	"fmt"
-	"QL/token"
+	"ql/token"
 )
 
 type ErrorSymbol interface {

@@ -3,7 +3,7 @@ package lexer
 
 import(
 	"fmt"
-	"QL/token"
+	"ql/token"
 )
 
 type ActionTable [NumStates] ActionRow
@@ -27,7 +27,7 @@ var ActTab = ActionTable{
  		Ignore: "!whitespace",
  	},
  	ActionRow{ // S2
-		Accept: 19,
+		Accept: 20,
  		Ignore: "",
  	},
  	ActionRow{ // S3
@@ -39,11 +39,11 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S5
-		Accept: 28,
+		Accept: 29,
  		Ignore: "",
  	},
  	ActionRow{ // S6
-		Accept: 29,
+		Accept: 30,
  		Ignore: "",
  	},
  	ActionRow{ // S7
@@ -51,11 +51,11 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S8
-		Accept: 17,
+		Accept: 18,
  		Ignore: "",
  	},
  	ActionRow{ // S9
-		Accept: 18,
+		Accept: 19,
  		Ignore: "",
  	},
  	ActionRow{ // S10
@@ -67,7 +67,7 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S12
-		Accept: 32,
+		Accept: 17,
  		Ignore: "",
  	},
  	ActionRow{ // S13
@@ -75,7 +75,7 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S14
-		Accept: 23,
+		Accept: 24,
  		Ignore: "",
  	},
  	ActionRow{ // S15
@@ -83,7 +83,7 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S16
-		Accept: 22,
+		Accept: 23,
  		Ignore: "",
  	},
  	ActionRow{ // S17
@@ -135,7 +135,7 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S29
-		Accept: 21,
+		Accept: 22,
  		Ignore: "",
  	},
  	ActionRow{ // S30
@@ -143,7 +143,7 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S31
-		Accept: 26,
+		Accept: 27,
  		Ignore: "",
  	},
  	ActionRow{ // S32
@@ -159,15 +159,15 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S35
-		Accept: 25,
+		Accept: 26,
  		Ignore: "",
  	},
  	ActionRow{ // S36
-		Accept: 20,
+		Accept: 21,
  		Ignore: "",
  	},
  	ActionRow{ // S37
-		Accept: 24,
+		Accept: 25,
  		Ignore: "",
  	},
  	ActionRow{ // S38
@@ -191,7 +191,7 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S43
-		Accept: 30,
+		Accept: 31,
  		Ignore: "",
  	},
  	ActionRow{ // S44
@@ -211,7 +211,7 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S48
-		Accept: 27,
+		Accept: 28,
  		Ignore: "",
  	},
  	ActionRow{ // S49
@@ -275,7 +275,7 @@ var ActTab = ActionTable{
  		Ignore: "",
  	},
  	ActionRow{ // S64
-		Accept: 31,
+		Accept: 32,
  		Ignore: "",
  	},
  	ActionRow{ // S65

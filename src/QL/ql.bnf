@@ -7,11 +7,11 @@ _blockComment : '/' '*' {. | '*'} '*' '/' ;
 !comment : _lineComment | _blockComment ;
 
 /* literals */
-_int 			: '0'-'9' {'0'-'9'} ;
+_int 		: '0'-'9' {'0'-'9'} ;
 integer_lit	: _int ;
-money_lit 		: _int ',' _int ;
-str_lit		: '"' {.} '"' ;
-bool_lit		: 't' 'r' 'u' 'e' | 'f' 'a' 'l' 's' 'e' ;
+money_lit   : _int ',' _int ;
+str_lit     : '"' {.} '"' ;
+bool_lit    : 't' 'r' 'u' 'e' | 'f' 'a' 'l' 's' 'e' ;
 
 /* number operators */
 addop 	: '+' ;
@@ -32,13 +32,6 @@ geqop	: '>' '=' ;
 neqop	: '!' '=' ;
 eqop	: '=' '=' ;
 
-/* types */
-tint 		: 'i' 'n' 't' 'e' 'g' 'e' 'r' ;
-tbool 		: 'b' 'o' 'o' 'l' 'e' 'a' 'n' ;
-tstring	: 's' 't' 'r' 'i' 'n' 'g' ;
-tmoney 	: 'm' 'o' 'n' 'e' 'y' ;
-tdate		: 'd' 'a' 't' 'e' ;
-
 /* special characters */
 lbrace	: '{' ;
 rbrace	: '}' ;
@@ -48,54 +41,53 @@ semicol : ';' ;
 col		: ':' ;
 assign 	: '=' ;
 
-/* statements */
-form 	: 'f' 'o' 'r' 'm' ;
-if		: 'i' 'f' ;
-else 	: 'e' 'l' 's' 'e' ;
-
 /* identifiers */
 ident : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 
 /** Syntax elements **/
 
 << import(
-	"QL/ast"
-	"QL/token"
-	"QL/util"
-    "QL/ast/stmt"
+	"ql/ast"
+	"ql/token"
+	"ql/util"
+    "ql/ast/vari"
 ) 
 >>
 
-Form    : form ident Block << ast.NewForm($1, $2) >> ;
+Form    : "form" ident Block << ast.NewForm($1, $2) >> ;
 
-Type    : tint  << stmt.INT, nil >>
-        | tbool << stmt.BOOLEAN, nil >>
-        | tstring  << stmt.STRING, nil >>
-        | tmoney << stmt.MONEY, nil >>
-        | tdate << stmt.DATE, nil >> 
+/* types */
+Type    : "integer" << vari.INT, nil >>
+        | "boolean" << vari.BOOLEAN, nil >>
+        | "string"  << vari.STRING, nil >>
+        | "money"   << vari.MONEY, nil >>
+        | "date"    << vari.DATE, nil >> 
         ;
 
 Literal     : integer_lit | money_lit | bool_lit | str_lit;
-NumLiteral  : integer_lit ;
-StrLiteral  : str_lit ;
+NumLiteral  : integer_lit   << ast.NewIntLit((util.IntValue($0.(*token.Token).Lit))) >> ;
+StrLiteral  : str_lit       << ast.NewStrLit($0) >> ;
 
 Term    : Term mulop Factor << ast.NewMul($0, $2) >>
         | Term divop Factor << ast.NewDiv($0, $2) >>
         | Factor 
         ;
 
-Factor  : NumLiteral   << ast.NewIntLit((util.IntValue($0.(*token.Token).Lit))) >> ;
+Factor  : NumLiteral ;
 
 Bool    : "true"    << ast.NewBoolLit(ast.TRUE) >>
         | "false"   << ast.NewBoolLit(ast.FALSE) >>
         ;
+
+VarDecl : VarId col Type << ast.NewVarDecl($0, $2) >> ;
+
+VarId   : ident << ast.NewVarId($0) >> ;
 
 Expr    : addop Expr        << ast.NewPos($1) >>
         | subop Expr        << ast.NewNeg($1) >>
         | notop Expr        << ast.NewNot($1) >>
         | Expr addop Term   << ast.NewAdd($0, $2) >>
         | Expr subop Term   << ast.NewSub($0, $2) >>
-        | Term
         | Expr eqop Expr    << ast.NewEq($0, $2) >>
         | Expr neqop Expr   << ast.NewNEq($0, $2) >>
         | Expr gtop Expr    << ast.NewGT($0, $2) >>
@@ -105,26 +97,25 @@ Expr    : addop Expr        << ast.NewPos($1) >>
         | Expr andop Expr   << ast.NewAnd($0, $2) >>
         | Expr orop Expr    << ast.NewOr($0, $2) >>
         | lpar Expr rpar    << $1, nil >>
+        | Term
         | Bool
-        | ident
+        | VarId
         ;
 
-IfStmt  : if lpar Expr rpar Block               << ast.NewIf($2, $4) >>
-        | if lpar Expr rpar Block else Block    << ast.NewIfElse($2, $4, $5) >>
+IfStmt  : "if" lpar Expr rpar Block                 << ast.NewIf($2, $4) >>
+        | "if" lpar Expr rpar Block "else" Block    << ast.NewIfElse($2, $4, $5) >>
         ;
 
-Question    : StrLiteral ident col Type  << ast.NewQuestion($0, $1, $3) >> ;
+Question    : StrLiteral VarDecl  << ast.NewQuestion($0, $1) >> ;
 
 Block   : lbrace StmtList rbrace    << $1, nil >>
+        | lbrace rbrace             << ast.NewEmptyStmtList() >>
         ;
 
-StmtList    : Stmt        << ast.NewStmtList($0) >>
-            | StmtList Stmt   << ast.AppendStmt($0, $1) >>
+StmtList    : Stmt          << ast.NewStmtList($0) >>
+            | StmtList Stmt << ast.AppendStmt($0, $1) >>
             ;
 
 Stmt    : Question 
         | IfStmt
         ;
-
-
-

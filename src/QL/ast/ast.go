@@ -1,17 +1,20 @@
 package ast
 
 import (
-	"QL/ast/expr"
-	"QL/ast/stmt"
-	"QL/token"
+	//"fmt"
+	"ql/ast/expr"
+	"ql/ast/stmt"
+	"ql/ast/vari"
+	"ql/token"
 	"strconv"
 )
 
-func tokenToString(a interface{}) (str string) {
+func stringLiteralToString(a interface{}) (str string) {
 	astr, err := strconv.Unquote(string(a.(*token.Token).Lit))
 	if err != nil {
 		return ""
 	}
+
 	return astr
 }
 
@@ -90,30 +93,47 @@ func NewBoolLit(value bool) (expr.Expr, error) {
 	return expr.BoolLit{value}, nil
 }
 
-/* statements */
-func NewQuestion(label interface{}, identifier interface{}, typeIdentifier interface{}) (stmt.Stmt, error) {
-	labelString := tokenToString(label)
-	identifierString := tokenToString(identifier)
-	return stmt.Question{labelString, identifierString, typeIdentifier.(stmt.TypeIdentifier)}, nil
+func NewStrLit(value interface{}) (expr.Expr, error) {
+	literalString := stringLiteralToString(value)
+	return expr.StrLit{literalString}, nil
 }
 
-func NewForm(identifier interface{}, body interface{}) (stmt.Stmt, error) {
-	identifierString := tokenToString(identifier)
+/* statements */
+func NewQuestion(label interface{}, varDecl interface{}) (stmt.Question, error) {
+	return stmt.Question{label.(expr.StrLit), varDecl.(vari.VarDecl)}, nil
+}
+
+func NewForm(identifier interface{}, body interface{}) (stmt.Form, error) {
+	identifierString := string(identifier.(*token.Token).Lit)
 	return stmt.Form{identifierString, body.(stmt.StmtList)}, nil
 }
 
 func NewStmtList(stmtElt interface{}) (stmt.StmtList, error) {
-	return stmt.StmtList{stmtElt.(stmt.Stmt)}, nil
+	s := stmt.StmtList{}
+	return s.AddToCorrectSlice(stmtElt), nil
+}
+
+func NewEmptyStmtList() (stmt.StmtList, error) {
+	return stmt.StmtList{}, nil
 }
 
 func AppendStmt(stmtList, stmtElt interface{}) (stmt.StmtList, error) {
-	return append(stmtList.(stmt.StmtList), stmtElt.(stmt.Stmt)), nil
+	return stmtList.(stmt.StmtList).AddToCorrectSlice(stmtElt), nil
 }
 
-func NewIf(cond interface{}, stmtList interface{}) (stmt.Stmt, error) {
-	return stmt.If{cond.(expr.Expr), stmtList.(*token.Token).Lit}, nil
+func NewIf(cond interface{}, body interface{}) (stmt.If, error) {
+	return stmt.If{cond.(expr.Expr), body.(stmt.StmtList)}, nil
 }
 
-func NewIfElse(cond interface{}, thenBody interface{}, elseBody interface{}) (stmt.Stmt, error) {
-	return stmt.IfElse{cond.(expr.Expr), thenBody.(*token.Token).Lit, elseBody.(*token.Token).Lit}, nil
+func NewIfElse(cond interface{}, thenBody interface{}, elseBody interface{}) (stmt.IfElse, error) {
+	return stmt.IfElse{cond.(expr.Expr), thenBody.(stmt.StmtList), elseBody.(stmt.StmtList)}, nil
+}
+
+func NewVarDecl(ident interface{}, typeIdent interface{}) (vari.VarDecl, error) {
+	return vari.VarDecl{ident.(vari.VarId), typeIdent.(vari.VarTypeId)}, nil
+}
+
+func NewVarId(ident interface{}) (vari.VarId, error) {
+	identifierString := string(ident.(*token.Token).Lit)
+	return vari.VarId{identifierString}, nil
 }
