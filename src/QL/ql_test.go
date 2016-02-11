@@ -77,12 +77,15 @@ type VisitorAdapter struct {
 func (v VisitorAdapter) Visit(t interface{}) interface{} {
 	switch t.(type) {
 	default:
-		fmt.Printf("unexpected node type %T\n", t)
+		panic(fmt.Sprintf("Unexpected node type %T\n", t))
 	case stmt.Form:
 		t.(stmt.Form).Identifier.Accept(v)
 		t.(stmt.Form).Content.Accept(v)
 	case vari.VarId:
-		fmt.Printf("Varid")
+		fmt.Printf("Varid") // TODO handle
+	case vari.VarDecl:
+		fmt.Printf("VarDecl") // TODO handle
+		t.(vari.VarDecl).Ident.Accept(v)
 	case stmt.StmtList:
 		for i, _ := range t.(stmt.StmtList).Questions {
 			t.(stmt.StmtList).Questions[i].(stmt.Question).Accept(v)
@@ -104,6 +107,21 @@ func (v VisitorAdapter) Visit(t interface{}) interface{} {
 		t.(stmt.IfElse).Cond.Accept(v)
 		t.(stmt.IfElse).IfBody.Accept(v)
 		t.(stmt.IfElse).ElseBody.Accept(v)
+	case expr.BinaryOperatorExpr:
+		t.(expr.BinaryOperatorExpr).GetLhs().(expr.Expr).Accept(v)
+		t.(expr.BinaryOperatorExpr).GetRhs().(expr.Expr).Accept(v)
+	case expr.Neg:
+		t.(expr.Neg).Value.Accept(v)
+	case expr.Not:
+		t.(expr.Not).Value.Accept(v)
+	case expr.Pos:
+		t.(expr.Not).Value.Accept(v)
+	case expr.StrLit:
+		fmt.Printf("StrLit") // TODO handle
+	case expr.BoolLit:
+		fmt.Printf("BoolLit") // TODO handle
+	case expr.IntLit:
+		fmt.Printf("IntLit") // TODO handle
 	}
 
 	return false

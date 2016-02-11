@@ -6,16 +6,16 @@ type LT struct {
 	Lhs, Rhs Expr
 }
 
-func (l LT) getLhs() Expr {
+func (l LT) GetLhs() Expr {
 	return l.Lhs
 }
 
-func (l LT) getRhs() Expr {
+func (l LT) GetRhs() Expr {
 	return l.Rhs
 }
 
 func (l LT) Eval() interface{} {
-	return l.getLhs().Eval().(int) < l.getRhs().Eval().(int)
+	return l.GetLhs().Eval().(int) < l.GetRhs().Eval().(int)
 }
 
 func (l LT) Accept(v visit.Visitor) interface{} {

@@ -1,6 +1,9 @@
 package expr
 
+import "ql/ast/visit"
+
 type BinaryOperatorExpr interface {
-	getLhs() interface{}
-	getRhs() interface{}
+	GetLhs() interface{}
+	GetRhs() interface{}
+	Accept(v visit.Visitor) interface{}
 }

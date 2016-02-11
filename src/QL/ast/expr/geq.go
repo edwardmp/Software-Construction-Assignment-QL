@@ -6,16 +6,16 @@ type GEq struct {
 	Lhs, Rhs Expr
 }
 
-func (g GEq) getLhs() Expr {
+func (g GEq) GetLhs() Expr {
 	return g.Lhs
 }
 
-func (g GEq) getRhs() Expr {
+func (g GEq) GetRhs() Expr {
 	return g.Rhs
 }
 
 func (g GEq) Eval() interface{} {
-	return g.getLhs().Eval().(int) >= g.getRhs().Eval().(int)
+	return g.GetLhs().Eval().(int) >= g.GetRhs().Eval().(int)
 }
 
 func (g GEq) Accept(v visit.Visitor) interface{} {

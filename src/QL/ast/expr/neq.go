@@ -6,20 +6,20 @@ type NEq struct {
 	Lhs, Rhs Expr
 }
 
-func (n NEq) getLhs() Expr {
+func (n NEq) GetLhs() Expr {
 	return n.Lhs
 }
 
-func (n NEq) getRhs() Expr {
+func (n NEq) GetRhs() Expr {
 	return n.Rhs
 }
 
 func (n NEq) Eval() interface{} {
 	switch n.Lhs.Eval().(type) {
 	case int:
-		return n.getLhs().Eval().(int) != n.getRhs().Eval().(int)
+		return n.GetLhs().Eval().(int) != n.GetRhs().Eval().(int)
 	case bool:
-		return n.getLhs().Eval().(bool) != n.getRhs().Eval().(bool)
+		return n.GetLhs().Eval().(bool) != n.GetRhs().Eval().(bool)
 	default:
 		panic("NEq error: comparing unknown types")
 	}

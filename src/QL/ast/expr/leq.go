@@ -6,16 +6,16 @@ type LEq struct {
 	Lhs, Rhs Expr
 }
 
-func (l LEq) getLhs() Expr {
+func (l LEq) GetLhs() Expr {
 	return l.Lhs
 }
 
-func (l LEq) getRhs() Expr {
+func (l LEq) GetRhs() Expr {
 	return l.Rhs
 }
 
 func (l LEq) Eval() interface{} {
-	return l.getLhs().Eval().(int) <= l.getRhs().Eval().(int)
+	return l.GetLhs().Eval().(int) <= l.GetRhs().Eval().(int)
 }
 
 func (l LEq) Accept(v visit.Visitor) interface{} {

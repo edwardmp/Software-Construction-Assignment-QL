@@ -6,16 +6,16 @@ type Div struct {
 	Lhs, Rhs Expr
 }
 
-func (d Div) getLhs() Expr {
+func (d Div) GetLhs() Expr {
 	return d.Lhs
 }
 
-func (d Div) getRhs() Expr {
+func (d Div) GetRhs() Expr {
 	return d.Rhs
 }
 
 func (d Div) Eval() interface{} {
-	return d.getLhs().Eval().(int) / d.getRhs().Eval().(int)
+	return d.GetLhs().Eval().(int) / d.GetRhs().Eval().(int)
 }
 
 func (d Div) Accept(v visit.Visitor) interface{} {

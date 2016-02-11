@@ -6,16 +6,16 @@ type Add struct {
 	Lhs, Rhs Expr
 }
 
-func (a Add) getLhs() Expr {
+func (a Add) GetLhs() Expr {
 	return a.Lhs
 }
 
-func (a Add) getRhs() Expr {
+func (a Add) GetRhs() Expr {
 	return a.Rhs
 }
 
 func (a Add) Eval() interface{} {
-	return a.getLhs().Eval().(int) + a.getRhs().Eval().(int)
+	return a.GetLhs().Eval().(int) + a.GetRhs().Eval().(int)
 }
 
 func (a Add) Accept(v visit.Visitor) interface{} {

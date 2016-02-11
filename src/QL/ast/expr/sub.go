@@ -6,16 +6,16 @@ type Sub struct {
 	Lhs, Rhs Expr
 }
 
-func (s Sub) getLhs() Expr {
+func (s Sub) GetLhs() Expr {
 	return s.Lhs
 }
 
-func (s Sub) getRhs() Expr {
+func (s Sub) GetRhs() Expr {
 	return s.Rhs
 }
 
 func (s Sub) Eval() interface{} {
-	return s.getLhs().Eval().(int) - s.getRhs().Eval().(int)
+	return s.GetLhs().Eval().(int) - s.GetRhs().Eval().(int)
 }
 
 func (s Sub) Accept(v visit.Visitor) interface{} {

@@ -6,16 +6,16 @@ type Mul struct {
 	Lhs, Rhs Expr
 }
 
-func (m Mul) getLhs() Expr {
+func (m Mul) GetLhs() Expr {
 	return m.Lhs
 }
 
-func (m Mul) getRhs() Expr {
+func (m Mul) GetRhs() Expr {
 	return m.Rhs
 }
 
 func (m Mul) Eval() interface{} {
-	return m.getLhs().Eval().(int) * m.getRhs().Eval().(int)
+	return m.GetLhs().Eval().(int) * m.GetRhs().Eval().(int)
 }
 
 func (m Mul) Accept(v visit.Visitor) interface{} {

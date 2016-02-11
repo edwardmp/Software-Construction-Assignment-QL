@@ -6,16 +6,16 @@ type GT struct {
 	Lhs, Rhs Expr
 }
 
-func (g GT) getLhs() Expr {
+func (g GT) GetLhs() Expr {
 	return g.Lhs
 }
 
-func (g GT) getRhs() Expr {
+func (g GT) GetRhs() Expr {
 	return g.Rhs
 }
 
 func (g GT) Eval() interface{} {
-	return g.getLhs().Eval().(int) > g.getRhs().Eval().(int)
+	return g.GetLhs().Eval().(int) > g.GetRhs().Eval().(int)
 }
 
 func (g GT) Accept(v visit.Visitor) interface{} {
