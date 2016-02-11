@@ -91,10 +91,9 @@ var TokMap = TokenMap{
 		"rpar",
 		"if",
 		"else",
+		"assign",
 		"lbrace",
 		"rbrace",
-		"assign",
-		"semicol",
 	},
 
 	idMap: map[string]Type {
@@ -131,10 +130,9 @@ var TokMap = TokenMap{
 		"rpar": 30,
 		"if": 31,
 		"else": 32,
-		"lbrace": 33,
-		"rbrace": 34,
-		"assign": 35,
-		"semicol": 36,
+		"assign": 33,
+		"lbrace": 34,
+		"rbrace": 35,
 	},
 }
 

@@ -35,7 +35,7 @@ func slicesEqual(a stmt.StmtList, b stmt.StmtList) bool {
 			return false
 		}
 
-		if !slicesEqualIf(conditionalsA[i].(stmt.If), conditionalsB[i].(stmt.If)) {
+		if !slicesEqualConditional(conditionalsA[i].(stmt.Conditional), conditionalsB[i].(stmt.Conditional)) {
 			return true
 		}
 	}
@@ -43,11 +43,21 @@ func slicesEqual(a stmt.StmtList, b stmt.StmtList) bool {
 	return true
 }
 
-func slicesEqualIf(ifA, ifB stmt.If) bool {
-	bodyA := ifA.Body
-	bodyB := ifB.Body
+func slicesEqualConditional(ifA, ifB stmt.Conditional) bool {
+	if fmt.Sprintf("%T", ifA) != fmt.Sprintf("%T", ifB) {
+		panic("Types not equal") // TODO replace with assert
+	}
 
-	return slicesEqual(bodyA, bodyB)
+	switch t := ifA.(type) {
+	default:
+		panic(fmt.Sprintf("unexpected Conditional type %T\n", t))
+	case stmt.If:
+		bodyA := ifA.(stmt.If).Body
+		bodyB := ifB.(stmt.If).Body
+		return slicesEqual(bodyA, bodyB)
+	case stmt.IfElse:
+		return slicesEqual(ifA.(stmt.IfElse).IfBody, ifB.(stmt.IfElse).IfBody) && slicesEqual(ifA.(stmt.IfElse).ElseBody, ifB.(stmt.IfElse).ElseBody)
+	}
 }
 
 func printLexerTokens(lexer *lexer.Lexer) {
@@ -77,10 +87,6 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 		panic(err)
 	}
 
-	//if r.(stmt.Stmt).String() != expectedOutput.(string) {
-	//	t.Errorf("%v", r)
-	//}
-
 	if f, fOk := r.(stmt.Form); fOk {
 		if e, eOk := expectedOutput.(stmt.Form); eOk {
 			if f.Identifier != e.Identifier {
@@ -95,8 +101,8 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 			eCond := e.Content.Conditionals
 			if len(fCond) != 0 && len(fCond) == len(eCond) {
 				for i, _ := range fCond {
-					if !slicesEqualIf(fCond[i].(stmt.If), eCond[i].(stmt.If)) {
-						t.Errorf("fail %v %v", fCond, eCond)
+					if !slicesEqualConditional(fCond[i].(stmt.Conditional), eCond[i].(stmt.Conditional)) {
+						t.Errorf("parse test failed conditionals not equal: %v %v", fCond, eCond)
 					}
 				}
 			}
@@ -106,29 +112,45 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 	return r.(stmt.Form)
 }
 
-func testFormIdentifierExtraction(t *testing.T) {
+/* Tests for statements */
+
+func TestFormIdentifierExtraction(t *testing.T) {
 	exampleEmptyForm := "form TestForm {}"
 
 	var exampleOutputForm stmt.Form = stmt.Form{"TestForm", stmt.StmtList{}}
 	testStmtParse(t, exampleEmptyForm, exampleOutputForm)
 }
 
-func testFormQuestion(t *testing.T) {
+func TestFormQuestion(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean \"Did you enter a loan?\" hasMaintLoan: boolean }"
 
-	firstQuestionOutput := stmt.Question{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
-	secondQuestionOutput := stmt.Question{expr.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.BOOLEAN}}
+	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
+	secondQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.BOOLEAN}}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput, secondQuestionOutput}, []stmt.Conditional{}}
 	exampleOutputForm := stmt.Form{"TestForm", exampleBodyOutput}
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
 
+/*
+func TestFormComputedQuestion(t *testing.T) {
+	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: integer \"Did you enter a loan?\" hasMaintLoan: integer \"Value residue:\" valueResidue: int = (hasSoldHouse - hasMaintLoan) }"
+
+	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.INT}}
+	secondQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.INT}}
+	computedQuestion := stmt.ComputedQuestion{expr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.INT}, expr.Sub{vari.VarId{"hasSoldHouse"}, vari.Varid{"hasMaintLoan"}}}
+	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput, secondQuestionOutput, computedQuestion}, []stmt.Conditional{}}
+	exampleOutputForm := stmt.Form{"TestForm", exampleBodyOutput}
+
+	testStmtParse(t, exampleFormInput, exampleOutputForm)
+}
+*/
+
 func TestFormIf(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean if (true) { \"What was the selling price?\" sellingPrice: money } }"
 
-	firstQuestionOutput := stmt.Question{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
-	firstQuestionBodyInput := stmt.Question{expr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.MONEY}}
+	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
+	firstQuestionBodyInput := stmt.InputQuestion{expr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.MONEY}}
 	ifBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionBodyInput}, []stmt.Conditional{}}
 	ifOutput := stmt.If{expr.BoolLit{true}, ifBodyOutput}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput}, []stmt.Conditional{ifOutput}}
@@ -136,6 +158,22 @@ func TestFormIf(t *testing.T) {
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
+
+func TestFormIfElse(t *testing.T) {
+	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean if (true) { \"What was the selling price?\" sellingPrice: money } else { \"What was the selling price?\" sellingPrice: money } }"
+
+	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
+	firstQuestionBodyInput := stmt.InputQuestion{expr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.MONEY}}
+	ifBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionBodyInput}, []stmt.Conditional{}}
+	elseBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionBodyInput}, []stmt.Conditional{}}
+	ifOutput := stmt.IfElse{expr.BoolLit{true}, ifBodyOutput, elseBodyOutput}
+	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput}, []stmt.Conditional{ifOutput}}
+	exampleOutputForm := stmt.Form{"TestForm", exampleBodyOutput}
+
+	testStmtParse(t, exampleFormInput, exampleOutputForm)
+}
+
+/* Tests for expressions */
 
 func TestAdd(t *testing.T) {
 	addition := expr.Add{expr.IntLit{1}, expr.IntLit{2}}

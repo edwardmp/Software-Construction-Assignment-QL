@@ -21,3 +21,7 @@ func (s StmtList) AddToCorrectSlice(i interface{}) StmtList {
 
 	return s
 }
+
+func (s StmtList) String() string {
+	return fmt.Sprintf("A statement list with %d questions and %d conditionals", len(s.Questions), len(s.Conditionals))
+}

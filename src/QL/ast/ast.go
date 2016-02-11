@@ -23,6 +23,8 @@ var (
 	FALSE = bool(false)
 )
 
+var Table SymbolTable
+
 /* expressions */
 func NewPos(value interface{}) (expr.Expr, error) {
 	return expr.Pos{value.(expr.Expr)}, nil
@@ -99,8 +101,12 @@ func NewStrLit(value interface{}) (expr.Expr, error) {
 }
 
 /* statements */
-func NewQuestion(label interface{}, varDecl interface{}) (stmt.Question, error) {
-	return stmt.Question{label.(expr.StrLit), varDecl.(vari.VarDecl)}, nil
+func NewInputQuestion(label interface{}, varDecl interface{}) (stmt.InputQuestion, error) {
+	return stmt.InputQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl)}, nil
+}
+
+func NewComputedQuestion(label interface{}, varDecl interface{}, computation interface{}) (stmt.ComputedQuestion, error) {
+	return stmt.ComputedQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(expr.Expr)}, nil
 }
 
 func NewForm(identifier interface{}, body interface{}) (stmt.Form, error) {
@@ -125,8 +131,8 @@ func NewIf(cond interface{}, body interface{}) (stmt.If, error) {
 	return stmt.If{cond.(expr.Expr), body.(stmt.StmtList)}, nil
 }
 
-func NewIfElse(cond interface{}, thenBody interface{}, elseBody interface{}) (stmt.IfElse, error) {
-	return stmt.IfElse{cond.(expr.Expr), thenBody.(stmt.StmtList), elseBody.(stmt.StmtList)}, nil
+func NewIfElse(cond interface{}, ifBody interface{}, elseBody interface{}) (stmt.IfElse, error) {
+	return stmt.IfElse{cond.(expr.Expr), ifBody.(stmt.StmtList), elseBody.(stmt.StmtList)}, nil
 }
 
 func NewVarDecl(ident interface{}, typeIdent interface{}) (vari.VarDecl, error) {

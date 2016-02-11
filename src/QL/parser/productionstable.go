@@ -415,30 +415,40 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `IfStmt : "if" lpar Expr rpar Block "else" Block	<< ast.NewIfElse(X[2], X[4], X[5]) >>`,
+		String: `IfStmt : "if" lpar Expr rpar Block "else" Block	<< ast.NewIfElse(X[2], X[4], X[6]) >>`,
 		Id: "IfStmt",
 		NTType: 12,
 		Index: 39,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewIfElse(X[2], X[4], X[5])
+			return ast.NewIfElse(X[2], X[4], X[6])
 		},
 	},
 	ProdTabEntry{
-		String: `Question : StrLiteral VarDecl	<< ast.NewQuestion(X[0], X[1]) >>`,
+		String: `Question : StrLiteral VarDecl	<< ast.NewInputQuestion(X[0], X[1]) >>`,
 		Id: "Question",
 		NTType: 13,
 		Index: 40,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewQuestion(X[0], X[1])
+			return ast.NewInputQuestion(X[0], X[1])
+		},
+	},
+	ProdTabEntry{
+		String: `Question : StrLiteral VarDecl assign Expr	<< ast.NewComputedQuestion(X[0], X[1], X[3]) >>`,
+		Id: "Question",
+		NTType: 13,
+		Index: 41,
+		NumSymbols: 4,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return ast.NewComputedQuestion(X[0], X[1], X[3])
 		},
 	},
 	ProdTabEntry{
 		String: `Block : lbrace StmtList rbrace	<< X[1], nil >>`,
 		Id: "Block",
 		NTType: 14,
-		Index: 41,
+		Index: 42,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[1], nil
@@ -448,7 +458,7 @@ var productionsTable = ProdTab {
 		String: `Block : lbrace rbrace	<< ast.NewEmptyStmtList() >>`,
 		Id: "Block",
 		NTType: 14,
-		Index: 42,
+		Index: 43,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewEmptyStmtList()
@@ -458,7 +468,7 @@ var productionsTable = ProdTab {
 		String: `StmtList : Stmt	<< ast.NewStmtList(X[0]) >>`,
 		Id: "StmtList",
 		NTType: 15,
-		Index: 43,
+		Index: 44,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewStmtList(X[0])
@@ -468,7 +478,7 @@ var productionsTable = ProdTab {
 		String: `StmtList : StmtList Stmt	<< ast.AppendStmt(X[0], X[1]) >>`,
 		Id: "StmtList",
 		NTType: 15,
-		Index: 44,
+		Index: 45,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.AppendStmt(X[0], X[1])
@@ -478,7 +488,7 @@ var productionsTable = ProdTab {
 		String: `Stmt : Question	<<  >>`,
 		Id: "Stmt",
 		NTType: 16,
-		Index: 45,
+		Index: 46,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -488,7 +498,7 @@ var productionsTable = ProdTab {
 		String: `Stmt : IfStmt	<<  >>`,
 		Id: "Stmt",
 		NTType: 16,
-		Index: 46,
+		Index: 47,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil

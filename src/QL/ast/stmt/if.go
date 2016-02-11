@@ -11,7 +11,7 @@ type If struct {
 }
 
 func (ifStmt If) String() string {
-	return fmt.Sprintf("An if statement with condition %s", ifStmt.Cond)
+	return fmt.Sprintf("An if statement with condition %s and statement list %s", ifStmt.Cond, ifStmt.Body)
 }
 
 func (ifStmt If) EvalCondition() bool {

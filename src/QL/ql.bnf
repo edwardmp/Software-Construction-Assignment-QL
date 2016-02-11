@@ -37,7 +37,6 @@ lbrace	: '{' ;
 rbrace	: '}' ;
 lpar 	: '(' ;
 rpar 	: ')' ;
-semicol : ';' ;
 col		: ':' ;
 assign 	: '=' ;
 
@@ -103,10 +102,12 @@ Expr    : addop Expr        << ast.NewPos($1) >>
         ;
 
 IfStmt  : "if" lpar Expr rpar Block                 << ast.NewIf($2, $4) >>
-        | "if" lpar Expr rpar Block "else" Block    << ast.NewIfElse($2, $4, $5) >>
+        | "if" lpar Expr rpar Block "else" Block    << ast.NewIfElse($2, $4, $6) >>
         ;
 
-Question    : StrLiteral VarDecl  << ast.NewQuestion($0, $1) >> ;
+Question    : StrLiteral VarDecl                << ast.NewInputQuestion($0, $1) >>
+            | StrLiteral VarDecl assign Expr    << ast.NewComputedQuestion($0, $1, $3) >>
+            ;
 
 Block   : lbrace StmtList rbrace    << $1, nil >>
         | lbrace rbrace             << ast.NewEmptyStmtList() >>
