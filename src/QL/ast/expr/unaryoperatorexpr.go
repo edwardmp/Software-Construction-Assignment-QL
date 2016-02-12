@@ -1,5 +1,5 @@
 package expr
 
-type SingularOperatorExpr interface {
+type UnaryOperatorExpr interface {
 	getValue() interface{}
 }
