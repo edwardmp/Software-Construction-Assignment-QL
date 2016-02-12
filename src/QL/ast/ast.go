@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-func stringLiteralToString(a interface{}) (str string) {
+func stringLiteralTokensToString(a interface{}) (str string) {
 	astr, err := strconv.Unquote(string(a.(*token.Token).Lit))
 	if err != nil {
 		return ""
@@ -96,7 +96,7 @@ func NewBoolLit(value bool) (expr.Expr, error) {
 }
 
 func NewStrLit(value interface{}) (expr.Expr, error) {
-	literalString := stringLiteralToString(value)
+	literalString := stringLiteralTokensToString(value)
 	return expr.StrLit{literalString}, nil
 }
 

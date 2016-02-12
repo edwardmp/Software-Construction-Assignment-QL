@@ -12,18 +12,18 @@ type InputQuestion struct {
 	VarDecl vari.VarDecl
 }
 
-func (q InputQuestion) String() string {
-	return fmt.Sprintf("A question with label %s, var decl %s", q.Label, q.VarDecl)
+func (i InputQuestion) String() string {
+	return fmt.Sprintf("A question with label %s, var decl %s", i.Label, i.VarDecl)
 }
 
-func (q InputQuestion) GetLabel() expr.StrLit {
-	return q.Label
+func (i InputQuestion) GetLabel() expr.StrLit {
+	return i.Label
 }
 
-func (q InputQuestion) GetVarDecl() vari.VarDecl {
-	return q.VarDecl
+func (i InputQuestion) GetVarDecl() vari.VarDecl {
+	return i.VarDecl
 }
 
-func (q InputQuestion) Accept(v visit.Visitor) interface{} {
-	return v.Visit(q)
+func (i InputQuestion) Accept(v visit.Visitor) interface{} {
+	return v.Visit(i)
 }

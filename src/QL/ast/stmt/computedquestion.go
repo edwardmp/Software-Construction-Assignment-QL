@@ -13,18 +13,18 @@ type ComputedQuestion struct {
 	Computation expr.Expr
 }
 
-func (q ComputedQuestion) String() string {
-	return fmt.Sprintf("A question with label %s, var decl %s and computation", q.Label, q.VarDecl, q.Computation)
+func (c ComputedQuestion) String() string {
+	return fmt.Sprintf("A question with label %s, var decl %s and computation", c.Label, c.VarDecl, c.Computation)
 }
 
-func (q ComputedQuestion) GetLabel() expr.StrLit {
-	return q.Label
+func (c ComputedQuestion) GetLabel() expr.StrLit {
+	return c.Label
 }
 
-func (q ComputedQuestion) GetVarDecl() vari.VarDecl {
-	return q.VarDecl
+func (c ComputedQuestion) GetVarDecl() vari.VarDecl {
+	return c.VarDecl
 }
 
-func (q ComputedQuestion) Accept(v visit.Visitor) interface{} {
-	return v.Visit(q)
+func (c ComputedQuestion) Accept(v visit.Visitor) interface{} {
+	return v.Visit(c)
 }
