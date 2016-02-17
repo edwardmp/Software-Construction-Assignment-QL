@@ -3,6 +3,9 @@ package ast
 import (
 	//"fmt"
 	"ql/ast/expr"
+    "ql/ast/expr/unaryoperatorexpr"
+    "ql/ast/expr/binaryoperatorexpr"
+    "ql/ast/expr/lit"
 	"ql/ast/stmt"
 	"ql/ast/vari"
 	"ql/token"
@@ -25,79 +28,82 @@ var (
 
 var Table SymbolTable
 
-/* expressions */
+/** expressions **/
+
+/* unary operator expressions */
 func NewPos(value interface{}) (expr.Expr, error) {
-	return expr.Pos{value.(expr.Expr)}, nil
+	return unaryoperatorexpr.Pos{value.(expr.Expr)}, nil
 }
 
 func NewNeg(value interface{}) (expr.Expr, error) {
-	return expr.Neg{value.(expr.Expr)}, nil
+	return unaryoperatorexpr.Neg{value.(expr.Expr)}, nil
 }
 
 func NewNot(value interface{}) (expr.Expr, error) {
-	return expr.Not{value.(expr.Expr)}, nil
+	return unaryoperatorexpr.Not{value.(expr.Expr)}, nil
 }
 
+/* binary operator expressins */
 func NewMul(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Mul{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.Mul{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewDiv(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Div{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.Div{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewAdd(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Add{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.Add{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewSub(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Sub{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.Sub{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Eq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.Eq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewNEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.NEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewGT(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.GT{lhs.(expr.Expr).(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.GT{lhs.(expr.Expr).(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewLT(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.LT{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.LT{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewGEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.GEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.GEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewLEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.LEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.LEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewAnd(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.And{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.And{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 func NewOr(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return expr.Or{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.Or{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
 }
 
 /* Literals */
 func NewIntLit(value int64, e error) (expr.Expr, error) {
-	return expr.IntLit{int(value)}, nil
+	return lit.IntLit{int(value)}, nil
 }
 
 func NewBoolLit(value bool) (expr.Expr, error) {
-	return expr.BoolLit{value}, nil
+	return lit.BoolLit{value}, nil
 }
 
 func NewStrLit(value interface{}) (expr.Expr, error) {
 	literalString := stringLiteralTokensToString(value)
-	return expr.StrLit{literalString}, nil
+	return lit.StrLit{literalString}, nil
 }
 
 /* statements */
@@ -107,11 +113,11 @@ func NewForm(identifier interface{}, body interface{}) (stmt.Form, error) {
 }
 
 func NewInputQuestion(label interface{}, varDecl interface{}) (stmt.InputQuestion, error) {
-	return stmt.InputQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl)}, nil
+	return stmt.InputQuestion{label.(lit.StrLit), varDecl.(vari.VarDecl)}, nil
 }
 
 func NewComputedQuestion(label interface{}, varDecl interface{}, computation interface{}) (stmt.ComputedQuestion, error) {
-	return stmt.ComputedQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(expr.Expr)}, nil
+	return stmt.ComputedQuestion{label.(lit.StrLit), varDecl.(vari.VarDecl), computation.(expr.Expr)}, nil
 }
 
 func NewStmtList(stmtElt interface{}) (stmt.StmtList, error) {

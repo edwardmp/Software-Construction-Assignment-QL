@@ -3,6 +3,9 @@ package QL
 import (
 	"fmt"
 	"ql/ast/expr"
+	"ql/ast/expr/binaryoperatorexpr"
+	"ql/ast/expr/lit"
+	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
 	"ql/lexer"
@@ -21,7 +24,7 @@ func slicesEqual(a stmt.StmtList, b stmt.StmtList) bool {
 		return false
 	}
 
-	for i, _ := range questionsA {
+	for i := range questionsA {
 		if questionsA[i] != questionsB[i] {
 			return false
 		}
@@ -30,7 +33,7 @@ func slicesEqual(a stmt.StmtList, b stmt.StmtList) bool {
 	conditionalsA := a.Conditionals
 	conditionalsB := b.Conditionals
 
-	for i, _ := range conditionalsA {
+	for i := range conditionalsA {
 		if conditionalsA[i].(stmt.Conditional).EvalCondition() != conditionalsB[i].(stmt.Conditional).EvalCondition() {
 			return false
 		}
@@ -87,10 +90,10 @@ func (v VisitorAdapter) Visit(t interface{}) interface{} {
 		fmt.Printf("VarDecl") // TODO handle
 		t.(vari.VarDecl).Ident.Accept(v)
 	case stmt.StmtList:
-		for i, _ := range t.(stmt.StmtList).Questions {
+		for i := range t.(stmt.StmtList).Questions {
 			t.(stmt.StmtList).Questions[i].(stmt.Question).Accept(v)
 		}
-		for i, _ := range t.(stmt.StmtList).Conditionals {
+		for i := range t.(stmt.StmtList).Conditionals {
 			t.(stmt.StmtList).Conditionals[i].(stmt.Conditional).Accept(v)
 		}
 	case stmt.InputQuestion:
@@ -107,21 +110,17 @@ func (v VisitorAdapter) Visit(t interface{}) interface{} {
 		t.(stmt.IfElse).Cond.Accept(v)
 		t.(stmt.IfElse).IfBody.Accept(v)
 		t.(stmt.IfElse).ElseBody.Accept(v)
-	case expr.BinaryOperatorExpr:
-		t.(expr.BinaryOperatorExpr).GetLhs().(expr.Expr).Accept(v)
-		t.(expr.BinaryOperatorExpr).GetRhs().(expr.Expr).Accept(v)
-	case expr.Neg:
-		t.(expr.Neg).Value.Accept(v)
-	case expr.Not:
-		t.(expr.Not).Value.Accept(v)
-	case expr.Pos:
-		t.(expr.Not).Value.Accept(v)
-	case expr.StrLit:
+	case lit.StrLit:
 		fmt.Printf("StrLit") // TODO handle
-	case expr.BoolLit:
+	case lit.BoolLit:
 		fmt.Printf("BoolLit") // TODO handle
-	case expr.IntLit:
+	case lit.IntLit:
 		fmt.Printf("IntLit") // TODO handle
+	case binaryoperatorexpr.BinaryOperatorExpr:
+		t.(binaryoperatorexpr.BinaryOperatorExpr).GetLhs().(expr.Expr).Accept(v)
+		t.(binaryoperatorexpr.BinaryOperatorExpr).GetRhs().(expr.Expr).Accept(v)
+	case unaryoperatorexpr.UnaryOperatorExpr:
+		t.(unaryoperatorexpr.UnaryOperatorExpr).GetValue().(expr.Expr).Accept(v)
 	}
 
 	return false
@@ -151,7 +150,7 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 			fCond := f.Content.Conditionals
 			eCond := e.Content.Conditionals
 			if len(fCond) != 0 && len(fCond) == len(eCond) {
-				for i, _ := range fCond {
+				for i := range fCond {
 					if !slicesEqualConditional(fCond[i].(stmt.Conditional), eCond[i].(stmt.Conditional)) {
 						t.Errorf("parse test failed conditionals not equal: %v %v", fCond, eCond)
 					}
@@ -168,15 +167,15 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 func TestFormIdentifierExtraction(t *testing.T) {
 	exampleEmptyForm := "form TestForm {}"
 
-	var exampleOutputForm stmt.Form = stmt.Form{vari.VarId{"TestForm"}, stmt.StmtList{}}
+	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, stmt.StmtList{}}
 	testStmtParse(t, exampleEmptyForm, exampleOutputForm)
 }
 
 func TestFormQuestion(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean \"Did you enter a loan?\" hasMaintLoan: boolean }"
 
-	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
-	secondQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.BOOLEAN}}
+	firstQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
+	secondQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.BOOLEAN}}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput, secondQuestionOutput}, []stmt.Conditional{}}
 	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
@@ -187,9 +186,9 @@ func TestFormQuestion(t *testing.T) {
 func TestFormComputedQuestion(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: integer \"Did you enter a loan?\" hasMaintLoan: integer \"Value residue:\" valueResidue: int = (hasSoldHouse - hasMaintLoan) }"
 
-	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.INT}}
-	secondQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.INT}}
-	computedQuestion := stmt.ComputedQuestion{expr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.INT}, expr.Sub{vari.VarId{"hasSoldHouse"}, vari.Varid{"hasMaintLoan"}}}
+	firstQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.INT}}
+	secondQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.INT}}
+	computedQuestion := stmt.ComputedQuestion{lit.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.INT}, expr.Sub{vari.VarId{"hasSoldHouse"}, vari.Varid{"hasMaintLoan"}}}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput, secondQuestionOutput, computedQuestion}, []stmt.Conditional{}}
 	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
@@ -200,10 +199,10 @@ func TestFormComputedQuestion(t *testing.T) {
 func TestFormIf(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean if (true) { \"What was the selling price?\" sellingPrice: money } }"
 
-	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
-	firstQuestionBodyInput := stmt.InputQuestion{expr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.MONEY}}
+	firstQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
+	firstQuestionBodyInput := stmt.InputQuestion{lit.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.MONEY}}
 	ifBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionBodyInput}, []stmt.Conditional{}}
-	ifOutput := stmt.If{expr.BoolLit{true}, ifBodyOutput}
+	ifOutput := stmt.If{lit.BoolLit{true}, ifBodyOutput}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput}, []stmt.Conditional{ifOutput}}
 	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
@@ -213,11 +212,11 @@ func TestFormIf(t *testing.T) {
 func TestFormIfElse(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean if (true) { \"What was the selling price?\" sellingPrice: money } else { \"What was the selling price?\" sellingPrice: money } }"
 
-	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
-	firstQuestionBodyInput := stmt.InputQuestion{expr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.MONEY}}
+	firstQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
+	firstQuestionBodyInput := stmt.InputQuestion{lit.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.MONEY}}
 	ifBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionBodyInput}, []stmt.Conditional{}}
 	elseBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionBodyInput}, []stmt.Conditional{}}
-	ifOutput := stmt.IfElse{expr.BoolLit{true}, ifBodyOutput, elseBodyOutput}
+	ifOutput := stmt.IfElse{lit.BoolLit{true}, ifBodyOutput, elseBodyOutput}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput}, []stmt.Conditional{ifOutput}}
 	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 

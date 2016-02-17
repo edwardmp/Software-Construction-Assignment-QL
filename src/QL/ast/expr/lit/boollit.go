@@ -1,9 +1,13 @@
-package expr
+package lit
 
 import "ql/ast/visit"
 
 type BoolLit struct {
 	Value bool
+}
+
+func (b BoolLit) GetValue() interface{} {
+	return b.Value
 }
 
 func (b BoolLit) Eval() interface{} {

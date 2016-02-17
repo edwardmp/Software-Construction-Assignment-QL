@@ -2,13 +2,13 @@ package stmt
 
 import (
 	"fmt"
-	"ql/ast/expr"
+    "ql/ast/expr/lit"
 	"ql/ast/vari"
 	"ql/ast/visit"
 )
 
 type InputQuestion struct {
-	Label   expr.StrLit
+	Label   lit.StrLit
 	VarDecl vari.VarDecl
 }
 
@@ -16,7 +16,7 @@ func (i InputQuestion) String() string {
 	return fmt.Sprintf("A question with label %s, var decl %s", i.Label, i.VarDecl)
 }
 
-func (i InputQuestion) GetLabel() expr.StrLit {
+func (i InputQuestion) GetLabel() lit.StrLit {
 	return i.Label
 }
 

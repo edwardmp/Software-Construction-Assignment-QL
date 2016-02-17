@@ -1,9 +1,13 @@
-package expr
+package lit
 
 import "ql/ast/visit"
 
 type StrLit struct {
 	Value string
+}
+
+func (s StrLit) GetValue() interface{} {
+	return s.Value
 }
 
 func (s StrLit) Eval() interface{} {

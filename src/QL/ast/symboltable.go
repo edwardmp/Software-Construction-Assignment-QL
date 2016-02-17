@@ -12,3 +12,8 @@ type SymbolTable struct {
 func (s SymbolTable) getExprForIdentifier(v vari.VarId) expr.Expr {
 	return s.Table[v]
 }
+
+func (s SymbolTable) setExprForIdentifier(e expr.Expr, v vari.VarId) SymbolTable {
+    s.Table[v] = e
+    return s
+}

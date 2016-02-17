@@ -1,16 +1,17 @@
-package expr
+package binaryoperatorexpr
 
-import "ql/ast/visit"
+import ("ql/ast/visit"
+"ql/ast/expr")
 
 type GEq struct {
-	Lhs, Rhs Expr
+	Lhs, Rhs expr.Expr
 }
 
-func (g GEq) GetLhs() Expr {
+func (g GEq) GetLhs() expr.Expr {
 	return g.Lhs
 }
 
-func (g GEq) GetRhs() Expr {
+func (g GEq) GetRhs() expr.Expr {
 	return g.Rhs
 }
 

@@ -1,16 +1,17 @@
-package expr
+package binaryoperatorexpr
 
-import "ql/ast/visit"
+import ("ql/ast/visit"
+"ql/ast/expr")
 
 type LT struct {
-	Lhs, Rhs Expr
+	Lhs, Rhs expr.Expr
 }
 
-func (l LT) GetLhs() Expr {
+func (l LT) GetLhs() expr.Expr {
 	return l.Lhs
 }
 
-func (l LT) GetRhs() Expr {
+func (l LT) GetRhs() expr.Expr {
 	return l.Rhs
 }
 
