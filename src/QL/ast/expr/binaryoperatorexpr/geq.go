@@ -1,7 +1,9 @@
 package binaryoperatorexpr
 
-import ("ql/ast/visit"
-"ql/ast/expr")
+import (
+	"ql/ast/expr"
+	"ql/ast/visit"
+)
 
 type GEq struct {
 	Lhs, Rhs expr.Expr
