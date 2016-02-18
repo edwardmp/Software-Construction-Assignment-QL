@@ -2,10 +2,8 @@ package QL
 
 import (
 	"fmt"
-	"ql/ast/expr"
-	"ql/ast/expr/binaryoperatorexpr"
+
 	"ql/ast/expr/lit"
-	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
 	"ql/lexer"
@@ -74,58 +72,6 @@ func printLexerTokens(lexer *lexer.Lexer) {
 	}
 }
 
-type VisitorAdapter struct {
-}
-
-func (v VisitorAdapter) Visit(t interface{}) interface{} {
-	switch t.(type) {
-	default:
-		panic(fmt.Sprintf("Unexpected node type %T\n", t))
-	case stmt.Form:
-		t.(stmt.Form).Identifier.Accept(v)
-		t.(stmt.Form).Content.Accept(v)
-	case vari.VarId:
-		fmt.Printf("Varid") // TODO handle
-	case vari.VarDecl:
-		fmt.Printf("VarDecl") // TODO handle
-		t.(vari.VarDecl).Ident.Accept(v)
-	case stmt.StmtList:
-		for i := range t.(stmt.StmtList).Questions {
-			t.(stmt.StmtList).Questions[i].(stmt.Question).Accept(v)
-		}
-		for i := range t.(stmt.StmtList).Conditionals {
-			t.(stmt.StmtList).Conditionals[i].(stmt.Conditional).Accept(v)
-		}
-	case stmt.InputQuestion:
-		t.(stmt.InputQuestion).Label.Accept(v)
-		t.(stmt.InputQuestion).VarDecl.Accept(v)
-	case stmt.ComputedQuestion:
-		t.(stmt.ComputedQuestion).Label.Accept(v)
-		t.(stmt.ComputedQuestion).VarDecl.Accept(v)
-		t.(stmt.ComputedQuestion).Computation.Accept(v)
-	case stmt.If:
-		t.(stmt.If).Cond.Accept(v)
-		t.(stmt.If).Body.Accept(v)
-	case stmt.IfElse:
-		t.(stmt.IfElse).Cond.Accept(v)
-		t.(stmt.IfElse).IfBody.Accept(v)
-		t.(stmt.IfElse).ElseBody.Accept(v)
-	case lit.StrLit:
-		fmt.Printf("StrLit") // TODO handle
-	case lit.BoolLit:
-		fmt.Printf("BoolLit") // TODO handle
-	case lit.IntLit:
-		fmt.Printf("IntLit") // TODO handle
-	case binaryoperatorexpr.BinaryOperatorExpr:
-		t.(binaryoperatorexpr.BinaryOperatorExpr).GetLhs().(expr.Expr).Accept(v)
-		t.(binaryoperatorexpr.BinaryOperatorExpr).GetRhs().(expr.Expr).Accept(v)
-	case unaryoperatorexpr.UnaryOperatorExpr:
-		t.(unaryoperatorexpr.UnaryOperatorExpr).GetValue().(expr.Expr).Accept(v)
-	}
-
-	return false
-}
-
 func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}) stmt.Form {
 	lex := lexer.NewLexer([]byte(stmtAsString))
 	//printLexerTokens(lex)
@@ -137,7 +83,6 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 	}
 
 	if f, fOk := r.(stmt.Form); fOk {
-		f.Accept(VisitorAdapter{})
 		if e, eOk := expectedOutput.(stmt.Form); eOk {
 			if f.Identifier != e.Identifier {
 				t.Errorf("Form identifiers not equal")
