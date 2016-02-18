@@ -1,7 +1,9 @@
 package binaryoperatorexpr
 
-import ("ql/ast/visit"
-"ql/ast/expr")
+import (
+	"ql/ast/expr"
+	"ql/ast/visit"
+)
 
 type LEq struct {
 	Lhs, Rhs expr.Expr
@@ -19,6 +21,6 @@ func (l LEq) Eval() interface{} {
 	return l.GetLhs().Eval().(int) <= l.GetRhs().Eval().(int)
 }
 
-func (l LEq) Accept(v visit.Visitor) interface{} {
-	return v.Visit(l)
+func (l LEq) Accept(v visit.Visitor, s interface{}) interface{} {
+	return v.Visit(l, s)
 }

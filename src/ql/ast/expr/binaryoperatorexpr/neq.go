@@ -1,7 +1,9 @@
 package binaryoperatorexpr
 
-import ("ql/ast/visit"
-"ql/ast/expr")
+import (
+	"ql/ast/expr"
+	"ql/ast/visit"
+)
 
 type NEq struct {
 	Lhs, Rhs expr.Expr
@@ -26,6 +28,6 @@ func (n NEq) Eval() interface{} {
 	}
 }
 
-func (n NEq) Accept(v visit.Visitor) interface{} {
-	return v.Visit(n)
+func (n NEq) Accept(v visit.Visitor, s interface{}) interface{} {
+	return v.Visit(n, s)
 }

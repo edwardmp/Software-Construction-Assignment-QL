@@ -1,7 +1,8 @@
 package binaryoperatorexpr
 
-import ("ql/ast/visit"
-"ql/ast/expr"
+import (
+	"ql/ast/expr"
+	"ql/ast/visit"
 )
 
 type And struct {
@@ -20,6 +21,6 @@ func (a And) Eval() interface{} {
 	return a.GetLhs().(expr.Expr).Eval().(bool) && a.GetRhs().(expr.Expr).Eval().(bool)
 }
 
-func (a And) Accept(v visit.Visitor) interface{} {
-	return v.Visit(a)
+func (a And) Accept(v visit.Visitor, s interface{}) interface{} {
+	return v.Visit(a, s)
 }

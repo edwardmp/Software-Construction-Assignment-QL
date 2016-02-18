@@ -8,5 +8,6 @@ import (
 type Question interface {
 	GetLabelAsString() string
 	GetVarDecl() vari.VarDecl
-	Accept(v visit.Visitor) interface{}
+	Accept(v visit.Visitor, s interface{}) interface{}
+	// TODO Stmt
 }

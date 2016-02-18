@@ -1,7 +1,9 @@
 package binaryoperatorexpr
 
-import ("ql/ast/visit"
-"ql/ast/expr")
+import (
+	"ql/ast/expr"
+	"ql/ast/visit"
+)
 
 type Add struct {
 	Lhs, Rhs expr.Expr
@@ -19,6 +21,6 @@ func (a Add) Eval() interface{} {
 	return a.GetLhs().Eval().(int) + a.GetRhs().Eval().(int)
 }
 
-func (a Add) Accept(v visit.Visitor) interface{} {
-	return v.Visit(a)
+func (a Add) Accept(v visit.Visitor, s interface{}) interface{} {
+	return v.Visit(a, s)
 }

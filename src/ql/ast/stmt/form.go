@@ -11,10 +11,14 @@ type Form struct {
 	Content    StmtList
 }
 
-func (f Form) String() string {
-	return fmt.Sprintf("A form with identifier %s, statement list %v", f.Identifier, f.Content)
+func (f Form) Eval() {
+	f.Content.Eval()
 }
 
-func (f Form) Accept(v visit.Visitor) interface{} {
-	return v.Visit(f)
+func (f Form) String() string {
+	return fmt.Sprintf("A form with identifier %s, statement list %v\n", f.Identifier, f.Content)
+}
+
+func (f Form) Accept(v visit.Visitor, s interface{}) interface{} {
+	return v.Visit(f, s)
 }

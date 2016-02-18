@@ -1,6 +1,8 @@
 package lit
 
-import "ql/ast/visit"
+import (
+	"ql/ast/visit"
+)
 
 type BoolLit struct {
 	Value bool
@@ -14,6 +16,6 @@ func (b BoolLit) Eval() interface{} {
 	return bool(b.Value)
 }
 
-func (b BoolLit) Accept(v visit.Visitor) interface{} {
-	return v.Visit(b)
+func (b BoolLit) Accept(v visit.Visitor, s interface{}) interface{} {
+	return v.Visit(b, s)
 }

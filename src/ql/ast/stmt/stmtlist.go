@@ -10,10 +10,16 @@ type StmtList struct {
 	Conditionals []Conditional
 }
 
+func (s StmtList) Eval() {
+	for _, conditional := range s.Conditionals {
+		conditional.Eval()
+	}
+}
+
 func (s StmtList) AddToCorrectSlice(i interface{}) StmtList {
 	switch t := i.(type) {
 	default:
-		panic(fmt.Sprintf("unexpected StmtList type %T\n", t))
+		panic(fmt.Sprintf("Unexpected StmtList type %T\n", t))
 	case Question:
 		s.Questions = append(s.Questions, i.(Question))
 	case If:
@@ -29,6 +35,6 @@ func (s StmtList) String() string {
 	return fmt.Sprintf("A statement list with %d questions and %d conditionals", len(s.Questions), len(s.Conditionals))
 }
 
-func (s StmtList) Accept(v visit.Visitor) interface{} {
-	return v.Visit(s)
+func (s StmtList) Accept(v visit.Visitor, sy interface{}) interface{} {
+	return v.Visit(s, sy)
 }

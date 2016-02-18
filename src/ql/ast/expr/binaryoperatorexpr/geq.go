@@ -21,6 +21,6 @@ func (g GEq) Eval() interface{} {
 	return g.GetLhs().Eval().(int) >= g.GetRhs().Eval().(int)
 }
 
-func (g GEq) Accept(v visit.Visitor) interface{} {
-	return v.Visit(g)
+func (g GEq) Accept(v visit.Visitor, s interface{}) interface{} {
+	return v.Visit(g, s)
 }

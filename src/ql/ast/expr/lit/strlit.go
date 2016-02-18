@@ -1,6 +1,8 @@
 package lit
 
-import "ql/ast/visit"
+import (
+	"ql/ast/visit"
+)
 
 type StrLit struct {
 	Value string
@@ -14,6 +16,6 @@ func (s StrLit) Eval() interface{} {
 	return string(s.Value)
 }
 
-func (s StrLit) Accept(v visit.Visitor) interface{} {
-	return v.Visit(s)
+func (s StrLit) Accept(v visit.Visitor, sy interface{}) interface{} {
+	return v.Visit(s, sy)
 }

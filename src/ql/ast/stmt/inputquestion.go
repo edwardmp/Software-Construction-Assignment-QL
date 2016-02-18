@@ -24,6 +24,6 @@ func (i InputQuestion) GetVarDecl() vari.VarDecl {
 	return i.VarDecl
 }
 
-func (i InputQuestion) Accept(v visit.Visitor) interface{} {
-	return v.Visit(i)
+func (i InputQuestion) Accept(v visit.Visitor, s interface{}) interface{} {
+	return v.Visit(i, s)
 }

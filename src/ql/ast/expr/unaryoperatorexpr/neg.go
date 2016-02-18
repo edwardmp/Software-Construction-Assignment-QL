@@ -2,8 +2,8 @@ package unaryoperatorexpr
 
 import (
 	"math"
+	"ql/ast/expr"
 	"ql/ast/visit"
-    "ql/ast/expr"
 )
 
 type Neg struct {
@@ -18,6 +18,6 @@ func (n Neg) Eval() interface{} {
 	return int(math.Abs(float64(n.GetValue().Eval().(int))) * -1)
 }
 
-func (n Neg) Accept(v visit.Visitor) interface{} {
-	return v.Visit(n)
+func (n Neg) Accept(v visit.Visitor, s interface{}) interface{} {
+	return v.Visit(n, s)
 }
