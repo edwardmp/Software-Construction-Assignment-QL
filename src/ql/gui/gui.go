@@ -1,9 +1,9 @@
-package main
+package gui
 
 import (
 	"fmt"
+	//"io/ioutil"
 	log "github.com/Sirupsen/logrus"
-	"io/ioutil"
 	"ql/ast/expr"
 	"ql/ast/expr/binaryoperatorexpr"
 	"ql/ast/expr/lit"
@@ -12,81 +12,87 @@ import (
 	"ql/ast/vari"
 	"ql/ast/visit"
 	"ql/env"
-	"ql/gui"
-	"ql/lexer"
-	"ql/parser"
 )
 
-func main() {
-	initLog()
+/*
+func presentOpenFileDialog(window *gtk.Window) {
+	messagedialog := gtk.NewMessageDialog(
+		window,
+		gtk.DIALOG_MODAL,
+		gtk.MESSAGE_INFO,
+		gtk.BUTTONS_OK,
+		"Choose input QL file")
+	messagedialog.Response(func() {
+		fmt.Println("Dialog OK!")
+		filechooserdialog := gtk.NewFileChooserDialog(
+			"Choose QL File",
+			window,
+			gtk.FILE_CHOOSER_ACTION_OPEN,
+			gtk.STOCK_OK,
+			gtk.RESPONSE_ACCEPT)
+		filter := gtk.NewFileFilter()
+		filter.AddPattern("*.ql")
+		filechooserdialog.AddFilter(filter)
+		filechooserdialog.Response(func() {
+			fmt.Println(filechooserdialog.GetFilename())
+			openQLFile(filechooserdialog.GetFilename())
+			filechooserdialog.Destroy()
+		})
+		filechooserdialog.Run()
+		messagedialog.Destroy()
+	})
+	messagedialog.Run()
+}
+*/
 
-	log.Info("Initiating parsing of file")
+/*
+func openQLFile(filePath string) string {
+	qlFile, _ := ioutil.ReadFile(filePath)
+	return string(qlFile)
+}
+*/
 
-	qlFile, _ := ioutil.ReadFile("example.ql")
-	qlFileAsString := string(qlFile)
-
-	lex := lexer.NewLexer([]byte(qlFileAsString))
-
-	p := parser.NewParser()
-	result, err := p.Parse(lex)
-
-	if err != nil {
-		panic(err)
-	}
-
-	if parsedForm, ok := result.(stmt.Form); !ok {
-		panic("Parse result is not form")
-	} else {
-		log.WithFields(log.Fields{"Result": result}).Info("Form parsed")
-
-		visitor := VisitorAdapter{}
-		symbolTableStack := env.NewSymbolTableStack()
-
-		parsedForm.Accept(visitor, symbolTableStack)
-
-		gui.CreateGUI(parsedForm, symbolTableStack.Peek())
-	}
+func CreateGUI(form stmt.Form, symbolTable env.SymbolTable) {
+	gui := GUI{}
+	gui.Visit(form, symbolTable)
 }
 
-func initLog() {
-	log.SetLevel(log.DebugLevel)
-}
-
-type VisitorAdapter struct {
+type GUI struct {
 	visit.Visitor
+	Form *GUIForm
 }
 
-func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
-	stack := s.(env.SymbolTableStack)
-
+func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 	switch t.(type) {
 	default:
 		panic(fmt.Sprintf("Unexpected node type %T", t))
 	case stmt.Form:
 		log.Debug("Visit Form")
+
+		v.Form = &GUIForm{Title: t.(stmt.Form).Identifier.Ident} // TODO naming
+
 		t.(stmt.Form).Identifier.Accept(v, s)
 		t.(stmt.Form).Content.Accept(v, s)
-	case vari.VarId:
-		log.Debug("Visit VarId")
-	case vari.VarDecl:
-		log.Debug("Visit VarDecl")
-		stack.SetValueForIdentifierInTopSymbolTable(nil, t.(vari.VarDecl).Ident)
-		t.(vari.VarDecl).Ident.Accept(v, s)
+
+		v.Form.Show()
 	case stmt.StmtList:
 		log.Debug("Visit StmtList")
-		stack = stack.NewSymbolTableWithParentScope()
 
 		for i := range t.(stmt.StmtList).Questions {
-			t.(stmt.StmtList).Questions[i].(stmt.Question).Accept(v, stack)
+			t.(stmt.StmtList).Questions[i].(stmt.Question).Accept(v, s)
 		}
 
 		for i := range t.(stmt.StmtList).Conditionals {
-			t.(stmt.StmtList).Conditionals[i].(stmt.Conditional).Accept(v, stack)
+			t.(stmt.StmtList).Conditionals[i].(stmt.Conditional).Accept(v, s)
 		}
 
-		stack.Pop()
 	case stmt.InputQuestion:
 		log.Debug("Visit InputQuestion")
+
+		question := t.(stmt.InputQuestion)
+		guiQuestion := CreateGUIQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType())
+		v.Form.AddQuestion(guiQuestion)
+
 		t.(stmt.InputQuestion).Label.Accept(v, s)
 		t.(stmt.InputQuestion).VarDecl.Accept(v, s)
 	case stmt.ComputedQuestion:
@@ -103,6 +109,11 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 		t.(stmt.IfElse).Cond.Accept(v, s)
 		t.(stmt.IfElse).IfBody.Accept(v, s)
 		t.(stmt.IfElse).ElseBody.Accept(v, s)
+	case vari.VarId:
+		log.Debug("Visit VarId")
+	case vari.VarDecl:
+		log.Debug("Visit VarDecl")
+		t.(vari.VarDecl).Ident.Accept(v, s)
 	case lit.StrLit:
 		log.Debug("Visit StrLit")
 	case lit.BoolLit:
@@ -118,9 +129,6 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 		t.(unaryoperatorexpr.UnaryOperatorExpr).GetValue().(expr.Expr).Accept(v, s)
 	case expr.VarExpr:
 		log.Debug("Visit VarExpr")
-		valueOfSymbolInSymbolTable := stack.GetValueForIdentifierInTopSymbolTable(t.(expr.VarExpr).GetIdentifier())
-		t.(expr.VarExpr).SetExpr(valueOfSymbolInSymbolTable)
-		t.(expr.VarExpr).GetIdentifier().Accept(v, s)
 	}
 
 	return false

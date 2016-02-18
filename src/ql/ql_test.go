@@ -2,14 +2,12 @@ package QL
 
 import (
 	"fmt"
-
 	"ql/ast/expr/lit"
 	"ql/ast/stmt"
 	"ql/ast/vari"
 	"ql/lexer"
 	"ql/parser"
 	"ql/token"
-	//"io/ioutil"
 	"testing"
 )
 
