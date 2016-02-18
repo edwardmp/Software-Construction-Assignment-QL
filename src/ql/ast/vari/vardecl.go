@@ -6,10 +6,10 @@ import (
 
 type VarDecl struct {
 	Ident VarId
-	Type  VarTypeId
+	Type  VarType
 }
 
-func (va VarDecl) GetType() VarTypeId {
+func (va VarDecl) GetType() VarType {
 	return va.Type
 }
 

@@ -144,7 +144,7 @@ func NewIfElse(cond interface{}, ifBody interface{}, elseBody interface{}) (stmt
 }
 
 func NewVarDecl(ident interface{}, typeIdent interface{}) (vari.VarDecl, error) {
-	return vari.VarDecl{ident.(vari.VarId), typeIdent.(vari.VarTypeId)}, nil
+	return vari.VarDecl{ident.(vari.VarId), typeIdent.(vari.VarType)}, nil
 }
 
 func NewVarId(ident interface{}) (vari.VarId, error) {

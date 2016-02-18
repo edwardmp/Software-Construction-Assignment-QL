@@ -1,9 +1,9 @@
 package vari
 
-type VarTypeId int
+type VarType int
 
 const (
-	BOOLEAN VarTypeId = 1 + iota
+	BOOLEAN VarType = 1 + iota
 	STRING
 	INT
 	MONEY
