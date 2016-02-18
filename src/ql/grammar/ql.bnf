@@ -72,7 +72,9 @@ Term    : Term mulop Factor << ast.NewMul($0, $2) >>
         | Factor 
         ;
 
-Factor  : NumLiteral ;
+Factor  : NumLiteral 
+        | VarId         << ast.NewVarExpr($0) >>
+        ;
 
 Bool    : "true"    << ast.NewBoolLit(ast.TRUE) >>
         | "false"   << ast.NewBoolLit(ast.FALSE) >>
@@ -98,7 +100,6 @@ Expr    : addop Expr        << ast.NewPos($1) >>
         | lpar Expr rpar    << $1, nil >>
         | Term
         | Bool
-        | VarId
         ;
 
 IfStmt  : "if" lpar Expr rpar Block                 << ast.NewIf($2, $4) >>

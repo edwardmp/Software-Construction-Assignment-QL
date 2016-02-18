@@ -26,8 +26,6 @@ var (
 	FALSE = bool(false)
 )
 
-var Table SymbolTable
-
 /** expressions **/
 
 /* unary operator expressions */
@@ -104,6 +102,10 @@ func NewBoolLit(value bool) (expr.Expr, error) {
 func NewStrLit(value interface{}) (expr.Expr, error) {
 	literalString := stringLiteralTokensToString(value)
 	return lit.StrLit{literalString}, nil
+}
+
+func NewVarExpr(identifier interface{}) (expr.Expr, error) {
+	return expr.VarExpr{identifier.(vari.VarId), nil}, nil
 }
 
 /* statements */

@@ -195,10 +195,20 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
+		String: `Factor : VarId	<< ast.NewVarExpr(X[0]) >>`,
+		Id: "Factor",
+		NTType: 7,
+		Index: 17,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return ast.NewVarExpr(X[0])
+		},
+	},
+	ProdTabEntry{
 		String: `Bool : "true"	<< ast.NewBoolLit(ast.TRUE) >>`,
 		Id: "Bool",
 		NTType: 8,
-		Index: 17,
+		Index: 18,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewBoolLit(ast.TRUE)
@@ -208,7 +218,7 @@ var productionsTable = ProdTab {
 		String: `Bool : "false"	<< ast.NewBoolLit(ast.FALSE) >>`,
 		Id: "Bool",
 		NTType: 8,
-		Index: 18,
+		Index: 19,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewBoolLit(ast.FALSE)
@@ -218,7 +228,7 @@ var productionsTable = ProdTab {
 		String: `VarDecl : VarId col Type	<< ast.NewVarDecl(X[0], X[2]) >>`,
 		Id: "VarDecl",
 		NTType: 9,
-		Index: 19,
+		Index: 20,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewVarDecl(X[0], X[2])
@@ -228,7 +238,7 @@ var productionsTable = ProdTab {
 		String: `VarId : ident	<< ast.NewVarId(X[0]) >>`,
 		Id: "VarId",
 		NTType: 10,
-		Index: 20,
+		Index: 21,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewVarId(X[0])
@@ -238,7 +248,7 @@ var productionsTable = ProdTab {
 		String: `Expr : addop Expr	<< ast.NewPos(X[1]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 21,
+		Index: 22,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewPos(X[1])
@@ -248,7 +258,7 @@ var productionsTable = ProdTab {
 		String: `Expr : subop Expr	<< ast.NewNeg(X[1]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 22,
+		Index: 23,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewNeg(X[1])
@@ -258,7 +268,7 @@ var productionsTable = ProdTab {
 		String: `Expr : notop Expr	<< ast.NewNot(X[1]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 23,
+		Index: 24,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewNot(X[1])
@@ -268,7 +278,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr addop Term	<< ast.NewAdd(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 24,
+		Index: 25,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewAdd(X[0], X[2])
@@ -278,7 +288,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr subop Term	<< ast.NewSub(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 25,
+		Index: 26,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewSub(X[0], X[2])
@@ -288,7 +298,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr eqop Expr	<< ast.NewEq(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 26,
+		Index: 27,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewEq(X[0], X[2])
@@ -298,7 +308,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr neqop Expr	<< ast.NewNEq(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 27,
+		Index: 28,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewNEq(X[0], X[2])
@@ -308,7 +318,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr gtop Expr	<< ast.NewGT(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 28,
+		Index: 29,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewGT(X[0], X[2])
@@ -318,7 +328,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr ltop Expr	<< ast.NewLT(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 29,
+		Index: 30,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewLT(X[0], X[2])
@@ -328,7 +338,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr geqop Expr	<< ast.NewGEq(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 30,
+		Index: 31,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewGEq(X[0], X[2])
@@ -338,7 +348,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr leqop Expr	<< ast.NewLEq(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 31,
+		Index: 32,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewLEq(X[0], X[2])
@@ -348,7 +358,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr andop Expr	<< ast.NewAnd(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 32,
+		Index: 33,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewAnd(X[0], X[2])
@@ -358,7 +368,7 @@ var productionsTable = ProdTab {
 		String: `Expr : Expr orop Expr	<< ast.NewOr(X[0], X[2]) >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 33,
+		Index: 34,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewOr(X[0], X[2])
@@ -368,7 +378,7 @@ var productionsTable = ProdTab {
 		String: `Expr : lpar Expr rpar	<< X[1], nil >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 34,
+		Index: 35,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[1], nil
@@ -378,16 +388,6 @@ var productionsTable = ProdTab {
 		String: `Expr : Term	<<  >>`,
 		Id: "Expr",
 		NTType: 11,
-		Index: 35,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return X[0], nil
-		},
-	},
-	ProdTabEntry{
-		String: `Expr : Bool	<<  >>`,
-		Id: "Expr",
-		NTType: 11,
 		Index: 36,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
@@ -395,7 +395,7 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : VarId	<<  >>`,
+		String: `Expr : Bool	<<  >>`,
 		Id: "Expr",
 		NTType: 11,
 		Index: 37,
