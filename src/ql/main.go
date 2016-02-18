@@ -10,35 +10,54 @@ import (
 	"ql/ast/vari"
 )
 
-func question(table *gtk.Table, question stmt.Question, rowStart, rowEnd int) {
-	label := gtk.NewLabel(question.GetLabelAsString())
+func createQuestionLabel(questionText string) *gtk.Label {
+	label := gtk.NewLabel(questionText)
 	label.ModifyFontEasy("DejaVu Serif 12")
 
-	table.AttachDefaults(label, 0, 1, uint(rowStart), uint(rowEnd))
-	table.AttachDefaults(createRightGTKObjectForQuestionType(question).(gtk.IWidget), 1, 2, uint(rowStart), uint(rowEnd))
+	return label
+}
+
+func attachQuestionToTable(table *gtk.Table, questionLabel *gtk.Label, questionElement interface{}, rowStart int) {
+	table.AttachDefaults(questionLabel, 0, 1, uint(rowStart), uint(rowStart+1))
+	table.AttachDefaults(questionElement.(gtk.IWidget), 1, 2, uint(rowStart), uint(rowStart+1))
+}
+
+func createQuestionElement(question stmt.Question) interface{} {
+	return createRightGTKObjectForQuestionType(question)
 }
 
 func createRightGTKObjectForQuestionType(question stmt.Question) interface{} {
 	var GTKEntity gtk.IWidget
+
 	switch question.GetVarDecl().GetType() {
 	case vari.BOOLEAN:
-		buttons := gtk.NewHBox(false, 1)
-		radiofirst := gtk.NewRadioButtonWithLabel(nil, "Yes")
-		buttons.Add(radiofirst)
-		buttons.Add(gtk.NewRadioButtonWithLabel(radiofirst.GetGroup(), "No"))
-		GTKEntity = buttons
+		GTKEntity = createRadioButtons()
 	case vari.STRING, vari.INT:
-		entry := gtk.NewEntry()
-		entry.SetText(fmt.Sprintf("Type: %v", question.GetVarDecl().GetType()))
-		entry.Connect("changed", func() {
-			fmt.Printf("Input value changed: %s\n", entry.GetText())
-		})
-		GTKEntity = entry
+		GTKEntity = createInputTextField(fmt.Sprintf("Type: %v", question.GetVarDecl().GetType()))
 	default:
-		errors.New("Unknown question type")
+		errors.New("Unknown question type, can not create correct GTK object")
 	}
 
 	return GTKEntity
+}
+
+func createRadioButtons() *gtk.HBox {
+	buttons := gtk.NewHBox(false, 1)
+	firstRadioButton := gtk.NewRadioButtonWithLabel(nil, "Yes")
+	buttons.Add(firstRadioButton)
+	buttons.Add(gtk.NewRadioButtonWithLabel(firstRadioButton.GetGroup(), "No"))
+
+	return buttons
+}
+
+func createInputTextField(defaultText string) *gtk.Entry {
+	entry := gtk.NewEntry()
+	entry.SetText(defaultText)
+	entry.Connect("changed", func() {
+		fmt.Printf("Input value changed: %s\n", entry.GetText())
+	})
+
+	return entry
 }
 
 func createCheckboxConditional() *gtk.CheckButton {
@@ -54,21 +73,29 @@ func createCheckboxConditional() *gtk.CheckButton {
 	return checkbutton
 }
 
-func questions(questions []stmt.Question, vbox *gtk.VBox) {
+func createQuestionLabelAndElement(question stmt.Question) (label *gtk.Label, element interface{}) {
+	label = createQuestionLabel(question.GetLabelAsString())
+	element = createQuestionElement(question)
+
+	return
+}
+
+func createQuestions(questions []stmt.Question, vbox *gtk.VBox) {
 	table := gtk.NewTable(uint(len(questions)), 1, false)
 	for i := range questions {
-		question(table, questions[i], i, i+1)
+		questionLabel, questionElement := createQuestionLabelAndElement(questions[i])
+		attachQuestionToTable(table, questionLabel, questionElement, i)
 	}
+
 	vbox.Add(table)
 }
 
-func createSubmitButton() *gtk.Button {
-	button := gtk.NewButtonWithLabel("Submit")
-	button.Connect("clicked", func() {
+func createSubmitButton(window *gtk.Window) *gtk.Button {
+	button := createButton("Submit", func() {
 		fmt.Println("Submit button clicked")
 
 		messagedialog := gtk.NewMessageDialog(
-			button.GetTopLevelAsWindow(),
+			window,
 			gtk.DIALOG_MODAL,
 			gtk.MESSAGE_INFO,
 			gtk.BUTTONS_OK,
@@ -84,9 +111,15 @@ func createSubmitButton() *gtk.Button {
 	return button
 }
 
-func presentOpenFileDialog() {
+func createButton(buttonText string, onClick func()) *gtk.Button {
+	button := gtk.NewButtonWithLabel(buttonText)
+	button.Connect("clicked", onClick)
+	return button
+}
+
+func presentOpenFileDialog(window *gtk.Window) {
 	messagedialog := gtk.NewMessageDialog(
-		button.GetTopLevelAsWindow(),
+		window,
 		gtk.DIALOG_MODAL,
 		gtk.MESSAGE_INFO,
 		gtk.BUTTONS_OK,
@@ -95,7 +128,7 @@ func presentOpenFileDialog() {
 		fmt.Println("Dialog OK!")
 		filechooserdialog := gtk.NewFileChooserDialog(
 			"Choose QL File",
-			button.GetTopLevelAsWindow(),
+			window,
 			gtk.FILE_CHOOSER_ACTION_OPEN,
 			gtk.STOCK_OK,
 			gtk.RESPONSE_ACCEPT)
@@ -113,8 +146,9 @@ func presentOpenFileDialog() {
 	messagedialog.Run()
 }
 
-func openQLFile(filePath string) {
-
+func openQLFile(filePath string) string {
+	qlFile, _ := ioutil.ReadFile(filePath)
+	return string(qlFile)
 }
 
 func main() {
@@ -138,26 +172,25 @@ func main() {
 	vpaned := gtk.NewVPaned()
 	vbox.Add(vpaned)
 
-	frame1 := gtk.NewFrame("Form identifier")
-	framebox1 := gtk.NewVBox(false, 1)
-	frame1.Add(framebox1)
-	vpaned.Pack1(frame1, false, false)
+	frame := gtk.NewFrame("Form identifier")
+	framebox := gtk.NewVBox(false, 5)
+	frame.Add(framebox)
+	vpaned.Pack1(frame, false, false)
 
 	firstQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
 	secondQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you not sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BOOLEAN}}
 	thirdQuestionOutput := stmt.InputQuestion{lit.StrLit{"Are you nuts?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.STRING}}
 	questionsInput := []stmt.Question{firstQuestionOutput, secondQuestionOutput, thirdQuestionOutput, thirdQuestionOutput, thirdQuestionOutput, thirdQuestionOutput, thirdQuestionOutput, thirdQuestionOutput}
 
-	vbox.PackStart(createOpenFileButton(), false, true, 0)
-	questions(questionsInput, framebox1)
+	createQuestions(questionsInput, framebox)
 
 	vsep := gtk.NewVSeparator()
 	vbox.PackStart(vsep, false, false, 1)
 
-	vbox.PackStart(createSubmitButton(), false, true, 0)
+	vbox.PackStart(createSubmitButton(window), false, true, 1)
 
 	window.Add(vbox)
-	window.SetSizeRequest(600, 600)
+	window.SetSizeRequest(400, 400)
 	window.ShowAll()
 	gtk.Main()
 }
