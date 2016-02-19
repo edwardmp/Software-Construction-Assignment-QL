@@ -63,7 +63,7 @@ func createQuestions(questions []GUIQuestion, vbox *gtk.VBox) {
 
 	vbox.Add(table)
 
-	log.WithFields(log.Fields{"NumOfQuestions": len(questions)}).Debug("Created question table")
+	log.WithFields(log.Fields{"NumOfQuestions": len(questions)}).Info("Created question table")
 }
 
 func attachToTable(table *gtk.Table, question GUIQuestion, rowStart int) {

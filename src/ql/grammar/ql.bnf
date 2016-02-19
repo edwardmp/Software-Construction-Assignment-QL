@@ -1,17 +1,18 @@
 /** Lexical elements **/
 
 /* stuff to ignore */
-!whitespace : ' ' | '\t' | '\n' | '\r' ;
-_lineComment : '/' '/' {.} '\n' ;
-_blockComment : '/' '*' {. | '*'} '*' '/' ;
-!comment : _lineComment | _blockComment ;
+!whitespace     : ' ' | '\t' | '\n' | '\r' ;
+_lineComment    : '/' '/' {.} '\n' ;
+_blockComment   : '/' '*' {. | '*'} '*' '/' ;
+!comment        : _lineComment | _blockComment ;
 
 /* literals */
-_int 		: '0'-'9' {'0'-'9'} ;
-integer_lit	: _int ;
-money_lit   : _int ',' _int ;
-str_lit     : '"' {.} '"' ;
-bool_lit    : 't' 'r' 'u' 'e' | 'f' 'a' 'l' 's' 'e' ;
+_int            : '0'-'9' {'0'-'9'} ;
+integer_lit     : _int ;
+money_lit       : _int ',' _int ;
+str_lit         : '"' {.} '"' ;
+booltrue_lit    : 't' 'r' 'u' 'e' ;
+boolfalse_lit   : 'f' 'a' 'l' 's' 'e' ;
 
 /* number operators */
 addop 	: '+' ;
@@ -53,7 +54,8 @@ ident : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 ) 
 >>
 
-Form    : "form" VarId Block << ast.NewForm($1, $2) >> ;
+/* start symbol */
+Form : "form" VarId Block << ast.NewForm($1, $2) >> ;
 
 /* types */
 Type    : "integer" << vari.INT, nil >>
@@ -63,9 +65,8 @@ Type    : "integer" << vari.INT, nil >>
         | "date"    << vari.DATE, nil >> 
         ;
 
-Literal     : integer_lit | money_lit | bool_lit | str_lit;
-NumLiteral  : integer_lit   << ast.NewIntLit((util.IntValue($0.(*token.Token).Lit))) >> ;
-StrLiteral  : str_lit       << ast.NewStrLit($0) >> ;
+NumLiteral : integer_lit   << ast.NewIntLit((util.IntValue($0.(*token.Token).Lit))) >> ;
+StrLiteral : str_lit       << ast.NewStrLit($0) >> ;
 
 Term    : Term mulop Factor << ast.NewMul($0, $2) >>
         | Term divop Factor << ast.NewDiv($0, $2) >>
@@ -73,11 +74,11 @@ Term    : Term mulop Factor << ast.NewMul($0, $2) >>
         ;
 
 Factor  : NumLiteral 
-        | VarId         << ast.NewVarExpr($0) >>
+        | VarId        << ast.NewVarExpr($0) >>
         ;
 
-Bool    : "true"    << ast.NewBoolLit(ast.TRUE) >>
-        | "false"   << ast.NewBoolLit(ast.FALSE) >>
+Bool    : booltrue_lit    << ast.NewBoolLit(ast.TRUE) >>
+        | boolfalse_lit   << ast.NewBoolLit(ast.FALSE) >>
         ;
 
 VarDecl : VarId col Type << ast.NewVarDecl($0, $2) >> ;

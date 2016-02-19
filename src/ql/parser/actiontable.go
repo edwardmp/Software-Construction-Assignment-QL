@@ -22,13 +22,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -49,6 +47,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -65,13 +64,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -92,6 +89,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -108,13 +106,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(4),		/* ident */
 			nil,		/* addop */
@@ -135,6 +131,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -151,13 +148,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -178,6 +173,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			shift(6),		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -194,13 +190,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -219,8 +213,9 @@ var actionTab = actionTable{
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
-			reduce(21),		/* lbrace, reduce: VarId */
+			reduce(17),		/* lbrace, reduce: VarId */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -237,13 +232,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -264,6 +257,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -280,13 +274,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			shift(7),		/* str_lit */
+			shift(8),		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -307,6 +299,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			shift(13),		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -323,56 +316,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			nil,		/* col */
-			reduce(12),		/* ident, reduce: StrLiteral */
-			nil,		/* addop */
-			nil,		/* subop */
-			nil,		/* notop */
-			nil,		/* eqop */
-			nil,		/* neqop */
-			nil,		/* gtop */
-			nil,		/* ltop */
-			nil,		/* geqop */
-			nil,		/* leqop */
-			nil,		/* andop */
-			nil,		/* orop */
-			nil,		/* lpar */
-			nil,		/* rpar */
-			nil,		/* if */
-			nil,		/* else */
-			nil,		/* assign */
-			nil,		/* lbrace */
-			nil,		/* rbrace */
-			
-		},
-
-	},
-	actionRow{ // S8
-				canRecover: false,
-		actions: [numSymbols]action{
-			nil,		/* INVALID */
-			nil,		/* $ */
-			nil,		/* form */
-			nil,		/* integer */
-			nil,		/* boolean */
-			nil,		/* string */
-			nil,		/* money */
-			nil,		/* date */
-			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			nil,		/* str_lit */
-			nil,		/* mulop */
-			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(17),		/* ident */
 			nil,		/* addop */
@@ -393,6 +341,49 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
+			
+		},
+
+	},
+	actionRow{ // S8
+				canRecover: false,
+		actions: [numSymbols]action{
+			nil,		/* INVALID */
+			nil,		/* $ */
+			nil,		/* form */
+			nil,		/* integer */
+			nil,		/* boolean */
+			nil,		/* string */
+			nil,		/* money */
+			nil,		/* date */
+			nil,		/* integer_lit */
+			nil,		/* str_lit */
+			nil,		/* mulop */
+			nil,		/* divop */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			nil,		/* col */
+			reduce(8),		/* ident, reduce: StrLiteral */
+			nil,		/* addop */
+			nil,		/* subop */
+			nil,		/* notop */
+			nil,		/* eqop */
+			nil,		/* neqop */
+			nil,		/* gtop */
+			nil,		/* ltop */
+			nil,		/* geqop */
+			nil,		/* leqop */
+			nil,		/* andop */
+			nil,		/* orop */
+			nil,		/* lpar */
+			nil,		/* rpar */
+			nil,		/* if */
+			nil,		/* else */
+			nil,		/* assign */
+			nil,		/* lbrace */
+			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -409,13 +400,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(47),		/* str_lit, reduce: Stmt */
+			reduce(43),		/* str_lit, reduce: Stmt */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -431,11 +420,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(47),		/* if, reduce: Stmt */
+			reduce(43),		/* if, reduce: Stmt */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(47),		/* rbrace, reduce: Stmt */
+			reduce(43),		/* rbrace, reduce: Stmt */
+			nil,		/* money_lit */
 			
 		},
 
@@ -452,13 +442,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -479,6 +467,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -495,13 +484,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(46),		/* str_lit, reduce: Stmt */
+			reduce(42),		/* str_lit, reduce: Stmt */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -517,11 +504,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(46),		/* if, reduce: Stmt */
+			reduce(42),		/* if, reduce: Stmt */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(46),		/* rbrace, reduce: Stmt */
+			reduce(42),		/* rbrace, reduce: Stmt */
+			nil,		/* money_lit */
 			
 		},
 
@@ -538,13 +526,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			shift(7),		/* str_lit */
+			shift(8),		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -565,6 +551,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			shift(19),		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -573,7 +560,7 @@ var actionTab = actionTable{
 				canRecover: false,
 		actions: [numSymbols]action{
 			nil,		/* INVALID */
-			reduce(43),		/* $, reduce: Block */
+			reduce(39),		/* $, reduce: Block */
 			nil,		/* form */
 			nil,		/* integer */
 			nil,		/* boolean */
@@ -581,13 +568,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -608,6 +593,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -624,13 +610,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(44),		/* str_lit, reduce: StmtList */
+			reduce(40),		/* str_lit, reduce: StmtList */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -646,11 +630,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(44),		/* if, reduce: StmtList */
+			reduce(40),		/* if, reduce: StmtList */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(44),		/* rbrace, reduce: StmtList */
+			reduce(40),		/* rbrace, reduce: StmtList */
+			nil,		/* money_lit */
 			
 		},
 
@@ -667,13 +652,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			shift(21),		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -694,6 +677,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -710,13 +694,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(40),		/* str_lit, reduce: Question */
+			reduce(36),		/* str_lit, reduce: Question */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -732,11 +714,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(40),		/* if, reduce: Question */
+			reduce(36),		/* if, reduce: Question */
 			nil,		/* else */
 			shift(22),		/* assign */
 			nil,		/* lbrace */
-			reduce(40),		/* rbrace, reduce: Question */
+			reduce(36),		/* rbrace, reduce: Question */
+			nil,		/* money_lit */
 			
 		},
 
@@ -753,14 +736,12 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			reduce(21),		/* col, reduce: VarId */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			reduce(17),		/* col, reduce: VarId */
 			nil,		/* ident */
 			nil,		/* addop */
 			nil,		/* subop */
@@ -780,6 +761,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -795,14 +777,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -823,6 +803,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -831,7 +812,7 @@ var actionTab = actionTable{
 				canRecover: false,
 		actions: [numSymbols]action{
 			nil,		/* INVALID */
-			reduce(42),		/* $, reduce: Block */
+			reduce(38),		/* $, reduce: Block */
 			nil,		/* form */
 			nil,		/* integer */
 			nil,		/* boolean */
@@ -839,13 +820,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -866,6 +845,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -882,13 +862,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(45),		/* str_lit, reduce: StmtList */
+			reduce(41),		/* str_lit, reduce: StmtList */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -904,11 +882,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(45),		/* if, reduce: StmtList */
+			reduce(41),		/* if, reduce: StmtList */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(45),		/* rbrace, reduce: StmtList */
+			reduce(41),		/* rbrace, reduce: StmtList */
+			nil,		/* money_lit */
 			
 		},
 
@@ -925,13 +904,11 @@ var actionTab = actionTable{
 			shift(41),		/* money */
 			shift(42),		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -952,6 +929,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -967,14 +945,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -995,6 +971,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1011,33 +988,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
-			reduce(17),		/* mulop, reduce: Factor */
-			reduce(17),		/* divop, reduce: Factor */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(13),		/* mulop, reduce: Factor */
+			reduce(13),		/* divop, reduce: Factor */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(17),		/* addop, reduce: Factor */
-			reduce(17),		/* subop, reduce: Factor */
+			reduce(13),		/* addop, reduce: Factor */
+			reduce(13),		/* subop, reduce: Factor */
 			nil,		/* notop */
-			reduce(17),		/* eqop, reduce: Factor */
-			reduce(17),		/* neqop, reduce: Factor */
-			reduce(17),		/* gtop, reduce: Factor */
-			reduce(17),		/* ltop, reduce: Factor */
-			reduce(17),		/* geqop, reduce: Factor */
-			reduce(17),		/* leqop, reduce: Factor */
-			reduce(17),		/* andop, reduce: Factor */
-			reduce(17),		/* orop, reduce: Factor */
+			reduce(13),		/* eqop, reduce: Factor */
+			reduce(13),		/* neqop, reduce: Factor */
+			reduce(13),		/* gtop, reduce: Factor */
+			reduce(13),		/* ltop, reduce: Factor */
+			reduce(13),		/* geqop, reduce: Factor */
+			reduce(13),		/* leqop, reduce: Factor */
+			reduce(13),		/* andop, reduce: Factor */
+			reduce(13),		/* orop, reduce: Factor */
 			nil,		/* lpar */
-			reduce(17),		/* rpar, reduce: Factor */
+			reduce(13),		/* rpar, reduce: Factor */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1054,33 +1030,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
-			reduce(11),		/* mulop, reduce: NumLiteral */
-			reduce(11),		/* divop, reduce: NumLiteral */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(12),		/* mulop, reduce: Factor */
+			reduce(12),		/* divop, reduce: Factor */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(11),		/* addop, reduce: NumLiteral */
-			reduce(11),		/* subop, reduce: NumLiteral */
+			reduce(12),		/* addop, reduce: Factor */
+			reduce(12),		/* subop, reduce: Factor */
 			nil,		/* notop */
-			reduce(11),		/* eqop, reduce: NumLiteral */
-			reduce(11),		/* neqop, reduce: NumLiteral */
-			reduce(11),		/* gtop, reduce: NumLiteral */
-			reduce(11),		/* ltop, reduce: NumLiteral */
-			reduce(11),		/* geqop, reduce: NumLiteral */
-			reduce(11),		/* leqop, reduce: NumLiteral */
-			reduce(11),		/* andop, reduce: NumLiteral */
-			reduce(11),		/* orop, reduce: NumLiteral */
+			reduce(12),		/* eqop, reduce: Factor */
+			reduce(12),		/* neqop, reduce: Factor */
+			reduce(12),		/* gtop, reduce: Factor */
+			reduce(12),		/* ltop, reduce: Factor */
+			reduce(12),		/* geqop, reduce: Factor */
+			reduce(12),		/* leqop, reduce: Factor */
+			reduce(12),		/* andop, reduce: Factor */
+			reduce(12),		/* orop, reduce: Factor */
 			nil,		/* lpar */
-			reduce(11),		/* rpar, reduce: NumLiteral */
+			reduce(12),		/* rpar, reduce: Factor */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1097,33 +1072,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
-			reduce(16),		/* mulop, reduce: Factor */
-			reduce(16),		/* divop, reduce: Factor */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(7),		/* mulop, reduce: NumLiteral */
+			reduce(7),		/* divop, reduce: NumLiteral */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(16),		/* addop, reduce: Factor */
-			reduce(16),		/* subop, reduce: Factor */
+			reduce(7),		/* addop, reduce: NumLiteral */
+			reduce(7),		/* subop, reduce: NumLiteral */
 			nil,		/* notop */
-			reduce(16),		/* eqop, reduce: Factor */
-			reduce(16),		/* neqop, reduce: Factor */
-			reduce(16),		/* gtop, reduce: Factor */
-			reduce(16),		/* ltop, reduce: Factor */
-			reduce(16),		/* geqop, reduce: Factor */
-			reduce(16),		/* leqop, reduce: Factor */
-			reduce(16),		/* andop, reduce: Factor */
-			reduce(16),		/* orop, reduce: Factor */
+			reduce(7),		/* eqop, reduce: NumLiteral */
+			reduce(7),		/* neqop, reduce: NumLiteral */
+			reduce(7),		/* gtop, reduce: NumLiteral */
+			reduce(7),		/* ltop, reduce: NumLiteral */
+			reduce(7),		/* geqop, reduce: NumLiteral */
+			reduce(7),		/* leqop, reduce: NumLiteral */
+			reduce(7),		/* andop, reduce: NumLiteral */
+			reduce(7),		/* orop, reduce: NumLiteral */
 			nil,		/* lpar */
-			reduce(16),		/* rpar, reduce: Factor */
+			reduce(7),		/* rpar, reduce: NumLiteral */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1140,33 +1114,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			shift(57),		/* mulop */
 			shift(58),		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(36),		/* addop, reduce: Expr */
-			reduce(36),		/* subop, reduce: Expr */
+			reduce(32),		/* addop, reduce: Expr */
+			reduce(32),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(36),		/* eqop, reduce: Expr */
-			reduce(36),		/* neqop, reduce: Expr */
-			reduce(36),		/* gtop, reduce: Expr */
-			reduce(36),		/* ltop, reduce: Expr */
-			reduce(36),		/* geqop, reduce: Expr */
-			reduce(36),		/* leqop, reduce: Expr */
-			reduce(36),		/* andop, reduce: Expr */
-			reduce(36),		/* orop, reduce: Expr */
+			reduce(32),		/* eqop, reduce: Expr */
+			reduce(32),		/* neqop, reduce: Expr */
+			reduce(32),		/* gtop, reduce: Expr */
+			reduce(32),		/* ltop, reduce: Expr */
+			reduce(32),		/* geqop, reduce: Expr */
+			reduce(32),		/* leqop, reduce: Expr */
+			reduce(32),		/* andop, reduce: Expr */
+			reduce(32),		/* orop, reduce: Expr */
 			nil,		/* lpar */
-			reduce(36),		/* rpar, reduce: Expr */
+			reduce(32),		/* rpar, reduce: Expr */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1183,33 +1156,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
-			reduce(15),		/* mulop, reduce: Term */
-			reduce(15),		/* divop, reduce: Term */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(11),		/* mulop, reduce: Term */
+			reduce(11),		/* divop, reduce: Term */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(15),		/* addop, reduce: Term */
-			reduce(15),		/* subop, reduce: Term */
+			reduce(11),		/* addop, reduce: Term */
+			reduce(11),		/* subop, reduce: Term */
 			nil,		/* notop */
-			reduce(15),		/* eqop, reduce: Term */
-			reduce(15),		/* neqop, reduce: Term */
-			reduce(15),		/* gtop, reduce: Term */
-			reduce(15),		/* ltop, reduce: Term */
-			reduce(15),		/* geqop, reduce: Term */
-			reduce(15),		/* leqop, reduce: Term */
-			reduce(15),		/* andop, reduce: Term */
-			reduce(15),		/* orop, reduce: Term */
+			reduce(11),		/* eqop, reduce: Term */
+			reduce(11),		/* neqop, reduce: Term */
+			reduce(11),		/* gtop, reduce: Term */
+			reduce(11),		/* ltop, reduce: Term */
+			reduce(11),		/* geqop, reduce: Term */
+			reduce(11),		/* leqop, reduce: Term */
+			reduce(11),		/* andop, reduce: Term */
+			reduce(11),		/* orop, reduce: Term */
 			nil,		/* lpar */
-			reduce(15),		/* rpar, reduce: Term */
+			reduce(11),		/* rpar, reduce: Term */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1226,33 +1198,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(37),		/* addop, reduce: Expr */
-			reduce(37),		/* subop, reduce: Expr */
+			reduce(33),		/* addop, reduce: Expr */
+			reduce(33),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(37),		/* eqop, reduce: Expr */
-			reduce(37),		/* neqop, reduce: Expr */
-			reduce(37),		/* gtop, reduce: Expr */
-			reduce(37),		/* ltop, reduce: Expr */
-			reduce(37),		/* geqop, reduce: Expr */
-			reduce(37),		/* leqop, reduce: Expr */
-			reduce(37),		/* andop, reduce: Expr */
-			reduce(37),		/* orop, reduce: Expr */
+			reduce(33),		/* eqop, reduce: Expr */
+			reduce(33),		/* neqop, reduce: Expr */
+			reduce(33),		/* gtop, reduce: Expr */
+			reduce(33),		/* ltop, reduce: Expr */
+			reduce(33),		/* geqop, reduce: Expr */
+			reduce(33),		/* leqop, reduce: Expr */
+			reduce(33),		/* andop, reduce: Expr */
+			reduce(33),		/* orop, reduce: Expr */
 			nil,		/* lpar */
-			reduce(37),		/* rpar, reduce: Expr */
+			reduce(33),		/* rpar, reduce: Expr */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1269,33 +1240,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(18),		/* addop, reduce: Bool */
-			reduce(18),		/* subop, reduce: Bool */
+			reduce(14),		/* addop, reduce: Bool */
+			reduce(14),		/* subop, reduce: Bool */
 			nil,		/* notop */
-			reduce(18),		/* eqop, reduce: Bool */
-			reduce(18),		/* neqop, reduce: Bool */
-			reduce(18),		/* gtop, reduce: Bool */
-			reduce(18),		/* ltop, reduce: Bool */
-			reduce(18),		/* geqop, reduce: Bool */
-			reduce(18),		/* leqop, reduce: Bool */
-			reduce(18),		/* andop, reduce: Bool */
-			reduce(18),		/* orop, reduce: Bool */
+			reduce(14),		/* eqop, reduce: Bool */
+			reduce(14),		/* neqop, reduce: Bool */
+			reduce(14),		/* gtop, reduce: Bool */
+			reduce(14),		/* ltop, reduce: Bool */
+			reduce(14),		/* geqop, reduce: Bool */
+			reduce(14),		/* leqop, reduce: Bool */
+			reduce(14),		/* andop, reduce: Bool */
+			reduce(14),		/* orop, reduce: Bool */
 			nil,		/* lpar */
-			reduce(18),		/* rpar, reduce: Bool */
+			reduce(14),		/* rpar, reduce: Bool */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1312,33 +1282,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(19),		/* addop, reduce: Bool */
-			reduce(19),		/* subop, reduce: Bool */
+			reduce(15),		/* addop, reduce: Bool */
+			reduce(15),		/* subop, reduce: Bool */
 			nil,		/* notop */
-			reduce(19),		/* eqop, reduce: Bool */
-			reduce(19),		/* neqop, reduce: Bool */
-			reduce(19),		/* gtop, reduce: Bool */
-			reduce(19),		/* ltop, reduce: Bool */
-			reduce(19),		/* geqop, reduce: Bool */
-			reduce(19),		/* leqop, reduce: Bool */
-			reduce(19),		/* andop, reduce: Bool */
-			reduce(19),		/* orop, reduce: Bool */
+			reduce(15),		/* eqop, reduce: Bool */
+			reduce(15),		/* neqop, reduce: Bool */
+			reduce(15),		/* gtop, reduce: Bool */
+			reduce(15),		/* ltop, reduce: Bool */
+			reduce(15),		/* geqop, reduce: Bool */
+			reduce(15),		/* leqop, reduce: Bool */
+			reduce(15),		/* andop, reduce: Bool */
+			reduce(15),		/* orop, reduce: Bool */
 			nil,		/* lpar */
-			reduce(19),		/* rpar, reduce: Bool */
+			reduce(15),		/* rpar, reduce: Bool */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1355,33 +1324,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
-			reduce(21),		/* mulop, reduce: VarId */
-			reduce(21),		/* divop, reduce: VarId */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(17),		/* mulop, reduce: VarId */
+			reduce(17),		/* divop, reduce: VarId */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(21),		/* addop, reduce: VarId */
-			reduce(21),		/* subop, reduce: VarId */
+			reduce(17),		/* addop, reduce: VarId */
+			reduce(17),		/* subop, reduce: VarId */
 			nil,		/* notop */
-			reduce(21),		/* eqop, reduce: VarId */
-			reduce(21),		/* neqop, reduce: VarId */
-			reduce(21),		/* gtop, reduce: VarId */
-			reduce(21),		/* ltop, reduce: VarId */
-			reduce(21),		/* geqop, reduce: VarId */
-			reduce(21),		/* leqop, reduce: VarId */
-			reduce(21),		/* andop, reduce: VarId */
-			reduce(21),		/* orop, reduce: VarId */
+			reduce(17),		/* eqop, reduce: VarId */
+			reduce(17),		/* neqop, reduce: VarId */
+			reduce(17),		/* gtop, reduce: VarId */
+			reduce(17),		/* ltop, reduce: VarId */
+			reduce(17),		/* geqop, reduce: VarId */
+			reduce(17),		/* leqop, reduce: VarId */
+			reduce(17),		/* andop, reduce: VarId */
+			reduce(17),		/* orop, reduce: VarId */
 			nil,		/* lpar */
-			reduce(21),		/* rpar, reduce: VarId */
+			reduce(17),		/* rpar, reduce: VarId */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1398,13 +1366,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -1425,6 +1391,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1440,14 +1407,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -1468,6 +1433,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1483,14 +1449,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -1511,6 +1475,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1526,14 +1491,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -1554,6 +1517,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1569,14 +1533,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -1597,6 +1559,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1613,13 +1576,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(20),		/* str_lit, reduce: VarDecl */
+			reduce(16),		/* str_lit, reduce: VarDecl */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -1635,11 +1596,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(20),		/* if, reduce: VarDecl */
+			reduce(16),		/* if, reduce: VarDecl */
 			nil,		/* else */
-			reduce(20),		/* assign, reduce: VarDecl */
+			reduce(16),		/* assign, reduce: VarDecl */
 			nil,		/* lbrace */
-			reduce(20),		/* rbrace, reduce: VarDecl */
+			reduce(16),		/* rbrace, reduce: VarDecl */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1656,13 +1618,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			reduce(2),		/* str_lit, reduce: Type */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -1683,6 +1643,7 @@ var actionTab = actionTable{
 			reduce(2),		/* assign, reduce: Type */
 			nil,		/* lbrace */
 			reduce(2),		/* rbrace, reduce: Type */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1699,13 +1660,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			reduce(3),		/* str_lit, reduce: Type */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -1726,6 +1685,7 @@ var actionTab = actionTable{
 			reduce(3),		/* assign, reduce: Type */
 			nil,		/* lbrace */
 			reduce(3),		/* rbrace, reduce: Type */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1742,13 +1702,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			reduce(4),		/* str_lit, reduce: Type */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -1769,6 +1727,7 @@ var actionTab = actionTable{
 			reduce(4),		/* assign, reduce: Type */
 			nil,		/* lbrace */
 			reduce(4),		/* rbrace, reduce: Type */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1785,13 +1744,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			reduce(5),		/* str_lit, reduce: Type */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -1812,6 +1769,7 @@ var actionTab = actionTable{
 			reduce(5),		/* assign, reduce: Type */
 			nil,		/* lbrace */
 			reduce(5),		/* rbrace, reduce: Type */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1828,13 +1786,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			reduce(6),		/* str_lit, reduce: Type */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -1855,6 +1811,7 @@ var actionTab = actionTable{
 			reduce(6),		/* assign, reduce: Type */
 			nil,		/* lbrace */
 			reduce(6),		/* rbrace, reduce: Type */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1871,33 +1828,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(17),		/* str_lit, reduce: Factor */
-			reduce(17),		/* mulop, reduce: Factor */
-			reduce(17),		/* divop, reduce: Factor */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(13),		/* str_lit, reduce: Factor */
+			reduce(13),		/* mulop, reduce: Factor */
+			reduce(13),		/* divop, reduce: Factor */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(17),		/* addop, reduce: Factor */
-			reduce(17),		/* subop, reduce: Factor */
+			reduce(13),		/* addop, reduce: Factor */
+			reduce(13),		/* subop, reduce: Factor */
 			nil,		/* notop */
-			reduce(17),		/* eqop, reduce: Factor */
-			reduce(17),		/* neqop, reduce: Factor */
-			reduce(17),		/* gtop, reduce: Factor */
-			reduce(17),		/* ltop, reduce: Factor */
-			reduce(17),		/* geqop, reduce: Factor */
-			reduce(17),		/* leqop, reduce: Factor */
-			reduce(17),		/* andop, reduce: Factor */
-			reduce(17),		/* orop, reduce: Factor */
+			reduce(13),		/* eqop, reduce: Factor */
+			reduce(13),		/* neqop, reduce: Factor */
+			reduce(13),		/* gtop, reduce: Factor */
+			reduce(13),		/* ltop, reduce: Factor */
+			reduce(13),		/* geqop, reduce: Factor */
+			reduce(13),		/* leqop, reduce: Factor */
+			reduce(13),		/* andop, reduce: Factor */
+			reduce(13),		/* orop, reduce: Factor */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(17),		/* if, reduce: Factor */
+			reduce(13),		/* if, reduce: Factor */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(17),		/* rbrace, reduce: Factor */
+			reduce(13),		/* rbrace, reduce: Factor */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1914,33 +1870,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(11),		/* str_lit, reduce: NumLiteral */
-			reduce(11),		/* mulop, reduce: NumLiteral */
-			reduce(11),		/* divop, reduce: NumLiteral */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(12),		/* str_lit, reduce: Factor */
+			reduce(12),		/* mulop, reduce: Factor */
+			reduce(12),		/* divop, reduce: Factor */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(11),		/* addop, reduce: NumLiteral */
-			reduce(11),		/* subop, reduce: NumLiteral */
+			reduce(12),		/* addop, reduce: Factor */
+			reduce(12),		/* subop, reduce: Factor */
 			nil,		/* notop */
-			reduce(11),		/* eqop, reduce: NumLiteral */
-			reduce(11),		/* neqop, reduce: NumLiteral */
-			reduce(11),		/* gtop, reduce: NumLiteral */
-			reduce(11),		/* ltop, reduce: NumLiteral */
-			reduce(11),		/* geqop, reduce: NumLiteral */
-			reduce(11),		/* leqop, reduce: NumLiteral */
-			reduce(11),		/* andop, reduce: NumLiteral */
-			reduce(11),		/* orop, reduce: NumLiteral */
+			reduce(12),		/* eqop, reduce: Factor */
+			reduce(12),		/* neqop, reduce: Factor */
+			reduce(12),		/* gtop, reduce: Factor */
+			reduce(12),		/* ltop, reduce: Factor */
+			reduce(12),		/* geqop, reduce: Factor */
+			reduce(12),		/* leqop, reduce: Factor */
+			reduce(12),		/* andop, reduce: Factor */
+			reduce(12),		/* orop, reduce: Factor */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(11),		/* if, reduce: NumLiteral */
+			reduce(12),		/* if, reduce: Factor */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(11),		/* rbrace, reduce: NumLiteral */
+			reduce(12),		/* rbrace, reduce: Factor */
+			nil,		/* money_lit */
 			
 		},
 
@@ -1957,33 +1912,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(16),		/* str_lit, reduce: Factor */
-			reduce(16),		/* mulop, reduce: Factor */
-			reduce(16),		/* divop, reduce: Factor */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(7),		/* str_lit, reduce: NumLiteral */
+			reduce(7),		/* mulop, reduce: NumLiteral */
+			reduce(7),		/* divop, reduce: NumLiteral */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(16),		/* addop, reduce: Factor */
-			reduce(16),		/* subop, reduce: Factor */
+			reduce(7),		/* addop, reduce: NumLiteral */
+			reduce(7),		/* subop, reduce: NumLiteral */
 			nil,		/* notop */
-			reduce(16),		/* eqop, reduce: Factor */
-			reduce(16),		/* neqop, reduce: Factor */
-			reduce(16),		/* gtop, reduce: Factor */
-			reduce(16),		/* ltop, reduce: Factor */
-			reduce(16),		/* geqop, reduce: Factor */
-			reduce(16),		/* leqop, reduce: Factor */
-			reduce(16),		/* andop, reduce: Factor */
-			reduce(16),		/* orop, reduce: Factor */
+			reduce(7),		/* eqop, reduce: NumLiteral */
+			reduce(7),		/* neqop, reduce: NumLiteral */
+			reduce(7),		/* gtop, reduce: NumLiteral */
+			reduce(7),		/* ltop, reduce: NumLiteral */
+			reduce(7),		/* geqop, reduce: NumLiteral */
+			reduce(7),		/* leqop, reduce: NumLiteral */
+			reduce(7),		/* andop, reduce: NumLiteral */
+			reduce(7),		/* orop, reduce: NumLiteral */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(16),		/* if, reduce: Factor */
+			reduce(7),		/* if, reduce: NumLiteral */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(16),		/* rbrace, reduce: Factor */
+			reduce(7),		/* rbrace, reduce: NumLiteral */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2000,33 +1954,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(36),		/* str_lit, reduce: Expr */
+			reduce(32),		/* str_lit, reduce: Expr */
 			shift(74),		/* mulop */
 			shift(75),		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(36),		/* addop, reduce: Expr */
-			reduce(36),		/* subop, reduce: Expr */
+			reduce(32),		/* addop, reduce: Expr */
+			reduce(32),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(36),		/* eqop, reduce: Expr */
-			reduce(36),		/* neqop, reduce: Expr */
-			reduce(36),		/* gtop, reduce: Expr */
-			reduce(36),		/* ltop, reduce: Expr */
-			reduce(36),		/* geqop, reduce: Expr */
-			reduce(36),		/* leqop, reduce: Expr */
-			reduce(36),		/* andop, reduce: Expr */
-			reduce(36),		/* orop, reduce: Expr */
+			reduce(32),		/* eqop, reduce: Expr */
+			reduce(32),		/* neqop, reduce: Expr */
+			reduce(32),		/* gtop, reduce: Expr */
+			reduce(32),		/* ltop, reduce: Expr */
+			reduce(32),		/* geqop, reduce: Expr */
+			reduce(32),		/* leqop, reduce: Expr */
+			reduce(32),		/* andop, reduce: Expr */
+			reduce(32),		/* orop, reduce: Expr */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(36),		/* if, reduce: Expr */
+			reduce(32),		/* if, reduce: Expr */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(36),		/* rbrace, reduce: Expr */
+			reduce(32),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2043,33 +1996,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(15),		/* str_lit, reduce: Term */
-			reduce(15),		/* mulop, reduce: Term */
-			reduce(15),		/* divop, reduce: Term */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(11),		/* str_lit, reduce: Term */
+			reduce(11),		/* mulop, reduce: Term */
+			reduce(11),		/* divop, reduce: Term */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(15),		/* addop, reduce: Term */
-			reduce(15),		/* subop, reduce: Term */
+			reduce(11),		/* addop, reduce: Term */
+			reduce(11),		/* subop, reduce: Term */
 			nil,		/* notop */
-			reduce(15),		/* eqop, reduce: Term */
-			reduce(15),		/* neqop, reduce: Term */
-			reduce(15),		/* gtop, reduce: Term */
-			reduce(15),		/* ltop, reduce: Term */
-			reduce(15),		/* geqop, reduce: Term */
-			reduce(15),		/* leqop, reduce: Term */
-			reduce(15),		/* andop, reduce: Term */
-			reduce(15),		/* orop, reduce: Term */
+			reduce(11),		/* eqop, reduce: Term */
+			reduce(11),		/* neqop, reduce: Term */
+			reduce(11),		/* gtop, reduce: Term */
+			reduce(11),		/* ltop, reduce: Term */
+			reduce(11),		/* geqop, reduce: Term */
+			reduce(11),		/* leqop, reduce: Term */
+			reduce(11),		/* andop, reduce: Term */
+			reduce(11),		/* orop, reduce: Term */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(15),		/* if, reduce: Term */
+			reduce(11),		/* if, reduce: Term */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(15),		/* rbrace, reduce: Term */
+			reduce(11),		/* rbrace, reduce: Term */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2086,33 +2038,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(37),		/* str_lit, reduce: Expr */
+			reduce(33),		/* str_lit, reduce: Expr */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(37),		/* addop, reduce: Expr */
-			reduce(37),		/* subop, reduce: Expr */
+			reduce(33),		/* addop, reduce: Expr */
+			reduce(33),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(37),		/* eqop, reduce: Expr */
-			reduce(37),		/* neqop, reduce: Expr */
-			reduce(37),		/* gtop, reduce: Expr */
-			reduce(37),		/* ltop, reduce: Expr */
-			reduce(37),		/* geqop, reduce: Expr */
-			reduce(37),		/* leqop, reduce: Expr */
-			reduce(37),		/* andop, reduce: Expr */
-			reduce(37),		/* orop, reduce: Expr */
+			reduce(33),		/* eqop, reduce: Expr */
+			reduce(33),		/* neqop, reduce: Expr */
+			reduce(33),		/* gtop, reduce: Expr */
+			reduce(33),		/* ltop, reduce: Expr */
+			reduce(33),		/* geqop, reduce: Expr */
+			reduce(33),		/* leqop, reduce: Expr */
+			reduce(33),		/* andop, reduce: Expr */
+			reduce(33),		/* orop, reduce: Expr */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(37),		/* if, reduce: Expr */
+			reduce(33),		/* if, reduce: Expr */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(37),		/* rbrace, reduce: Expr */
+			reduce(33),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2129,33 +2080,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(18),		/* str_lit, reduce: Bool */
+			reduce(14),		/* str_lit, reduce: Bool */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(18),		/* addop, reduce: Bool */
-			reduce(18),		/* subop, reduce: Bool */
+			reduce(14),		/* addop, reduce: Bool */
+			reduce(14),		/* subop, reduce: Bool */
 			nil,		/* notop */
-			reduce(18),		/* eqop, reduce: Bool */
-			reduce(18),		/* neqop, reduce: Bool */
-			reduce(18),		/* gtop, reduce: Bool */
-			reduce(18),		/* ltop, reduce: Bool */
-			reduce(18),		/* geqop, reduce: Bool */
-			reduce(18),		/* leqop, reduce: Bool */
-			reduce(18),		/* andop, reduce: Bool */
-			reduce(18),		/* orop, reduce: Bool */
+			reduce(14),		/* eqop, reduce: Bool */
+			reduce(14),		/* neqop, reduce: Bool */
+			reduce(14),		/* gtop, reduce: Bool */
+			reduce(14),		/* ltop, reduce: Bool */
+			reduce(14),		/* geqop, reduce: Bool */
+			reduce(14),		/* leqop, reduce: Bool */
+			reduce(14),		/* andop, reduce: Bool */
+			reduce(14),		/* orop, reduce: Bool */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(18),		/* if, reduce: Bool */
+			reduce(14),		/* if, reduce: Bool */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(18),		/* rbrace, reduce: Bool */
+			reduce(14),		/* rbrace, reduce: Bool */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2172,33 +2122,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(19),		/* str_lit, reduce: Bool */
+			reduce(15),		/* str_lit, reduce: Bool */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(19),		/* addop, reduce: Bool */
-			reduce(19),		/* subop, reduce: Bool */
+			reduce(15),		/* addop, reduce: Bool */
+			reduce(15),		/* subop, reduce: Bool */
 			nil,		/* notop */
-			reduce(19),		/* eqop, reduce: Bool */
-			reduce(19),		/* neqop, reduce: Bool */
-			reduce(19),		/* gtop, reduce: Bool */
-			reduce(19),		/* ltop, reduce: Bool */
-			reduce(19),		/* geqop, reduce: Bool */
-			reduce(19),		/* leqop, reduce: Bool */
-			reduce(19),		/* andop, reduce: Bool */
-			reduce(19),		/* orop, reduce: Bool */
+			reduce(15),		/* eqop, reduce: Bool */
+			reduce(15),		/* neqop, reduce: Bool */
+			reduce(15),		/* gtop, reduce: Bool */
+			reduce(15),		/* ltop, reduce: Bool */
+			reduce(15),		/* geqop, reduce: Bool */
+			reduce(15),		/* leqop, reduce: Bool */
+			reduce(15),		/* andop, reduce: Bool */
+			reduce(15),		/* orop, reduce: Bool */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(19),		/* if, reduce: Bool */
+			reduce(15),		/* if, reduce: Bool */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(19),		/* rbrace, reduce: Bool */
+			reduce(15),		/* rbrace, reduce: Bool */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2215,33 +2164,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(21),		/* str_lit, reduce: VarId */
-			reduce(21),		/* mulop, reduce: VarId */
-			reduce(21),		/* divop, reduce: VarId */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(17),		/* str_lit, reduce: VarId */
+			reduce(17),		/* mulop, reduce: VarId */
+			reduce(17),		/* divop, reduce: VarId */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(21),		/* addop, reduce: VarId */
-			reduce(21),		/* subop, reduce: VarId */
+			reduce(17),		/* addop, reduce: VarId */
+			reduce(17),		/* subop, reduce: VarId */
 			nil,		/* notop */
-			reduce(21),		/* eqop, reduce: VarId */
-			reduce(21),		/* neqop, reduce: VarId */
-			reduce(21),		/* gtop, reduce: VarId */
-			reduce(21),		/* ltop, reduce: VarId */
-			reduce(21),		/* geqop, reduce: VarId */
-			reduce(21),		/* leqop, reduce: VarId */
-			reduce(21),		/* andop, reduce: VarId */
-			reduce(21),		/* orop, reduce: VarId */
+			reduce(17),		/* eqop, reduce: VarId */
+			reduce(17),		/* neqop, reduce: VarId */
+			reduce(17),		/* gtop, reduce: VarId */
+			reduce(17),		/* ltop, reduce: VarId */
+			reduce(17),		/* geqop, reduce: VarId */
+			reduce(17),		/* leqop, reduce: VarId */
+			reduce(17),		/* andop, reduce: VarId */
+			reduce(17),		/* orop, reduce: VarId */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(21),		/* if, reduce: VarId */
+			reduce(17),		/* if, reduce: VarId */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(21),		/* rbrace, reduce: VarId */
+			reduce(17),		/* rbrace, reduce: VarId */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2258,13 +2206,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(41),		/* str_lit, reduce: Question */
+			reduce(37),		/* str_lit, reduce: Question */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(76),		/* addop */
@@ -2280,11 +2226,12 @@ var actionTab = actionTable{
 			shift(85),		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(41),		/* if, reduce: Question */
+			reduce(37),		/* if, reduce: Question */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(41),		/* rbrace, reduce: Question */
+			reduce(37),		/* rbrace, reduce: Question */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2300,14 +2247,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -2328,6 +2273,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2343,14 +2289,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -2371,6 +2315,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2386,14 +2331,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -2414,6 +2357,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2429,14 +2373,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -2457,6 +2399,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2472,14 +2415,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			nil,		/* addop */
@@ -2500,6 +2441,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2515,14 +2457,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			nil,		/* addop */
@@ -2543,6 +2483,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2558,14 +2499,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			nil,		/* addop */
@@ -2586,6 +2525,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2601,14 +2541,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			nil,		/* addop */
@@ -2629,6 +2567,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2644,14 +2583,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -2672,6 +2609,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2687,14 +2625,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -2715,6 +2651,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2730,14 +2667,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -2758,6 +2693,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2773,14 +2709,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -2801,6 +2735,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2816,14 +2751,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -2844,6 +2777,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2859,14 +2793,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -2887,6 +2819,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2902,14 +2835,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -2930,6 +2861,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2945,14 +2877,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(24),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(25),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(29),		/* true */
-			shift(30),		/* false */
+			shift(29),		/* booltrue_lit */
+			shift(30),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(31),		/* ident */
 			shift(33),		/* addop */
@@ -2973,6 +2903,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -2989,13 +2920,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -3016,6 +2945,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			shift(103),		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3032,13 +2962,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -3053,12 +2981,13 @@ var actionTab = actionTable{
 			shift(67),		/* andop */
 			shift(68),		/* orop */
 			nil,		/* lpar */
-			reduce(22),		/* rpar, reduce: Expr */
+			reduce(18),		/* rpar, reduce: Expr */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3075,13 +3004,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -3096,12 +3023,13 @@ var actionTab = actionTable{
 			shift(67),		/* andop */
 			shift(68),		/* orop */
 			nil,		/* lpar */
-			reduce(23),		/* rpar, reduce: Expr */
+			reduce(19),		/* rpar, reduce: Expr */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3118,13 +3046,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -3139,12 +3065,13 @@ var actionTab = actionTable{
 			shift(67),		/* andop */
 			shift(68),		/* orop */
 			nil,		/* lpar */
-			reduce(24),		/* rpar, reduce: Expr */
+			reduce(20),		/* rpar, reduce: Expr */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3161,13 +3088,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -3188,6 +3113,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3203,14 +3129,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			nil,		/* addop */
@@ -3231,6 +3155,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3246,14 +3171,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			nil,		/* addop */
@@ -3274,6 +3197,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3289,14 +3213,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			nil,		/* addop */
@@ -3317,6 +3239,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3332,14 +3255,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			nil,		/* addop */
@@ -3360,6 +3281,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3375,14 +3297,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -3403,6 +3323,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3418,14 +3339,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -3446,6 +3365,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3461,14 +3381,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -3489,6 +3407,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3504,14 +3423,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -3532,6 +3449,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3547,14 +3465,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -3575,6 +3491,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3590,14 +3507,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -3618,6 +3533,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3633,14 +3549,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -3661,6 +3575,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3676,14 +3591,12 @@ var actionTab = actionTable{
 			nil,		/* string */
 			nil,		/* money */
 			nil,		/* date */
-			shift(44),		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			shift(45),		/* integer_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			shift(49),		/* true */
-			shift(50),		/* false */
+			shift(49),		/* booltrue_lit */
+			shift(50),		/* boolfalse_lit */
 			nil,		/* col */
 			shift(51),		/* ident */
 			shift(53),		/* addop */
@@ -3704,6 +3617,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3720,13 +3634,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(22),		/* str_lit, reduce: Expr */
+			reduce(18),		/* str_lit, reduce: Expr */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(76),		/* addop */
@@ -3742,11 +3654,12 @@ var actionTab = actionTable{
 			shift(85),		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(22),		/* if, reduce: Expr */
+			reduce(18),		/* if, reduce: Expr */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(22),		/* rbrace, reduce: Expr */
+			reduce(18),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3763,13 +3676,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(23),		/* str_lit, reduce: Expr */
+			reduce(19),		/* str_lit, reduce: Expr */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(76),		/* addop */
@@ -3785,11 +3696,12 @@ var actionTab = actionTable{
 			shift(85),		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(23),		/* if, reduce: Expr */
+			reduce(19),		/* if, reduce: Expr */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(23),		/* rbrace, reduce: Expr */
+			reduce(19),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3806,13 +3718,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(24),		/* str_lit, reduce: Expr */
+			reduce(20),		/* str_lit, reduce: Expr */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(76),		/* addop */
@@ -3828,11 +3738,12 @@ var actionTab = actionTable{
 			shift(85),		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(24),		/* if, reduce: Expr */
+			reduce(20),		/* if, reduce: Expr */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(24),		/* rbrace, reduce: Expr */
+			reduce(20),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3849,13 +3760,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -3876,6 +3785,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3892,33 +3802,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
-			reduce(13),		/* mulop, reduce: Term */
-			reduce(13),		/* divop, reduce: Term */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(9),		/* mulop, reduce: Term */
+			reduce(9),		/* divop, reduce: Term */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(13),		/* addop, reduce: Term */
-			reduce(13),		/* subop, reduce: Term */
+			reduce(9),		/* addop, reduce: Term */
+			reduce(9),		/* subop, reduce: Term */
 			nil,		/* notop */
-			reduce(13),		/* eqop, reduce: Term */
-			reduce(13),		/* neqop, reduce: Term */
-			reduce(13),		/* gtop, reduce: Term */
-			reduce(13),		/* ltop, reduce: Term */
-			reduce(13),		/* geqop, reduce: Term */
-			reduce(13),		/* leqop, reduce: Term */
-			reduce(13),		/* andop, reduce: Term */
-			reduce(13),		/* orop, reduce: Term */
+			reduce(9),		/* eqop, reduce: Term */
+			reduce(9),		/* neqop, reduce: Term */
+			reduce(9),		/* gtop, reduce: Term */
+			reduce(9),		/* ltop, reduce: Term */
+			reduce(9),		/* geqop, reduce: Term */
+			reduce(9),		/* leqop, reduce: Term */
+			reduce(9),		/* andop, reduce: Term */
+			reduce(9),		/* orop, reduce: Term */
 			nil,		/* lpar */
-			reduce(13),		/* rpar, reduce: Term */
+			reduce(9),		/* rpar, reduce: Term */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3935,33 +3844,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
-			reduce(14),		/* mulop, reduce: Term */
-			reduce(14),		/* divop, reduce: Term */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(10),		/* mulop, reduce: Term */
+			reduce(10),		/* divop, reduce: Term */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(14),		/* addop, reduce: Term */
-			reduce(14),		/* subop, reduce: Term */
+			reduce(10),		/* addop, reduce: Term */
+			reduce(10),		/* subop, reduce: Term */
 			nil,		/* notop */
-			reduce(14),		/* eqop, reduce: Term */
-			reduce(14),		/* neqop, reduce: Term */
-			reduce(14),		/* gtop, reduce: Term */
-			reduce(14),		/* ltop, reduce: Term */
-			reduce(14),		/* geqop, reduce: Term */
-			reduce(14),		/* leqop, reduce: Term */
-			reduce(14),		/* andop, reduce: Term */
-			reduce(14),		/* orop, reduce: Term */
+			reduce(10),		/* eqop, reduce: Term */
+			reduce(10),		/* neqop, reduce: Term */
+			reduce(10),		/* gtop, reduce: Term */
+			reduce(10),		/* ltop, reduce: Term */
+			reduce(10),		/* geqop, reduce: Term */
+			reduce(10),		/* leqop, reduce: Term */
+			reduce(10),		/* andop, reduce: Term */
+			reduce(10),		/* orop, reduce: Term */
 			nil,		/* lpar */
-			reduce(14),		/* rpar, reduce: Term */
+			reduce(10),		/* rpar, reduce: Term */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -3978,33 +3886,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			shift(57),		/* mulop */
 			shift(58),		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(25),		/* addop, reduce: Expr */
-			reduce(25),		/* subop, reduce: Expr */
+			reduce(21),		/* addop, reduce: Expr */
+			reduce(21),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(25),		/* eqop, reduce: Expr */
-			reduce(25),		/* neqop, reduce: Expr */
-			reduce(25),		/* gtop, reduce: Expr */
-			reduce(25),		/* ltop, reduce: Expr */
-			reduce(25),		/* geqop, reduce: Expr */
-			reduce(25),		/* leqop, reduce: Expr */
-			reduce(25),		/* andop, reduce: Expr */
-			reduce(25),		/* orop, reduce: Expr */
+			reduce(21),		/* eqop, reduce: Expr */
+			reduce(21),		/* neqop, reduce: Expr */
+			reduce(21),		/* gtop, reduce: Expr */
+			reduce(21),		/* ltop, reduce: Expr */
+			reduce(21),		/* geqop, reduce: Expr */
+			reduce(21),		/* leqop, reduce: Expr */
+			reduce(21),		/* andop, reduce: Expr */
+			reduce(21),		/* orop, reduce: Expr */
 			nil,		/* lpar */
-			reduce(25),		/* rpar, reduce: Expr */
+			reduce(21),		/* rpar, reduce: Expr */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -4021,33 +3928,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			shift(57),		/* mulop */
 			shift(58),		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(26),		/* addop, reduce: Expr */
-			reduce(26),		/* subop, reduce: Expr */
+			reduce(22),		/* addop, reduce: Expr */
+			reduce(22),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(26),		/* eqop, reduce: Expr */
-			reduce(26),		/* neqop, reduce: Expr */
-			reduce(26),		/* gtop, reduce: Expr */
-			reduce(26),		/* ltop, reduce: Expr */
-			reduce(26),		/* geqop, reduce: Expr */
-			reduce(26),		/* leqop, reduce: Expr */
-			reduce(26),		/* andop, reduce: Expr */
-			reduce(26),		/* orop, reduce: Expr */
+			reduce(22),		/* eqop, reduce: Expr */
+			reduce(22),		/* neqop, reduce: Expr */
+			reduce(22),		/* gtop, reduce: Expr */
+			reduce(22),		/* ltop, reduce: Expr */
+			reduce(22),		/* geqop, reduce: Expr */
+			reduce(22),		/* leqop, reduce: Expr */
+			reduce(22),		/* andop, reduce: Expr */
+			reduce(22),		/* orop, reduce: Expr */
 			nil,		/* lpar */
-			reduce(26),		/* rpar, reduce: Expr */
+			reduce(22),		/* rpar, reduce: Expr */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -4064,13 +3970,179 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			nil,		/* col */
+			nil,		/* ident */
+			shift(59),		/* addop */
+			shift(60),		/* subop */
+			nil,		/* notop */
+			shift(61),		/* eqop */
+			shift(62),		/* neqop */
+			shift(63),		/* gtop */
+			shift(64),		/* ltop */
+			shift(65),		/* geqop */
+			shift(66),		/* leqop */
+			shift(67),		/* andop */
+			shift(68),		/* orop */
+			nil,		/* lpar */
+			reduce(23),		/* rpar, reduce: Expr */
+			nil,		/* if */
+			nil,		/* else */
+			nil,		/* assign */
+			nil,		/* lbrace */
+			nil,		/* rbrace */
+			nil,		/* money_lit */
+			
+		},
+
+	},
+	actionRow{ // S95
+				canRecover: false,
+		actions: [numSymbols]action{
+			nil,		/* INVALID */
+			nil,		/* $ */
+			nil,		/* form */
+			nil,		/* integer */
+			nil,		/* boolean */
+			nil,		/* string */
+			nil,		/* money */
+			nil,		/* date */
+			nil,		/* integer_lit */
+			nil,		/* str_lit */
+			nil,		/* mulop */
+			nil,		/* divop */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			nil,		/* col */
+			nil,		/* ident */
+			shift(59),		/* addop */
+			shift(60),		/* subop */
+			nil,		/* notop */
+			shift(61),		/* eqop */
+			shift(62),		/* neqop */
+			shift(63),		/* gtop */
+			shift(64),		/* ltop */
+			shift(65),		/* geqop */
+			shift(66),		/* leqop */
+			shift(67),		/* andop */
+			shift(68),		/* orop */
+			nil,		/* lpar */
+			reduce(24),		/* rpar, reduce: Expr */
+			nil,		/* if */
+			nil,		/* else */
+			nil,		/* assign */
+			nil,		/* lbrace */
+			nil,		/* rbrace */
+			nil,		/* money_lit */
+			
+		},
+
+	},
+	actionRow{ // S96
+				canRecover: false,
+		actions: [numSymbols]action{
+			nil,		/* INVALID */
+			nil,		/* $ */
+			nil,		/* form */
+			nil,		/* integer */
+			nil,		/* boolean */
+			nil,		/* string */
+			nil,		/* money */
+			nil,		/* date */
+			nil,		/* integer_lit */
+			nil,		/* str_lit */
+			nil,		/* mulop */
+			nil,		/* divop */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			nil,		/* col */
+			nil,		/* ident */
+			shift(59),		/* addop */
+			shift(60),		/* subop */
+			nil,		/* notop */
+			shift(61),		/* eqop */
+			shift(62),		/* neqop */
+			shift(63),		/* gtop */
+			shift(64),		/* ltop */
+			shift(65),		/* geqop */
+			shift(66),		/* leqop */
+			shift(67),		/* andop */
+			shift(68),		/* orop */
+			nil,		/* lpar */
+			reduce(25),		/* rpar, reduce: Expr */
+			nil,		/* if */
+			nil,		/* else */
+			nil,		/* assign */
+			nil,		/* lbrace */
+			nil,		/* rbrace */
+			nil,		/* money_lit */
+			
+		},
+
+	},
+	actionRow{ // S97
+				canRecover: false,
+		actions: [numSymbols]action{
+			nil,		/* INVALID */
+			nil,		/* $ */
+			nil,		/* form */
+			nil,		/* integer */
+			nil,		/* boolean */
+			nil,		/* string */
+			nil,		/* money */
+			nil,		/* date */
+			nil,		/* integer_lit */
+			nil,		/* str_lit */
+			nil,		/* mulop */
+			nil,		/* divop */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			nil,		/* col */
+			nil,		/* ident */
+			shift(59),		/* addop */
+			shift(60),		/* subop */
+			nil,		/* notop */
+			shift(61),		/* eqop */
+			shift(62),		/* neqop */
+			shift(63),		/* gtop */
+			shift(64),		/* ltop */
+			shift(65),		/* geqop */
+			shift(66),		/* leqop */
+			shift(67),		/* andop */
+			shift(68),		/* orop */
+			nil,		/* lpar */
+			reduce(26),		/* rpar, reduce: Expr */
+			nil,		/* if */
+			nil,		/* else */
+			nil,		/* assign */
+			nil,		/* lbrace */
+			nil,		/* rbrace */
+			nil,		/* money_lit */
+			
+		},
+
+	},
+	actionRow{ // S98
+				canRecover: false,
+		actions: [numSymbols]action{
+			nil,		/* INVALID */
+			nil,		/* $ */
+			nil,		/* form */
+			nil,		/* integer */
+			nil,		/* boolean */
+			nil,		/* string */
+			nil,		/* money */
+			nil,		/* date */
+			nil,		/* integer_lit */
+			nil,		/* str_lit */
+			nil,		/* mulop */
+			nil,		/* divop */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -4091,11 +4163,12 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
 	},
-	actionRow{ // S95
+	actionRow{ // S99
 				canRecover: false,
 		actions: [numSymbols]action{
 			nil,		/* INVALID */
@@ -4107,13 +4180,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -4134,11 +4205,12 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
 	},
-	actionRow{ // S96
+	actionRow{ // S100
 				canRecover: false,
 		actions: [numSymbols]action{
 			nil,		/* INVALID */
@@ -4150,13 +4222,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -4177,11 +4247,12 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
 	},
-	actionRow{ // S97
+	actionRow{ // S101
 				canRecover: false,
 		actions: [numSymbols]action{
 			nil,		/* INVALID */
@@ -4193,13 +4264,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(59),		/* addop */
@@ -4220,178 +4289,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
-			
-		},
-
-	},
-	actionRow{ // S98
-				canRecover: false,
-		actions: [numSymbols]action{
-			nil,		/* INVALID */
-			nil,		/* $ */
-			nil,		/* form */
-			nil,		/* integer */
-			nil,		/* boolean */
-			nil,		/* string */
-			nil,		/* money */
-			nil,		/* date */
-			nil,		/* integer_lit */
 			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			nil,		/* str_lit */
-			nil,		/* mulop */
-			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			nil,		/* col */
-			nil,		/* ident */
-			shift(59),		/* addop */
-			shift(60),		/* subop */
-			nil,		/* notop */
-			shift(61),		/* eqop */
-			shift(62),		/* neqop */
-			shift(63),		/* gtop */
-			shift(64),		/* ltop */
-			shift(65),		/* geqop */
-			shift(66),		/* leqop */
-			shift(67),		/* andop */
-			shift(68),		/* orop */
-			nil,		/* lpar */
-			reduce(31),		/* rpar, reduce: Expr */
-			nil,		/* if */
-			nil,		/* else */
-			nil,		/* assign */
-			nil,		/* lbrace */
-			nil,		/* rbrace */
-			
-		},
-
-	},
-	actionRow{ // S99
-				canRecover: false,
-		actions: [numSymbols]action{
-			nil,		/* INVALID */
-			nil,		/* $ */
-			nil,		/* form */
-			nil,		/* integer */
-			nil,		/* boolean */
-			nil,		/* string */
-			nil,		/* money */
-			nil,		/* date */
-			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			nil,		/* str_lit */
-			nil,		/* mulop */
-			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			nil,		/* col */
-			nil,		/* ident */
-			shift(59),		/* addop */
-			shift(60),		/* subop */
-			nil,		/* notop */
-			shift(61),		/* eqop */
-			shift(62),		/* neqop */
-			shift(63),		/* gtop */
-			shift(64),		/* ltop */
-			shift(65),		/* geqop */
-			shift(66),		/* leqop */
-			shift(67),		/* andop */
-			shift(68),		/* orop */
-			nil,		/* lpar */
-			reduce(32),		/* rpar, reduce: Expr */
-			nil,		/* if */
-			nil,		/* else */
-			nil,		/* assign */
-			nil,		/* lbrace */
-			nil,		/* rbrace */
-			
-		},
-
-	},
-	actionRow{ // S100
-				canRecover: false,
-		actions: [numSymbols]action{
-			nil,		/* INVALID */
-			nil,		/* $ */
-			nil,		/* form */
-			nil,		/* integer */
-			nil,		/* boolean */
-			nil,		/* string */
-			nil,		/* money */
-			nil,		/* date */
-			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			nil,		/* str_lit */
-			nil,		/* mulop */
-			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			nil,		/* col */
-			nil,		/* ident */
-			shift(59),		/* addop */
-			shift(60),		/* subop */
-			nil,		/* notop */
-			shift(61),		/* eqop */
-			shift(62),		/* neqop */
-			shift(63),		/* gtop */
-			shift(64),		/* ltop */
-			shift(65),		/* geqop */
-			shift(66),		/* leqop */
-			shift(67),		/* andop */
-			shift(68),		/* orop */
-			nil,		/* lpar */
-			reduce(33),		/* rpar, reduce: Expr */
-			nil,		/* if */
-			nil,		/* else */
-			nil,		/* assign */
-			nil,		/* lbrace */
-			nil,		/* rbrace */
-			
-		},
-
-	},
-	actionRow{ // S101
-				canRecover: false,
-		actions: [numSymbols]action{
-			nil,		/* INVALID */
-			nil,		/* $ */
-			nil,		/* form */
-			nil,		/* integer */
-			nil,		/* boolean */
-			nil,		/* string */
-			nil,		/* money */
-			nil,		/* date */
-			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			nil,		/* str_lit */
-			nil,		/* mulop */
-			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			nil,		/* col */
-			nil,		/* ident */
-			shift(59),		/* addop */
-			shift(60),		/* subop */
-			nil,		/* notop */
-			shift(61),		/* eqop */
-			shift(62),		/* neqop */
-			shift(63),		/* gtop */
-			shift(64),		/* ltop */
-			shift(65),		/* geqop */
-			shift(66),		/* leqop */
-			shift(67),		/* andop */
-			shift(68),		/* orop */
-			nil,		/* lpar */
-			reduce(34),		/* rpar, reduce: Expr */
-			nil,		/* if */
-			nil,		/* else */
-			nil,		/* assign */
-			nil,		/* lbrace */
-			nil,		/* rbrace */
 			
 		},
 
@@ -4408,13 +4306,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(38),		/* str_lit, reduce: IfStmt */
+			reduce(34),		/* str_lit, reduce: IfStmt */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -4430,11 +4326,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(38),		/* if, reduce: IfStmt */
+			reduce(34),		/* if, reduce: IfStmt */
 			shift(118),		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(38),		/* rbrace, reduce: IfStmt */
+			reduce(34),		/* rbrace, reduce: IfStmt */
+			nil,		/* money_lit */
 			
 		},
 
@@ -4451,13 +4348,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			shift(7),		/* str_lit */
+			shift(8),		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -4478,6 +4373,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			shift(120),		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -4494,33 +4390,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(35),		/* addop, reduce: Expr */
-			reduce(35),		/* subop, reduce: Expr */
+			reduce(31),		/* addop, reduce: Expr */
+			reduce(31),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(35),		/* eqop, reduce: Expr */
-			reduce(35),		/* neqop, reduce: Expr */
-			reduce(35),		/* gtop, reduce: Expr */
-			reduce(35),		/* ltop, reduce: Expr */
-			reduce(35),		/* geqop, reduce: Expr */
-			reduce(35),		/* leqop, reduce: Expr */
-			reduce(35),		/* andop, reduce: Expr */
-			reduce(35),		/* orop, reduce: Expr */
+			reduce(31),		/* eqop, reduce: Expr */
+			reduce(31),		/* neqop, reduce: Expr */
+			reduce(31),		/* gtop, reduce: Expr */
+			reduce(31),		/* ltop, reduce: Expr */
+			reduce(31),		/* geqop, reduce: Expr */
+			reduce(31),		/* leqop, reduce: Expr */
+			reduce(31),		/* andop, reduce: Expr */
+			reduce(31),		/* orop, reduce: Expr */
 			nil,		/* lpar */
-			reduce(35),		/* rpar, reduce: Expr */
+			reduce(31),		/* rpar, reduce: Expr */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -4537,33 +4432,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(13),		/* str_lit, reduce: Term */
-			reduce(13),		/* mulop, reduce: Term */
-			reduce(13),		/* divop, reduce: Term */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(9),		/* str_lit, reduce: Term */
+			reduce(9),		/* mulop, reduce: Term */
+			reduce(9),		/* divop, reduce: Term */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(13),		/* addop, reduce: Term */
-			reduce(13),		/* subop, reduce: Term */
+			reduce(9),		/* addop, reduce: Term */
+			reduce(9),		/* subop, reduce: Term */
 			nil,		/* notop */
-			reduce(13),		/* eqop, reduce: Term */
-			reduce(13),		/* neqop, reduce: Term */
-			reduce(13),		/* gtop, reduce: Term */
-			reduce(13),		/* ltop, reduce: Term */
-			reduce(13),		/* geqop, reduce: Term */
-			reduce(13),		/* leqop, reduce: Term */
-			reduce(13),		/* andop, reduce: Term */
-			reduce(13),		/* orop, reduce: Term */
+			reduce(9),		/* eqop, reduce: Term */
+			reduce(9),		/* neqop, reduce: Term */
+			reduce(9),		/* gtop, reduce: Term */
+			reduce(9),		/* ltop, reduce: Term */
+			reduce(9),		/* geqop, reduce: Term */
+			reduce(9),		/* leqop, reduce: Term */
+			reduce(9),		/* andop, reduce: Term */
+			reduce(9),		/* orop, reduce: Term */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(13),		/* if, reduce: Term */
+			reduce(9),		/* if, reduce: Term */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(13),		/* rbrace, reduce: Term */
+			reduce(9),		/* rbrace, reduce: Term */
+			nil,		/* money_lit */
 			
 		},
 
@@ -4580,33 +4474,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(14),		/* str_lit, reduce: Term */
-			reduce(14),		/* mulop, reduce: Term */
-			reduce(14),		/* divop, reduce: Term */
-			nil,		/* true */
-			nil,		/* false */
+			reduce(10),		/* str_lit, reduce: Term */
+			reduce(10),		/* mulop, reduce: Term */
+			reduce(10),		/* divop, reduce: Term */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(14),		/* addop, reduce: Term */
-			reduce(14),		/* subop, reduce: Term */
+			reduce(10),		/* addop, reduce: Term */
+			reduce(10),		/* subop, reduce: Term */
 			nil,		/* notop */
-			reduce(14),		/* eqop, reduce: Term */
-			reduce(14),		/* neqop, reduce: Term */
-			reduce(14),		/* gtop, reduce: Term */
-			reduce(14),		/* ltop, reduce: Term */
-			reduce(14),		/* geqop, reduce: Term */
-			reduce(14),		/* leqop, reduce: Term */
-			reduce(14),		/* andop, reduce: Term */
-			reduce(14),		/* orop, reduce: Term */
+			reduce(10),		/* eqop, reduce: Term */
+			reduce(10),		/* neqop, reduce: Term */
+			reduce(10),		/* gtop, reduce: Term */
+			reduce(10),		/* ltop, reduce: Term */
+			reduce(10),		/* geqop, reduce: Term */
+			reduce(10),		/* leqop, reduce: Term */
+			reduce(10),		/* andop, reduce: Term */
+			reduce(10),		/* orop, reduce: Term */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(14),		/* if, reduce: Term */
+			reduce(10),		/* if, reduce: Term */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(14),		/* rbrace, reduce: Term */
+			reduce(10),		/* rbrace, reduce: Term */
+			nil,		/* money_lit */
 			
 		},
 
@@ -4623,33 +4516,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(25),		/* str_lit, reduce: Expr */
+			reduce(21),		/* str_lit, reduce: Expr */
 			shift(74),		/* mulop */
 			shift(75),		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(25),		/* addop, reduce: Expr */
-			reduce(25),		/* subop, reduce: Expr */
+			reduce(21),		/* addop, reduce: Expr */
+			reduce(21),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(25),		/* eqop, reduce: Expr */
-			reduce(25),		/* neqop, reduce: Expr */
-			reduce(25),		/* gtop, reduce: Expr */
-			reduce(25),		/* ltop, reduce: Expr */
-			reduce(25),		/* geqop, reduce: Expr */
-			reduce(25),		/* leqop, reduce: Expr */
-			reduce(25),		/* andop, reduce: Expr */
-			reduce(25),		/* orop, reduce: Expr */
+			reduce(21),		/* eqop, reduce: Expr */
+			reduce(21),		/* neqop, reduce: Expr */
+			reduce(21),		/* gtop, reduce: Expr */
+			reduce(21),		/* ltop, reduce: Expr */
+			reduce(21),		/* geqop, reduce: Expr */
+			reduce(21),		/* leqop, reduce: Expr */
+			reduce(21),		/* andop, reduce: Expr */
+			reduce(21),		/* orop, reduce: Expr */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(25),		/* if, reduce: Expr */
+			reduce(21),		/* if, reduce: Expr */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(25),		/* rbrace, reduce: Expr */
+			reduce(21),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
@@ -4666,33 +4558,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(26),		/* str_lit, reduce: Expr */
+			reduce(22),		/* str_lit, reduce: Expr */
 			shift(74),		/* mulop */
 			shift(75),		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(26),		/* addop, reduce: Expr */
-			reduce(26),		/* subop, reduce: Expr */
+			reduce(22),		/* addop, reduce: Expr */
+			reduce(22),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(26),		/* eqop, reduce: Expr */
-			reduce(26),		/* neqop, reduce: Expr */
-			reduce(26),		/* gtop, reduce: Expr */
-			reduce(26),		/* ltop, reduce: Expr */
-			reduce(26),		/* geqop, reduce: Expr */
-			reduce(26),		/* leqop, reduce: Expr */
-			reduce(26),		/* andop, reduce: Expr */
-			reduce(26),		/* orop, reduce: Expr */
+			reduce(22),		/* eqop, reduce: Expr */
+			reduce(22),		/* neqop, reduce: Expr */
+			reduce(22),		/* gtop, reduce: Expr */
+			reduce(22),		/* ltop, reduce: Expr */
+			reduce(22),		/* geqop, reduce: Expr */
+			reduce(22),		/* leqop, reduce: Expr */
+			reduce(22),		/* andop, reduce: Expr */
+			reduce(22),		/* orop, reduce: Expr */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(26),		/* if, reduce: Expr */
+			reduce(22),		/* if, reduce: Expr */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(26),		/* rbrace, reduce: Expr */
+			reduce(22),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
@@ -4709,13 +4600,179 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
+			reduce(23),		/* str_lit, reduce: Expr */
+			nil,		/* mulop */
+			nil,		/* divop */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			nil,		/* col */
+			nil,		/* ident */
+			shift(76),		/* addop */
+			shift(77),		/* subop */
+			nil,		/* notop */
+			shift(78),		/* eqop */
+			shift(79),		/* neqop */
+			shift(80),		/* gtop */
+			shift(81),		/* ltop */
+			shift(82),		/* geqop */
+			shift(83),		/* leqop */
+			shift(84),		/* andop */
+			shift(85),		/* orop */
+			nil,		/* lpar */
+			nil,		/* rpar */
+			reduce(23),		/* if, reduce: Expr */
+			nil,		/* else */
+			nil,		/* assign */
+			nil,		/* lbrace */
+			reduce(23),		/* rbrace, reduce: Expr */
 			nil,		/* money_lit */
-			nil,		/* bool_lit */
+			
+		},
+
+	},
+	actionRow{ // S110
+				canRecover: false,
+		actions: [numSymbols]action{
+			nil,		/* INVALID */
+			nil,		/* $ */
+			nil,		/* form */
+			nil,		/* integer */
+			nil,		/* boolean */
+			nil,		/* string */
+			nil,		/* money */
+			nil,		/* date */
+			nil,		/* integer_lit */
+			reduce(24),		/* str_lit, reduce: Expr */
+			nil,		/* mulop */
+			nil,		/* divop */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			nil,		/* col */
+			nil,		/* ident */
+			shift(76),		/* addop */
+			shift(77),		/* subop */
+			nil,		/* notop */
+			shift(78),		/* eqop */
+			shift(79),		/* neqop */
+			shift(80),		/* gtop */
+			shift(81),		/* ltop */
+			shift(82),		/* geqop */
+			shift(83),		/* leqop */
+			shift(84),		/* andop */
+			shift(85),		/* orop */
+			nil,		/* lpar */
+			nil,		/* rpar */
+			reduce(24),		/* if, reduce: Expr */
+			nil,		/* else */
+			nil,		/* assign */
+			nil,		/* lbrace */
+			reduce(24),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
+			
+		},
+
+	},
+	actionRow{ // S111
+				canRecover: false,
+		actions: [numSymbols]action{
+			nil,		/* INVALID */
+			nil,		/* $ */
+			nil,		/* form */
+			nil,		/* integer */
+			nil,		/* boolean */
+			nil,		/* string */
+			nil,		/* money */
+			nil,		/* date */
+			nil,		/* integer_lit */
+			reduce(25),		/* str_lit, reduce: Expr */
+			nil,		/* mulop */
+			nil,		/* divop */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			nil,		/* col */
+			nil,		/* ident */
+			shift(76),		/* addop */
+			shift(77),		/* subop */
+			nil,		/* notop */
+			shift(78),		/* eqop */
+			shift(79),		/* neqop */
+			shift(80),		/* gtop */
+			shift(81),		/* ltop */
+			shift(82),		/* geqop */
+			shift(83),		/* leqop */
+			shift(84),		/* andop */
+			shift(85),		/* orop */
+			nil,		/* lpar */
+			nil,		/* rpar */
+			reduce(25),		/* if, reduce: Expr */
+			nil,		/* else */
+			nil,		/* assign */
+			nil,		/* lbrace */
+			reduce(25),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
+			
+		},
+
+	},
+	actionRow{ // S112
+				canRecover: false,
+		actions: [numSymbols]action{
+			nil,		/* INVALID */
+			nil,		/* $ */
+			nil,		/* form */
+			nil,		/* integer */
+			nil,		/* boolean */
+			nil,		/* string */
+			nil,		/* money */
+			nil,		/* date */
+			nil,		/* integer_lit */
+			reduce(26),		/* str_lit, reduce: Expr */
+			nil,		/* mulop */
+			nil,		/* divop */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
+			nil,		/* col */
+			nil,		/* ident */
+			shift(76),		/* addop */
+			shift(77),		/* subop */
+			nil,		/* notop */
+			shift(78),		/* eqop */
+			shift(79),		/* neqop */
+			shift(80),		/* gtop */
+			shift(81),		/* ltop */
+			shift(82),		/* geqop */
+			shift(83),		/* leqop */
+			shift(84),		/* andop */
+			shift(85),		/* orop */
+			nil,		/* lpar */
+			nil,		/* rpar */
+			reduce(26),		/* if, reduce: Expr */
+			nil,		/* else */
+			nil,		/* assign */
+			nil,		/* lbrace */
+			reduce(26),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
+			
+		},
+
+	},
+	actionRow{ // S113
+				canRecover: false,
+		actions: [numSymbols]action{
+			nil,		/* INVALID */
+			nil,		/* $ */
+			nil,		/* form */
+			nil,		/* integer */
+			nil,		/* boolean */
+			nil,		/* string */
+			nil,		/* money */
+			nil,		/* date */
+			nil,		/* integer_lit */
 			reduce(27),		/* str_lit, reduce: Expr */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(76),		/* addop */
@@ -4736,11 +4793,12 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			reduce(27),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
 	},
-	actionRow{ // S110
+	actionRow{ // S114
 				canRecover: false,
 		actions: [numSymbols]action{
 			nil,		/* INVALID */
@@ -4752,13 +4810,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			reduce(28),		/* str_lit, reduce: Expr */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(76),		/* addop */
@@ -4779,11 +4835,12 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			reduce(28),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
 	},
-	actionRow{ // S111
+	actionRow{ // S115
 				canRecover: false,
 		actions: [numSymbols]action{
 			nil,		/* INVALID */
@@ -4795,13 +4852,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			reduce(29),		/* str_lit, reduce: Expr */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(76),		/* addop */
@@ -4822,11 +4877,12 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			reduce(29),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
 	},
-	actionRow{ // S112
+	actionRow{ // S116
 				canRecover: false,
 		actions: [numSymbols]action{
 			nil,		/* INVALID */
@@ -4838,13 +4894,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			reduce(30),		/* str_lit, reduce: Expr */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			shift(76),		/* addop */
@@ -4865,178 +4919,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			reduce(30),		/* rbrace, reduce: Expr */
-			
-		},
-
-	},
-	actionRow{ // S113
-				canRecover: false,
-		actions: [numSymbols]action{
-			nil,		/* INVALID */
-			nil,		/* $ */
-			nil,		/* form */
-			nil,		/* integer */
-			nil,		/* boolean */
-			nil,		/* string */
-			nil,		/* money */
-			nil,		/* date */
-			nil,		/* integer_lit */
 			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(31),		/* str_lit, reduce: Expr */
-			nil,		/* mulop */
-			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			nil,		/* col */
-			nil,		/* ident */
-			shift(76),		/* addop */
-			shift(77),		/* subop */
-			nil,		/* notop */
-			shift(78),		/* eqop */
-			shift(79),		/* neqop */
-			shift(80),		/* gtop */
-			shift(81),		/* ltop */
-			shift(82),		/* geqop */
-			shift(83),		/* leqop */
-			shift(84),		/* andop */
-			shift(85),		/* orop */
-			nil,		/* lpar */
-			nil,		/* rpar */
-			reduce(31),		/* if, reduce: Expr */
-			nil,		/* else */
-			nil,		/* assign */
-			nil,		/* lbrace */
-			reduce(31),		/* rbrace, reduce: Expr */
-			
-		},
-
-	},
-	actionRow{ // S114
-				canRecover: false,
-		actions: [numSymbols]action{
-			nil,		/* INVALID */
-			nil,		/* $ */
-			nil,		/* form */
-			nil,		/* integer */
-			nil,		/* boolean */
-			nil,		/* string */
-			nil,		/* money */
-			nil,		/* date */
-			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(32),		/* str_lit, reduce: Expr */
-			nil,		/* mulop */
-			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			nil,		/* col */
-			nil,		/* ident */
-			shift(76),		/* addop */
-			shift(77),		/* subop */
-			nil,		/* notop */
-			shift(78),		/* eqop */
-			shift(79),		/* neqop */
-			shift(80),		/* gtop */
-			shift(81),		/* ltop */
-			shift(82),		/* geqop */
-			shift(83),		/* leqop */
-			shift(84),		/* andop */
-			shift(85),		/* orop */
-			nil,		/* lpar */
-			nil,		/* rpar */
-			reduce(32),		/* if, reduce: Expr */
-			nil,		/* else */
-			nil,		/* assign */
-			nil,		/* lbrace */
-			reduce(32),		/* rbrace, reduce: Expr */
-			
-		},
-
-	},
-	actionRow{ // S115
-				canRecover: false,
-		actions: [numSymbols]action{
-			nil,		/* INVALID */
-			nil,		/* $ */
-			nil,		/* form */
-			nil,		/* integer */
-			nil,		/* boolean */
-			nil,		/* string */
-			nil,		/* money */
-			nil,		/* date */
-			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(33),		/* str_lit, reduce: Expr */
-			nil,		/* mulop */
-			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			nil,		/* col */
-			nil,		/* ident */
-			shift(76),		/* addop */
-			shift(77),		/* subop */
-			nil,		/* notop */
-			shift(78),		/* eqop */
-			shift(79),		/* neqop */
-			shift(80),		/* gtop */
-			shift(81),		/* ltop */
-			shift(82),		/* geqop */
-			shift(83),		/* leqop */
-			shift(84),		/* andop */
-			shift(85),		/* orop */
-			nil,		/* lpar */
-			nil,		/* rpar */
-			reduce(33),		/* if, reduce: Expr */
-			nil,		/* else */
-			nil,		/* assign */
-			nil,		/* lbrace */
-			reduce(33),		/* rbrace, reduce: Expr */
-			
-		},
-
-	},
-	actionRow{ // S116
-				canRecover: false,
-		actions: [numSymbols]action{
-			nil,		/* INVALID */
-			nil,		/* $ */
-			nil,		/* form */
-			nil,		/* integer */
-			nil,		/* boolean */
-			nil,		/* string */
-			nil,		/* money */
-			nil,		/* date */
-			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(34),		/* str_lit, reduce: Expr */
-			nil,		/* mulop */
-			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
-			nil,		/* col */
-			nil,		/* ident */
-			shift(76),		/* addop */
-			shift(77),		/* subop */
-			nil,		/* notop */
-			shift(78),		/* eqop */
-			shift(79),		/* neqop */
-			shift(80),		/* gtop */
-			shift(81),		/* ltop */
-			shift(82),		/* geqop */
-			shift(83),		/* leqop */
-			shift(84),		/* andop */
-			shift(85),		/* orop */
-			nil,		/* lpar */
-			nil,		/* rpar */
-			reduce(34),		/* if, reduce: Expr */
-			nil,		/* else */
-			nil,		/* assign */
-			nil,		/* lbrace */
-			reduce(34),		/* rbrace, reduce: Expr */
 			
 		},
 
@@ -5053,33 +4936,32 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(35),		/* str_lit, reduce: Expr */
+			reduce(31),		/* str_lit, reduce: Expr */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(35),		/* addop, reduce: Expr */
-			reduce(35),		/* subop, reduce: Expr */
+			reduce(31),		/* addop, reduce: Expr */
+			reduce(31),		/* subop, reduce: Expr */
 			nil,		/* notop */
-			reduce(35),		/* eqop, reduce: Expr */
-			reduce(35),		/* neqop, reduce: Expr */
-			reduce(35),		/* gtop, reduce: Expr */
-			reduce(35),		/* ltop, reduce: Expr */
-			reduce(35),		/* geqop, reduce: Expr */
-			reduce(35),		/* leqop, reduce: Expr */
-			reduce(35),		/* andop, reduce: Expr */
-			reduce(35),		/* orop, reduce: Expr */
+			reduce(31),		/* eqop, reduce: Expr */
+			reduce(31),		/* neqop, reduce: Expr */
+			reduce(31),		/* gtop, reduce: Expr */
+			reduce(31),		/* ltop, reduce: Expr */
+			reduce(31),		/* geqop, reduce: Expr */
+			reduce(31),		/* leqop, reduce: Expr */
+			reduce(31),		/* andop, reduce: Expr */
+			reduce(31),		/* orop, reduce: Expr */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(35),		/* if, reduce: Expr */
+			reduce(31),		/* if, reduce: Expr */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(35),		/* rbrace, reduce: Expr */
+			reduce(31),		/* rbrace, reduce: Expr */
+			nil,		/* money_lit */
 			
 		},
 
@@ -5096,13 +4978,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
 			nil,		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -5123,6 +5003,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			shift(122),		/* lbrace */
 			nil,		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -5139,13 +5020,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			shift(7),		/* str_lit */
+			shift(8),		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -5166,6 +5045,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			shift(123),		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -5182,13 +5062,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(43),		/* str_lit, reduce: Block */
+			reduce(39),		/* str_lit, reduce: Block */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -5204,11 +5082,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(43),		/* if, reduce: Block */
-			reduce(43),		/* else, reduce: Block */
+			reduce(39),		/* if, reduce: Block */
+			reduce(39),		/* else, reduce: Block */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(43),		/* rbrace, reduce: Block */
+			reduce(39),		/* rbrace, reduce: Block */
+			nil,		/* money_lit */
 			
 		},
 
@@ -5225,13 +5104,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(39),		/* str_lit, reduce: IfStmt */
+			reduce(35),		/* str_lit, reduce: IfStmt */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -5247,11 +5124,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(39),		/* if, reduce: IfStmt */
+			reduce(35),		/* if, reduce: IfStmt */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(39),		/* rbrace, reduce: IfStmt */
+			reduce(35),		/* rbrace, reduce: IfStmt */
+			nil,		/* money_lit */
 			
 		},
 
@@ -5268,13 +5146,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			shift(7),		/* str_lit */
+			shift(8),		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -5295,6 +5171,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			shift(125),		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -5311,13 +5188,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(42),		/* str_lit, reduce: Block */
+			reduce(38),		/* str_lit, reduce: Block */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -5333,11 +5208,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(42),		/* if, reduce: Block */
-			reduce(42),		/* else, reduce: Block */
+			reduce(38),		/* if, reduce: Block */
+			reduce(38),		/* else, reduce: Block */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(42),		/* rbrace, reduce: Block */
+			reduce(38),		/* rbrace, reduce: Block */
+			nil,		/* money_lit */
 			
 		},
 
@@ -5354,13 +5230,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			shift(7),		/* str_lit */
+			shift(8),		/* str_lit */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -5381,6 +5255,7 @@ var actionTab = actionTable{
 			nil,		/* assign */
 			nil,		/* lbrace */
 			shift(126),		/* rbrace */
+			nil,		/* money_lit */
 			
 		},
 
@@ -5397,13 +5272,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(43),		/* str_lit, reduce: Block */
+			reduce(39),		/* str_lit, reduce: Block */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -5419,11 +5292,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(43),		/* if, reduce: Block */
+			reduce(39),		/* if, reduce: Block */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(43),		/* rbrace, reduce: Block */
+			reduce(39),		/* rbrace, reduce: Block */
+			nil,		/* money_lit */
 			
 		},
 
@@ -5440,13 +5314,11 @@ var actionTab = actionTable{
 			nil,		/* money */
 			nil,		/* date */
 			nil,		/* integer_lit */
-			nil,		/* money_lit */
-			nil,		/* bool_lit */
-			reduce(42),		/* str_lit, reduce: Block */
+			reduce(38),		/* str_lit, reduce: Block */
 			nil,		/* mulop */
 			nil,		/* divop */
-			nil,		/* true */
-			nil,		/* false */
+			nil,		/* booltrue_lit */
+			nil,		/* boolfalse_lit */
 			nil,		/* col */
 			nil,		/* ident */
 			nil,		/* addop */
@@ -5462,11 +5334,12 @@ var actionTab = actionTable{
 			nil,		/* orop */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(42),		/* if, reduce: Block */
+			reduce(38),		/* if, reduce: Block */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(42),		/* rbrace, reduce: Block */
+			reduce(38),		/* rbrace, reduce: Block */
+			nil,		/* money_lit */
 			
 		},
 
