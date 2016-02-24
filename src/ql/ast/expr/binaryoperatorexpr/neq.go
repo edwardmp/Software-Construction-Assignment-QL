@@ -17,12 +17,12 @@ func (n NEq) GetRhs() expr.Expr {
 	return n.Rhs
 }
 
-func (n NEq) Eval() interface{} {
-	switch n.Lhs.Eval().(type) {
+func (n NEq) Eval(s interface{}) interface{} {
+	switch n.Lhs.Eval(s).(type) {
 	case int:
-		return n.GetLhs().Eval().(int) != n.GetRhs().Eval().(int)
+		return n.GetLhs().Eval(s).(int) != n.GetRhs().Eval(s).(int)
 	case bool:
-		return n.GetLhs().Eval().(bool) != n.GetRhs().Eval().(bool)
+		return n.GetLhs().Eval(s).(bool) != n.GetRhs().Eval(s).(bool)
 	default:
 		panic("NEq error: comparing unknown types")
 	}

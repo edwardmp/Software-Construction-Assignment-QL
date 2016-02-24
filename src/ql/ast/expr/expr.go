@@ -5,6 +5,6 @@ import (
 )
 
 type Expr interface {
-	Eval() interface{}
+	Eval(s interface{}) interface{}
 	Accept(v visit.Visitor, s interface{}) interface{}
 }

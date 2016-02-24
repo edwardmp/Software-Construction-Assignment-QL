@@ -12,7 +12,7 @@ func (b BoolLit) GetValue() interface{} {
 	return b.Value
 }
 
-func (b BoolLit) Eval() interface{} {
+func (b BoolLit) Eval(s interface{}) interface{} {
 	return bool(b.Value)
 }
 

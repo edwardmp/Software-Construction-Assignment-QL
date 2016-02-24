@@ -17,8 +17,8 @@ func (m Mul) GetRhs() expr.Expr {
 	return m.Rhs
 }
 
-func (m Mul) Eval() interface{} {
-	return m.GetLhs().Eval().(int) * m.GetRhs().Eval().(int)
+func (m Mul) Eval(s interface{}) interface{} {
+	return m.GetLhs().Eval(s).(int) * m.GetRhs().Eval(s).(int)
 }
 
 func (m Mul) Accept(v visit.Visitor, s interface{}) interface{} {

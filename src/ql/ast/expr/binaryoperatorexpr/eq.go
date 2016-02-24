@@ -17,12 +17,12 @@ func (e Eq) GetRhs() expr.Expr {
 	return e.Rhs
 }
 
-func (e Eq) Eval() interface{} {
-	switch e.Lhs.Eval().(type) {
+func (e Eq) Eval(s interface{}) interface{} {
+	switch e.Lhs.Eval(s).(type) {
 	case int:
-		return e.GetLhs().Eval().(int) == e.GetRhs().Eval().(int)
+		return e.GetLhs().Eval(s).(int) == e.GetRhs().Eval(s).(int)
 	case bool:
-		return e.GetLhs().Eval().(bool) == e.GetRhs().Eval().(bool)
+		return e.GetLhs().Eval(s).(bool) == e.GetRhs().Eval(s).(bool)
 	default:
 		panic("Eq error: comparing unknown types")
 	}

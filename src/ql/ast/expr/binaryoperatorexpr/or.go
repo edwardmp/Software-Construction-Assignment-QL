@@ -17,8 +17,8 @@ func (o Or) GetRhs() expr.Expr {
 	return o.Rhs
 }
 
-func (o Or) Eval() interface{} {
-	return o.GetLhs().Eval().(bool) || o.GetRhs().Eval().(bool)
+func (o Or) Eval(s interface{}) interface{} {
+	return o.GetLhs().Eval(s).(bool) || o.GetRhs().Eval(s).(bool)
 }
 
 func (o Or) Accept(v visit.Visitor, s interface{}) interface{} {

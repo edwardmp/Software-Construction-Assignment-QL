@@ -17,8 +17,8 @@ func (a And) GetRhs() expr.Expr {
 	return a.Rhs
 }
 
-func (a And) Eval() interface{} {
-	return a.GetLhs().(expr.Expr).Eval().(bool) && a.GetRhs().(expr.Expr).Eval().(bool)
+func (a And) Eval(s interface{}) interface{} {
+	return a.GetLhs().(expr.Expr).Eval(s).(bool) && a.GetRhs().(expr.Expr).Eval(s).(bool)
 }
 
 func (a And) Accept(v visit.Visitor, s interface{}) interface{} {

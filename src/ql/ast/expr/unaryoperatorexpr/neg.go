@@ -14,8 +14,8 @@ func (n Neg) GetValue() expr.Expr {
 	return n.Value
 }
 
-func (n Neg) Eval() interface{} {
-	return int(math.Abs(float64(n.GetValue().Eval().(int))) * -1)
+func (n Neg) Eval(s interface{}) interface{} {
+	return int(math.Abs(float64(n.GetValue().Eval(s).(int))) * -1)
 }
 
 func (n Neg) Accept(v visit.Visitor, s interface{}) interface{} {

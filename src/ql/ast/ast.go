@@ -105,7 +105,7 @@ func NewStrLit(value interface{}) (expr.Expr, error) {
 }
 
 func NewVarExpr(identifier interface{}) (expr.Expr, error) {
-	return expr.VarExpr{identifier.(vari.VarId), nil}, nil
+	return expr.VarExpr{identifier.(vari.VarId)}, nil
 }
 
 /* statements */

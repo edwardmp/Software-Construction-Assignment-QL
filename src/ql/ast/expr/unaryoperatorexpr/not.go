@@ -13,8 +13,8 @@ func (n Not) GetValue() expr.Expr {
 	return n.Value
 }
 
-func (n Not) Eval() interface{} {
-	return !n.GetValue().Eval().(bool)
+func (n Not) Eval(s interface{}) interface{} {
+	return !n.GetValue().Eval(s).(bool)
 }
 
 func (n Not) Accept(v visit.Visitor, s interface{}) interface{} {

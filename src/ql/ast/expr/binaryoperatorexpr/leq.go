@@ -17,8 +17,8 @@ func (l LEq) GetRhs() expr.Expr {
 	return l.Rhs
 }
 
-func (l LEq) Eval() interface{} {
-	return l.GetLhs().Eval().(int) <= l.GetRhs().Eval().(int)
+func (l LEq) Eval(s interface{}) interface{} {
+	return l.GetLhs().Eval(s).(int) <= l.GetRhs().Eval(s).(int)
 }
 
 func (l LEq) Accept(v visit.Visitor, s interface{}) interface{} {

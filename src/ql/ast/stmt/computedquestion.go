@@ -15,7 +15,7 @@ type ComputedQuestion struct {
 }
 
 func (c ComputedQuestion) Eval() {
-	c.Computation.Eval()
+	c.Computation.Eval(nil)
 }
 
 func (c ComputedQuestion) String() string {

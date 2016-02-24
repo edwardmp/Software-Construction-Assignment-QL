@@ -12,7 +12,7 @@ type If struct {
 }
 
 func (i If) Eval() {
-	i.Cond.Eval() // FIXME necessary?
+	i.Cond.Eval(nil) // FIXME necessary?
 	i.Body.Eval()
 }
 
@@ -21,7 +21,7 @@ func (i If) String() string {
 }
 
 func (i If) EvalCondition() bool {
-	return i.Cond.Eval().(bool)
+	return i.Cond.Eval(nil).(bool)
 }
 
 func (i If) Accept(v visit.Visitor, s interface{}) interface{} {

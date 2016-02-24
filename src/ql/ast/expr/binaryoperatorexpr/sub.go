@@ -17,8 +17,8 @@ func (s Sub) GetRhs() expr.Expr {
 	return s.Rhs
 }
 
-func (s Sub) Eval() interface{} {
-	return s.GetLhs().Eval().(int) - s.GetRhs().Eval().(int)
+func (s Sub) Eval(sy interface{}) interface{} {
+	return s.GetLhs().Eval(sy).(int) - s.GetRhs().Eval(sy).(int)
 }
 
 func (s Sub) Accept(v visit.Visitor, sym interface{}) interface{} {

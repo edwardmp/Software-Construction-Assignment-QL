@@ -12,7 +12,7 @@ func (s StrLit) GetValue() interface{} {
 	return s.Value
 }
 
-func (s StrLit) Eval() interface{} {
+func (s StrLit) Eval(sy interface{}) interface{} {
 	return string(s.Value)
 }
 

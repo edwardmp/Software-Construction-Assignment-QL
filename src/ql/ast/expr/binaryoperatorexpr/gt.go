@@ -17,8 +17,8 @@ func (g GT) GetRhs() expr.Expr {
 	return g.Rhs
 }
 
-func (g GT) Eval() interface{} {
-	return g.GetLhs().Eval().(int) > g.GetRhs().Eval().(int)
+func (g GT) Eval(s interface{}) interface{} {
+	return g.GetLhs().Eval(s).(int) > g.GetRhs().Eval(s).(int)
 }
 
 func (g GT) Accept(v visit.Visitor, s interface{}) interface{} {
