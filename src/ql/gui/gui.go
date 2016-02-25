@@ -10,6 +10,7 @@ import (
 	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
+	"ql/ast/vari/vartype"
 	"ql/ast/visit"
 	"ql/env"
 	"strconv"
@@ -128,7 +129,7 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 		question.Computation.Accept(v, symbolTable)
 
 		computation := question.Computation.(expr.Expr)
-		guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), "Empty", computation)
+		guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.VarDecl.GetType(), computation)
 
 		v.Form.AddComputedQuestion(guiQuestion)
 	case stmt.If:
@@ -145,6 +146,8 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 	case vari.VarDecl:
 		log.Debug("Visit VarDecl")
 		t.(vari.VarDecl).Ident.Accept(v, symbolTable)
+	case vartype.VarType:
+		log.Debug("Visit VarType")
 	case lit.StrLit:
 		log.Debug("Visit StrLit")
 	case lit.BoolLit:

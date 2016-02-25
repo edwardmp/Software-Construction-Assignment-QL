@@ -64,7 +64,6 @@ func extractEmbeddedGUIQuestions(inputQuestions []GUIInputQuestion, computedQues
 	guiQuestions := make([]GUIQuestion, 0)
 
 	for _, question := range inputQuestions {
-		log.Debug(fmt.Sprintf("Add question %v", guiQuestions))
 		guiQuestions = append(guiQuestions, question.GUIQuestion)
 	}
 
@@ -103,7 +102,7 @@ func createSubmitButton(window *gtk.Window) *gtk.Button {
 			gtk.BUTTONS_OK,
 			"Form saved")
 		messagedialog.Response(func() {
-			fmt.Println("Dialog OK!")
+			log.Info("Submit dialog displayed")
 
 			messagedialog.Destroy()
 		})

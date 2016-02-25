@@ -7,7 +7,7 @@ import (
 // convenience method
 func CreateDisabledInputTextField(defaultText string) *gtk.Entry {
 	entry := CreateInputTextField(defaultText)
-	//entry.SetEditable(false)
+	entry.SetEditable(false)
 	return entry
 }
 

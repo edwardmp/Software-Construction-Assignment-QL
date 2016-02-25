@@ -10,6 +10,7 @@ import (
 	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
+	"ql/ast/vari/vartype"
 	"ql/ast/visit"
 	"ql/env"
 	"ql/gui"
@@ -22,7 +23,7 @@ func main() {
 
 	log.Info("Initiating parsing of file")
 
-	qlFile, _ := ioutil.ReadFile("example.ql")
+	qlFile, _ := ioutil.ReadFile("example.ql") // TODO handle erro
 	qlFileAsString := string(qlFile)
 
 	lex := lexer.NewLexer([]byte(qlFileAsString))
@@ -68,10 +69,13 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 		return t.(stmt.Form).Content.Accept(v, stack)
 	case vari.VarId:
 		log.Debug("Visit VarId")
+	case vartype.VarType:
+		log.Debug("Visit VarType")
 	case vari.VarDecl:
 		log.Debug("Visit VarDecl")
-		stack.SetNodeForIdentifier(lit.IntLit{19}, t.(vari.VarDecl).Ident)
-		t.(vari.VarDecl).Ident.Accept(v, stack)
+		varDecl := t.(vari.VarDecl)
+		stack.SetNodeForIdentifier(varDecl.GetType().GetDefaultValue(), varDecl.Ident)
+		varDecl.Ident.Accept(v, stack)
 	case stmt.StmtList:
 		log.Debug("Visit StmtList")
 
