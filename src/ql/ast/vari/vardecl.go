@@ -14,8 +14,12 @@ type variType interface {
 	GetDefaultValue() interface{}
 }
 
-func (va VarDecl) GetType() variType {
-	return va.Type
+func (v VarDecl) GetType() variType {
+	return v.Type
+}
+
+func (v VarDecl) GetIdentifier() VarId {
+	return v.Ident
 }
 
 func (va VarDecl) Accept(v visit.Visitor, s interface{}) interface{} {

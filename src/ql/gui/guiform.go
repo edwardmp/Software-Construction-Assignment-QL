@@ -11,6 +11,7 @@ type GUIForm struct {
 	Title             string
 	InputQuestions    []GUIInputQuestion
 	ComputedQuestions []GUIComputedQuestion
+	SaveDataCallback  func() (interface{}, error)
 }
 
 func (g *GUIForm) AddInputQuestion(question GUIInputQuestion) {
@@ -33,7 +34,7 @@ func (g *GUIForm) Show() {
 
 	window.Connect("destroy", func(ctx *glib.CallbackContext) {
 		fmt.Println("Destroy of window initiated", ctx.Data().(string))
-		saveFormData()
+		g.SaveDataCallback()
 		gtk.MainQuit()
 	}, "foo")
 
@@ -52,7 +53,7 @@ func (g *GUIForm) Show() {
 	vsep := gtk.NewVSeparator()
 	vbox.PackStart(vsep, false, false, 1)
 
-	vbox.PackStart(createSubmitButton(window), false, true, 1)
+	vbox.PackStart(createSubmitButton(g, window), false, true, 1)
 
 	window.Add(vbox)
 	//window.SetSizeRequest(400, 400)
@@ -91,10 +92,10 @@ func attachToTable(table *gtk.Table, question GUIQuestion, rowStart int) {
 	table.AttachDefaults(question.ErrorLabel, 2, 3, uint(rowStart), uint(rowStart+1))
 }
 
-func createSubmitButton(window *gtk.Window) *gtk.Button {
+func createSubmitButton(form *GUIForm, window *gtk.Window) *gtk.Button {
 	button := CreateButton("Submit", func() {
 		log.Debug("Submit button clicked")
-		saveFormData()
+		form.SaveDataCallback()
 		messagedialog := gtk.NewMessageDialog(
 			window,
 			gtk.DIALOG_MODAL,
@@ -110,8 +111,4 @@ func createSubmitButton(window *gtk.Window) *gtk.Button {
 	})
 
 	return button
-}
-
-func saveFormData() {
-
 }

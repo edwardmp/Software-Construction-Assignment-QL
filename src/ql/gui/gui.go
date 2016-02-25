@@ -61,6 +61,9 @@ type GUI struct {
 
 func CreateGUI(form stmt.Form, symbolTable env.SymbolTable) {
 	gui := GUI{}
+	gui.Form = &GUIForm{Title: form.Identifier.Ident}
+
+	gui.Form.SaveDataCallback = symbolTable.SaveToDisk
 
 	gui.Visit(form, symbolTable)
 }
@@ -73,8 +76,6 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 		panic(fmt.Sprintf("Unexpected node type %T", t))
 	case stmt.Form:
 		log.Debug("Visit Form")
-
-		v.Form = &GUIForm{Title: t.(stmt.Form).Identifier.Ident}
 
 		t.(stmt.Form).Identifier.Accept(v, symbolTable)
 		t.(stmt.Form).Content.Accept(v, symbolTable)
@@ -129,7 +130,7 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 		question.Computation.Accept(v, symbolTable)
 
 		computation := question.Computation.(expr.Expr)
-		guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.VarDecl.GetType(), computation)
+		guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.VarDecl.GetType(), computation, question.VarDecl.GetIdentifier())
 
 		v.Form.AddComputedQuestion(guiQuestion)
 	case stmt.If:
@@ -171,18 +172,11 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 func (g GUI) updateComputedQuestions(symbolTable env.SymbolTable) {
 	for _, computedQuestion := range g.Form.ComputedQuestions {
 		computedQuestionEval := computedQuestion.Expr.Eval(symbolTable)
-		computedQuestion.GUIQuestion.ChangeElementText(literalValueToString(computedQuestionEval))
-		log.WithFields(log.Fields{"eval": computedQuestionEval}).Info("Computed question value changed")
-	}
-}
+		computedQuestion.GUIQuestion.ChangeElementText(fmt.Sprintf("%v", computedQuestionEval))
 
-func literalValueToString(literal interface{}) string {
-	switch literal.(type) {
-	case bool:
-		return fmt.Sprintf("%t", literal)
-	case int:
-		return fmt.Sprintf("%d", literal)
-	default:
-		return fmt.Sprintf("%s", literal)
+		// save the computed value to the symbol table
+		symbolTable.SetNodeForIdentifier(computedQuestionEval, computedQuestion.VarId)
+
+		log.WithFields(log.Fields{"eval": computedQuestionEval}).Info("Computed question value changed")
 	}
 }
