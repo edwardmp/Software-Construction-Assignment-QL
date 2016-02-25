@@ -14,10 +14,6 @@ type ComputedQuestion struct {
 	Computation expr.Expr
 }
 
-func (c ComputedQuestion) Eval() {
-	c.Computation.Eval(nil)
-}
-
 func (c ComputedQuestion) String() string {
 	return fmt.Sprintf("A question with label %s, var decl %s and computation", c.Label, c.VarDecl, c.Computation)
 }

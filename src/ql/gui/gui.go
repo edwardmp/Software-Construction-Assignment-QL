@@ -22,8 +22,7 @@ type GUI struct {
 }
 
 func CreateGUI(form stmt.Form, symbolTable env.SymbolTable) {
-	gui := GUI{}
-	gui.Form = &GUIForm{Title: form.Identifier.Ident}
+	gui := GUI{Form: &GUIForm{Title: form.Identifier.Ident}}
 
 	gui.Form.SaveDataCallback = symbolTable.SaveToDisk
 
