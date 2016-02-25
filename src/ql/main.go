@@ -23,22 +23,26 @@ func main() {
 
 	log.Info("Initiating parsing of file")
 
-	qlFile, _ := ioutil.ReadFile("example.ql") // TODO handle erro
-	qlFileAsString := string(qlFile)
+	fileName := "example.ql"
+	qlFile, fileError := ioutil.ReadFile(fileName) // TODO handle error
 
-	lex := lexer.NewLexer([]byte(qlFileAsString))
-
-	p := parser.NewParser()
-	result, err := p.Parse(lex)
-
-	if err != nil {
-		panic(err)
+	if fileError != nil {
+		log.WithFields(log.Fields{"fileName": fileName}).Panic("Could not open input file")
 	}
 
-	if parsedForm, ok := result.(stmt.Form); !ok {
-		panic("Parse result is not form")
+	lex := lexer.NewLexer([]byte(string(qlFile)))
+
+	p := parser.NewParser()
+	parseResult, parseErr := p.Parse(lex)
+
+	if parseErr != nil {
+		log.WithFields(log.Fields{"err": parseErr}).Panic("Could not parse")
+	}
+
+	if parsedForm, ok := parseResult.(stmt.Form); !ok {
+		log.Panic("Parse result is not form")
 	} else {
-		log.WithFields(log.Fields{"Result": result}).Info("Form parsed")
+		log.WithFields(log.Fields{"Result": parsedForm}).Info("Form parsed")
 
 		visitor := VisitorAdapter{}
 		symbolTableStack := env.NewSymbolTable()
@@ -62,7 +66,7 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 
 	switch t.(type) {
 	default:
-		panic(fmt.Sprintf("Unexpected node type %T", t))
+		log.WithFields(log.Fields{"Node": fmt.Sprintf("%T", t)}).Panic("Unexpected node type")
 	case stmt.Form:
 		log.Debug("Visit Form")
 		t.(stmt.Form).Identifier.Accept(v, stack)
@@ -79,12 +83,12 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 	case stmt.StmtList:
 		log.Debug("Visit StmtList")
 
-		for i := range t.(stmt.StmtList).Questions {
-			t.(stmt.StmtList).Questions[i].(stmt.Question).Accept(v, stack)
+		for _, question := range t.(stmt.StmtList).Questions {
+			question.Accept(v, stack)
 		}
 
-		for i := range t.(stmt.StmtList).Conditionals {
-			t.(stmt.StmtList).Conditionals[i].(stmt.Conditional).Accept(v, stack)
+		for _, conditional := range t.(stmt.StmtList).Conditionals {
+			conditional.Accept(v, stack)
 		}
 	case stmt.InputQuestion:
 		log.Debug("Visit InputQuestion")
