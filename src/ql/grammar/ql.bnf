@@ -50,7 +50,6 @@ ident : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 	"ql/ast"
 	"ql/token"
 	"ql/util"
-    "ql/ast/vari"
 ) 
 >>
 
@@ -58,11 +57,11 @@ ident : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 Form : "form" VarId Block << ast.NewForm($1, $2) >> ;
 
 /* types */
-Type    : "integer" << vari.INT, nil >>
-        | "boolean" << vari.BOOLEAN, nil >>
-        | "string"  << vari.STRING, nil >>
-        | "money"   << vari.MONEY, nil >>
-        | "date"    << vari.DATE, nil >> 
+Type    : "integer" << ast.NewIntType() >>
+        | "boolean" << ast.NewBoolType() >>
+        | "string"  << ast.NewStringType() >>
+        // | "money"   << vari.MONEY, nil >>
+        // | "date"    << vari.DATE, nil >> 
         ;
 
 NumLiteral : integer_lit   << ast.NewIntLit((util.IntValue($0.(*token.Token).Lit))) >> ;

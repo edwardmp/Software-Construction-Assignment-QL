@@ -108,7 +108,21 @@ func NewVarExpr(identifier interface{}) (expr.Expr, error) {
 	return expr.VarExpr{identifier.(vari.VarId)}, nil
 }
 
-/* statements */
+/* vartypes */
+
+func NewIntType() (vari.IntType, error) {
+	return vari.IntType{}, nil
+}
+
+func NewBoolType() (vari.BoolType, error) {
+	return vari.BoolType{}, nil
+}
+
+func NewStringType() (vari.StringType, error) {
+	return vari.StringType{}, nil
+}
+
+/** statements **/
 
 func NewForm(identifier interface{}, body interface{}) (stmt.Form, error) {
 	return stmt.Form{identifier.(vari.VarId), body.(stmt.StmtList)}, nil

@@ -1,11 +1,29 @@
 package vari
 
-type VarType int
+type VarType interface {
+	GetDefaultValue() interface{}
+}
 
-const (
-	BOOLEAN VarType = 1 + iota
-	STRING
-	INT
-	MONEY
-	DATE
-)
+type IntType struct {
+	VarType
+}
+
+func (i IntType) GetDefaultValue() interface{} {
+	return 0
+}
+
+type StringType struct {
+	VarType
+}
+
+func (s StringType) GetDefaultValue() interface{} {
+	return ""
+}
+
+type BoolType struct {
+	VarType
+}
+
+func (b BoolType) GetDefaultValue() interface{} {
+	return false
+}
