@@ -70,7 +70,7 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 		log.Debug("Visit VarId")
 	case vari.VarDecl:
 		log.Debug("Visit VarDecl")
-		stack.SetNodeForIdentifier(nil, t.(vari.VarDecl).Ident)
+		stack.SetNodeForIdentifier(lit.IntLit{19}, t.(vari.VarDecl).Ident)
 		t.(vari.VarDecl).Ident.Accept(v, stack)
 	case stmt.StmtList:
 		log.Debug("Visit StmtList")

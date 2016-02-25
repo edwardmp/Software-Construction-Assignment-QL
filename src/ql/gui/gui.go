@@ -53,15 +53,15 @@ func openQLFile(filePath string) string {
 }
 */
 
+type GUI struct {
+	visit.Visitor
+	Form *GUIForm
+}
+
 func CreateGUI(form stmt.Form, symbolTable env.SymbolTable) {
 	gui := GUI{}
 
 	gui.Visit(form, symbolTable)
-}
-
-type GUI struct {
-	visit.Visitor
-	Form *GUIForm
 }
 
 func (v GUI) Visit(t interface{}, s interface{}) interface{} {
@@ -82,12 +82,12 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 	case stmt.StmtList:
 		log.Debug("Visit StmtList")
 
-		for i := range t.(stmt.StmtList).Questions {
-			t.(stmt.StmtList).Questions[i].(stmt.Question).Accept(v, symbolTable)
+		for _, question := range t.(stmt.StmtList).Questions {
+			question.Accept(v, symbolTable)
 		}
 
-		for i := range t.(stmt.StmtList).Conditionals {
-			t.(stmt.StmtList).Conditionals[i].(stmt.Conditional).Accept(v, symbolTable)
+		for _, conditional := range t.(stmt.StmtList).Conditionals {
+			conditional.Accept(v, symbolTable)
 		}
 
 	case stmt.InputQuestion:
@@ -95,8 +95,8 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 
 		question := t.(stmt.InputQuestion)
 
-		var guiQuestion GUIQuestion
-		QuestionCallback := func(input interface{}, err error) {
+		var guiQuestion GUIInputQuestion
+		questionCallback := func(input interface{}, err error) {
 			if numError, ok := err.(*strconv.NumError); err != nil && ok {
 				if numError.Err.Error() == "invalid syntax" {
 					guiQuestion.ChangeErrorLabelText("not a valid number")
@@ -109,10 +109,12 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 			questionIdentifier := question.GetVarDecl().Ident
 			log.WithFields(log.Fields{"input": input, "identifier": questionIdentifier}).Debug("Question input received")
 			symbolTable.SetNodeForIdentifier(input.(expr.Expr), questionIdentifier)
+
+			v.updateComputedQuestions(symbolTable)
 		}
 
-		guiQuestion = CreateGUIInputQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), QuestionCallback)
-		v.Form.AddQuestion(guiQuestion)
+		guiQuestion = CreateGUIInputQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), questionCallback)
+		v.Form.AddInputQuestion(guiQuestion)
 
 		question.Label.Accept(v, symbolTable)
 		question.VarDecl.Accept(v, symbolTable)
@@ -125,18 +127,10 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 		question.VarDecl.Accept(v, symbolTable)
 		question.Computation.Accept(v, symbolTable)
 
-		var guiQuestion GUIQuestion
-		QuestionCallback := func() {
-			fmt.Printf("Symbol table %s\n", symbolTable)
-			questionIdentifier := question.GetVarDecl().Ident
-			computedQuestionEval := question.Computation.Eval(symbolTable)
-			log.WithFields(log.Fields{"identifier": questionIdentifier, "eval": computedQuestionEval}).Info("Computed question value changed")
-			guiQuestion.ChangeElementText(strconv.Itoa(computedQuestionEval.(int)))
-		}
+		computation := question.Computation.(expr.Expr)
+		guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), "Empty", computation)
 
-		guiQuestion = CreateGUIComputedQuestion(question.GetLabelAsString(), "Empty", QuestionCallback)
-
-		v.Form.AddQuestion(guiQuestion)
+		v.Form.AddComputedQuestion(guiQuestion)
 	case stmt.If:
 		log.Debug("Visit If")
 		t.(stmt.If).Cond.Accept(v, symbolTable)
@@ -168,5 +162,24 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 		log.Debug("Visit VarExpr")
 	}
 
-	return false
+	return nil
+}
+
+func (g GUI) updateComputedQuestions(symbolTable env.SymbolTable) {
+	for _, computedQuestion := range g.Form.ComputedQuestions {
+		computedQuestionEval := computedQuestion.Expr.Eval(symbolTable)
+		computedQuestion.GUIQuestion.ChangeElementText(literalValueToString(computedQuestionEval))
+		log.WithFields(log.Fields{"eval": computedQuestionEval}).Info("Computed question value changed")
+	}
+}
+
+func literalValueToString(literal interface{}) string {
+	switch literal.(type) {
+	case bool:
+		return fmt.Sprintf("%t", literal)
+	case int:
+		return fmt.Sprintf("%d", literal)
+	default:
+		return fmt.Sprintf("%s", literal)
+	}
 }
