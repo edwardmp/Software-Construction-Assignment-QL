@@ -19,3 +19,7 @@ func (s StrLit) Eval(sy interface{}) interface{} {
 func (s StrLit) Accept(v visit.Visitor, sy interface{}) interface{} {
 	return v.Visit(s, sy)
 }
+
+func (s StrLit) String() string {
+	return s.Value
+}

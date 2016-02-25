@@ -1,6 +1,7 @@
 package lit
 
 import (
+	"fmt"
 	"ql/ast/visit"
 )
 
@@ -18,4 +19,8 @@ func (b BoolLit) Eval(s interface{}) interface{} {
 
 func (b BoolLit) Accept(v visit.Visitor, s interface{}) interface{} {
 	return v.Visit(b, s)
+}
+
+func (b BoolLit) String() string {
+	return fmt.Sprintf("%t", b)
 }

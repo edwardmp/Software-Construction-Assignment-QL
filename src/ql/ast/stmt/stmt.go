@@ -1,6 +1,8 @@
 package stmt
 
+import "fmt"
+
 type Stmt interface {
 	Eval()
-	String() string
+	fmt.Stringer
 }
