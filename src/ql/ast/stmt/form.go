@@ -11,10 +11,6 @@ type Form struct {
 	Content    StmtList
 }
 
-func (f Form) Eval() {
-	f.Content.Eval()
-}
-
 func (f Form) String() string {
 	return fmt.Sprintf("A form with identifier %s, statement list %v\n", f.Identifier, f.Content)
 }

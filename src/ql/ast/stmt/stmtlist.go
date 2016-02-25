@@ -10,12 +10,6 @@ type StmtList struct {
 	Conditionals []Conditional
 }
 
-func (s StmtList) Eval() {
-	for _, conditional := range s.Conditionals {
-		conditional.Eval()
-	}
-}
-
 func (s StmtList) AddToCorrectSlice(i interface{}) StmtList {
 	switch t := i.(type) {
 	default:

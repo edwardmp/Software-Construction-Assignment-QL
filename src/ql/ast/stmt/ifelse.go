@@ -12,12 +12,6 @@ type IfElse struct {
 	ElseBody StmtList
 }
 
-func (i IfElse) Eval() {
-	i.Cond.Eval(nil) // FIXME necessary?
-	i.IfBody.Eval()
-	i.ElseBody.Eval()
-}
-
 func (i IfElse) String() string {
 	return fmt.Sprintf("An if/else statement with condition %s", i.Cond)
 }

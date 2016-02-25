@@ -11,11 +11,6 @@ type If struct {
 	Body StmtList
 }
 
-func (i If) Eval() {
-	i.Cond.Eval(nil) // FIXME necessary?
-	i.Body.Eval()
-}
-
 func (i If) String() string {
 	return fmt.Sprintf("An if statement with condition %s and statement list %s", i.Cond, i.Body)
 }
