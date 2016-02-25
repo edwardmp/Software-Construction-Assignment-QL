@@ -28,7 +28,7 @@ func createQuestionElement(questionType vartype.VarType, callback func(interface
 	case vartype.BoolType:
 		checkbox := CreateCheckboxConditional()
 		checkbox.Connect("clicked", func() {
-			log.WithFields(log.Fields{"value": checkbox.GetActive()}).Debug("First input radio button value changed")
+			log.WithFields(log.Fields{"value": checkbox.GetActive()}).Debug("Checkbox value changed")
 			callback(lit.BoolLit{checkbox.GetActive()}, nil)
 		})
 		GTKEntity = checkbox

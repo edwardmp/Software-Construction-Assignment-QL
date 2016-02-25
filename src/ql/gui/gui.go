@@ -16,44 +16,6 @@ import (
 	"strconv"
 )
 
-/*
-func presentOpenFileDialog(window *gtk.Window) {
-	messagedialog := gtk.NewMessageDialog(
-		window,
-		gtk.DIALOG_MODAL,
-		gtk.MESSAGE_INFO,
-		gtk.BUTTONS_OK,
-		"Choose input QL file")
-	messagedialog.Response(func() {
-		fmt.Println("Dialog OK!")
-		filechooserdialog := gtk.NewFileChooserDialog(
-			"Choose QL File",
-			window,
-			gtk.FILE_CHOOSER_ACTION_OPEN,
-			gtk.STOCK_OK,
-			gtk.RESPONSE_ACCEPT)
-		filter := gtk.NewFileFilter()
-		filter.AddPattern("*.ql")
-		filechooserdialog.AddFilter(filter)
-		filechooserdialog.Response(func() {
-			fmt.Println(filechooserdialog.GetFilename())
-			openQLFile(filechooserdialog.GetFilename())
-			filechooserdialog.Destroy()
-		})
-		filechooserdialog.Run()
-		messagedialog.Destroy()
-	})
-	messagedialog.Run()
-}
-*/
-
-/*
-func openQLFile(filePath string) string {
-	qlFile, _ := ioutil.ReadFile(filePath)
-	return string(qlFile)
-}
-*/
-
 type GUI struct {
 	visit.Visitor
 	Form *GUIForm
@@ -99,10 +61,12 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 
 		var guiQuestion GUIInputQuestion
 		questionCallback := func(input interface{}, err error) {
-			if numError, ok := err.(*strconv.NumError); err != nil && ok {
-				if numError.Err.Error() == "invalid syntax" {
-					guiQuestion.ChangeErrorLabelText("not a valid number")
-					log.Debug("Presenting invalid number error to user")
+			if err != nil {
+				if numError, ok := err.(*strconv.NumError); err != nil && ok {
+					if numError.Err.Error() == "invalid syntax" {
+						guiQuestion.ChangeErrorLabelText("not a valid number")
+						log.Debug("Presenting invalid number error to user")
+					}
 				}
 
 				return
@@ -110,7 +74,7 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 
 			questionIdentifier := question.GetVarDecl().Ident
 			log.WithFields(log.Fields{"input": input, "identifier": questionIdentifier}).Debug("Question input received")
-			symbolTable.SetNodeForIdentifier(input.(expr.Expr), questionIdentifier)
+			symbolTable.SetNodeForIdentifier(input, questionIdentifier)
 
 			v.updateComputedQuestions(symbolTable)
 		}
@@ -180,3 +144,41 @@ func (g GUI) updateComputedQuestions(symbolTable env.SymbolTable) {
 		log.WithFields(log.Fields{"eval": computedQuestionEval}).Info("Computed question value changed")
 	}
 }
+
+/*
+func presentOpenFileDialog(window *gtk.Window) {
+    messagedialog := gtk.NewMessageDialog(
+        window,
+        gtk.DIALOG_MODAL,
+        gtk.MESSAGE_INFO,
+        gtk.BUTTONS_OK,
+        "Choose input QL file")
+    messagedialog.Response(func() {
+        fmt.Println("Dialog OK!")
+        filechooserdialog := gtk.NewFileChooserDialog(
+            "Choose QL File",
+            window,
+            gtk.FILE_CHOOSER_ACTION_OPEN,
+            gtk.STOCK_OK,
+            gtk.RESPONSE_ACCEPT)
+        filter := gtk.NewFileFilter()
+        filter.AddPattern("*.ql")
+        filechooserdialog.AddFilter(filter)
+        filechooserdialog.Response(func() {
+            fmt.Println(filechooserdialog.GetFilename())
+            openQLFile(filechooserdialog.GetFilename())
+            filechooserdialog.Destroy()
+        })
+        filechooserdialog.Run()
+        messagedialog.Destroy()
+    })
+    messagedialog.Run()
+}
+*/
+
+/*
+func openQLFile(filePath string) string {
+    qlFile, _ := ioutil.ReadFile(filePath)
+    return string(qlFile)
+}
+*/
