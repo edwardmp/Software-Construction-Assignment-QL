@@ -50,7 +50,7 @@ func (g *GUIForm) Show() {
 	vbox.PackStart(createSubmitButton(window), false, true, 1)
 
 	window.Add(vbox)
-	window.SetSizeRequest(400, 400)
+	//window.SetSizeRequest(400, 400)
 	window.ShowAll()
 	gtk.Main()
 }
@@ -69,6 +69,7 @@ func createQuestions(questions []GUIQuestion, vbox *gtk.VBox) {
 func attachToTable(table *gtk.Table, question GUIQuestion, rowStart int) {
 	table.AttachDefaults(question.Label, 0, 1, uint(rowStart), uint(rowStart+1))
 	table.AttachDefaults(question.Element.(gtk.IWidget), 1, 2, uint(rowStart), uint(rowStart+1))
+	table.AttachDefaults(question.ErrorLabel, 2, 3, uint(rowStart), uint(rowStart+1))
 }
 
 func createSubmitButton(window *gtk.Window) *gtk.Button {
