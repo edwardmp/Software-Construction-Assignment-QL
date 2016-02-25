@@ -22,5 +22,5 @@ func (b BoolLit) Accept(v visit.Visitor, s interface{}) interface{} {
 }
 
 func (b BoolLit) String() string {
-	return fmt.Sprintf("%t", b)
+	return fmt.Sprintf("%t", b.Value)
 }

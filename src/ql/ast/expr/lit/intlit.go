@@ -22,5 +22,5 @@ func (i IntLit) Accept(v visit.Visitor, s interface{}) interface{} {
 }
 
 func (i IntLit) String() string {
-	return fmt.Sprintf("%d", i)
+	return fmt.Sprintf("%d", i.Value)
 }

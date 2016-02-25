@@ -6,10 +6,15 @@ import (
 
 type VarDecl struct {
 	Ident VarId
-	Type  VarType
+	Type  variType
 }
 
-func (va VarDecl) GetType() VarType {
+// TODO: needed to break import cycle, look at better solution
+type variType interface {
+	GetDefaultValue() interface{}
+}
+
+func (va VarDecl) GetType() variType {
 	return va.Type
 }
 
