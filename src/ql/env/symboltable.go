@@ -7,9 +7,12 @@ import (
 	"ql/ast/vari"
 )
 
-/* Symbol Table */
-
 type SymbolTable map[vari.VarId]interface{}
+
+func NewSymbolTable() SymbolTable {
+	log.Debug("Creating new symbol table")
+	return make(SymbolTable)
+}
 
 func (s SymbolTable) GetNodeForIdentifier(v vari.VarId) interface{} {
 	return s[v]
@@ -25,11 +28,6 @@ func (s SymbolTable) SetNodeForIdentifier(e interface{}, v vari.VarId) *SymbolTa
 	}
 
 	return &s
-}
-
-func NewSymbolTable() SymbolTable {
-	log.Debug("Creating new symbol table")
-	return make(SymbolTable)
 }
 
 func (s SymbolTable) SaveToDisk() (interface{}, error) {
