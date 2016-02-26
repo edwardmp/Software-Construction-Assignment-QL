@@ -1,16 +1,15 @@
-package env
+package symboltable
 
 import (
 	"io/ioutil"
 	"os"
 	"ql/ast/vari"
-	"ql/env"
 	"strings"
 	"testing"
 )
 
 func TestSymbolTableAdd(t *testing.T) {
-	newSymbolTable := env.NewSymbolTable()
+	newSymbolTable := NewSymbolTable()
 	exampleVarId := vari.VarId{"testIdentifier"}
 	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)
 
@@ -20,7 +19,7 @@ func TestSymbolTableAdd(t *testing.T) {
 }
 
 func TestSaveToDisk(t *testing.T) {
-	newSymbolTable := env.NewSymbolTable()
+	newSymbolTable := NewSymbolTable()
 	exampleVarId := vari.VarId{"testIdentifier"}
 	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)
 

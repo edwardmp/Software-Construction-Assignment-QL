@@ -3,7 +3,7 @@ package expr
 import (
 	"ql/ast/vari"
 	"ql/ast/visit"
-	"ql/env"
+	"ql/symboltable"
 )
 
 type VarExpr struct {
@@ -15,7 +15,7 @@ func (v VarExpr) GetIdentifier() vari.VarId {
 }
 
 func (v VarExpr) Eval(s interface{}) interface{} {
-	symbolTable := s.(env.SymbolTable)
+	symbolTable := s.(symboltable.SymbolTable)
 	return symbolTable.GetNodeForIdentifier(v.Identifier).(Expr).Eval(s)
 }
 

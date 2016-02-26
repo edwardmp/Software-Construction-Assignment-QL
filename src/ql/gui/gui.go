@@ -12,7 +12,7 @@ import (
 	"ql/ast/vari"
 	"ql/ast/vari/vartype"
 	"ql/ast/visit"
-	"ql/env"
+	"ql/symboltable"
 	"strconv"
 )
 
@@ -21,7 +21,7 @@ type GUI struct {
 	Form *GUIForm
 }
 
-func CreateGUI(form stmt.Form, symbolTable env.SymbolTable) {
+func CreateGUI(form stmt.Form, symbolTable symboltable.SymbolTable) {
 	gui := GUI{Form: &GUIForm{Title: form.Identifier.Ident}}
 
 	gui.Form.SaveDataCallback = symbolTable.SaveToDisk
@@ -30,7 +30,7 @@ func CreateGUI(form stmt.Form, symbolTable env.SymbolTable) {
 }
 
 func (v GUI) Visit(t interface{}, s interface{}) interface{} {
-	symbolTable := s.(env.SymbolTable)
+	symbolTable := s.(symboltable.SymbolTable)
 
 	switch t.(type) {
 	default:
@@ -132,7 +132,7 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 	return nil
 }
 
-func (g GUI) updateComputedQuestions(symbolTable env.SymbolTable) {
+func (g GUI) updateComputedQuestions(symbolTable symboltable.SymbolTable) {
 	for _, computedQuestion := range g.Form.ComputedQuestions {
 		computedQuestionEval := computedQuestion.Expr.Eval(symbolTable)
 		computedQuestion.GUIQuestion.ChangeElementText(fmt.Sprintf("%v", computedQuestionEval))

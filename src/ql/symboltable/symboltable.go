@@ -1,4 +1,4 @@
-package env
+package symboltable
 
 import (
 	"encoding/json"

@@ -12,7 +12,7 @@ import (
 	"ql/ast/vari"
 	"ql/ast/vari/vartype"
 	"ql/ast/visit"
-	"ql/env"
+	"ql/symboltable"
 	"ql/gui"
 	"ql/lexer"
 	"ql/parser"
@@ -45,9 +45,9 @@ func main() {
 		log.WithFields(log.Fields{"Result": parsedForm}).Info("Form parsed")
 
 		visitor := VisitorAdapter{}
-		symbolTableStack := env.NewSymbolTable()
+		symbolTableStack := symboltable.NewSymbolTable()
 
-		symbolTable := parsedForm.Accept(visitor, symbolTableStack).(env.SymbolTable)
+		symbolTable := parsedForm.Accept(visitor, symbolTableStack).(symboltable.SymbolTable)
 
 		gui.CreateGUI(parsedForm, symbolTable)
 	}
@@ -62,7 +62,7 @@ type VisitorAdapter struct {
 }
 
 func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
-	stack := s.(env.SymbolTable)
+	stack := s.(symboltable.SymbolTable)
 
 	switch t.(type) {
 	default:
