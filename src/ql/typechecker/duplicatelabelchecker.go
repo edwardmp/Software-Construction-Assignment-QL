@@ -10,7 +10,7 @@ import (
 	"ql/ast/visit"
 )
 
-type DuplicateLabelChecker struct {
+type DuplicateLabelTypeChecker struct {
 	LabelsEncountered map[lit.StrLit]vari.VarId
 	visit.Visitor
 	WarningsEncountered []error
@@ -19,13 +19,13 @@ type DuplicateLabelChecker struct {
 func CheckForDuplicateLabels(form stmt.Form) {
 	log.Info("Start check for duplicate labels")
 	labelsEncountered := make(map[lit.StrLit]vari.VarId)
-	duplicateLabelChecker := DuplicateLabelChecker{LabelsEncountered: labelsEncountered}
+	duplicateLabelChecker := DuplicateLabelTypeChecker{LabelsEncountered: labelsEncountered}
 
 	duplicateLabelChecker.Visit(form, nil)
 	log.WithFields(log.Fields{"WarningsEncountered": duplicateLabelChecker.WarningsEncountered}).Info("Ended check for duplicate labels")
 }
 
-func (v *DuplicateLabelChecker) Visit(t interface{}, s interface{}) interface{} {
+func (v *DuplicateLabelTypeChecker) Visit(t interface{}, s interface{}) interface{} {
 	switch t.(type) {
 	default:
 		log.WithFields(log.Fields{"Node": fmt.Sprintf("%T", t)}).Debug("Ignoring unhandled node type")
