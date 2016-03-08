@@ -55,31 +55,8 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 
 	case stmt.InputQuestion:
 		log.Debug("Visit InputQuestion")
-
 		question := t.(stmt.InputQuestion)
-
-		var guiQuestion GUIInputQuestion
-		questionCallback := func(input interface{}, err error) {
-			if err != nil {
-				if numError, ok := err.(*strconv.NumError); err != nil && ok {
-					if numError.Err.Error() == "invalid syntax" {
-						guiQuestion.ChangeErrorLabelText("not a valid number")
-						log.Debug("Presenting invalid number error to user")
-					}
-				}
-
-				return
-			}
-
-			questionIdentifier := question.GetVarDecl().Ident
-			log.WithFields(log.Fields{"input": input, "identifier": questionIdentifier}).Debug("Question input received")
-			symbolTable.SetNodeForIdentifier(input, questionIdentifier)
-
-			v.updateComputedQuestions(symbolTable)
-		}
-
-		guiQuestion = CreateGUIInputQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), questionCallback)
-		v.Form.AddInputQuestion(guiQuestion)
+		v.handleInputQuestion(question, symbolTable)
 
 		question.Label.Accept(v, symbolTable)
 		question.VarDecl.Accept(v, symbolTable)
@@ -88,14 +65,12 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 
 		question := t.(stmt.ComputedQuestion)
 
+		v.handleComputedQuestion(question, symbolTable)
+
 		question.Label.Accept(v, symbolTable)
 		question.VarDecl.Accept(v, symbolTable)
 		question.Computation.Accept(v, symbolTable)
 
-		computation := question.Computation.(expr.Expr)
-		guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.VarDecl.GetType(), computation, question.VarDecl.GetIdentifier())
-
-		v.Form.AddComputedQuestion(guiQuestion)
 	case stmt.If:
 		log.Debug("Visit If")
 		t.(stmt.If).Cond.Accept(v, symbolTable)
@@ -130,6 +105,38 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 	}
 
 	return nil
+}
+
+func (v GUI) handleInputQuestion(question stmt.InputQuestion, symbolTable symboltable.SymbolTable) {
+	var guiQuestion GUIInputQuestion
+	questionCallback := func(input interface{}, err error) {
+		if err != nil {
+			if numError, ok := err.(*strconv.NumError); err != nil && ok {
+				if numError.Err.Error() == "invalid syntax" {
+					guiQuestion.ChangeErrorLabelText("not a valid number")
+					log.Debug("Presenting invalid number error to user")
+				}
+			}
+
+			return
+		}
+
+		questionIdentifier := question.GetVarDecl().Ident
+		log.WithFields(log.Fields{"input": input, "identifier": questionIdentifier}).Debug("Question input received")
+		symbolTable.SetNodeForIdentifier(input, questionIdentifier)
+
+		v.updateComputedQuestions(symbolTable)
+	}
+
+	guiQuestion = CreateGUIInputQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), questionCallback)
+	v.Form.AddInputQuestion(guiQuestion)
+}
+
+func (v GUI) handleComputedQuestion(question stmt.ComputedQuestion, symbolTable symboltable.SymbolTable) {
+	computation := question.Computation.(expr.Expr)
+	guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.VarDecl.GetType(), computation, question.VarDecl.GetIdentifier())
+
+	v.Form.AddComputedQuestion(guiQuestion)
 }
 
 func (g GUI) updateComputedQuestions(symbolTable symboltable.SymbolTable) {

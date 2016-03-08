@@ -12,7 +12,7 @@ import (
 	"ql/ast/vari"
 	"ql/ast/vari/vartype"
 	"ql/ast/visit"
-	//"ql/gui"
+	"ql/gui"
 	"ql/lexer"
 	"ql/parser"
 	"ql/symboltable"
@@ -57,7 +57,7 @@ func main() {
 		errorsAndWarnings = append(errorsAndWarnings, typechecker.CheckForNonBoolConditions(parsedForm, symbolTable)...)
 
 		log.WithFields(log.Fields{"errors": errorsAndWarnings}).Error("Type checker results")
-		//gui.CreateGUI(parsedForm, symbolTable)
+		gui.CreateGUI(parsedForm, symbolTable)
 	}
 }
 
