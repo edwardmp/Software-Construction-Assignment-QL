@@ -3,7 +3,6 @@ package typechecker
 import (
 	"fmt"
 	log "github.com/Sirupsen/logrus"
-
 	"ql/ast/expr/lit"
 	"ql/ast/stmt"
 	"ql/ast/vari"
