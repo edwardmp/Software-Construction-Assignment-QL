@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"ql/ast/expr"
+	"ql/ast/expr/binaryoperatorexpr"
 	"ql/ast/expr/lit"
 	"ql/ast/stmt"
 	"ql/ast/vari"
@@ -126,19 +128,17 @@ func TestFormQuestion(t *testing.T) {
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
 
-/*
 func TestFormComputedQuestion(t *testing.T) {
-	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: integer \"Did you enter a loan?\" hasMaintLoan: integer \"Value residue:\" valueResidue: int = (hasSoldHouse - hasMaintLoan) }"
+	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: integer \"Did you enter a loan?\" hasMaintLoan: integer \"Value residue:\" valueResidue: integer = (hasSoldHouse - hasMaintLoan) }"
 
 	firstQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.IntType{}}}
 	secondQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you enter a loan?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vartype.IntType{}}}
-	computedQuestion := stmt.ComputedQuestion{lit.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vartype.IntType}, expr.Sub{vari.VarId{"hasSoldHouse"}, vari.Varid{"hasMaintLoan"}}}
+	computedQuestion := stmt.ComputedQuestion{lit.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vartype.IntType{}}, binaryoperatorexpr.Sub{expr.VarExpr{vari.VarId{"hasSoldHouse"}}, expr.VarExpr{vari.VarId{"hasMaintLoan"}}}}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput, secondQuestionOutput, computedQuestion}, []stmt.Conditional{}}
 	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
-*/
 
 func TestFormIf(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean if (true) { \"What was the selling price?\" sellingPrice: integer } }"
