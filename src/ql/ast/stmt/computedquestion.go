@@ -18,6 +18,10 @@ func (c ComputedQuestion) String() string {
 	return fmt.Sprintf("A question with label %s, var decl %s and computation", c.Label, c.VarDecl, c.Computation)
 }
 
+func (c ComputedQuestion) GetLabel() lit.StrLit {
+	return c.Label
+}
+
 func (c ComputedQuestion) GetLabelAsString() string {
 	return c.Label.GetValue().(string)
 }

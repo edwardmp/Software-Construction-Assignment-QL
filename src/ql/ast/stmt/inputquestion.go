@@ -16,6 +16,10 @@ func (i InputQuestion) String() string {
 	return fmt.Sprintf("A question with label %s, var decl %s", i.Label, i.VarDecl)
 }
 
+func (i InputQuestion) GetLabel() lit.StrLit {
+	return i.Label
+}
+
 func (i InputQuestion) GetLabelAsString() string {
 	return i.Label.GetValue().(string)
 }

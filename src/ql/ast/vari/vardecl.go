@@ -9,7 +9,6 @@ type VarDecl struct {
 	Type  variType
 }
 
-// TODO: needed to break import cycle, look at better solution
 type variType interface {
 	GetDefaultValue() interface{}
 }
