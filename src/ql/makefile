@@ -32,7 +32,7 @@ BUILD_LIST = $(foreach int, $(ALL_LIST), $(int)_build)
 CLEAN_LIST = $(foreach int, $(ALL_LIST), $(int)_clean)
 INSTALL_LIST = $(foreach int, $(ALL_LIST), $(int)_install)
 IREF_LIST = $(foreach int, $(ALL_LIST), $(int)_iref)
-TEST_LIST = $(foreach int, $(ALL_LIST), $(int)_test)
+TEST_LIST = symboltable_test ast/expr_test stmt_test
 FMT_TEST = $(foreach int, $(ALL_LIST), $(int)_fmt)
 
 # All are .PHONY for now because dependencyness is hard

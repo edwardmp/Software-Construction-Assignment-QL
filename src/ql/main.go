@@ -12,10 +12,10 @@ import (
 	"ql/ast/vari"
 	"ql/ast/vari/vartype"
 	"ql/ast/visit"
-	"ql/symboltable"
 	"ql/gui"
 	"ql/lexer"
 	"ql/parser"
+	"ql/symboltable"
 )
 
 func main() {
