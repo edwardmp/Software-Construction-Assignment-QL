@@ -1,6 +1,7 @@
 package expr
 
 import (
+	"fmt"
 	"ql/ast/vari"
 	"ql/ast/visit"
 	"ql/symboltable"
@@ -15,7 +16,13 @@ func (v VarExpr) GetIdentifier() vari.VarId {
 }
 
 func (v VarExpr) Eval(s interface{}) interface{} {
-	symbolTable := s.(symboltable.SymbolTable)
+	symbolTable, castOK := s.(symboltable.SymbolTable)
+
+	if !castOK {
+		fmt.Print(s)
+		panic("No symbol table passed to Eval VarExpr")
+	}
+
 	return symbolTable.GetNodeForIdentifier(v.Identifier).(Expr).Eval(s)
 }
 
