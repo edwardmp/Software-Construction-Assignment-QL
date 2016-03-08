@@ -40,15 +40,6 @@ func (v *ConditionTypeChecker) Visit(t interface{}, s interface{}) interface{} {
 		for _, conditional := range t.(stmt.StmtList).Conditionals {
 			conditional.Accept(v, s)
 		}
-	case stmt.InputQuestion:
-		log.Debug("Visit InputQuestion")
-		t.(stmt.InputQuestion).Label.Accept(v, s)
-		t.(stmt.InputQuestion).VarDecl.Accept(v, s)
-	case stmt.ComputedQuestion:
-		log.Debug("Visit ComputedQuestion")
-		t.(stmt.ComputedQuestion).Label.Accept(v, s)
-		t.(stmt.ComputedQuestion).VarDecl.Accept(v, s)
-		t.(stmt.ComputedQuestion).Computation.Accept(v, s)
 	case stmt.If, stmt.IfElse:
 		log.Debug("Visit If")
 
