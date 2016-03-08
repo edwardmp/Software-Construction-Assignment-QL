@@ -12,10 +12,11 @@ import (
 	"ql/ast/vari"
 	"ql/ast/vari/vartype"
 	"ql/ast/visit"
-	"ql/gui"
+	//"ql/gui"
 	"ql/lexer"
 	"ql/parser"
 	"ql/symboltable"
+	"ql/typechecker"
 )
 
 func main() {
@@ -45,11 +46,18 @@ func main() {
 		log.WithFields(log.Fields{"Result": parsedForm}).Info("Form parsed")
 
 		visitor := VisitorAdapter{}
-		symbolTableStack := symboltable.NewSymbolTable()
+		symbolTable := symboltable.NewSymbolTable()
+		symbolTable = parsedForm.Accept(visitor, symbolTable).(symboltable.SymbolTable)
 
-		symbolTable := parsedForm.Accept(visitor, symbolTableStack).(symboltable.SymbolTable)
+		errorsAndWarnings := make([]error, 0)
 
-		gui.CreateGUI(parsedForm, symbolTable)
+		errorsAndWarnings = append(errorsAndWarnings, typechecker.CheckForDuplicateLabels(parsedForm)...)
+		errorsAndWarnings = append(errorsAndWarnings, typechecker.CheckForDuplicateVarDeclWithDiffTypes(parsedForm)...)
+		errorsAndWarnings = append(errorsAndWarnings, typechecker.CheckForReferencesToUndefinedQuestions(parsedForm, symbolTable)...)
+		errorsAndWarnings = append(errorsAndWarnings, typechecker.CheckForNonBoolConditions(parsedForm, symbolTable)...)
+
+		log.WithFields(log.Fields{"errors": errorsAndWarnings}).Error("Type checker results")
+		//gui.CreateGUI(parsedForm, symbolTable)
 	}
 }
 
@@ -62,15 +70,15 @@ type VisitorAdapter struct {
 }
 
 func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
-	stack := s.(symboltable.SymbolTable)
+	symbolTable := s.(symboltable.SymbolTable)
 
 	switch t.(type) {
 	default:
 		log.WithFields(log.Fields{"Node": fmt.Sprintf("%T", t)}).Panic("Unexpected node type")
 	case stmt.Form:
 		log.Debug("Visit Form")
-		t.(stmt.Form).Identifier.Accept(v, stack)
-		return t.(stmt.Form).Content.Accept(v, stack)
+		t.(stmt.Form).Identifier.Accept(v, symbolTable)
+		return t.(stmt.Form).Content.Accept(v, symbolTable)
 	case vari.VarId:
 		log.Debug("Visit VarId")
 	case vartype.VarType:
@@ -78,36 +86,36 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 	case vari.VarDecl:
 		log.Debug("Visit VarDecl")
 		varDecl := t.(vari.VarDecl)
-		stack.SetNodeForIdentifier(varDecl.GetType().GetDefaultValue(), varDecl.Ident)
-		varDecl.Ident.Accept(v, stack)
+		symbolTable.SetNodeForIdentifier(varDecl.GetType().GetDefaultValue(), varDecl.Ident)
+		varDecl.Ident.Accept(v, symbolTable)
 	case stmt.StmtList:
 		log.Debug("Visit StmtList")
 
 		for _, question := range t.(stmt.StmtList).Questions {
-			question.Accept(v, stack)
+			question.Accept(v, symbolTable)
 		}
 
 		for _, conditional := range t.(stmt.StmtList).Conditionals {
-			conditional.Accept(v, stack)
+			conditional.Accept(v, symbolTable)
 		}
 	case stmt.InputQuestion:
 		log.Debug("Visit InputQuestion")
-		t.(stmt.InputQuestion).Label.Accept(v, stack)
-		t.(stmt.InputQuestion).VarDecl.Accept(v, stack)
+		t.(stmt.InputQuestion).Label.Accept(v, symbolTable)
+		t.(stmt.InputQuestion).VarDecl.Accept(v, symbolTable)
 	case stmt.ComputedQuestion:
 		log.Debug("Visit ComputedQuestion")
-		t.(stmt.ComputedQuestion).Label.Accept(v, stack)
-		t.(stmt.ComputedQuestion).VarDecl.Accept(v, stack)
-		t.(stmt.ComputedQuestion).Computation.Accept(v, stack)
+		t.(stmt.ComputedQuestion).Label.Accept(v, symbolTable)
+		t.(stmt.ComputedQuestion).VarDecl.Accept(v, symbolTable)
+		t.(stmt.ComputedQuestion).Computation.Accept(v, symbolTable)
 	case stmt.If:
 		log.Debug("Visit If")
-		t.(stmt.If).Cond.Accept(v, stack)
-		t.(stmt.If).Body.Accept(v, stack)
+		t.(stmt.If).Cond.Accept(v, symbolTable)
+		t.(stmt.If).Body.Accept(v, symbolTable)
 	case stmt.IfElse:
 		log.Debug("Visit IfElse")
-		t.(stmt.IfElse).Cond.Accept(v, stack)
-		t.(stmt.IfElse).IfBody.Accept(v, stack)
-		t.(stmt.IfElse).ElseBody.Accept(v, stack)
+		t.(stmt.IfElse).Cond.Accept(v, symbolTable)
+		t.(stmt.IfElse).IfBody.Accept(v, symbolTable)
+		t.(stmt.IfElse).ElseBody.Accept(v, symbolTable)
 	case lit.StrLit:
 		log.Debug("Visit StrLit")
 	case lit.BoolLit:
@@ -116,15 +124,15 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 		log.Debug("Visit IntLit")
 	case binaryoperatorexpr.BinaryOperatorExpr:
 		log.Debug("Visit BinaryOperatorExpr")
-		t.(binaryoperatorexpr.BinaryOperatorExpr).GetLhs().(expr.Expr).Accept(v, stack)
-		t.(binaryoperatorexpr.BinaryOperatorExpr).GetRhs().(expr.Expr).Accept(v, stack)
+		t.(binaryoperatorexpr.BinaryOperatorExpr).GetLhs().(expr.Expr).Accept(v, symbolTable)
+		t.(binaryoperatorexpr.BinaryOperatorExpr).GetRhs().(expr.Expr).Accept(v, symbolTable)
 	case unaryoperatorexpr.UnaryOperatorExpr:
 		log.Debug("Visit UnaryOperatorExpr")
-		t.(unaryoperatorexpr.UnaryOperatorExpr).GetValue().(expr.Expr).Accept(v, stack)
+		t.(unaryoperatorexpr.UnaryOperatorExpr).GetValue().(expr.Expr).Accept(v, symbolTable)
 	case expr.VarExpr:
 		log.Debug("Visit VarExpr")
-		t.(expr.VarExpr).GetIdentifier().Accept(v, stack)
+		t.(expr.VarExpr).GetIdentifier().Accept(v, symbolTable)
 	}
 
-	return stack
+	return symbolTable
 }

@@ -23,7 +23,11 @@ func (v VarExpr) Eval(s interface{}) interface{} {
 		panic("No symbol table passed to Eval VarExpr")
 	}
 
-	return symbolTable.GetNodeForIdentifier(v.Identifier).(Expr).Eval(s)
+	if node := symbolTable.GetNodeForIdentifier(v.Identifier); node != nil {
+		return node.(Expr).Eval(s)
+	}
+
+	return nil
 }
 
 func (v VarExpr) Accept(vis visit.Visitor, s interface{}) interface{} {

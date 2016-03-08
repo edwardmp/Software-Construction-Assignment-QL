@@ -15,13 +15,15 @@ type DuplicateVarDeclTypeChecker struct {
 	ErrorsEncountered []error
 }
 
-func CheckForDuplicateVarDeclWithDiffTypes(form stmt.Form) {
+func CheckForDuplicateVarDeclWithDiffTypes(form stmt.Form) []error {
 	log.Info("Start check for duplicate var decl with different types")
 	varDeclEncountered := make(map[vari.VarId]vartype.VarType)
-	DuplicateVarDeclTypeChecker := DuplicateVarDeclTypeChecker{VarDeclEncountered: varDeclEncountered}
+	duplicateVarDeclTypeChecker := DuplicateVarDeclTypeChecker{VarDeclEncountered: varDeclEncountered}
 
-	DuplicateVarDeclTypeChecker.Visit(form, nil)
-	log.WithFields(log.Fields{"ErrorsEncountered": DuplicateVarDeclTypeChecker.ErrorsEncountered}).Info("Ended check for duplicate var decl with diff types")
+	duplicateVarDeclTypeChecker.Visit(form, nil)
+	log.WithFields(log.Fields{"ErrorsEncountered": duplicateVarDeclTypeChecker.ErrorsEncountered}).Info("Ended check for duplicate var decl with diff types")
+
+	return duplicateVarDeclTypeChecker.ErrorsEncountered
 }
 
 func (v *DuplicateVarDeclTypeChecker) Visit(t interface{}, s interface{}) interface{} {

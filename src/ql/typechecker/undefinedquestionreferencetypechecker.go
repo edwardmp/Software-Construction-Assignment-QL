@@ -16,12 +16,14 @@ type UndefinedQuestionReferenceTypeChecker struct {
 	ErrorsEncountered []error
 }
 
-func CheckForReferencesToUndefinedQuestions(form stmt.Form, symbolTable symboltable.SymbolTable) {
+func CheckForReferencesToUndefinedQuestions(form stmt.Form, symbolTable symboltable.SymbolTable) []error {
 	log.Info("Start check for references to undefined questions")
 	undefinedQuestionReferenceTypeChecker := UndefinedQuestionReferenceTypeChecker{}
 
 	undefinedQuestionReferenceTypeChecker.Visit(form, symbolTable)
 	log.WithFields(log.Fields{"Errors Encountered": undefinedQuestionReferenceTypeChecker.ErrorsEncountered}).Info("Ended check for references to undefined questions")
+
+	return undefinedQuestionReferenceTypeChecker.ErrorsEncountered
 }
 
 func (v *UndefinedQuestionReferenceTypeChecker) Visit(t interface{}, s interface{}) interface{} {

@@ -14,12 +14,14 @@ type ConditionTypeChecker struct {
 	ErrorsEncountered []error
 }
 
-func CheckForNonBoolConditions(form stmt.Form, symbolTable symboltable.SymbolTable) {
+func CheckForNonBoolConditions(form stmt.Form, symbolTable symboltable.SymbolTable) []error {
 	log.Info("Start check for non-boolean conditions")
 	ConditionTypeChecker := ConditionTypeChecker{}
 
 	ConditionTypeChecker.Visit(form, symbolTable)
 	log.WithFields(log.Fields{"Errors Encountered": ConditionTypeChecker.ErrorsEncountered}).Info("Ended check for non-boolean conditions")
+
+	return ConditionTypeChecker.ErrorsEncountered
 }
 
 func (v *ConditionTypeChecker) Visit(t interface{}, s interface{}) interface{} {

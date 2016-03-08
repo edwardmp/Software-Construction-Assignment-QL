@@ -16,13 +16,15 @@ type DuplicateLabelTypeChecker struct {
 	WarningsEncountered []error
 }
 
-func CheckForDuplicateLabels(form stmt.Form) {
+func CheckForDuplicateLabels(form stmt.Form) []error {
 	log.Info("Start check for duplicate labels")
 	labelsEncountered := make(map[lit.StrLit]vari.VarId)
 	duplicateLabelChecker := DuplicateLabelTypeChecker{LabelsEncountered: labelsEncountered}
 
 	duplicateLabelChecker.Visit(form, nil)
 	log.WithFields(log.Fields{"WarningsEncountered": duplicateLabelChecker.WarningsEncountered}).Info("Ended check for duplicate labels")
+
+	return duplicateLabelChecker.WarningsEncountered
 }
 
 func (v *DuplicateLabelTypeChecker) Visit(t interface{}, s interface{}) interface{} {
