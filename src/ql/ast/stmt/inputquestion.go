@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"ql/ast/expr/litexpr"
 	"ql/ast/vari"
-	"ql/ast/visit"
 )
 
 type InputQuestion struct {
@@ -26,8 +25,4 @@ func (i InputQuestion) GetLabelAsString() string {
 
 func (i InputQuestion) GetVarDecl() vari.VarDecl {
 	return i.VarDecl
-}
-
-func (i InputQuestion) Accept(v visit.Visitor, s interface{}) interface{} {
-	return v.Visit(i, s)
 }

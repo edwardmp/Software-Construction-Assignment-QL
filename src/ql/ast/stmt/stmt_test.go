@@ -6,6 +6,7 @@ import (
 	"ql/ast/expr/litexpr"
 	"ql/ast/vari"
 	"testing"
+    "ql/symboltable"
 )
 
 // TODO PUT IN HELPER FILE
@@ -174,3 +175,30 @@ func TestStmtList(t *testing.T) {
 		t.Errorf("Stmtlist conditionals list is not set correctly")
 	}
 }
+
+func TestNonBoolConditionalChecker(t *testing.T) {
+    exampleQuestion := InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
+    exampleIf := If{litexpr.IntLit{10}, StmtList{[]Question{exampleQuestion}, []Conditional{}}}
+    exampleBody := StmtList{[]Question{}, []Conditional{exampleIf}}
+    exampleForm := Form{vari.VarId{"TestForm"}, exampleBody}
+
+    errorsReported := CheckForNonBoolConditions(exampleForm, symboltable.NewSymbolTable())
+
+    if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Non-boolean type used as condition: int")) {
+        t.Errorf("Non bool condition type checker did not correctly report condition of invalid type")
+    }
+}
+
+func TestDuplicateLabelChecker(t *testing.T) {
+    firstQuestionOutput := InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
+    secondQuestionOutput := InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.BoolType{}}}
+    exampleBodyOutput := StmtList{[]Question{firstQuestionOutput, secondQuestionOutput}, []Conditional{}}
+    exampleOutputForm := Form{vari.VarId{"TestForm"}, exampleBodyOutput}
+
+    warningsReported := CheckForDuplicateLabels(exampleOutputForm)
+
+    if len(warningsReported) != 1 || fmt.Sprintf("%v", warningsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Label \"Did you sell a house in 2010?\" already used for question with identifier hasSoldHouse, using again for question with identifier hasMaintLoan")) {
+        t.Errorf("Duplicate label not reported correctly by type checker")
+    }
+}
+
