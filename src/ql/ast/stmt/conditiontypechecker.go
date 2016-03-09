@@ -6,52 +6,52 @@ import (
     "ql/symboltable"
 )
 
-type ConditiontypeChecker struct {
+type ConditiontypeCheckNonBoolConditionsNonBoolConditionser struct {
     ErrorsEncountered []error
 }
 
 func CheckForNonBoolConditions(form Form, symbolTable symboltable.SymbolTable) []error {
     log.Info("Start check for non-boolean conditions")
-    conditionTypeChecker := ConditiontypeChecker{}
+    conditionTypeChecker := ConditiontypeCheckNonBoolConditionsNonBoolConditionser{}
 
-    form.typeCheck(&conditionTypeChecker, symbolTable)
+    form.typeCheckNonBoolConditionsNonBoolConditions(&conditionTypeChecker, symbolTable)
     log.WithFields(log.Fields{"Errors Encountered": conditionTypeChecker.ErrorsEncountered}).Info("Ended check for non-boolean conditions")
 
     return conditionTypeChecker.ErrorsEncountered
 }
 
-func (f Form) typeCheck(conditionTypeChecker *ConditiontypeChecker, symbolTable symboltable.SymbolTable) {
-    f.Content.typeCheck(conditionTypeChecker, symbolTable)
+func (f Form) typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker *ConditiontypeCheckNonBoolConditionsNonBoolConditionser, symbolTable symboltable.SymbolTable) {
+    f.Content.typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker, symbolTable)
 }
 
-func (i If) typeCheck(conditionTypeChecker *ConditiontypeChecker, symbolTable symboltable.SymbolTable) {
+func (i If) typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker *ConditiontypeCheckNonBoolConditionsNonBoolConditionser, symbolTable symboltable.SymbolTable) {
     evalCond := i.Cond.Eval(symbolTable)
 
     if _, CondIsBoolType := evalCond.(bool); !CondIsBoolType {
         conditionTypeChecker.ErrorsEncountered = append(conditionTypeChecker.ErrorsEncountered, fmt.Errorf("Non-boolean type used as condition: %T", evalCond))
     }
 
-    i.Body.typeCheck(conditionTypeChecker, symbolTable)
+    i.Body.typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker, symbolTable)
 }
 
-func (i IfElse) typeCheck(conditionTypeChecker *ConditiontypeChecker, symbolTable symboltable.SymbolTable) {
+func (i IfElse) typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker *ConditiontypeCheckNonBoolConditionsNonBoolConditionser, symbolTable symboltable.SymbolTable) {
     evalCond := i.Cond.Eval(symbolTable)
 
     if _, CondIsBoolType := evalCond.(bool); !CondIsBoolType {
         conditionTypeChecker.ErrorsEncountered = append(conditionTypeChecker.ErrorsEncountered, fmt.Errorf("Non-boolean type used as condition: %T", evalCond))
     }
 
-    i.IfBody.typeCheck(conditionTypeChecker, symbolTable)
-    i.ElseBody.typeCheck(conditionTypeChecker, symbolTable)
+    i.IfBody.typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker, symbolTable)
+    i.ElseBody.typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker, symbolTable)
 }
 
-func (s StmtList) typeCheck(conditionTypeChecker *ConditiontypeChecker, symbolTable symboltable.SymbolTable) {
+func (s StmtList) typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker *ConditiontypeCheckNonBoolConditionsNonBoolConditionser, symbolTable symboltable.SymbolTable) {
     for _, conditional := range s.Conditionals {
         switch conditional.(type) {
         case If:
-            conditional.(If).typeCheck(conditionTypeChecker, symbolTable)
+            conditional.(If).typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker, symbolTable)
         case IfElse:
-            conditional.(IfElse).typeCheck(conditionTypeChecker, symbolTable)
+            conditional.(IfElse).typeCheckNonBoolConditionsNonBoolConditions(conditionTypeChecker, symbolTable)
         }
     }
 }

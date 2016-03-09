@@ -202,3 +202,17 @@ func TestDuplicateLabelChecker(t *testing.T) {
     }
 }
 
+func TestDuplicateVarDeclChecker(t *testing.T) {
+    firstQuestionOutput := InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
+    secondQuestionOutput := InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.IntType{}}}
+    exampleBodyOutput := StmtList{[]Question{firstQuestionOutput, secondQuestionOutput}, []Conditional{}}
+    exampleOutputForm := Form{vari.VarId{"TestForm"}, exampleBodyOutput}
+
+    errorsReported := CheckForDuplicateVarDeclWithDiffTypes(exampleOutputForm)
+
+    if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Question redeclared with different types: vari.IntType and vari.BoolType")) {
+        t.Errorf("Duplicate var decl not reported correctly by type checker")
+    }
+}
+
+
