@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"ql/ast/expr"
 	"ql/ast/vari"
-	"ql/ast/vari/vartype"
 )
 
 type GUIComputedQuestion struct {
@@ -13,7 +12,7 @@ type GUIComputedQuestion struct {
 	VarId vari.VarId
 }
 
-func CreateGUIComputedQuestion(label string, questionType vartype.VarType, expr expr.Expr, varId vari.VarId) GUIComputedQuestion {
+func CreateGUIComputedQuestion(label string, questionType vari.VarType, expr expr.Expr, varId vari.VarId) GUIComputedQuestion {
 	questionLabel := createLabel(label)
 	questionElement := CreateDisabledInputTextField(fmt.Sprintf("%s", questionType.GetDefaultValue()))
 	errorLabel := createLabel("")

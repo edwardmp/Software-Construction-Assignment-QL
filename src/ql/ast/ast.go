@@ -8,7 +8,6 @@ import (
 	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
-	"ql/ast/vari/vartype"
 	"ql/token"
 	"strconv"
 )
@@ -111,16 +110,16 @@ func NewVarExpr(identifier interface{}) (expr.Expr, error) {
 
 /* vartypes */
 
-func NewIntType() (vartype.IntType, error) {
-	return vartype.IntType{}, nil
+func NewIntType() (vari.IntType, error) {
+	return vari.IntType{}, nil
 }
 
-func NewBoolType() (vartype.BoolType, error) {
-	return vartype.BoolType{}, nil
+func NewBoolType() (vari.BoolType, error) {
+	return vari.BoolType{}, nil
 }
 
-func NewStringType() (vartype.StringType, error) {
-	return vartype.StringType{}, nil
+func NewStringType() (vari.StringType, error) {
+	return vari.StringType{}, nil
 }
 
 /** statements **/
@@ -159,7 +158,7 @@ func NewIfElse(cond interface{}, ifBody interface{}, elseBody interface{}) (stmt
 }
 
 func NewVarDecl(ident interface{}, typeIdent interface{}) (vari.VarDecl, error) {
-	return vari.VarDecl{ident.(vari.VarId), typeIdent.(vartype.VarType)}, nil
+	return vari.VarDecl{ident.(vari.VarId), typeIdent.(vari.VarType)}, nil
 }
 
 func NewVarId(ident interface{}) (vari.VarId, error) {

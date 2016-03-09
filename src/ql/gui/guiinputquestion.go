@@ -5,7 +5,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/mattn/go-gtk/gtk"
 	"ql/ast/expr/litexpr"
-	"ql/ast/vari/vartype"
+	"ql/ast/vari"
 	"strconv"
 )
 
@@ -13,7 +13,7 @@ type GUIInputQuestion struct {
 	GUIQuestion
 }
 
-func CreateGUIInputQuestion(label string, questionType vartype.VarType, callback func(interface{}, error)) GUIInputQuestion {
+func CreateGUIInputQuestion(label string, questionType vari.VarType, callback func(interface{}, error)) GUIInputQuestion {
 	questionLabel := createLabel(label)
 	questionElement := createQuestionElement(questionType, callback)
 	errorLabel := createLabel("")
@@ -21,18 +21,18 @@ func CreateGUIInputQuestion(label string, questionType vartype.VarType, callback
 	return GUIInputQuestion{GUIQuestion: GUIQuestion{questionLabel, questionElement, errorLabel}}
 }
 
-func createQuestionElement(questionType vartype.VarType, callback func(interface{}, error)) gtk.IWidget {
+func createQuestionElement(questionType vari.VarType, callback func(interface{}, error)) gtk.IWidget {
 	var GTKEntity gtk.IWidget
 
 	switch questionType.(type) {
-	case vartype.BoolType:
+	case vari.BoolType:
 		checkbox := CreateCheckboxConditional()
 		checkbox.Connect("clicked", func() {
 			log.WithFields(log.Fields{"value": checkbox.GetActive()}).Debug("Checkbox value changed")
 			callback(litexpr.BoolLit{checkbox.GetActive()}, nil)
 		})
 		GTKEntity = checkbox
-	case vartype.StringType:
+	case vari.StringType:
 		inputField := CreateInputTextField(questionType.GetDefaultValue().(litexpr.Lit).String())
 		inputField.Connect("changed", func() {
 			inputText := inputField.GetText()
@@ -42,7 +42,7 @@ func createQuestionElement(questionType vartype.VarType, callback func(interface
 			callback(litexpr.StrLit{inputText}, nil) // TODO check if really is string
 		})
 		GTKEntity = inputField
-	case vartype.IntType:
+	case vari.IntType:
 		inputField := CreateInputTextField(questionType.GetDefaultValue().(litexpr.Lit).String())
 		inputField.Connect("changed", func() {
 			inputText := inputField.GetText()

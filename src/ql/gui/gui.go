@@ -10,7 +10,6 @@ import (
 	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
-	"ql/ast/vari/vartype"
 	"ql/ast/visit"
 	"ql/symboltable"
 	"strconv"
@@ -85,7 +84,7 @@ func (v GUI) Visit(t interface{}, s interface{}) interface{} {
 	case vari.VarDecl:
 		log.Debug("Visit VarDecl")
 		t.(vari.VarDecl).Ident.Accept(v, symbolTable)
-	case vartype.VarType:
+	case vari.VarType:
 		log.Debug("Visit VarType")
 	case litexpr.StrLit:
 		log.Debug("Visit StrLit")

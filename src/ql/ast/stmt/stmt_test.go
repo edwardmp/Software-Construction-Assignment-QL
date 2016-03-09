@@ -5,7 +5,6 @@ import (
 	"ql/ast/expr/binaryoperatorexpr"
 	"ql/ast/expr/litexpr"
 	"ql/ast/vari"
-	"ql/ast/vari/vartype"
 	"testing"
 )
 
@@ -79,7 +78,7 @@ func TestFormWithEmptyContent(t *testing.T) {
 
 func TestFormWithNonEmptyContent(t *testing.T) {
 	identifier := vari.VarId{"TestForm"}
-	questionExample := InputQuestion{litexpr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vartype.IntType{}}}
+	questionExample := InputQuestion{litexpr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.IntType{}}}
 	questionsListExample := []Question{questionExample}
 	stmtListExample := StmtList{Questions: questionsListExample}
 	exampleForm := Form{identifier, stmtListExample}
@@ -95,7 +94,7 @@ func TestFormWithNonEmptyContent(t *testing.T) {
 
 func TestInputQuestion(t *testing.T) {
 	exampleLabel := litexpr.StrLit{"Did you sell a house in 2010?"}
-	exampleVarDecl := vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.BoolType{}}
+	exampleVarDecl := vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}
 
 	exampleQuestion := InputQuestion{exampleLabel, exampleVarDecl}
 
@@ -106,7 +105,7 @@ func TestInputQuestion(t *testing.T) {
 
 func TestComputedQuestion(t *testing.T) {
 	exampleLabel := litexpr.StrLit{"Value residue"}
-	exampleVarDecl := vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.IntType{}}
+	exampleVarDecl := vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.IntType{}}
 	exampleComputation := binaryoperatorexpr.Sub{litexpr.IntLit{10}, litexpr.IntLit{5}}
 
 	exampleQuestion := ComputedQuestion{exampleLabel, exampleVarDecl, exampleComputation}
@@ -121,7 +120,7 @@ func TestComputedQuestion(t *testing.T) {
 }
 
 func TestIf(t *testing.T) {
-	questionExample := InputQuestion{litexpr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vartype.IntType{}}}
+	questionExample := InputQuestion{litexpr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.IntType{}}}
 	ifBodyExample := StmtList{[]Question{questionExample}, []Conditional{}}
 	ifCondExample := litexpr.BoolLit{true}
 	ifExample := If{ifCondExample, ifBodyExample}
@@ -136,11 +135,11 @@ func TestIf(t *testing.T) {
 }
 
 func TestIfElse(t *testing.T) {
-	ifQuestionExample := InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.BoolType{}}}
+	ifQuestionExample := InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
 	ifBodyExample := StmtList{[]Question{ifQuestionExample}, []Conditional{}}
 	ifCondExample := litexpr.BoolLit{true}
 
-	elseQuestionExample := InputQuestion{litexpr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vartype.IntType{}}}
+	elseQuestionExample := InputQuestion{litexpr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.IntType{}}}
 	elseBodyExample := StmtList{[]Question{elseQuestionExample}, []Conditional{}}
 
 	ifElseExample := IfElse{ifCondExample, ifBodyExample, elseBodyExample}
@@ -159,7 +158,7 @@ func TestIfElse(t *testing.T) {
 }
 
 func TestStmtList(t *testing.T) {
-	questionExample := InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.BoolType{}}}
+	questionExample := InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
 	questionListExample := []Question{questionExample}
 
 	ifExample := If{litexpr.BoolLit{true}, StmtList{}}

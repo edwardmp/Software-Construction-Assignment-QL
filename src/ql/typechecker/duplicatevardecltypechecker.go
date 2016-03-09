@@ -5,19 +5,18 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"ql/ast/stmt"
 	"ql/ast/vari"
-	"ql/ast/vari/vartype"
 	"ql/ast/visit"
 )
 
 type DuplicateVarDeclTypeChecker struct {
-	VarDeclEncountered map[vari.VarId]vartype.VarType
+	VarDeclEncountered map[vari.VarId]vari.VarType
 	visit.Visitor
 	ErrorsEncountered []error
 }
 
 func CheckForDuplicateVarDeclWithDiffTypes(form stmt.Form) []error {
 	log.Info("Start check for duplicate var decl with different types")
-	varDeclEncountered := make(map[vari.VarId]vartype.VarType)
+	varDeclEncountered := make(map[vari.VarId]vari.VarType)
 	duplicateVarDeclTypeChecker := DuplicateVarDeclTypeChecker{VarDeclEncountered: varDeclEncountered}
 
 	duplicateVarDeclTypeChecker.Visit(form, nil)
@@ -75,7 +74,7 @@ func (v *DuplicateVarDeclTypeChecker) Visit(t interface{}, s interface{}) interf
 	return nil
 }
 
-func checkIfVarDeclIsKnown(varDecl vari.VarDecl, knownIdentifiers map[vari.VarId]vartype.VarType) bool {
+func checkIfVarDeclIsKnown(varDecl vari.VarDecl, knownIdentifiers map[vari.VarId]vari.VarType) bool {
 	if _, exists := knownIdentifiers[varDecl.Ident]; exists {
 		return true
 	}
@@ -83,7 +82,7 @@ func checkIfVarDeclIsKnown(varDecl vari.VarDecl, knownIdentifiers map[vari.VarId
 	return false
 }
 
-func markVarDeclAsKnown(varDecl vari.VarDecl, knownIdentifiers map[vari.VarId]vartype.VarType) {
+func markVarDeclAsKnown(varDecl vari.VarDecl, knownIdentifiers map[vari.VarId]vari.VarType) {
 	log.WithFields(log.Fields{"VarDecl": varDecl}).Debug("Marking VarDecl as known")
 	knownIdentifiers[varDecl.Ident] = varDecl.Type
 }

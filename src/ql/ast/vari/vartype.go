@@ -1,4 +1,4 @@
-package vartype
+package vari
 
 import "ql/ast/expr/litexpr"
 
