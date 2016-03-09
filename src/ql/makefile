@@ -22,7 +22,7 @@ GOFMT=gofmt -w
 # Package lists
 TOPLEVEL_PKG := ql
 INT_LIST := 	#<-- Interface directories
-IMPL_LIST := symboltable ast	#<-- Implementation directories
+IMPL_LIST := symboltable typechecker ast ast/expr/litexpr ast/expr/unaryoperatorexpr ast/expr/binaryoperatorexpr ast/stmt #<-- Implementation directories
 CMD_LIST := 	#<-- Command directories
 
 # List building
@@ -32,7 +32,7 @@ BUILD_LIST = $(foreach int, $(ALL_LIST), $(int)_build)
 CLEAN_LIST = $(foreach int, $(ALL_LIST), $(int)_clean)
 INSTALL_LIST = $(foreach int, $(ALL_LIST), $(int)_install)
 IREF_LIST = $(foreach int, $(ALL_LIST), $(int)_iref)
-TEST_LIST = symboltable_test ast/expr_test stmt_test
+TEST_LIST = $(foreach int, $(ALL_LIST), $(int)_test)
 FMT_TEST = $(foreach int, $(ALL_LIST), $(int)_fmt)
 
 # All are .PHONY for now because dependencyness is hard

@@ -3,7 +3,6 @@ package stmt
 import (
 	"fmt"
 	"ql/ast/expr"
-	"ql/ast/visit"
 )
 
 type IfElse struct {
@@ -18,8 +17,4 @@ func (i IfElse) String() string {
 
 func (i IfElse) EvalCondition() bool {
 	return i.Cond.Eval(nil).(bool)
-}
-
-func (i IfElse) Accept(v visit.Visitor, s interface{}) interface{} {
-	return v.Visit(i, s)
 }

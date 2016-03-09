@@ -21,7 +21,7 @@ func (i InputQuestion) GetLabel() litexpr.StrLit {
 }
 
 func (i InputQuestion) GetLabelAsString() string {
-	return i.Label.GetValue().(string)
+	return i.Label.Value
 }
 
 func (i InputQuestion) GetVarDecl() vari.VarDecl {

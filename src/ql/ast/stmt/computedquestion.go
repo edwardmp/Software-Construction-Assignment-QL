@@ -5,7 +5,6 @@ import (
 	"ql/ast/expr"
 	"ql/ast/expr/litexpr"
 	"ql/ast/vari"
-	"ql/ast/visit"
 )
 
 type ComputedQuestion struct {
@@ -23,13 +22,9 @@ func (c ComputedQuestion) GetLabel() litexpr.StrLit {
 }
 
 func (c ComputedQuestion) GetLabelAsString() string {
-	return c.Label.GetValue().(string)
+	return c.Label.Value
 }
 
 func (c ComputedQuestion) GetVarDecl() vari.VarDecl {
 	return c.VarDecl
-}
-
-func (c ComputedQuestion) Accept(v visit.Visitor, s interface{}) interface{} {
-	return v.Visit(c, s)
 }
