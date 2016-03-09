@@ -59,7 +59,7 @@ func (v *ConditionTypeChecker) Visit(t interface{}, s interface{}) interface{} {
 		evalCond := cond.Eval(s)
 
 		if _, CondIsBoolType := evalCond.(bool); !CondIsBoolType {
-			v.ErrorsEncountered = append(v.ErrorsEncountered, fmt.Errorf("Non-boolean condition used"))
+			v.ErrorsEncountered = append(v.ErrorsEncountered, fmt.Errorf("Non-boolean type used as condition: %T", evalCond))
 		}
 
 		cond.Accept(v, s)

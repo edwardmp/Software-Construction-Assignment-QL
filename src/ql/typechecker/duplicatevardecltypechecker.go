@@ -21,7 +21,7 @@ func CheckForDuplicateVarDeclWithDiffTypes(form stmt.Form) []error {
 	duplicateVarDeclTypeChecker := DuplicateVarDeclTypeChecker{VarDeclEncountered: varDeclEncountered}
 
 	duplicateVarDeclTypeChecker.Visit(form, nil)
-	log.WithFields(log.Fields{"ErrorsEncountered": duplicateVarDeclTypeChecker.ErrorsEncountered}).Info("Ended check for duplicate var decl with diff types")
+	log.WithFields(log.Fields{"ErrorsEncountered": duplicateVarDeclTypeChecker.ErrorsEncountered}).Info("Ended check for duplicate var decl with different types")
 
 	return duplicateVarDeclTypeChecker.ErrorsEncountered
 }
