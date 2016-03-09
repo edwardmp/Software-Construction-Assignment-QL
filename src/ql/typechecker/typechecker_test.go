@@ -2,9 +2,9 @@ package typechecker
 
 import (
 	"fmt"
-	"ql/ast/expr"
 	"ql/ast/expr/binaryoperatorexpr"
 	"ql/ast/expr/litexpr"
+	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
 	"ql/symboltable"

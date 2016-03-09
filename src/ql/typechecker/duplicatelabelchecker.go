@@ -6,24 +6,22 @@ import (
 	"ql/ast/expr/litexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
-	"ql/ast/visit"
 )
 
 type DuplicateLabelTypeChecker struct {
+	TypeChecker
 	LabelsEncountered map[litexpr.StrLit]vari.VarId
-	visit.Visitor
-	WarningsEncountered []error
 }
 
 func CheckForDuplicateLabels(form stmt.Form) []error {
 	log.Info("Start check for duplicate labels")
 	labelsEncountered := make(map[litexpr.StrLit]vari.VarId)
-	duplicateLabelChecker := DuplicateLabelTypeChecker{LabelsEncountered: labelsEncountered}
+	duplicateLabelTypeChecker := DuplicateLabelTypeChecker{LabelsEncountered: labelsEncountered}
 
-	duplicateLabelChecker.Visit(form, nil)
-	log.WithFields(log.Fields{"WarningsEncountered": duplicateLabelChecker.WarningsEncountered}).Info("Ended check for duplicate labels")
+	form.Accept(&duplicateLabelTypeChecker, nil)
+	log.WithFields(log.Fields{"ErrorsEncountered": duplicateLabelTypeChecker.ErrorsEncountered}).Info("Ended check for duplicate labels")
 
-	return duplicateLabelChecker.WarningsEncountered
+	return duplicateLabelTypeChecker.ErrorsEncountered
 }
 
 func (v *DuplicateLabelTypeChecker) Visit(t interface{}, s interface{}) interface{} {
@@ -50,7 +48,7 @@ func (v *DuplicateLabelTypeChecker) Visit(t interface{}, s interface{}) interfac
 		labelKnown := checkIfLabelIsUsed(question.GetLabel(), v.LabelsEncountered)
 
 		if labelKnown {
-			v.WarningsEncountered = append(v.WarningsEncountered, fmt.Errorf("Label \"%s\" already used for question with identifier %s, using again for question with identifier %s", question.GetLabel(), v.LabelsEncountered[question.GetLabel()], question.GetVarDecl().Ident))
+			v.ErrorsEncountered = append(v.ErrorsEncountered, fmt.Errorf("Label \"%s\" already used for question with identifier %s, using again for question with identifier %s", question.GetLabel(), v.LabelsEncountered[question.GetLabel()], question.GetVarDecl().Ident))
 		} else {
 			markLabelAsUsed(question.GetLabel(), question.GetVarDecl(), v.LabelsEncountered)
 		}

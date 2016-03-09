@@ -5,13 +5,11 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"ql/ast/stmt"
 	"ql/ast/vari"
-	"ql/ast/visit"
 )
 
 type DuplicateVarDeclTypeChecker struct {
+	TypeChecker
 	VarDeclEncountered map[vari.VarId]vari.VarType
-	visit.Visitor
-	ErrorsEncountered []error
 }
 
 func CheckForDuplicateVarDeclWithDiffTypes(form stmt.Form) []error {
@@ -19,7 +17,7 @@ func CheckForDuplicateVarDeclWithDiffTypes(form stmt.Form) []error {
 	varDeclEncountered := make(map[vari.VarId]vari.VarType)
 	duplicateVarDeclTypeChecker := DuplicateVarDeclTypeChecker{VarDeclEncountered: varDeclEncountered}
 
-	duplicateVarDeclTypeChecker.Visit(form, nil)
+	form.Accept(&duplicateVarDeclTypeChecker, nil)
 	log.WithFields(log.Fields{"ErrorsEncountered": duplicateVarDeclTypeChecker.ErrorsEncountered}).Info("Ended check for duplicate var decl with different types")
 
 	return duplicateVarDeclTypeChecker.ErrorsEncountered
