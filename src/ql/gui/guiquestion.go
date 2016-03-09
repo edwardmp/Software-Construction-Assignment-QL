@@ -28,6 +28,7 @@ func (g GUIQuestion) ChangeElementText(newText string) {
 func (g GUIQuestion) ChangeErrorLabelText(newText string) {
 	g.ErrorLabel.SetText(newText)
 }
+
 func createLabel(questionText string) *gtk.Label {
 	label := gtk.NewLabel(questionText)
 	label.ModifyFontEasy("DejaVu Serif 12")
