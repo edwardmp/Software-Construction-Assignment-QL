@@ -14,11 +14,7 @@ type GUIInputQuestion struct {
 }
 
 func CreateGUIInputQuestion(label string, questionType vari.VarType, callback func(interface{}, error)) GUIInputQuestion {
-	questionLabel := createLabel(label)
-	questionElement := createQuestionElement(questionType, callback)
-	errorLabel := createLabel("")
-
-	return GUIInputQuestion{GUIQuestion: GUIQuestion{questionLabel, questionElement, errorLabel}}
+	return GUIInputQuestion{GUIQuestion: CreateGUIQuestion(label, questionType, callback)}
 }
 
 func createQuestionElement(questionType vari.VarType, callback func(interface{}, error)) gtk.IWidget {
