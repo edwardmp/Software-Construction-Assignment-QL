@@ -48,14 +48,16 @@ func main() {
 		symbolTable := symboltable.NewSymbolTable()
 		symbolTable = parsedForm.Accept(visitor, symbolTable).(symboltable.SymbolTable)
 
-		errorsAndWarnings := make([]error, 0)
+		errors := make([]error, 0)
+		warnings := make([]error, 0)
 
-		errorsAndWarnings = append(errorsAndWarnings, typechecker.CheckForDuplicateLabels(parsedForm)...)
-		errorsAndWarnings = append(errorsAndWarnings, typechecker.CheckForDuplicateVarDeclWithDiffTypes(parsedForm)...)
-		errorsAndWarnings = append(errorsAndWarnings, typechecker.CheckForReferencesToUndefinedQuestions(parsedForm, symbolTable)...)
-		errorsAndWarnings = append(errorsAndWarnings, typechecker.CheckForNonBoolConditions(parsedForm, symbolTable)...)
+		warnings = append(warnings, typechecker.CheckForDuplicateLabels(parsedForm)...)
+		errors = append(errors, typechecker.CheckForDuplicateVarDeclWithDiffTypes(parsedForm)...)
+		errors = append(errors, typechecker.CheckForReferencesToUndefinedQuestions(parsedForm, symbolTable)...)
+		errors = append(errors, typechecker.CheckForNonBoolConditions(parsedForm, symbolTable)...)
+		errors = append(errors, typechecker.CheckForOperatorsWithInvalidOperands(parsedForm, symbolTable)...)
 
-		log.WithFields(log.Fields{"errors": errorsAndWarnings}).Error("Type checker results")
+		log.WithFields(log.Fields{"errors": errors, "warnings": warnings}).Error("Type checking finished")
 		gui.CreateGUI(parsedForm, symbolTable)
 	}
 }

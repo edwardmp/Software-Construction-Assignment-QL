@@ -3,6 +3,6 @@ package unaryoperatorexpr
 import "ql/ast/expr"
 
 type UnaryOperatorExpr interface {
-	GetValue() interface{}
+	GetValue() expr.Expr
 	expr.Expr
 }

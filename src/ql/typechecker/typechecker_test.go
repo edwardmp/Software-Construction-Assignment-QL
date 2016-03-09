@@ -61,3 +61,87 @@ func TestNonBoolConditionalChecker(t *testing.T) {
 		t.Errorf("Non bool condition type checker did not correctly report condition of invalid type")
 	}
 }
+
+func TestInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
+	computedQuestion := stmt.ComputedQuestion{litexpr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.IntType{}}, binaryoperatorexpr.Sub{litexpr.BoolLit{true}, litexpr.IntLit{10}}}
+	exampleBody := stmt.StmtList{[]stmt.Question{computedQuestion}, []stmt.Conditional{}}
+	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
+
+	errorsReported := CheckForOperatorsWithInvalidOperands(exampleForm, nil)
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered BinaryOperatorExpr with operands of different types: bool and int")) {
+		t.Errorf("Invalid operands checker did not correctly report operands of different types %v", errorsReported)
+	}
+}
+
+func TestInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) {
+	computedQuestion := stmt.ComputedQuestion{litexpr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.IntType{}}, binaryoperatorexpr.Sub{litexpr.BoolLit{true}, litexpr.BoolLit{false}}}
+	exampleBody := stmt.StmtList{[]stmt.Question{computedQuestion}, []stmt.Conditional{}}
+	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
+
+	errorsReported := CheckForOperatorsWithInvalidOperands(exampleForm, nil)
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for bool operands: binaryoperatorexpr.Sub")) {
+		t.Errorf("Invalid operand operation checker did not correctly report invalid binary operation on bool types")
+	}
+}
+
+func TestInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.T) {
+	computedQuestion := stmt.ComputedQuestion{litexpr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.IntType{}}, binaryoperatorexpr.And{litexpr.IntLit{10}, litexpr.IntLit{8}}}
+	exampleBody := stmt.StmtList{[]stmt.Question{computedQuestion}, []stmt.Conditional{}}
+	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
+
+	errorsReported := CheckForOperatorsWithInvalidOperands(exampleForm, nil)
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for int operands: binaryoperatorexpr.And")) {
+		t.Errorf("Invalid operand operation checker did not correctly report invalid binary operation on int types")
+	}
+}
+
+func TestInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T) {
+	computedQuestion := stmt.ComputedQuestion{litexpr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.IntType{}}, binaryoperatorexpr.And{litexpr.StrLit{"Test A"}, litexpr.StrLit{"Test B"}}}
+	exampleBody := stmt.StmtList{[]stmt.Question{computedQuestion}, []stmt.Conditional{}}
+	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
+
+	errorsReported := CheckForOperatorsWithInvalidOperands(exampleForm, nil)
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for string operands: binaryoperatorexpr.And")) {
+		t.Errorf("Invalid operand operation checker did not correctly report invalid binary operation on string types")
+	}
+}
+
+func TestInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
+	computedQuestion := stmt.ComputedQuestion{litexpr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.IntType{}}, unaryoperatorexpr.Neg{litexpr.BoolLit{true}}}
+	exampleBody := stmt.StmtList{[]stmt.Question{computedQuestion}, []stmt.Conditional{}}
+	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
+
+	errorsReported := CheckForOperatorsWithInvalidOperands(exampleForm, nil)
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for bool operand: unaryoperatorexpr.Neg")) {
+		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on bool type")
+	}
+}
+
+func TestInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
+	computedQuestion := stmt.ComputedQuestion{litexpr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.IntType{}}, unaryoperatorexpr.Not{litexpr.IntLit{3}}}
+	exampleBody := stmt.StmtList{[]stmt.Question{computedQuestion}, []stmt.Conditional{}}
+	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
+
+	errorsReported := CheckForOperatorsWithInvalidOperands(exampleForm, nil)
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for int operand: unaryoperatorexpr.Not")) {
+		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on int type")
+	}
+}
+
+func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) {
+	computedQuestion := stmt.ComputedQuestion{litexpr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vari.IntType{}}, unaryoperatorexpr.Not{litexpr.StrLit{"Test"}}}
+	exampleBody := stmt.StmtList{[]stmt.Question{computedQuestion}, []stmt.Conditional{}}
+	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
+
+	errorsReported := CheckForOperatorsWithInvalidOperands(exampleForm, nil)
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for string operand: unaryoperatorexpr.Not")) {
+		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on string type")
+	}
+}
