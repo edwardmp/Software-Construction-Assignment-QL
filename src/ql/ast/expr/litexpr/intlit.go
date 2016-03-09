@@ -1,4 +1,4 @@
-package lit
+package litexpr
 
 import (
 	"fmt"

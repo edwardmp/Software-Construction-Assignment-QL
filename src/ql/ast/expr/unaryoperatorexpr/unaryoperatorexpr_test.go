@@ -2,7 +2,7 @@ package unaryoperatorexpr
 
 import (
 	"ql/ast/expr"
-	"ql/ast/expr/lit"
+	"ql/ast/expr/litexpr"
 	"testing"
 )
 
@@ -15,21 +15,24 @@ func testExprEval(t *testing.T, exampleExpr interface{}, expectedOutput interfac
 /* Test for unary expressions */
 
 func TestNot(t *testing.T) {
-	testExprEval(t, Not{lit.BoolLit{true}}, lit.BoolLit{false})
+	testExprEval(t, Not{litexpr.BoolLit{true}}, litexpr.BoolLit{false})
 }
 
 func TestPos(t *testing.T) {
-	testExprEval(t, Pos{lit.IntLit{-10}}, lit.IntLit{10})
+	testExprEval(t, Pos{litexpr.IntLit{-10}}, litexpr.IntLit{10})
 }
 
 func TestNeg(t *testing.T) {
-	testExprEval(t, Neg{lit.IntLit{10}}, lit.IntLit{-10})
+	testExprEval(t, Neg{litexpr.IntLit{10}}, litexpr.IntLit{-10})
 }
 
 func TestPosNeg(t *testing.T) {
-	testExprEval(t, Pos{Neg{lit.IntLit{-10}}}, lit.IntLit{10})
+	testExprEval(t, Pos{Neg{litexpr.IntLit{-10}}}, litexpr.IntLit{10})
 }
 
 func TestNegPos(t *testing.T) {
-	testExprEval(t, Neg{Pos{lit.IntLit{10}}}, lit.IntLit{-10})
+	testExprEval(t, Neg{Pos{litexpr.IntLit{10}}}, litexpr.IntLit{-10})
+}
+
+func TestVarExpr(t *testing.T) {
 }

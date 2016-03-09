@@ -4,7 +4,7 @@ import (
 	"errors"
 	log "github.com/Sirupsen/logrus"
 	"github.com/mattn/go-gtk/gtk"
-	"ql/ast/expr/lit"
+	"ql/ast/expr/litexpr"
 	"ql/ast/vari/vartype"
 	"strconv"
 )
@@ -29,21 +29,21 @@ func createQuestionElement(questionType vartype.VarType, callback func(interface
 		checkbox := CreateCheckboxConditional()
 		checkbox.Connect("clicked", func() {
 			log.WithFields(log.Fields{"value": checkbox.GetActive()}).Debug("Checkbox value changed")
-			callback(lit.BoolLit{checkbox.GetActive()}, nil)
+			callback(litexpr.BoolLit{checkbox.GetActive()}, nil)
 		})
 		GTKEntity = checkbox
 	case vartype.StringType:
-		inputField := CreateInputTextField(questionType.GetDefaultValue().(lit.Lit).String())
+		inputField := CreateInputTextField(questionType.GetDefaultValue().(litexpr.Lit).String())
 		inputField.Connect("changed", func() {
 			inputText := inputField.GetText()
 
 			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed")
 
-			callback(lit.StrLit{inputText}, nil) // TODO check if really is string
+			callback(litexpr.StrLit{inputText}, nil) // TODO check if really is string
 		})
 		GTKEntity = inputField
 	case vartype.IntType:
-		inputField := CreateInputTextField(questionType.GetDefaultValue().(lit.Lit).String())
+		inputField := CreateInputTextField(questionType.GetDefaultValue().(litexpr.Lit).String())
 		inputField.Connect("changed", func() {
 			inputText := inputField.GetText()
 			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed")
@@ -58,7 +58,7 @@ func createQuestionElement(questionType vartype.VarType, callback func(interface
 				return
 			}
 
-			callback(lit.IntLit{inputTextAsInt}, nil)
+			callback(litexpr.IntLit{inputTextAsInt}, nil)
 		})
 		GTKEntity = inputField
 	default:

@@ -1,6 +1,6 @@
 package vartype
 
-import "ql/ast/expr/lit"
+import "ql/ast/expr/litexpr"
 
 type VarType interface {
 	GetDefaultValue() interface{}
@@ -11,7 +11,7 @@ type IntType struct {
 }
 
 func (i IntType) GetDefaultValue() interface{} {
-	return lit.IntLit{0}
+	return litexpr.IntLit{0}
 }
 
 type StringType struct {
@@ -19,7 +19,7 @@ type StringType struct {
 }
 
 func (s StringType) GetDefaultValue() interface{} {
-	return lit.StrLit{""}
+	return litexpr.StrLit{""}
 }
 
 type BoolType struct {
@@ -27,5 +27,5 @@ type BoolType struct {
 }
 
 func (b BoolType) GetDefaultValue() interface{} {
-	return lit.BoolLit{false}
+	return litexpr.BoolLit{false}
 }

@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"ql/ast/expr"
 	"ql/ast/expr/binaryoperatorexpr"
-	"ql/ast/expr/lit"
+	"ql/ast/expr/litexpr"
 	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
@@ -116,11 +116,11 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 		t.(stmt.IfElse).Cond.Accept(v, symbolTable)
 		t.(stmt.IfElse).IfBody.Accept(v, symbolTable)
 		t.(stmt.IfElse).ElseBody.Accept(v, symbolTable)
-	case lit.StrLit:
+	case litexpr.StrLit:
 		log.Debug("Visit StrLit")
-	case lit.BoolLit:
+	case litexpr.BoolLit:
 		log.Debug("Visit BoolLit")
-	case lit.IntLit:
+	case litexpr.IntLit:
 		log.Debug("Visit IntLit")
 	case binaryoperatorexpr.BinaryOperatorExpr:
 		log.Debug("Visit BinaryOperatorExpr")
@@ -129,9 +129,9 @@ func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
 	case unaryoperatorexpr.UnaryOperatorExpr:
 		log.Debug("Visit UnaryOperatorExpr")
 		t.(unaryoperatorexpr.UnaryOperatorExpr).GetValue().(expr.Expr).Accept(v, symbolTable)
-	case expr.VarExpr:
+	case unaryoperatorexpr.VarExpr:
 		log.Debug("Visit VarExpr")
-		t.(expr.VarExpr).GetIdentifier().Accept(v, symbolTable)
+		t.(unaryoperatorexpr.VarExpr).GetIdentifier().Accept(v, symbolTable)
 	}
 
 	return symbolTable

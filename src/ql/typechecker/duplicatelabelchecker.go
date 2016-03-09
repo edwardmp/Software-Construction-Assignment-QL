@@ -3,21 +3,21 @@ package typechecker
 import (
 	"fmt"
 	log "github.com/Sirupsen/logrus"
-	"ql/ast/expr/lit"
+	"ql/ast/expr/litexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
 	"ql/ast/visit"
 )
 
 type DuplicateLabelTypeChecker struct {
-	LabelsEncountered map[lit.StrLit]vari.VarId
+	LabelsEncountered map[litexpr.StrLit]vari.VarId
 	visit.Visitor
 	WarningsEncountered []error
 }
 
 func CheckForDuplicateLabels(form stmt.Form) []error {
 	log.Info("Start check for duplicate labels")
-	labelsEncountered := make(map[lit.StrLit]vari.VarId)
+	labelsEncountered := make(map[litexpr.StrLit]vari.VarId)
 	duplicateLabelChecker := DuplicateLabelTypeChecker{LabelsEncountered: labelsEncountered}
 
 	duplicateLabelChecker.Visit(form, nil)
@@ -66,7 +66,7 @@ func (v *DuplicateLabelTypeChecker) Visit(t interface{}, s interface{}) interfac
 	return v
 }
 
-func checkIfLabelIsUsed(label lit.StrLit, usedLabels map[lit.StrLit]vari.VarId) bool {
+func checkIfLabelIsUsed(label litexpr.StrLit, usedLabels map[litexpr.StrLit]vari.VarId) bool {
 	if _, exists := usedLabels[label]; exists {
 		return true
 	}
@@ -74,7 +74,7 @@ func checkIfLabelIsUsed(label lit.StrLit, usedLabels map[lit.StrLit]vari.VarId) 
 	return false
 }
 
-func markLabelAsUsed(label lit.StrLit, varDecl vari.VarDecl, usedLabels map[lit.StrLit]vari.VarId) {
+func markLabelAsUsed(label litexpr.StrLit, varDecl vari.VarDecl, usedLabels map[litexpr.StrLit]vari.VarId) {
 	log.WithFields(log.Fields{"label": label}).Debug("Marking label as used")
 	usedLabels[label] = varDecl.Ident
 }

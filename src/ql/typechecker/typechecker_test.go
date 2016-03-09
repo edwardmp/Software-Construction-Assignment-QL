@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"ql/ast/expr"
 	"ql/ast/expr/binaryoperatorexpr"
-	"ql/ast/expr/lit"
+	"ql/ast/expr/litexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
 	"ql/ast/vari/vartype"
@@ -13,8 +13,8 @@ import (
 )
 
 func TestDuplicateLabelChecker(t *testing.T) {
-	firstQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.BoolType{}}}
-	secondQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vartype.BoolType{}}}
+	firstQuestionOutput := stmt.InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.BoolType{}}}
+	secondQuestionOutput := stmt.InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vartype.BoolType{}}}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput, secondQuestionOutput}, []stmt.Conditional{}}
 	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
@@ -26,8 +26,8 @@ func TestDuplicateLabelChecker(t *testing.T) {
 }
 
 func TestDuplicateVarDeclChecker(t *testing.T) {
-	firstQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.BoolType{}}}
-	secondQuestionOutput := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.IntType{}}}
+	firstQuestionOutput := stmt.InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.BoolType{}}}
+	secondQuestionOutput := stmt.InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.IntType{}}}
 	exampleBodyOutput := stmt.StmtList{[]stmt.Question{firstQuestionOutput, secondQuestionOutput}, []stmt.Conditional{}}
 	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, exampleBodyOutput}
 
@@ -39,7 +39,7 @@ func TestDuplicateVarDeclChecker(t *testing.T) {
 }
 
 func TestUndefinedQuestionReferenceChecker(t *testing.T) {
-	computedQuestion := stmt.ComputedQuestion{lit.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vartype.IntType{}}, binaryoperatorexpr.Sub{expr.VarExpr{vari.VarId{"hasSoldHouse"}}, expr.VarExpr{vari.VarId{"hasMaintLoan"}}}}
+	computedQuestion := stmt.ComputedQuestion{litexpr.StrLit{"Value residue:"}, vari.VarDecl{vari.VarId{"valueResidue"}, vartype.IntType{}}, binaryoperatorexpr.Sub{unaryoperatorexpr.VarExpr{vari.VarId{"hasSoldHouse"}}, unaryoperatorexpr.VarExpr{vari.VarId{"hasMaintLoan"}}}}
 	exampleBody := stmt.StmtList{[]stmt.Question{computedQuestion}, []stmt.Conditional{}}
 	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
 
@@ -51,8 +51,8 @@ func TestUndefinedQuestionReferenceChecker(t *testing.T) {
 }
 
 func TestNonBoolConditionalChecker(t *testing.T) {
-	exampleQuestion := stmt.InputQuestion{lit.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.BoolType{}}}
-	exampleIf := stmt.If{lit.IntLit{10}, stmt.StmtList{[]stmt.Question{exampleQuestion}, []stmt.Conditional{}}}
+	exampleQuestion := stmt.InputQuestion{litexpr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vartype.BoolType{}}}
+	exampleIf := stmt.If{litexpr.IntLit{10}, stmt.StmtList{[]stmt.Question{exampleQuestion}, []stmt.Conditional{}}}
 	exampleBody := stmt.StmtList{[]stmt.Question{}, []stmt.Conditional{exampleIf}}
 	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
 

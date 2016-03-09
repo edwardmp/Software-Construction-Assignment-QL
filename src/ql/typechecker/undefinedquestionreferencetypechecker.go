@@ -64,10 +64,10 @@ func (v *UndefinedQuestionReferenceTypeChecker) Visit(t interface{}, s interface
 	case unaryoperatorexpr.UnaryOperatorExpr:
 		log.Debug("Visit UnaryOperatorExpr")
 		t.(unaryoperatorexpr.UnaryOperatorExpr).GetValue().(expr.Expr).Accept(v, symbolTable)
-	case expr.VarExpr:
+	case unaryoperatorexpr.VarExpr:
 		log.Debug("Visit VarExpr")
 
-		identifier := t.(expr.VarExpr).GetIdentifier()
+		identifier := t.(unaryoperatorexpr.VarExpr).GetIdentifier()
 		if symbolTable.GetNodeForIdentifier(identifier) == nil {
 			v.ErrorsEncountered = append(v.ErrorsEncountered, fmt.Errorf("Reference to unknown question identifier: %s", identifier))
 		}

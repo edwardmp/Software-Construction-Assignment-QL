@@ -1,7 +1,8 @@
-package expr
+package unaryoperatorexpr
 
 import (
 	"fmt"
+	"ql/ast/expr"
 	"ql/ast/vari"
 	"ql/ast/visit"
 	"ql/symboltable"
@@ -24,7 +25,7 @@ func (v VarExpr) Eval(s interface{}) interface{} {
 	}
 
 	if node := symbolTable.GetNodeForIdentifier(v.Identifier); node != nil {
-		return node.(Expr).Eval(s)
+		return node.(expr.Expr).Eval(s)
 	}
 
 	return nil

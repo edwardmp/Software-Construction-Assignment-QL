@@ -1,13 +1,13 @@
 package stmt
 
 import (
-	"ql/ast/expr/lit"
+	"ql/ast/expr/litexpr"
 	"ql/ast/vari"
 	"ql/ast/visit"
 )
 
 type Question interface {
-	GetLabel() lit.StrLit
+	GetLabel() litexpr.StrLit
 	GetLabelAsString() string
 	GetVarDecl() vari.VarDecl
 	Accept(v visit.Visitor, s interface{}) interface{}
