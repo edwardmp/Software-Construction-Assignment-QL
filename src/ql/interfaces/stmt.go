@@ -25,12 +25,17 @@ type ComputedQuestion interface {
 	GetComputation() Expr
 }
 
-type If interface {
+type Conditional interface {
 	Stmt
+	EvalCondition() bool
+}
+
+type If interface {
+	Conditional
 }
 
 type IfElse interface {
-	Stmt
+	Conditional
 }
 
 type StmtList interface {
