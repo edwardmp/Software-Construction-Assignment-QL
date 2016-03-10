@@ -55,15 +55,15 @@ func typeCheckInvalidUnaryOperatorForOperands(unaryOperator UnaryOperator, typeC
 	switch evalValue.(type) {
 	case bool:
 		if exprType != "unaryoperatorNot" {
-			typeChecker.AddEncounteredErrorForCheckType("InvalidOperands", fmt.Errorf("Encountered invalid operation for bool operand"))
+			typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for bool operand"))
 		}
 	case int:
 		if exprType != "unaryoperatorNeg" && exprType != "unaryoperatorPos" {
-			typeChecker.AddEncounteredErrorForCheckType("InvalidOperands", fmt.Errorf("Encountered invalid operation for int operand"))
+			typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for int operand"))
 		}
 	case string:
 		// there are no unary operators on strings, so always return error
-		typeChecker.AddEncounteredErrorForCheckType("InvalidOperands", fmt.Errorf("Encountered invalid operation for string operand"))
+		typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for string operand"))
 	}
 }
 

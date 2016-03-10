@@ -59,7 +59,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
-	errorsReported := typeChecker.GetEncountedErrorsForCheckType("InvalidOperands")
+	errorsReported := typeChecker.GetEncountedErrorsForCheckType("InvalidOperationOnOperands")
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for bool operand")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on bool type %v", errorsReported)
@@ -71,7 +71,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
-	errorsReported := typeChecker.GetEncountedErrorsForCheckType("InvalidOperands")
+	errorsReported := typeChecker.GetEncountedErrorsForCheckType("InvalidOperationOnOperands")
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for int operand")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on int type")
@@ -83,7 +83,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) 
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
-	errorsReported := typeChecker.GetEncountedErrorsForCheckType("InvalidOperands")
+	errorsReported := typeChecker.GetEncountedErrorsForCheckType("InvalidOperationOnOperands")
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for string operand")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on string type")
