@@ -1,12 +1,12 @@
-package binaryoperatorexpr
+package expr
 
-import "ql/ast/expr"
+import "ql/interfaces"
 
 type NEq struct {
 	BinaryOperator
 }
 
-func NewNEq(lhs expr.Expr, rhs expr.Expr) NEq {
+func NewNEq(lhs interfaces.Expr, rhs interfaces.Expr) NEq {
 	return NEq{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
 
@@ -16,7 +16,9 @@ func (n NEq) Eval(s interface{}) interface{} {
 		return n.Lhs.Eval(s).(int) != n.Rhs.Eval(s).(int)
 	case bool:
 		return n.Lhs.Eval(s).(bool) != n.Rhs.Eval(s).(bool)
-	default:
-		panic("NEq error: comparing unknown types")
+	case string:
+		return n.Lhs.Eval(s).(string) != n.Rhs.Eval(s).(string)
 	}
+
+	return nil
 }

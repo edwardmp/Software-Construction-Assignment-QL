@@ -1,12 +1,12 @@
-package binaryoperatorexpr
+package expr
 
-import "ql/ast/expr"
+import "ql/interfaces"
 
 type Mul struct {
 	BinaryOperator
 }
 
-func NewMul(lhs expr.Expr, rhs expr.Expr) Mul {
+func NewMul(lhs interfaces.Expr, rhs interfaces.Expr) Mul {
 	return Mul{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
 

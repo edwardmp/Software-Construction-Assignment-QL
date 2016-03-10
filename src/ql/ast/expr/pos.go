@@ -1,15 +1,15 @@
-package unaryoperatorexpr
+package expr
 
 import (
 	"math"
-	"ql/ast/expr"
+	"ql/interfaces"
 )
 
 type Pos struct {
 	UnaryOperator
 }
 
-func NewPos(value expr.Expr) Pos {
+func NewPos(value interfaces.Expr) Pos {
 	return Pos{UnaryOperator{Value: value}}
 }
 

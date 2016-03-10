@@ -1,4 +1,4 @@
-package litexpr
+package expr
 
 import (
 	"fmt"
@@ -6,6 +6,10 @@ import (
 
 type IntLit struct {
 	Value int
+}
+
+func NewIntLit(value int) IntLit {
+	return IntLit{Value: value}
 }
 
 func (i IntLit) Eval(s interface{}) interface{} {

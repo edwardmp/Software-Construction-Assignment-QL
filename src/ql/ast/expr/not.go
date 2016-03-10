@@ -1,12 +1,12 @@
-package unaryoperatorexpr
+package expr
 
-import "ql/ast/expr"
+import "ql/interfaces"
 
 type Not struct {
 	UnaryOperator
 }
 
-func NewNot(value expr.Expr) Not {
+func NewNot(value interfaces.Expr) Not {
 	return Not{UnaryOperator{Value: value}}
 }
 

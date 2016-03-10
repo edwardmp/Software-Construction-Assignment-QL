@@ -1,14 +1,13 @@
-package unaryoperatorexpr
+package expr
 
 import (
 	"fmt"
-	"ql/ast/expr"
-	"ql/ast/vari"
+	"ql/interfaces"
 	"ql/symboltable"
 )
 
 type VarExpr struct {
-	Identifier vari.VarId
+	Identifier interfaces.VarId
 }
 
 func (v VarExpr) Eval(s interface{}) interface{} {
@@ -16,11 +15,11 @@ func (v VarExpr) Eval(s interface{}) interface{} {
 
 	if !castOK {
 		fmt.Print(s)
-		panic("No symbol table passed to Eval VarExpr")
+		panic("No symbol table passed to Eval Varinterfaces.Expr")
 	}
 
 	if node := symbolTable.GetNodeForIdentifier(v.Identifier); node != nil {
-		return node.(expr.Expr).Eval(s)
+		return node.(interfaces.Expr).Eval(s)
 	}
 
 	return nil

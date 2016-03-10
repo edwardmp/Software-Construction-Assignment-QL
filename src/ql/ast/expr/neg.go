@@ -1,15 +1,15 @@
-package unaryoperatorexpr
+package expr
 
 import (
 	"math"
-	"ql/ast/expr"
+	"ql/interfaces"
 )
 
 type Neg struct {
 	UnaryOperator
 }
 
-func NewNeg(value expr.Expr) Neg {
+func NewNeg(value interfaces.Expr) Neg {
 	return Neg{UnaryOperator{Value: value}}
 }
 

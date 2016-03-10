@@ -1,12 +1,12 @@
-package binaryoperatorexpr
+package expr
 
-import "ql/ast/expr"
+import "ql/interfaces"
 
 type LT struct {
 	BinaryOperator
 }
 
-func NewLT(lhs expr.Expr, rhs expr.Expr) LT {
+func NewLT(lhs interfaces.Expr, rhs interfaces.Expr) LT {
 	return LT{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
 
