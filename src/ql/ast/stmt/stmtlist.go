@@ -2,10 +2,11 @@ package stmt
 
 import (
 	"fmt"
+    "ql/interfaces"
 )
 
 type StmtList struct {
-	Questions    []Question
+	Questions    []interfaces.Question
 	Conditionals []Conditional
 }
 
@@ -13,8 +14,8 @@ func (s StmtList) AddToCorrectSlice(i interface{}) StmtList {
 	switch t := i.(type) {
 	default:
 		panic(fmt.Sprintf("Unexpected StmtList type %T\n", t))
-	case Question:
-		s.Questions = append(s.Questions, i.(Question))
+	case interfaces.Question:
+		s.Questions = append(s.Questions, i.(interfaces.Question))
 	case If:
 		s.Conditionals = append(s.Conditionals, i.(If))
 	case IfElse:

@@ -29,19 +29,11 @@ func CheckForOperatorsWithInvalidOperands(form stmt.Form, symbolTable symboltabl
 func (v *InvalidOperandsTypeChecker) Visit(t interface{}, s interface{}) interface{} {
 	switch t.(type) {
 	default:
-		log.WithFields(log.Fields{"Node": fmt.Sprintf("%T", t)}).Panic("Unexpected node type")
+		log.WithFields(log.Fields{"Node": fmt.Sprintf("%T", t)}).Debug("Ignoring unhandled node type")
 	case stmt.Form:
 		log.Debug("Visit Form")
 		t.(stmt.Form).Identifier.Accept(v, s)
-		return t.(stmt.Form).Content.Accept(v, s)
-	case vari.VarId:
-		log.Debug("Visit VarId")
-	case vari.VarType:
-		log.Debug("Visit VarType")
-	case vari.VarDecl:
-		log.Debug("Visit VarDecl")
-		varDecl := t.(vari.VarDecl)
-		varDecl.Ident.Accept(v, s)
+		t.(stmt.Form).Content.Accept(v, s)
 	case stmt.StmtList:
 		log.Debug("Visit StmtList")
 
@@ -70,12 +62,6 @@ func (v *InvalidOperandsTypeChecker) Visit(t interface{}, s interface{}) interfa
 		t.(stmt.IfElse).Cond.Accept(v, s)
 		t.(stmt.IfElse).IfBody.Accept(v, s)
 		t.(stmt.IfElse).ElseBody.Accept(v, s)
-	case litexpr.StrLit:
-		log.Debug("Visit StrLit")
-	case litexpr.BoolLit:
-		log.Debug("Visit BoolLit")
-	case litexpr.IntLit:
-		log.Debug("Visit IntLit")
 	case binaryoperatorexpr.BinaryOperatorExpr:
 		log.Debug("Visit BinaryOperatorExpr")
 
@@ -115,7 +101,7 @@ func (v *InvalidOperandsTypeChecker) handleBinaryOperatorExpr(binaryOperatorExpr
 			v.ErrorsEncountered = append(v.ErrorsEncountered, fmt.Errorf("Encountered invalid operation for int operands: %s", exprType))
 		}
 	} else if lhsTypeOfValue == "string" {
-		if exprType != "binaryoperatorexpr.Eq" && exprType != "binaryoperatorexpr.NEq" {
+		if exprType != "binaryoperatorexpr.Eq" && exprType != "binaryoperatorexpr.NEq" && exprType != "binaryoperatorexpr.GEq" && exprType != "binaryoperatorexpr.GT" && exprType != "binaryoperatorexpr.GEq" && exprType != "binaryoperatorexpr.LEq" && exprType != "binaryoperatorexpr.LT" {
 			v.ErrorsEncountered = append(v.ErrorsEncountered, fmt.Errorf("Encountered invalid operation for string operands: %s", exprType))
 		}
 	}

@@ -16,5 +16,5 @@ func (i IfElse) String() string {
 }
 
 func (i IfElse) EvalCondition() bool {
-	return i.Cond.Eval(nil).(bool)
+	return i.Cond.Eval(nil).(bool) // TODO symboltable
 }
