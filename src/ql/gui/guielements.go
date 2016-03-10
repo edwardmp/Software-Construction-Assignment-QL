@@ -28,3 +28,10 @@ func CreateButton(buttonText string, onClick func()) *gtk.Button {
 	button.Connect("clicked", onClick)
 	return button
 }
+
+func CreateLabel(text string) *gtk.Label {
+	label := gtk.NewLabel(text)
+	label.ModifyFontEasy("DejaVu Serif 12")
+
+	return label
+}

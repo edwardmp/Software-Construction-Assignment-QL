@@ -113,7 +113,7 @@ func (v GUI) handleComputedQuestion(question stmt.ComputedQuestion, symbolTable 
 func (g GUI) updateComputedQuestions(symbolTable symboltable.SymbolTable) {
 	for _, computedQuestion := range g.Form.ComputedQuestions {
 		computedQuestionEval := computedQuestion.Expr.Eval(symbolTable)
-		computedQuestion.GUIQuestion.ChangeElementText(fmt.Sprintf("%v", computedQuestionEval))
+		computedQuestion.ChangeElementText(fmt.Sprintf("%v", computedQuestionEval))
 
 		// save the computed value to the symbol table
 		symbolTable.SetNodeForIdentifier(computedQuestionEval, computedQuestion.VarId)

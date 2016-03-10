@@ -13,9 +13,9 @@ type GUIQuestion struct {
 }
 
 func CreateGUIQuestion(label string, questionType vari.VarType, callback func(interface{}, error)) GUIQuestion {
-	questionLabel := createLabel(label)
+	questionLabel := CreateLabel(label)
 	questionElement := createQuestionElement(questionType, callback)
-	errorLabel := createLabel("")
+	errorLabel := CreateLabel("")
 
 	return GUIQuestion{questionLabel, questionElement, errorLabel}
 }
@@ -27,11 +27,4 @@ func (g GUIQuestion) ChangeElementText(newText string) {
 
 func (g GUIQuestion) ChangeErrorLabelText(newText string) {
 	g.ErrorLabel.SetText(newText)
-}
-
-func createLabel(questionText string) *gtk.Label {
-	label := gtk.NewLabel(questionText)
-	label.ModifyFontEasy("DejaVu Serif 12")
-
-	return label
 }

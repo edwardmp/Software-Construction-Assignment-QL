@@ -13,10 +13,6 @@ type GUIComputedQuestion struct {
 }
 
 func CreateGUIComputedQuestion(label string, questionType vari.VarType, expr expr.Expr, varId vari.VarId) GUIComputedQuestion {
-	questionLabel := createLabel(label)
-	questionElement := CreateDisabledInputTextField(fmt.Sprintf("%s", questionType.GetDefaultValue()))
-	errorLabel := createLabel("")
-
-	guiQuestion := GUIQuestion{questionLabel, questionElement, errorLabel}
+	guiQuestion := GUIQuestion{label, questionType, nil}
 	return GUIComputedQuestion{GUIQuestion: guiQuestion, Expr: expr, VarId: varId}
 }
