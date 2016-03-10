@@ -4,21 +4,21 @@ import (
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
 	"io/ioutil"
-	"ql/ast/vari"
+	"ql/interfaces"
 )
 
-type SymbolTable map[vari.VarId]interface{}
+type SymbolTable map[interfaces.VarId]interface{}
 
 func NewSymbolTable() SymbolTable {
 	log.Debug("Creating new symbol table")
 	return make(SymbolTable)
 }
 
-func (s SymbolTable) GetNodeForIdentifier(v vari.VarId) interface{} {
+func (s SymbolTable) GetNodeForIdentifier(v interfaces.VarId) interface{} {
 	return s[v]
 }
 
-func (s SymbolTable) SetNodeForIdentifier(e interface{}, v vari.VarId){ 
+func (s SymbolTable) SetNodeForIdentifier(e interface{}, v interfaces.VarId) {
 	if previousValue, keyExists := s[v]; keyExists {
 		s[v] = e
 		log.WithFields(log.Fields{"Identifier": v, "Current": s[v], "Previous": previousValue}).Debug("Set node for identifier")
@@ -59,7 +59,7 @@ func convertSymbolTableToJSON(symbolTableWithStringKeys map[string]interface{}) 
 func convertSymbolTableKeysToStrings(s SymbolTable) map[string]interface{} {
 	var symbolTableWithStringKeys map[string]interface{} = make(map[string]interface{})
 	for k, v := range s {
-		symbolTableWithStringKeys[k.Ident] = v
+		symbolTableWithStringKeys[k.GetIdent()] = v
 	}
 
 	return symbolTableWithStringKeys
