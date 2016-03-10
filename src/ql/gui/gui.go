@@ -4,81 +4,146 @@ import (
 	"fmt"
 	//"io/ioutil"
 	log "github.com/Sirupsen/logrus"
-	"ql/ast/expr"
 	"ql/ast/stmt"
-	"ql/ast/visit"
+	"ql/interfaces"
 	"ql/symboltable"
 	"strconv"
 )
 
 type GUI struct {
-	visit.Visitor
+	interfaces.Visitor
 	Form *GUIForm
 }
 
 func CreateGUI(form stmt.Form, symbolTable symboltable.SymbolTable) {
-	gui := GUI{Form: &GUIForm{Title: form.Identifier.Ident}}
+	gui := GUI{Form: &GUIForm{Title: form.Identifier.GetIdent()}}
 
 	gui.Form.SaveDataCallback = symbolTable.SaveToDisk
 
-	gui.Visit(form, symbolTable)
+	form.Accept(gui, symbolTable)
+
+	gui.Form.Show()
 }
 
-func (v GUI) Visit(t interface{}, s interface{}) interface{} {
-	symbolTable := s.(symboltable.SymbolTable)
+func (g GUI) VisitAdd(a interfaces.Add, s interface{}) {
 
-	switch t.(type) {
-	default:
-		log.WithFields(log.Fields{"Node": fmt.Sprintf("%T", t)}).Debug("Ignoring unhandled node type")
-	case stmt.Form:
-		log.Debug("Visit Form")
-
-		t.(stmt.Form).Identifier.Accept(v, symbolTable)
-		t.(stmt.Form).Content.Accept(v, symbolTable)
-
-		v.Form.Show()
-	case stmt.StmtList:
-		log.Debug("Visit StmtList")
-
-		for _, question := range t.(stmt.StmtList).Questions {
-			question.Accept(v, symbolTable)
-		}
-
-		for _, conditional := range t.(stmt.StmtList).Conditionals {
-			conditional.Accept(v, symbolTable)
-		}
-	case stmt.InputQuestion:
-		log.Debug("Visit InputQuestion")
-
-		question := t.(stmt.InputQuestion)
-		v.handleInputQuestion(question, symbolTable)
-
-		question.Label.Accept(v, symbolTable)
-		question.VarDecl.Accept(v, symbolTable)
-	case stmt.ComputedQuestion:
-		log.Debug("Visit ComputedQuestion")
-
-		question := t.(stmt.ComputedQuestion)
-		v.handleComputedQuestion(question, symbolTable)
-
-		question.Label.Accept(v, symbolTable)
-		question.VarDecl.Accept(v, symbolTable)
-		question.Computation.Accept(v, symbolTable)
-	case stmt.If:
-		log.Debug("Visit If")
-		t.(stmt.If).Cond.Accept(v, symbolTable)
-		t.(stmt.If).Body.Accept(v, symbolTable)
-	case stmt.IfElse:
-		log.Debug("Visit IfElse")
-		t.(stmt.IfElse).Cond.Accept(v, symbolTable)
-		t.(stmt.IfElse).IfBody.Accept(v, symbolTable)
-		t.(stmt.IfElse).ElseBody.Accept(v, symbolTable)
-	}
-
-	return nil
 }
 
-func (v GUI) handleInputQuestion(question stmt.InputQuestion, symbolTable symboltable.SymbolTable) {
+func (g GUI) VisitAnd(a interfaces.And, s interface{}) {
+
+}
+
+func (g GUI) VisitDiv(d interfaces.Div, s interface{}) {
+
+}
+
+func (g GUI) VisitEq(e interfaces.Eq, s interface{}) {
+
+}
+
+func (g GUI) VisitGEq(ge interfaces.GEq, s interface{}) {
+
+}
+
+func (g GUI) VisitGT(gt interfaces.GT, s interface{}) {
+
+}
+
+func (g GUI) VisitLEq(l interfaces.LEq, s interface{}) {
+
+}
+
+func (g GUI) VisitLT(l interfaces.LT, s interface{}) {
+
+}
+
+func (g GUI) VisitMul(m interfaces.Mul, s interface{}) {
+
+}
+
+func (g GUI) VisitNEq(n interfaces.NEq, s interface{}) {
+
+}
+
+func (g GUI) VisitOr(o interfaces.Or, s interface{}) {
+
+}
+
+func (g GUI) VisitSub(su interfaces.Sub, s interface{}) {
+
+}
+
+func (g GUI) VisitBoolLit(b interfaces.BoolLit, s interface{}) {
+
+}
+
+func (g GUI) VisitIntLit(i interfaces.IntLit, s interface{}) {
+
+}
+
+func (g GUI) VisitStrLit(st interfaces.StrLit, s interface{}) {
+
+}
+
+func (g GUI) VisitNeg(n interfaces.Neg, s interface{}) {
+
+}
+
+func (g GUI) VisitNot(n interfaces.Not, s interface{}) {
+
+}
+
+func (g GUI) VisitPos(p interfaces.Pos, s interface{}) {
+
+}
+
+func (g GUI) VisitVarExpr(va interfaces.VarExpr, s interface{}) {
+
+}
+
+func (g GUI) VisitVarDecl(va interfaces.VarDecl, s interface{}) {
+
+}
+
+func (g GUI) VisitVarId(va interfaces.VarId, s interface{}) {
+
+}
+
+func (g GUI) VisitIntType(i interfaces.IntType, s interface{}) {
+
+}
+
+func (g GUI) VisitBoolType(b interfaces.BoolType, s interface{}) {
+
+}
+
+func (g GUI) VisitStringType(st interfaces.StringType, s interface{}) {
+
+}
+
+func (g GUI) VisitForm(f interfaces.Form, s interface{}) {
+}
+
+func (g GUI) VisitComputedQuestion(c interfaces.ComputedQuestion, s interface{}) {
+	g.handleComputedQuestion(c, s.(interfaces.SymbolTable))
+}
+
+func (g GUI) VisitInputQuestion(i interfaces.InputQuestion, s interface{}) {
+	g.handleInputQuestion(i, s.(interfaces.SymbolTable))
+}
+
+func (g GUI) VisitIf(i interfaces.If, s interface{}) {
+
+}
+
+func (g GUI) VisitIfElse(i interfaces.IfElse, s interface{}) {
+
+}
+
+func (g GUI) VisitStmtList(st interfaces.StmtList, sy interface{}) {
+}
+
+func (v GUI) handleInputQuestion(question interfaces.InputQuestion, symbolTable interfaces.SymbolTable) {
 	var guiQuestion GUIInputQuestion
 	questionCallback := func(input interface{}, err error) {
 		if err != nil {
@@ -92,7 +157,7 @@ func (v GUI) handleInputQuestion(question stmt.InputQuestion, symbolTable symbol
 			return
 		}
 
-		questionIdentifier := question.GetVarDecl().Ident
+		questionIdentifier := question.GetVarDecl().GetIdent()
 		log.WithFields(log.Fields{"input": input, "identifier": questionIdentifier}).Debug("Question input received")
 		symbolTable.SetNodeForIdentifier(input, questionIdentifier)
 
@@ -103,14 +168,14 @@ func (v GUI) handleInputQuestion(question stmt.InputQuestion, symbolTable symbol
 	v.Form.AddInputQuestion(guiQuestion)
 }
 
-func (v GUI) handleComputedQuestion(question stmt.ComputedQuestion, symbolTable symboltable.SymbolTable) {
-	computation := question.Computation.(expr.Expr)
-	guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.VarDecl.GetType(), computation, question.VarDecl.GetIdentifier())
+func (v GUI) handleComputedQuestion(question interfaces.ComputedQuestion, symbolTable interfaces.SymbolTable) {
+	computation := question.GetComputation()
+	guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), computation, question.GetVarDecl().GetIdent())
 
 	v.Form.AddComputedQuestion(guiQuestion)
 }
 
-func (g GUI) updateComputedQuestions(symbolTable symboltable.SymbolTable) {
+func (g GUI) updateComputedQuestions(symbolTable interfaces.SymbolTable) {
 	for _, computedQuestion := range g.Form.ComputedQuestions {
 		computedQuestionEval := computedQuestion.Expr.Eval(symbolTable)
 		computedQuestion.ChangeElementText(fmt.Sprintf("%v", computedQuestionEval))

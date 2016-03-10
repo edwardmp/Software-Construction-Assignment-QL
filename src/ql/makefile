@@ -21,8 +21,8 @@ GOFMT=gofmt -w
 
 # Package lists
 TOPLEVEL_PKG := ql
-INT_LIST := 	#<-- Interface directories
-IMPL_LIST := symboltable typechecker ast ast/expr/litexpr ast/expr/unaryoperatorexpr ast/expr/binaryoperatorexpr ast/stmt #<-- Implementation directories
+INT_LIST := interfaces	#<-- Interface directories
+IMPL_LIST := symboltable ast ast/typechecker ast/expr ast/stmt ast/vari #<-- Implementation directories
 CMD_LIST := 	#<-- Command directories
 
 # List building

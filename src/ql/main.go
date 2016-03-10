@@ -1,21 +1,15 @@
 package main
 
 import (
-	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"io/ioutil"
-	"ql/ast/expr"
-	"ql/ast/expr/binaryoperatorexpr"
-	"ql/ast/expr/litexpr"
-	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
-	"ql/ast/vari"
-	"ql/ast/visit"
+	"ql/ast/typechecker"
 	"ql/gui"
+	"ql/interfaces"
 	"ql/lexer"
 	"ql/parser"
 	"ql/symboltable"
-	"ql/typechecker"
 )
 
 func main() {
@@ -44,18 +38,21 @@ func main() {
 	} else {
 		log.WithFields(log.Fields{"Result": parsedForm}).Info("Form parsed")
 
-		visitor := VisitorAdapter{}
+		visitor := SymbolTableFillerVisitor{}
 		symbolTable := symboltable.NewSymbolTable()
-		symbolTable = parsedForm.Accept(visitor, symbolTable).(symboltable.SymbolTable)
+		parsedForm.Accept(visitor, symbolTable)
+
+		typeChecker := typechecker.NewTypeChecker()
+		parsedForm.TypeCheck(&typeChecker, symbolTable)
 
 		errors := make([]error, 0)
 		warnings := make([]error, 0)
 
-		warnings = append(warnings, typechecker.CheckForDuplicateLabels(parsedForm)...)
-		errors = append(errors, typechecker.CheckForDuplicateVarDeclWithDiffTypes(parsedForm)...)
-		errors = append(errors, typechecker.CheckForReferencesToUndefinedQuestions(parsedForm, symbolTable)...)
-		errors = append(errors, typechecker.CheckForNonBoolConditions(parsedForm, symbolTable)...)
-		errors = append(errors, typechecker.CheckForOperatorsWithInvalidOperands(parsedForm, symbolTable)...)
+		warnings = append(warnings, typeChecker.GetEncountedErrorsForCheckType("DuplicateLabels")...)
+		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("InvalidOperandsDifferentTypes")...)
+		//errors = append(errors, typechecker.CheckForReferencesToUndefinedQuestions(parsedForm, symbolTable)...)
+		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("InvalidOperationOnOperands")...)
+		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("NonBoolConditionals")...)
 
 		log.WithFields(log.Fields{"errors": errors, "warnings": warnings}).Error("Type checking finished")
 		gui.CreateGUI(parsedForm, symbolTable)
@@ -66,74 +63,126 @@ func initLog() {
 	log.SetLevel(log.DebugLevel)
 }
 
-type VisitorAdapter struct {
-	visit.Visitor
+type SymbolTableFillerVisitor struct {
+	interfaces.Visitor
 }
 
-func (v VisitorAdapter) Visit(t interface{}, s interface{}) interface{} {
-	symbolTable := s.(symboltable.SymbolTable)
+func (s SymbolTableFillerVisitor) VisitAdd(a interfaces.Add, sy interface{}) {
 
-	switch t.(type) {
-	default:
-		log.WithFields(log.Fields{"Node": fmt.Sprintf("%T", t)}).Panic("Unexpected node type")
-	case stmt.Form:
-		log.Debug("Visit Form")
-		t.(stmt.Form).Identifier.Accept(v, symbolTable)
-		return t.(stmt.Form).Content.Accept(v, symbolTable)
-	case vari.VarId:
-		log.Debug("Visit VarId")
-	case vari.VarType:
-		log.Debug("Visit VarType")
-	case vari.VarDecl:
-		log.Debug("Visit VarDecl")
-		varDecl := t.(vari.VarDecl)
-		symbolTable.SetNodeForIdentifier(varDecl.GetType().GetDefaultValue(), varDecl.Ident)
-		varDecl.Ident.Accept(v, symbolTable)
-	case stmt.StmtList:
-		log.Debug("Visit StmtList")
+}
 
-		for _, question := range t.(stmt.StmtList).Questions {
-			question.Accept(v, symbolTable)
-		}
+func (s SymbolTableFillerVisitor) VisitAnd(a interfaces.And, sy interface{}) {
 
-		for _, conditional := range t.(stmt.StmtList).Conditionals {
-			conditional.Accept(v, symbolTable)
-		}
-	case stmt.InputQuestion:
-		log.Debug("Visit InputQuestion")
-		t.(stmt.InputQuestion).Label.Accept(v, symbolTable)
-		t.(stmt.InputQuestion).VarDecl.Accept(v, symbolTable)
-	case stmt.ComputedQuestion:
-		log.Debug("Visit ComputedQuestion")
-		t.(stmt.ComputedQuestion).Label.Accept(v, symbolTable)
-		t.(stmt.ComputedQuestion).VarDecl.Accept(v, symbolTable)
-		t.(stmt.ComputedQuestion).Computation.Accept(v, symbolTable)
-	case stmt.If:
-		log.Debug("Visit If")
-		t.(stmt.If).Cond.Accept(v, symbolTable)
-		t.(stmt.If).Body.Accept(v, symbolTable)
-	case stmt.IfElse:
-		log.Debug("Visit IfElse")
-		t.(stmt.IfElse).Cond.Accept(v, symbolTable)
-		t.(stmt.IfElse).IfBody.Accept(v, symbolTable)
-		t.(stmt.IfElse).ElseBody.Accept(v, symbolTable)
-	case litexpr.StrLit:
-		log.Debug("Visit StrLit")
-	case litexpr.BoolLit:
-		log.Debug("Visit BoolLit")
-	case litexpr.IntLit:
-		log.Debug("Visit IntLit")
-	case binaryoperatorexpr.BinaryOperatorExpr:
-		log.Debug("Visit BinaryOperatorExpr")
-		t.(binaryoperatorexpr.BinaryOperatorExpr).GetLhs().(expr.Expr).Accept(v, symbolTable)
-		t.(binaryoperatorexpr.BinaryOperatorExpr).GetRhs().(expr.Expr).Accept(v, symbolTable)
-	case unaryoperatorexpr.UnaryOperatorExpr:
-		log.Debug("Visit UnaryOperatorExpr")
-		t.(unaryoperatorexpr.UnaryOperatorExpr).GetValue().(expr.Expr).Accept(v, symbolTable)
-	case unaryoperatorexpr.VarExpr:
-		log.Debug("Visit VarExpr")
-		t.(unaryoperatorexpr.VarExpr).GetIdentifier().Accept(v, symbolTable)
-	}
+}
 
-	return symbolTable
+func (s SymbolTableFillerVisitor) VisitDiv(d interfaces.Div, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitEq(e interfaces.Eq, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitGEq(g interfaces.GEq, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitGT(g interfaces.GT, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitLEq(l interfaces.LEq, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitLT(l interfaces.LT, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitMul(m interfaces.Mul, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitNEq(n interfaces.NEq, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitOr(o interfaces.Or, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitSub(su interfaces.Sub, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitBoolLit(b interfaces.BoolLit, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitIntLit(i interfaces.IntLit, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitStrLit(st interfaces.StrLit, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitNeg(n interfaces.Neg, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitNot(n interfaces.Not, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitPos(p interfaces.Pos, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitVarExpr(va interfaces.VarExpr, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitVarDecl(va interfaces.VarDecl, sy interface{}) {
+	sy.(symboltable.SymbolTable).SetNodeForIdentifier(va.GetType().GetDefaultValue(), va.GetIdent())
+}
+
+func (s SymbolTableFillerVisitor) VisitVarId(va interfaces.VarId, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitIntType(i interfaces.IntType, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitBoolType(b interfaces.BoolType, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitStringType(st interfaces.StringType, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitForm(f interfaces.Form, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitComputedQuestion(c interfaces.ComputedQuestion, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitInputQuestion(i interfaces.InputQuestion, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitIf(i interfaces.If, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitIfElse(i interfaces.IfElse, sy interface{}) {
+
+}
+
+func (s SymbolTableFillerVisitor) VisitStmtList(st interfaces.StmtList, sy interface{}) {
+
 }
