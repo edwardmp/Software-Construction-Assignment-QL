@@ -1,11 +1,13 @@
 package binaryoperatorexpr
 
-import (
-	"ql/ast/expr"
-)
+import "ql/ast/expr"
 
 type Add struct {
-	Lhs, Rhs expr.Expr
+	BinaryOperator
+}
+
+func NewAdd(lhs expr.Expr, rhs expr.Expr) Add {
+	return Add{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
 
 func (a Add) Eval(s interface{}) interface{} {

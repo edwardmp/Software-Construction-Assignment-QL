@@ -1,13 +1,15 @@
 package binaryoperatorexpr
 
-import (
-	"ql/ast/expr"
-)
+import "ql/ast/expr"
 
 type And struct {
-	Lhs, Rhs expr.Expr
+	BinaryOperator
+}
+
+func NewAnd(lhs expr.Expr, rhs expr.Expr) And {
+	return And{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
 
 func (a And) Eval(s interface{}) interface{} {
-	return a.Lhs.(expr.Expr).Eval(s).(bool) && a.Rhs.(expr.Expr).Eval(s).(bool)
+	return a.Lhs.Eval(s).(bool) && a.Rhs.Eval(s).(bool)
 }

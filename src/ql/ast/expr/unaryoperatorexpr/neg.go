@@ -6,7 +6,11 @@ import (
 )
 
 type Neg struct {
-	Value expr.Expr
+	UnaryOperator
+}
+
+func NewNeg(value expr.Expr) Neg {
+	return Neg{UnaryOperator{Value: value}}
 }
 
 func (n Neg) Eval(s interface{}) interface{} {

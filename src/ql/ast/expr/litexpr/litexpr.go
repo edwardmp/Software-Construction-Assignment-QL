@@ -4,7 +4,7 @@ import (
 	"ql/ast/expr"
 )
 
-type Lit interface {
+type LitExpr interface {
 	expr.Expr
 	String() string
 }

@@ -15,58 +15,57 @@ func testExprEval(t *testing.T, exampleExpr interface{}, expectedOutput interfac
 /* Tests for binary expressions */
 
 func TestAdd(t *testing.T) {
-	addition := Add{litexpr.IntLit{1}, litexpr.IntLit{2}}
-	testExprEval(t, addition, litexpr.IntLit{3})
+	testExprEval(t, NewAdd(litexpr.IntLit{1}, litexpr.IntLit{2}), litexpr.IntLit{3})
 }
 
 func TestMul(t *testing.T) {
-	testExprEval(t, Mul{litexpr.IntLit{3}, litexpr.IntLit{2}}, litexpr.IntLit{6})
+	testExprEval(t, NewMul(litexpr.IntLit{3}, litexpr.IntLit{2}), litexpr.IntLit{6})
 }
 
 func TestMulAddPrecedence(t *testing.T) {
-	testExprEval(t, Add{Mul{litexpr.IntLit{3}, litexpr.IntLit{2}}, litexpr.IntLit{1}}, litexpr.IntLit{7})
+	testExprEval(t, NewAdd(NewMul(litexpr.IntLit{3}, litexpr.IntLit{2}), litexpr.IntLit{1}), litexpr.IntLit{7})
 }
 
 func TestSub(t *testing.T) {
-	testExprEval(t, Sub{litexpr.IntLit{1}, litexpr.IntLit{2}}, litexpr.IntLit{-1})
+	testExprEval(t, NewSub(litexpr.IntLit{1}, litexpr.IntLit{2}), litexpr.IntLit{-1})
 }
 
 func TestDiv(t *testing.T) {
-	testExprEval(t, Div{litexpr.IntLit{9}, litexpr.IntLit{3}}, litexpr.IntLit{3})
+	testExprEval(t, NewDiv(litexpr.IntLit{9}, litexpr.IntLit{3}), litexpr.IntLit{3})
 }
 
 func TestGT(t *testing.T) {
-	testExprEval(t, GT{litexpr.IntLit{3}, litexpr.IntLit{2}}, litexpr.BoolLit{true})
+	testExprEval(t, NewGT(litexpr.IntLit{3}, litexpr.IntLit{2}), litexpr.BoolLit{true})
 }
 
 func TestLT(t *testing.T) {
-	testExprEval(t, LT{litexpr.IntLit{3}, litexpr.IntLit{2}}, litexpr.BoolLit{false})
+	testExprEval(t, NewLT(litexpr.IntLit{3}, litexpr.IntLit{2}), litexpr.BoolLit{false})
 }
 
 func TestGEq(t *testing.T) {
-	testExprEval(t, GEq{litexpr.IntLit{3}, litexpr.IntLit{3}}, litexpr.BoolLit{true})
+	testExprEval(t, NewGEq(litexpr.IntLit{3}, litexpr.IntLit{3}), litexpr.BoolLit{true})
 }
 
 func TestLEq(t *testing.T) {
-	testExprEval(t, LEq{litexpr.IntLit{3}, litexpr.IntLit{3}}, litexpr.BoolLit{true})
+	testExprEval(t, NewLEq(litexpr.IntLit{3}, litexpr.IntLit{3}), litexpr.BoolLit{true})
 }
 
 func TestAnd(t *testing.T) {
-	testExprEval(t, And{litexpr.BoolLit{true}, litexpr.BoolLit{false}}, litexpr.BoolLit{false})
+	testExprEval(t, NewAnd(litexpr.BoolLit{true}, litexpr.BoolLit{false}), litexpr.BoolLit{false})
 }
 
 func TestOr(t *testing.T) {
-	testExprEval(t, Or{litexpr.BoolLit{true}, litexpr.BoolLit{false}}, litexpr.BoolLit{true})
+	testExprEval(t, NewOr(litexpr.BoolLit{true}, litexpr.BoolLit{false}), litexpr.BoolLit{true})
 }
 
 func TestAndOr(t *testing.T) {
-	testExprEval(t, And{Or{litexpr.BoolLit{true}, litexpr.BoolLit{false}}, And{litexpr.BoolLit{true}, litexpr.BoolLit{false}}}, litexpr.BoolLit{false})
+	testExprEval(t, NewAnd(NewOr(litexpr.BoolLit{true}, litexpr.BoolLit{false}), NewAnd(litexpr.BoolLit{true}, litexpr.BoolLit{false})), litexpr.BoolLit{false})
 }
 
 func TestEq(t *testing.T) {
-	testExprEval(t, Eq{litexpr.BoolLit{true}, litexpr.BoolLit{false}}, litexpr.BoolLit{false})
+	testExprEval(t, NewEq(litexpr.BoolLit{true}, litexpr.BoolLit{false}), litexpr.BoolLit{false})
 }
 
 func TestNEq(t *testing.T) {
-	testExprEval(t, NEq{litexpr.BoolLit{true}, litexpr.BoolLit{false}}, litexpr.BoolLit{true})
+	testExprEval(t, NewNEq(litexpr.BoolLit{true}, litexpr.BoolLit{false}), litexpr.BoolLit{true})
 }

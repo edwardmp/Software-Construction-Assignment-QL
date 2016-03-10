@@ -1,11 +1,13 @@
 package binaryoperatorexpr
 
-import (
-	"ql/ast/expr"
-)
+import "ql/ast/expr"
 
 type NEq struct {
-	Lhs, Rhs expr.Expr
+	BinaryOperator
+}
+
+func NewNEq(lhs expr.Expr, rhs expr.Expr) NEq {
+	return NEq{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
 
 func (n NEq) Eval(s interface{}) interface{} {

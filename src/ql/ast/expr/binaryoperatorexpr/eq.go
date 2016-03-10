@@ -1,11 +1,13 @@
 package binaryoperatorexpr
 
-import (
-	"ql/ast/expr"
-)
+import "ql/ast/expr"
 
 type Eq struct {
-	Lhs, Rhs expr.Expr
+	BinaryOperator
+}
+
+func NewEq(lhs expr.Expr, rhs expr.Expr) Eq {
+	return Eq{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
 
 func (e Eq) Eval(s interface{}) interface{} {
@@ -16,5 +18,5 @@ func (e Eq) Eval(s interface{}) interface{} {
 		return e.Lhs.Eval(s).(bool) == e.Rhs.Eval(s).(bool)
 	}
 
-    return nil
+	return nil
 }

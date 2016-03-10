@@ -1,11 +1,13 @@
 package binaryoperatorexpr
 
-import (
-	"ql/ast/expr"
-)
+import "ql/ast/expr"
 
 type GEq struct {
-	Lhs, Rhs expr.Expr
+	BinaryOperator
+}
+
+func NewGEq(lhs expr.Expr, rhs expr.Expr) GEq {
+	return GEq{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
 
 func (g GEq) Eval(s interface{}) interface{} {

@@ -6,7 +6,11 @@ import (
 )
 
 type Pos struct {
-	Value expr.Expr
+	UnaryOperator
+}
+
+func NewPos(value expr.Expr) Pos {
+	return Pos{UnaryOperator{Value: value}}
 }
 
 func (p Pos) Eval(s interface{}) interface{} {

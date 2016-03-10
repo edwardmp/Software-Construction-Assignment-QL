@@ -1,11 +1,13 @@
 package binaryoperatorexpr
 
-import (
-	"ql/ast/expr"
-)
+import "ql/ast/expr"
 
 type Div struct {
-	Lhs, Rhs expr.Expr
+	BinaryOperator
+}
+
+func NewDiv(lhs expr.Expr, rhs expr.Expr) Div {
+	return Div{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
 
 func (d Div) Eval(s interface{}) interface{} {

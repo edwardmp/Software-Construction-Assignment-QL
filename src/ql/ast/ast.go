@@ -30,32 +30,36 @@ var (
 
 /* unary operator expressions */
 func NewPos(value interface{}) (expr.Expr, error) {
-	return unaryoperatorexpr.Pos{value.(expr.Expr)}, nil
+	return unaryoperatorexpr.NewPos(value.(expr.Expr)), nil
 }
 
 func NewNeg(value interface{}) (expr.Expr, error) {
-	return unaryoperatorexpr.Neg{value.(expr.Expr)}, nil
+	return unaryoperatorexpr.NewNeg(value.(expr.Expr)), nil
 }
 
 func NewNot(value interface{}) (expr.Expr, error) {
-	return unaryoperatorexpr.Not{value.(expr.Expr)}, nil
+	return unaryoperatorexpr.NewNot(value.(expr.Expr)), nil
+}
+
+func NewVarExpr(identifier interface{}) (expr.Expr, error) {
+	return unaryoperatorexpr.VarExpr{identifier.(vari.VarId)}, nil
 }
 
 /* binary operator expressins */
 func NewMul(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.Mul{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewMul(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewDiv(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.Div{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewDiv(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewAdd(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.Add{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewAdd(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewSub(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.Sub{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewSub(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
@@ -63,34 +67,35 @@ func NewEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
 }
 
 func NewNEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewNEq(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewGT(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.GT{lhs.(expr.Expr).(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewGT(lhs.(expr.Expr).(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewLT(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.LT{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewLT(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewGEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.GEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewGEq(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewLEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.LEq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewLEq(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewAnd(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.And{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewAnd(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 func NewOr(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.Or{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+	return binaryoperatorexpr.NewOr(lhs.(expr.Expr), rhs.(expr.Expr)), nil
 }
 
 /* Literals */
+
 func NewIntLit(value int64, e error) (expr.Expr, error) {
 	return litexpr.IntLit{int(value)}, nil
 }
@@ -102,10 +107,6 @@ func NewBoolLit(value bool) (expr.Expr, error) {
 func NewStrLit(value interface{}) (expr.Expr, error) {
 	literalString := stringLiteralTokensToString(value)
 	return litexpr.StrLit{literalString}, nil
-}
-
-func NewVarExpr(identifier interface{}) (expr.Expr, error) {
-	return unaryoperatorexpr.VarExpr{identifier.(vari.VarId)}, nil
 }
 
 /* vartypes */

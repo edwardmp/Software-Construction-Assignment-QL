@@ -17,23 +17,23 @@ func testExprEval(t *testing.T, exampleExpr interface{}, expectedOutput interfac
 /* Test for unary expressions */
 
 func TestNot(t *testing.T) {
-	testExprEval(t, Not{litexpr.BoolLit{true}}, litexpr.BoolLit{false}, nil)
+	testExprEval(t, NewNot(litexpr.BoolLit{true}), litexpr.BoolLit{false}, nil)
 }
 
 func TestPos(t *testing.T) {
-	testExprEval(t, Pos{litexpr.IntLit{-10}}, litexpr.IntLit{10}, nil)
+	testExprEval(t, NewPos(litexpr.IntLit{-10}), litexpr.IntLit{10}, nil)
 }
 
 func TestNeg(t *testing.T) {
-	testExprEval(t, Neg{litexpr.IntLit{10}}, litexpr.IntLit{-10}, nil)
+	testExprEval(t, NewNeg(litexpr.IntLit{10}), litexpr.IntLit{-10}, nil)
 }
 
 func TestPosNeg(t *testing.T) {
-	testExprEval(t, Pos{Neg{litexpr.IntLit{-10}}}, litexpr.IntLit{10}, nil)
+	testExprEval(t, NewPos(NewNeg(litexpr.IntLit{-10})), litexpr.IntLit{10}, nil)
 }
 
 func TestNegPos(t *testing.T) {
-	testExprEval(t, Neg{Pos{litexpr.IntLit{10}}}, litexpr.IntLit{-10}, nil)
+	testExprEval(t, NewNeg(NewPos(litexpr.IntLit{10})), litexpr.IntLit{-10}, nil)
 }
 
 func TestVarExpr(t *testing.T) {
