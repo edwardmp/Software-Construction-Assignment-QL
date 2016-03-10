@@ -2,11 +2,11 @@ package stmt
 
 import (
 	"fmt"
-	"ql/ast/vari"
+	"ql/interfaces"
 )
 
 type Form struct {
-	Identifier vari.VarId
+	Identifier interfaces.VarId
 	Content    StmtList
 }
 

@@ -12,7 +12,7 @@ func NewIntLit(value int) IntLit {
 	return IntLit{Value: value}
 }
 
-func (i IntLit) Eval(s interface{}) interface{} {
+func (i IntLit) GetValue() int {
 	return i.Value
 }
 

@@ -12,8 +12,8 @@ func NewBoolLit(value bool) BoolLit {
 	return BoolLit{Value: value}
 }
 
-func (b BoolLit) Eval(s interface{}) interface{} {
-	return bool(b.Value)
+func (b BoolLit) GetValue() bool {
+	return b.Value
 }
 
 func (b BoolLit) String() string {

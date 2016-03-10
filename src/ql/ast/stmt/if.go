@@ -2,11 +2,11 @@ package stmt
 
 import (
 	"fmt"
-	"ql/ast/expr"
+	"ql/interfaces"
 )
 
 type If struct {
-	Cond expr.Expr
+	Cond interfaces.Expr
 	Body StmtList
 }
 

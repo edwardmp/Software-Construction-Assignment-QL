@@ -97,16 +97,16 @@ func NewOr(lhs interface{}, rhs interface{}) (expr.Expr, error) {
 /* Literals */
 
 func NewIntLit(value int64, e error) (expr.Expr, error) {
-	return litexpr.IntLit{int(value)}, nil
+	return expr.IntLit{int(value)}, nil
 }
 
 func NewBoolLit(value bool) (expr.Expr, error) {
-	return litexpr.BoolLit{value}, nil
+	return expr.BoolLit{value}, nil
 }
 
 func NewStrLit(value interface{}) (expr.Expr, error) {
 	literalString := stringLiteralTokensToString(value)
-	return litexpr.StrLit{literalString}, nil
+	return expr.StrLit{literalString}, nil
 }
 
 /* vartypes */
@@ -130,11 +130,11 @@ func NewForm(identifier interface{}, body interface{}) (stmt.Form, error) {
 }
 
 func NewInputQuestion(label interface{}, varDecl interface{}) (stmt.InputQuestion, error) {
-	return stmt.InputQuestion{label.(litexpr.StrLit), varDecl.(vari.VarDecl)}, nil
+	return stmt.InputQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl)}, nil
 }
 
 func NewComputedQuestion(label interface{}, varDecl interface{}, computation interface{}) (stmt.ComputedQuestion, error) {
-	return stmt.ComputedQuestion{label.(litexpr.StrLit), varDecl.(vari.VarDecl), computation.(expr.Expr)}, nil
+	return stmt.ComputedQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(expr.Expr)}, nil
 }
 
 func NewStmtList(stmtElt interface{}) (stmt.StmtList, error) {

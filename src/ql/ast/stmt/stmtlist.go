@@ -2,12 +2,12 @@ package stmt
 
 import (
 	"fmt"
-    "ql/interfaces"
+	"ql/interfaces"
 )
 
 type StmtList struct {
 	Questions    []interfaces.Question
-	Conditionals []Conditional
+	Conditionals []interfaces.Conditional
 }
 
 func (s StmtList) AddToCorrectSlice(i interface{}) StmtList {

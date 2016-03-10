@@ -9,7 +9,3 @@ type Mul struct {
 func NewMul(lhs interfaces.Expr, rhs interfaces.Expr) Mul {
 	return Mul{BinaryOperator{Lhs: lhs, Rhs: rhs}}
 }
-
-func (m Mul) Eval(s interface{}) interface{} {
-	return m.Lhs.Eval(s).(int) * m.Rhs.Eval(s).(int)
-}

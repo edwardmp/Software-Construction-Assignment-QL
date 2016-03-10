@@ -47,6 +47,10 @@ func (v VarIdentifier) String() string {
 	return v.Ident
 }
 
+func (v VarIdentifier) Accept(interfaces.Visitor, interface{}) interface{} {
+	return nil
+}
+
 func TestVarExpr(t *testing.T) {
 	symbolTable := symboltable.NewSymbolTable()
 	symbolTable.SetNodeForIdentifier(IntLit{2}, VarIdentifier{"TestIdentifier"})
