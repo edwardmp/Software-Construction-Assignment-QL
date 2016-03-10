@@ -3,11 +3,9 @@ package ast
 import (
 	//"fmt"
 	"ql/ast/expr"
-	"ql/ast/expr/binaryoperatorexpr"
-	"ql/ast/expr/litexpr"
-	"ql/ast/expr/unaryoperatorexpr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
+	"ql/interfaces"
 	"ql/token"
 	"strconv"
 )
@@ -29,82 +27,82 @@ var (
 /** expressions **/
 
 /* unary operator expressions */
-func NewPos(value interface{}) (expr.Expr, error) {
-	return unaryoperatorexpr.NewPos(value.(expr.Expr)), nil
+func NewPos(value interface{}) (interfaces.Expr, error) {
+	return expr.NewPos(value.(interfaces.Expr)), nil
 }
 
-func NewNeg(value interface{}) (expr.Expr, error) {
-	return unaryoperatorexpr.NewNeg(value.(expr.Expr)), nil
+func NewNeg(value interface{}) (interfaces.Expr, error) {
+	return expr.NewNeg(value.(interfaces.Expr)), nil
 }
 
-func NewNot(value interface{}) (expr.Expr, error) {
-	return unaryoperatorexpr.NewNot(value.(expr.Expr)), nil
+func NewNot(value interface{}) (interfaces.Expr, error) {
+	return expr.NewNot(value.(interfaces.Expr)), nil
 }
 
-func NewVarExpr(identifier interface{}) (expr.Expr, error) {
-	return unaryoperatorexpr.VarExpr{identifier.(vari.VarId)}, nil
+func NewVarExpr(identifier interface{}) (interfaces.Expr, error) {
+	return expr.VarExpr{identifier.(vari.VarId)}, nil
 }
 
 /* binary operator expressins */
-func NewMul(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewMul(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewMul(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewMul(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewDiv(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewDiv(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewDiv(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewDiv(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewAdd(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewAdd(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewAdd(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewAdd(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewSub(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewSub(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewSub(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewSub(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.Eq{lhs.(expr.Expr), rhs.(expr.Expr)}, nil
+func NewEq(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewNEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewNEq(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewNEq(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewNEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewGT(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewGT(lhs.(expr.Expr).(expr.Expr), rhs.(expr.Expr)), nil
+func NewGT(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewGT(lhs.(interfaces.Expr).(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewLT(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewLT(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewLT(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewLT(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewGEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewGEq(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewGEq(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewGEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewLEq(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewLEq(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewLEq(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewLEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewAnd(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewAnd(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewAnd(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewAnd(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
-func NewOr(lhs interface{}, rhs interface{}) (expr.Expr, error) {
-	return binaryoperatorexpr.NewOr(lhs.(expr.Expr), rhs.(expr.Expr)), nil
+func NewOr(lhs interface{}, rhs interface{}) (interfaces.Expr, error) {
+	return expr.NewOr(lhs.(interfaces.Expr), rhs.(interfaces.Expr)), nil
 }
 
 /* Literals */
 
-func NewIntLit(value int64, e error) (expr.Expr, error) {
+func NewIntLit(value int64, e error) (interfaces.Expr, error) {
 	return expr.IntLit{int(value)}, nil
 }
 
-func NewBoolLit(value bool) (expr.Expr, error) {
+func NewBoolLit(value bool) (interfaces.Expr, error) {
 	return expr.BoolLit{value}, nil
 }
 
-func NewStrLit(value interface{}) (expr.Expr, error) {
+func NewStrLit(value interface{}) (interfaces.Expr, error) {
 	literalString := stringLiteralTokensToString(value)
 	return expr.StrLit{literalString}, nil
 }
@@ -134,7 +132,7 @@ func NewInputQuestion(label interface{}, varDecl interface{}) (stmt.InputQuestio
 }
 
 func NewComputedQuestion(label interface{}, varDecl interface{}, computation interface{}) (stmt.ComputedQuestion, error) {
-	return stmt.ComputedQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(expr.Expr)}, nil
+	return stmt.ComputedQuestion{label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(interfaces.Expr)}, nil
 }
 
 func NewStmtList(stmtElt interface{}) (stmt.StmtList, error) {
@@ -151,15 +149,15 @@ func AppendStmt(stmtList, stmtElt interface{}) (stmt.StmtList, error) {
 }
 
 func NewIf(cond interface{}, body interface{}) (stmt.If, error) {
-	return stmt.If{cond.(expr.Expr), body.(stmt.StmtList)}, nil
+	return stmt.If{cond.(interfaces.Expr), body.(stmt.StmtList)}, nil
 }
 
 func NewIfElse(cond interface{}, ifBody interface{}, elseBody interface{}) (stmt.IfElse, error) {
-	return stmt.IfElse{cond.(expr.Expr), ifBody.(stmt.StmtList), elseBody.(stmt.StmtList)}, nil
+	return stmt.IfElse{cond.(interfaces.Expr), ifBody.(stmt.StmtList), elseBody.(stmt.StmtList)}, nil
 }
 
-func NewVarDecl(ident interface{}, typeIdent interface{}) (vari.VarDecl, error) {
-	return vari.VarDecl{ident.(vari.VarId), typeIdent.(vari.VarType)}, nil
+func NewVarDecl(ident interface{}, typeIdent interface{}) (interfaces.VarDecl, error) {
+	return vari.VarDecl{ident.(interfaces.VarId), typeIdent.(interfaces.VarType)}, nil
 }
 
 func NewVarId(ident interface{}) (vari.VarId, error) {

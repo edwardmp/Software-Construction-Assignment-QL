@@ -22,6 +22,7 @@ type InputQuestion interface {
 
 type ComputedQuestion interface {
 	Question
+	GetComputation() Expr
 }
 
 type If interface {

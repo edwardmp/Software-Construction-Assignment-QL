@@ -23,6 +23,10 @@ func (c ComputedQuestion) GetLabelAsString() string {
 	return c.Label.GetValue()
 }
 
+func (c ComputedQuestion) GetComputation() interfaces.Expr {
+	return c.Computation
+}
+
 func (c ComputedQuestion) GetVarDecl() interfaces.VarDecl {
 	return c.VarDecl
 }

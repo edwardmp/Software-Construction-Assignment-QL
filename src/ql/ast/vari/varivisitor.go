@@ -4,6 +4,9 @@ import "ql/interfaces"
 
 func (va VarDecl) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	v.VisitVarDecl(va, s)
+
+	va.Ident.Accept(v, s)
+
 	return nil
 }
 
