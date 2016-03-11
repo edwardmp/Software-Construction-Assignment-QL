@@ -1,8 +1,6 @@
 package expr
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type IntLit struct {
 	Value int

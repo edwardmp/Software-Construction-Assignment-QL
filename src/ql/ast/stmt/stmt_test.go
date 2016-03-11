@@ -61,7 +61,7 @@ func slicesEqualConditional(ifA, ifB interfaces.Conditional) bool {
 
 /* Tests for statements */
 
-func TestFormWithEmptyContent(t *testing.T) {
+func testFormWithEmptyContent(t *testing.T) {
 	identifier := vari.VarId{"TestForm"}
 	exampleForm := Form{identifier, StmtList{}}
 
@@ -78,7 +78,7 @@ func TestFormWithEmptyContent(t *testing.T) {
 	}
 }
 
-func TestFormWithNonEmptyContent(t *testing.T) {
+func testFormWithNonEmptyContent(t *testing.T) {
 	identifier := vari.VarId{"TestForm"}
 	questionExample := InputQuestion{expr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.IntType{}}}
 	questionsListExample := []interfaces.Question{questionExample}
@@ -94,7 +94,7 @@ func TestFormWithNonEmptyContent(t *testing.T) {
 	}
 }
 
-func TestInputQuestion(t *testing.T) {
+func testInputQuestion(t *testing.T) {
 	exampleLabel := expr.StrLit{"Did you sell a house in 2010?"}
 	exampleVarDecl := vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}
 
@@ -105,7 +105,7 @@ func TestInputQuestion(t *testing.T) {
 	}
 }
 
-func TestComputedQuestion(t *testing.T) {
+func testComputedQuestion(t *testing.T) {
 	exampleLabel := expr.StrLit{"Value residue"}
 	exampleVarDecl := vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.IntType{}}
 	exampleComputation := expr.NewSub(expr.IntLit{10}, expr.IntLit{5})
@@ -121,7 +121,7 @@ func TestComputedQuestion(t *testing.T) {
 	}
 }
 
-func TestIf(t *testing.T) {
+func testIf(t *testing.T) {
 	questionExample := InputQuestion{expr.StrLit{"What was the selling price?"}, vari.VarDecl{vari.VarId{"sellingPrice"}, vari.IntType{}}}
 	ifBodyExample := StmtList{[]interfaces.Question{questionExample}, []interfaces.Conditional{}}
 	ifCondExample := expr.BoolLit{true}
@@ -136,7 +136,7 @@ func TestIf(t *testing.T) {
 	}
 }
 
-func TestIfElse(t *testing.T) {
+func testIfElse(t *testing.T) {
 	ifQuestionExample := InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
 	ifBodyExample := StmtList{[]interfaces.Question{ifQuestionExample}, []interfaces.Conditional{}}
 	ifCondExample := expr.BoolLit{true}
@@ -159,7 +159,7 @@ func TestIfElse(t *testing.T) {
 	}
 }
 
-func TestStmtList(t *testing.T) {
+func testStmtList(t *testing.T) {
 	questionExample := InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
 	questionListExample := []interfaces.Question{questionExample}
 
@@ -177,7 +177,7 @@ func TestStmtList(t *testing.T) {
 	}
 }
 
-func TestNonBoolConditionalChecker(t *testing.T) {
+func testNonBoolConditionalChecker(t *testing.T) {
 	exampleQuestion := InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
 	exampleIf := If{expr.IntLit{10}, StmtList{[]interfaces.Question{exampleQuestion}, []interfaces.Conditional{}}}
 	exampleBody := StmtList{[]interfaces.Question{}, []interfaces.Conditional{exampleIf}}
@@ -192,7 +192,7 @@ func TestNonBoolConditionalChecker(t *testing.T) {
 	}
 }
 
-func TestDuplicateLabelChecker(t *testing.T) {
+func testDuplicateLabelChecker(t *testing.T) {
 	firstQuestion := InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
 	secondQuestion := InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasMaintLoan"}, vari.BoolType{}}}
 	exampleBody := StmtList{[]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{}}
@@ -207,7 +207,7 @@ func TestDuplicateLabelChecker(t *testing.T) {
 	}
 }
 
-func TestDuplicateVarDeclChecker(t *testing.T) {
+func testDuplicateVarDeclChecker(t *testing.T) {
 	firstQuestion := InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
 	secondQuestion := InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.IntType{}}}
 	exampleBody := StmtList{[]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{}}

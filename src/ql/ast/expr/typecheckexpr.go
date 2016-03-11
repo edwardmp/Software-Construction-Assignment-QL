@@ -80,5 +80,13 @@ func (s StrLit) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interf
 }
 
 func (v VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+	typeCheckUndefinedQuestionReference(v, typeChecker, symbolTable)
 
+	v.Identifier.TypeCheck(typeChecker, symbolTable)
+}
+
+func typeCheckUndefinedQuestionReference(varExpr VarExpr, typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+	if symbolTable.GetNodeForIdentifier(varExpr.GetIdentifier()) == nil {
+		typeChecker.AddEncounteredErrorForCheckType("ReferenceToUndefinedQuestion", fmt.Errorf("Reference to unknown question identifier: %s", varExpr.GetIdentifier()))
+	}
 }

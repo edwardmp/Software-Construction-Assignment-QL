@@ -51,7 +51,7 @@ func main() {
 
 		warnings = append(warnings, typeChecker.GetEncountedErrorsForCheckType("DuplicateLabels")...)
 		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("InvalidOperandsDifferentTypes")...)
-		//errors = append(errors, typechecker.CheckForReferencesToUndefinedQuestions(parsedForm, symbolTable)...)
+		errors = append(errors, typechecker.GetEncountedErrorsForCheckType("ReferenceToUndefinedQuestion")...)
 		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("InvalidOperationOnOperands")...)
 		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("NonBoolConditionals")...)
 

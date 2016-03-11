@@ -3,10 +3,14 @@ package typechecker
 import (
 	"fmt"
 	"ql/ast/expr"
+	"ql/ast/stmt"
+	"ql/ast/vari"
+	"ql/interfaces"
+	"ql/symboltable"
 	"testing"
 )
 
-func TestInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
+func testInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
 	exampleExpr := expr.NewSub(expr.BoolLit{true}, expr.IntLit{10})
 
 	typeChecker := NewTypeChecker()
@@ -18,7 +22,7 @@ func TestInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
 	}
 }
 
-func TestInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) {
+func testInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) {
 	exampleExpr := expr.NewSub(expr.BoolLit{true}, expr.BoolLit{false})
 
 	typeChecker := NewTypeChecker()
@@ -30,7 +34,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) 
 	}
 }
 
-func TestInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.T) {
+func testInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.T) {
 	exampleExpr := expr.NewAnd(expr.IntLit{10}, expr.IntLit{8})
 
 	typeChecker := NewTypeChecker()
@@ -42,7 +46,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.
 	}
 }
 
-func TestInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T) {
+func testInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T) {
 	exampleExpr := expr.NewAnd(expr.StrLit{"Test A"}, expr.StrLit{"Test B"})
 
 	typeChecker := NewTypeChecker()
@@ -54,7 +58,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T
 	}
 }
 
-func TestInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
+func testInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
 	exampleExpr := expr.NewNeg(expr.BoolLit{true})
 
 	typeChecker := NewTypeChecker()
@@ -66,7 +70,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
 	}
 }
 
-func TestInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
+func testInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
 	exampleExpr := expr.NewNot(expr.IntLit{3})
 
 	typeChecker := NewTypeChecker()
@@ -78,7 +82,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
 	}
 }
 
-func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) {
+func testInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) {
 	exampleExpr := expr.NewNot(expr.StrLit{"Test"})
 
 	typeChecker := NewTypeChecker()
@@ -87,5 +91,19 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) 
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operation for string operand")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on string type")
+	}
+}
+
+func testUndefinedQuestionReferenceChecker(t *testing.T) {
+	computedQuestion := stmt.ComputedQuestion{expr.NewStrLit("Value residue:"), vari.VarDecl{vari.VarId{"valueResidue"}, vari.IntType{}}, expr.NewSub(expr.VarExpr{vari.VarId{"hasSoldHouse"}}, expr.VarExpr{vari.VarId{"hasMaintLoan"}})}
+	exampleBody := stmt.StmtList{[]interfaces.Question{computedQuestion}, []interfaces.Conditional{}}
+	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
+
+	typeChecker := NewTypeChecker()
+	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbolTable())
+	errorsReported := typeChecker.GetEncountedErrorsForCheckType("ReferenceToUndefinedQuestion")
+
+	if len(errorsReported) != 2 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Reference to unknown question identifier: hasSoldHouse")) || fmt.Sprintf("%v", errorsReported[1]) != fmt.Sprintf("%v", fmt.Errorf("Reference to unknown question identifier: hasMaintLoan")) {
+		t.Errorf("Undefined questions references not reported correctly by type checker")
 	}
 }

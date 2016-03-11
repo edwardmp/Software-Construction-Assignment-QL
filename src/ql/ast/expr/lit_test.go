@@ -2,7 +2,7 @@ package expr
 
 import "testing"
 
-func TestIntLit(t *testing.T) {
+func testIntLit(t *testing.T) {
 	exampleIntLit := IntLit{10}
 
 	if NewIntLit(10) != exampleIntLit {
@@ -10,13 +10,13 @@ func TestIntLit(t *testing.T) {
 	}
 }
 
-func TestIntLitGetValue(t *testing.T) {
+func testIntLitGetValue(t *testing.T) {
 	if NewIntLit(10).GetValue() != 10 {
 		t.Errorf("IntLit value retrieval test did not succeed")
 	}
 }
 
-func TestBoolLit(t *testing.T) {
+func testBoolLit(t *testing.T) {
 	exampleBoolLit := BoolLit{true}
 
 	if NewBoolLit(true) != exampleBoolLit {
@@ -24,13 +24,13 @@ func TestBoolLit(t *testing.T) {
 	}
 }
 
-func TestBoolLitGetValue(t *testing.T) {
+func testBoolLitGetValue(t *testing.T) {
 	if NewBoolLit(true).GetValue() != true {
 		t.Errorf("BoolLit value retrieval test did not succeed")
 	}
 }
 
-func TestStrLit(t *testing.T) {
+func testStrLit(t *testing.T) {
 	exampleStrLit := StrLit{"Test"}
 
 	if NewStrLit("Test") != exampleStrLit {
@@ -38,7 +38,7 @@ func TestStrLit(t *testing.T) {
 	}
 }
 
-func TestStrLitGetValue(t *testing.T) {
+func testStrLitGetValue(t *testing.T) {
 	if NewStrLit("Test").GetValue() != "Test" {
 		t.Errorf("StrLit value retrieval test did not succeed")
 	}

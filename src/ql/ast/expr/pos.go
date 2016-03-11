@@ -1,8 +1,6 @@
 package expr
 
-import (
-	"ql/interfaces"
-)
+import "ql/interfaces"
 
 type Pos struct {
 	UnaryOperator

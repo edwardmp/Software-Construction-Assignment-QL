@@ -95,14 +95,14 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 
 /* Tests for statements */
 
-func TestFormIdentifierExtraction(t *testing.T) {
+func testFormIdentifierExtraction(t *testing.T) {
 	exampleEmptyForm := "form TestForm {}"
 
 	exampleOutputForm := stmt.Form{vari.VarId{"TestForm"}, stmt.StmtList{}}
 	testStmtParse(t, exampleEmptyForm, exampleOutputForm)
 }
 
-func TestFormQuestion(t *testing.T) {
+func testFormQuestion(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean \"Did you enter a loan?\" hasMaintLoan: boolean }"
 
 	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
@@ -113,7 +113,7 @@ func TestFormQuestion(t *testing.T) {
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
 
-func TestFormComputedQuestion(t *testing.T) {
+func testFormComputedQuestion(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: integer \"Did you enter a loan?\" hasMaintLoan: integer \"Value residue:\" valueResidue: integer = (hasSoldHouse - hasMaintLoan) }"
 
 	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.IntType{}}}
@@ -125,7 +125,7 @@ func TestFormComputedQuestion(t *testing.T) {
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
 
-func TestFormIf(t *testing.T) {
+func testFormIf(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean if (true) { \"What was the selling price?\" sellingPrice: integer } }"
 
 	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}
@@ -138,7 +138,7 @@ func TestFormIf(t *testing.T) {
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
 }
 
-func TestFormIfElse(t *testing.T) {
+func testFormIfElse(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean if (true) { \"What was the selling price?\" sellingPrice: integer } else { \"What was the selling price?\" sellingPrice: integer } }"
 
 	firstQuestionOutput := stmt.InputQuestion{expr.StrLit{"Did you sell a house in 2010?"}, vari.VarDecl{vari.VarId{"hasSoldHouse"}, vari.BoolType{}}}

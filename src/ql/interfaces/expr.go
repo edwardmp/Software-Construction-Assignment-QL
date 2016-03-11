@@ -3,7 +3,6 @@ package interfaces
 type Expr interface {
 	Node
 	Eval(s interface{}) interface{}
-	TypeCheck(TypeChecker, SymbolTable)
 }
 
 type BinaryOperatorExpr interface {

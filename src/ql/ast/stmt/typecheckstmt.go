@@ -11,11 +11,13 @@ func (f Form) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfac
 
 func (i If) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
 	i.typeCheckIfForNonBoolConditions(typeChecker, symbolTable)
+	i.Cond.TypeCheck(typeChecker, symbolTable)
 	i.Body.TypeCheck(typeChecker, symbolTable)
 }
 
 func (i IfElse) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
 	i.typeCheckIfElseForNonBoolConditions(typeChecker, symbolTable)
+	i.Cond.TypeCheck(typeChecker, symbolTable)
 	i.IfBody.TypeCheck(typeChecker, symbolTable)
 	i.ElseBody.TypeCheck(typeChecker, symbolTable)
 }

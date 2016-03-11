@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestVarTypeDefaultValueForIntType(t *testing.T) {
+func testVarTypeDefaultValueForIntType(t *testing.T) {
 	varTypeExample := IntType{}
 	correctDefaultValue := expr.NewIntLit(0)
 	if varTypeExample.GetDefaultValue() != correctDefaultValue {
@@ -13,7 +13,7 @@ func TestVarTypeDefaultValueForIntType(t *testing.T) {
 	}
 }
 
-func TestVarTypeDefaultValueForBoolType(t *testing.T) {
+func testVarTypeDefaultValueForBoolType(t *testing.T) {
 	varTypeExample := BoolType{}
 	correctDefaultValue := expr.NewBoolLit(false)
 	if varTypeExample.GetDefaultValue() != correctDefaultValue {
@@ -21,7 +21,7 @@ func TestVarTypeDefaultValueForBoolType(t *testing.T) {
 	}
 }
 
-func TestVarTypeDefaultValueForStringType(t *testing.T) {
+func testVarTypeDefaultValueForStringType(t *testing.T) {
 	varTypeExample := StringType{}
 	correctDefaultValue := expr.NewStrLit("")
 	if varTypeExample.GetDefaultValue() != correctDefaultValue {
