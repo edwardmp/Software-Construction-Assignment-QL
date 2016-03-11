@@ -4,10 +4,12 @@ import (
 	"fmt"
 	//"io/ioutil"
 	log "github.com/Sirupsen/logrus"
+	"github.com/mattn/go-gtk/gtk"
 	"ql/ast/stmt"
 	"ql/ast/visitor"
 	"ql/interfaces"
 	"strconv"
+	"strings"
 )
 
 type GUI struct {
@@ -15,14 +17,41 @@ type GUI struct {
 	Form *GUIForm
 }
 
-func CreateGUI(form stmt.Form, symbolTable interfaces.SymbolTable) {
+func CreateGUI(form stmt.Form, symbolTable interfaces.SymbolTable, typeCheckerErrors []error) GUI {
 	gui := GUI{Form: &GUIForm{Title: form.Identifier.GetIdent()}}
 
 	gui.Form.SaveDataCallback = symbolTable.SaveToDisk
 
 	form.Accept(gui, symbolTable)
 
-	gui.Form.Show()
+	gui.Show()
+
+	if len(typeCheckerErrors) != 0 {
+		gui.ShowErrorDialog(typeCheckerErrors)
+	} else {
+		gui.Form.ShowForm()
+	}
+
+	gui.Form.Window.ShowAll()
+	gtk.Main()
+
+	return gui
+}
+
+func (g *GUI) Show() {
+	log.Info("Showing GUI")
+
+	gtk.Init(nil)
+
+	window := gtk.NewWindow(gtk.WINDOW_TOPLEVEL)
+	window.SetPosition(gtk.WIN_POS_CENTER)
+	window.SetTitle("QL")
+	window.SetIconName("gtk-dialog-info")
+
+	//window.SetSizeRequest(400, 400)
+	window.ShowAll()
+
+	g.Form.Window = window
 }
 
 func (g GUI) VisitComputedQuestion(c interfaces.ComputedQuestion, s interface{}) {
@@ -75,6 +104,30 @@ func (g GUI) updateComputedQuestions(symbolTable interfaces.SymbolTable) {
 
 		log.WithFields(log.Fields{"eval": computedQuestionEval}).Info("Computed question value changed")
 	}
+}
+
+func (g GUI) ShowErrorDialog(errors []error) {
+	errorStrings := []string{}
+	for _, singleError := range errors {
+		errorStrings = append(errorStrings, fmt.Sprintf("%s", singleError))
+	}
+
+	errorsAsString := strings.Join(errorStrings, "\n")
+
+	messagedialog := gtk.NewMessageDialog(
+		g.Form.Window,
+		gtk.DIALOG_MODAL,
+		gtk.MESSAGE_INFO,
+		gtk.BUTTONS_OK,
+		fmt.Sprintf("Errors encountered: \n%s", errorsAsString))
+
+	messagedialog.Response(func() {
+		log.Info("Error dialog displayed")
+
+		messagedialog.Destroy()
+	})
+
+	messagedialog.Run()
 }
 
 /*

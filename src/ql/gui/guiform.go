@@ -12,6 +12,7 @@ type GUIForm struct {
 	InputQuestions    []GUIInputQuestion
 	ComputedQuestions []GUIComputedQuestion
 	SaveDataCallback  func() (interface{}, error)
+	Window            *gtk.Window
 }
 
 func (g *GUIForm) AddInputQuestion(question GUIInputQuestion) {
@@ -22,17 +23,10 @@ func (g *GUIForm) AddComputedQuestion(question GUIComputedQuestion) {
 	g.ComputedQuestions = append(g.ComputedQuestions, question)
 }
 
-func (g *GUIForm) Show() {
+func (g *GUIForm) ShowForm() {
 	log.Info("Showing form")
 
-	gtk.Init(nil)
-
-	window := gtk.NewWindow(gtk.WINDOW_TOPLEVEL)
-	window.SetPosition(gtk.WIN_POS_CENTER)
-	window.SetTitle("QL")
-	window.SetIconName("gtk-dialog-info")
-
-	window.Connect("destroy", func(ctx *glib.CallbackContext) {
+	g.Window.Connect("destroy", func(ctx *glib.CallbackContext) {
 		fmt.Println("Destroy of window initiated", ctx.Data().(string))
 		g.SaveDataCallback()
 		gtk.MainQuit()
@@ -53,12 +47,9 @@ func (g *GUIForm) Show() {
 	vsep := gtk.NewVSeparator()
 	vbox.PackStart(vsep, false, false, 1)
 
-	vbox.PackStart(createSubmitButton(g, window), false, true, 1)
+	vbox.PackStart(createSubmitButton(g, g.Window), false, true, 1)
 
-	window.Add(vbox)
-	//window.SetSizeRequest(400, 400)
-	window.ShowAll()
-	gtk.Main()
+	g.Window.Add(vbox)
 }
 
 func extractEmbeddedGUIQuestions(inputQuestions []GUIInputQuestion, computedQuestions []GUIComputedQuestion) []GUIQuestion {
