@@ -4,23 +4,19 @@ import (
 	"github.com/mattn/go-gtk/gtk"
 )
 
-// convenience method
-func CreateDisabledInputTextField(defaultText string) *gtk.Entry {
-	entry := CreateInputTextField(defaultText)
-	entry.SetEditable(false)
-	return entry
-}
+func CreateInputTextField(defaultText string, disabled bool) *gtk.Entry {
+	textField := gtk.NewEntry()
+	textField.SetText(defaultText)
 
-func CreateInputTextField(defaultText string) *gtk.Entry {
-	entry := gtk.NewEntry()
-	entry.SetText(defaultText)
-	return entry
+	if disabled {
+		textField.SetEditable(false)
+	}
+
+	return textField
 }
 
 func CreateCheckboxConditional() *gtk.CheckButton {
-	checkbutton := gtk.NewCheckButtonWithLabel("")
-
-	return checkbutton
+	return gtk.NewCheckButtonWithLabel("")
 }
 
 func CreateButton(buttonText string, onClick func()) *gtk.Button {

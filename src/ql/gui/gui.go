@@ -5,17 +5,17 @@ import (
 	//"io/ioutil"
 	log "github.com/Sirupsen/logrus"
 	"ql/ast/stmt"
+	"ql/ast/visitor"
 	"ql/interfaces"
-	"ql/symboltable"
 	"strconv"
 )
 
 type GUI struct {
-	interfaces.Visitor
+	visitor.BaseVisitor
 	Form *GUIForm
 }
 
-func CreateGUI(form stmt.Form, symbolTable symboltable.SymbolTable) {
+func CreateGUI(form stmt.Form, symbolTable interfaces.SymbolTable) {
 	gui := GUI{Form: &GUIForm{Title: form.Identifier.GetIdent()}}
 
 	gui.Form.SaveDataCallback = symbolTable.SaveToDisk
@@ -25,122 +25,12 @@ func CreateGUI(form stmt.Form, symbolTable symboltable.SymbolTable) {
 	gui.Form.Show()
 }
 
-func (g GUI) VisitAdd(a interfaces.Add, s interface{}) {
-
-}
-
-func (g GUI) VisitAnd(a interfaces.And, s interface{}) {
-
-}
-
-func (g GUI) VisitDiv(d interfaces.Div, s interface{}) {
-
-}
-
-func (g GUI) VisitEq(e interfaces.Eq, s interface{}) {
-
-}
-
-func (g GUI) VisitGEq(ge interfaces.GEq, s interface{}) {
-
-}
-
-func (g GUI) VisitGT(gt interfaces.GT, s interface{}) {
-
-}
-
-func (g GUI) VisitLEq(l interfaces.LEq, s interface{}) {
-
-}
-
-func (g GUI) VisitLT(l interfaces.LT, s interface{}) {
-
-}
-
-func (g GUI) VisitMul(m interfaces.Mul, s interface{}) {
-
-}
-
-func (g GUI) VisitNEq(n interfaces.NEq, s interface{}) {
-
-}
-
-func (g GUI) VisitOr(o interfaces.Or, s interface{}) {
-
-}
-
-func (g GUI) VisitSub(su interfaces.Sub, s interface{}) {
-
-}
-
-func (g GUI) VisitBoolLit(b interfaces.BoolLit, s interface{}) {
-
-}
-
-func (g GUI) VisitIntLit(i interfaces.IntLit, s interface{}) {
-
-}
-
-func (g GUI) VisitStrLit(st interfaces.StrLit, s interface{}) {
-
-}
-
-func (g GUI) VisitNeg(n interfaces.Neg, s interface{}) {
-
-}
-
-func (g GUI) VisitNot(n interfaces.Not, s interface{}) {
-
-}
-
-func (g GUI) VisitPos(p interfaces.Pos, s interface{}) {
-
-}
-
-func (g GUI) VisitVarExpr(va interfaces.VarExpr, s interface{}) {
-
-}
-
-func (g GUI) VisitVarDecl(va interfaces.VarDecl, s interface{}) {
-
-}
-
-func (g GUI) VisitVarId(va interfaces.VarId, s interface{}) {
-
-}
-
-func (g GUI) VisitIntType(i interfaces.IntType, s interface{}) {
-
-}
-
-func (g GUI) VisitBoolType(b interfaces.BoolType, s interface{}) {
-
-}
-
-func (g GUI) VisitStringType(st interfaces.StringType, s interface{}) {
-
-}
-
-func (g GUI) VisitForm(f interfaces.Form, s interface{}) {
-}
-
 func (g GUI) VisitComputedQuestion(c interfaces.ComputedQuestion, s interface{}) {
 	g.handleComputedQuestion(c, s.(interfaces.SymbolTable))
 }
 
 func (g GUI) VisitInputQuestion(i interfaces.InputQuestion, s interface{}) {
 	g.handleInputQuestion(i, s.(interfaces.SymbolTable))
-}
-
-func (g GUI) VisitIf(i interfaces.If, s interface{}) {
-
-}
-
-func (g GUI) VisitIfElse(i interfaces.IfElse, s interface{}) {
-
-}
-
-func (g GUI) VisitStmtList(st interfaces.StmtList, sy interface{}) {
 }
 
 func (v GUI) handleInputQuestion(question interfaces.InputQuestion, symbolTable interfaces.SymbolTable) {

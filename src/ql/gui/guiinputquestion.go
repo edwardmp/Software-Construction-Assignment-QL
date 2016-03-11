@@ -9,5 +9,5 @@ type GUIInputQuestion struct {
 }
 
 func CreateGUIInputQuestion(label string, questionType interfaces.VarType, callback func(interface{}, error)) GUIInputQuestion {
-	return GUIInputQuestion{GUIQuestion: CreateGUIQuestion(label, questionType, callback)}
+	return GUIInputQuestion{GUIQuestion: CreateEnabledGUIQuestion(label, questionType, callback)}
 }

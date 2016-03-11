@@ -11,6 +11,6 @@ type GUIComputedQuestion struct {
 }
 
 func CreateGUIComputedQuestion(label string, questionType interfaces.VarType, expr interfaces.Expr, varId interfaces.VarId) GUIComputedQuestion {
-	guiQuestion := CreateGUIQuestion(label, questionType, nil)
+	guiQuestion := CreateDisabledGUIQuestion(label, questionType, nil)
 	return GUIComputedQuestion{GUIQuestion: guiQuestion, Expr: expr, VarId: varId}
 }
