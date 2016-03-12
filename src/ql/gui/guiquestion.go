@@ -49,7 +49,7 @@ func createQuestionElement(questionType interfaces.VarType, callback func(interf
 		checkbox := CreateCheckboxConditional()
 		checkbox.Connect("clicked", func() {
 			log.WithFields(log.Fields{"value": checkbox.GetActive()}).Debug("Checkbox value changed")
-			callback(expr.BoolLit{checkbox.GetActive()}, nil)
+			callback(expr.NewBoolLitNoSourceInfo(checkbox.GetActive()), nil)
 		})
 		GTKEntity = checkbox
 	case vari.StringType:
@@ -59,7 +59,7 @@ func createQuestionElement(questionType interfaces.VarType, callback func(interf
 
 			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed")
 
-			callback(expr.StrLit{inputText}, nil) // TODO check if really is string
+			callback(expr.NewStrLitNoSourceInfo(inputText), nil) // TODO check if really is string
 		})
 		GTKEntity = inputField
 	case vari.IntType:
@@ -85,7 +85,7 @@ func createQuestionElement(questionType interfaces.VarType, callback func(interf
 			}
 
 			if callback != nil {
-				callback(expr.IntLit{inputTextAsInt}, nil)
+				callback(expr.NewIntLitNoSourceInfo(inputTextAsInt), nil)
 			}
 		})
 		GTKEntity = inputField

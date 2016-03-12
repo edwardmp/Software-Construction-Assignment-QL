@@ -4,10 +4,15 @@ import "fmt"
 
 type IntLit struct {
 	Value int
+	Expr
 }
 
-func NewIntLit(value int) IntLit {
-	return IntLit{Value: value}
+func NewIntLit(value int, sourceInfo interface{}) IntLit {
+	return IntLit{Value: value, Expr: NewExpr(sourceInfo)}
+}
+
+func NewIntLitNoSourceInfo(value int) IntLit {
+	return NewIntLit(value, nil)
 }
 
 func (i IntLit) GetValue() int {

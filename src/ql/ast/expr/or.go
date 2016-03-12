@@ -6,6 +6,10 @@ type Or struct {
 	BinaryOperator
 }
 
-func NewOr(lhs interfaces.Expr, rhs interfaces.Expr) Or {
-	return Or{BinaryOperator{Lhs: lhs, Rhs: rhs}}
+func NewOr(lhs interfaces.Expr, rhs interfaces.Expr, sourceInfo interface{}) Or {
+	return Or{NewBinaryOperator(lhs, rhs, sourceInfo)}
+}
+
+func NewOrNoSourceInfo(lhs interfaces.Expr, rhs interfaces.Expr) Or {
+	return NewOr(lhs, rhs, nil)
 }

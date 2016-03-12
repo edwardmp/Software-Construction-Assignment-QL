@@ -2,44 +2,44 @@ package expr
 
 import "testing"
 
-func testIntLit(t *testing.T) {
-	exampleIntLit := IntLit{10}
+func TestIntLit(t *testing.T) {
+	exampleIntLit := NewIntLit(10, nil)
 
-	if NewIntLit(10) != exampleIntLit {
+	if NewIntLit(10, nil) != exampleIntLit {
 		t.Errorf("IntLit creation test did not succeed")
 	}
 }
 
-func testIntLitGetValue(t *testing.T) {
-	if NewIntLit(10).GetValue() != 10 {
+func TestIntLitGetValue(t *testing.T) {
+	if NewIntLit(10, nil).GetValue() != 10 {
 		t.Errorf("IntLit value retrieval test did not succeed")
 	}
 }
 
-func testBoolLit(t *testing.T) {
-	exampleBoolLit := BoolLit{true}
+func TestBoolLit(t *testing.T) {
+	exampleBoolLit := NewBoolLit(true, nil)
 
-	if NewBoolLit(true) != exampleBoolLit {
+	if NewBoolLit(true, nil) != exampleBoolLit {
 		t.Errorf("BoolLit creation test did not succeed")
 	}
 }
 
-func testBoolLitGetValue(t *testing.T) {
-	if NewBoolLit(true).GetValue() != true {
+func TestBoolLitGetValue(t *testing.T) {
+	if NewBoolLit(true, nil).GetValue() != true {
 		t.Errorf("BoolLit value retrieval test did not succeed")
 	}
 }
 
-func testStrLit(t *testing.T) {
-	exampleStrLit := StrLit{"Test"}
+func TestStrLit(t *testing.T) {
+	exampleStrLit := NewStrLit("Test", nil)
 
-	if NewStrLit("Test") != exampleStrLit {
+	if NewStrLit("Test", nil) != exampleStrLit {
 		t.Errorf("StrLit creation test did not succeed")
 	}
 }
 
-func testStrLitGetValue(t *testing.T) {
-	if NewStrLit("Test").GetValue() != "Test" {
+func TestStrLitGetValue(t *testing.T) {
+	if NewStrLit("Test", nil).GetValue() != "Test" {
 		t.Errorf("StrLit value retrieval test did not succeed")
 	}
 }

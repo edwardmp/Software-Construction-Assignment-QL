@@ -5,25 +5,25 @@ import (
 	"testing"
 )
 
-func testVarTypeDefaultValueForIntType(t *testing.T) {
-	varTypeExample := IntType{}
-	correctDefaultValue := expr.NewIntLit(0)
+func TestVarTypeDefaultValueForIntType(t *testing.T) {
+	varTypeExample := NewIntTypeNoSourceInfo()
+	correctDefaultValue := expr.NewIntLitNoSourceInfo(0)
 	if varTypeExample.GetDefaultValue() != correctDefaultValue {
 		t.Errorf("Int Type default value invalid")
 	}
 }
 
-func testVarTypeDefaultValueForBoolType(t *testing.T) {
-	varTypeExample := BoolType{}
-	correctDefaultValue := expr.NewBoolLit(false)
+func TestVarTypeDefaultValueForBoolType(t *testing.T) {
+	varTypeExample := NewBoolTypeNoSourceInfo()
+	correctDefaultValue := expr.NewBoolLitNoSourceInfo(false)
 	if varTypeExample.GetDefaultValue() != correctDefaultValue {
 		t.Errorf("Bool Type default value invalid")
 	}
 }
 
-func testVarTypeDefaultValueForStringType(t *testing.T) {
-	varTypeExample := StringType{}
-	correctDefaultValue := expr.NewStrLit("")
+func TestVarTypeDefaultValueForStringType(t *testing.T) {
+	varTypeExample := NewStringTypeNoSourceInfo()
+	correctDefaultValue := expr.NewStrLitNoSourceInfo("")
 	if varTypeExample.GetDefaultValue() != correctDefaultValue {
 		t.Errorf("String Type default value invalid")
 	}

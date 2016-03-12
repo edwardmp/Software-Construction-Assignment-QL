@@ -13,58 +13,58 @@ func binaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput i
 
 /* Tests for binary expression evaluation */
 
-func testAdd(t *testing.T) {
-	binaryExprEval(t, NewAdd(IntLit{1}, IntLit{2}), IntLit{3})
+func TestAdd(t *testing.T) {
+	binaryExprEval(t, NewAddNoSourceInfo(NewIntLitNoSourceInfo(1), NewIntLitNoSourceInfo(2)), NewIntLitNoSourceInfo(3))
 }
 
-func testMul(t *testing.T) {
-	binaryExprEval(t, NewMul(IntLit{3}, IntLit{2}), IntLit{6})
+func TestMul(t *testing.T) {
+	binaryExprEval(t, NewMulNoSourceInfo(NewIntLitNoSourceInfo(3), NewIntLitNoSourceInfo(2)), NewIntLitNoSourceInfo(6))
 }
 
-func testMulAddPrecedence(t *testing.T) {
-	binaryExprEval(t, NewAdd(NewMul(IntLit{3}, IntLit{2}), IntLit{1}), IntLit{7})
+func TestMulAddPrecedence(t *testing.T) {
+	binaryExprEval(t, NewAddNoSourceInfo(NewMulNoSourceInfo(NewIntLitNoSourceInfo(3), NewIntLitNoSourceInfo(2)), NewIntLitNoSourceInfo(1)), NewIntLitNoSourceInfo(7))
 }
 
-func testSub(t *testing.T) {
-	binaryExprEval(t, NewSub(IntLit{1}, IntLit{2}), IntLit{-1})
+func TestSub(t *testing.T) {
+	binaryExprEval(t, NewSubNoSourceInfo(NewIntLitNoSourceInfo(1), NewIntLitNoSourceInfo(2)), NewIntLitNoSourceInfo(-1))
 }
 
-func testDiv(t *testing.T) {
-	binaryExprEval(t, NewDiv(IntLit{9}, IntLit{3}), IntLit{3})
+func TestDiv(t *testing.T) {
+	binaryExprEval(t, NewDivNoSourceInfo(NewIntLitNoSourceInfo(9), NewIntLitNoSourceInfo(3)), NewIntLitNoSourceInfo(3))
 }
 
-func testGT(t *testing.T) {
-	binaryExprEval(t, NewGT(IntLit{3}, IntLit{2}), BoolLit{true})
+func TestGT(t *testing.T) {
+	binaryExprEval(t, NewGTNoSourceInfo(NewIntLitNoSourceInfo(3), NewIntLitNoSourceInfo(2)), NewBoolLitNoSourceInfo(true))
 }
 
-func testLT(t *testing.T) {
-	binaryExprEval(t, NewLT(IntLit{3}, IntLit{2}), BoolLit{false})
+func TestLT(t *testing.T) {
+	binaryExprEval(t, NewLTNoSourceInfo(NewIntLitNoSourceInfo(3), NewIntLitNoSourceInfo(2)), NewBoolLitNoSourceInfo(false))
 }
 
-func testGEq(t *testing.T) {
-	binaryExprEval(t, NewGEq(IntLit{3}, IntLit{3}), BoolLit{true})
+func TestGEq(t *testing.T) {
+	binaryExprEval(t, NewGEqNoSourceInfo(NewIntLitNoSourceInfo(3), NewIntLitNoSourceInfo(3)), NewBoolLitNoSourceInfo(true))
 }
 
-func testLEq(t *testing.T) {
-	binaryExprEval(t, NewLEq(IntLit{3}, IntLit{3}), BoolLit{true})
+func TestLEq(t *testing.T) {
+	binaryExprEval(t, NewLEqNoSourceInfo(NewIntLitNoSourceInfo(3), NewIntLitNoSourceInfo(3)), NewBoolLitNoSourceInfo(true))
 }
 
-func testAnd(t *testing.T) {
-	binaryExprEval(t, NewAnd(BoolLit{true}, BoolLit{false}), BoolLit{false})
+func TestAnd(t *testing.T) {
+	binaryExprEval(t, NewAndNoSourceInfo(NewBoolLitNoSourceInfo(true), NewBoolLitNoSourceInfo(false)), NewBoolLitNoSourceInfo(false))
 }
 
-func testOr(t *testing.T) {
-	binaryExprEval(t, NewOr(BoolLit{true}, BoolLit{false}), BoolLit{true})
+func TestOr(t *testing.T) {
+	binaryExprEval(t, NewOrNoSourceInfo(NewBoolLitNoSourceInfo(true), NewBoolLitNoSourceInfo(false)), NewBoolLitNoSourceInfo(true))
 }
 
-func testAndOr(t *testing.T) {
-	binaryExprEval(t, NewAnd(NewOr(BoolLit{true}, BoolLit{false}), NewAnd(BoolLit{true}, BoolLit{false})), BoolLit{false})
+func TestAndOr(t *testing.T) {
+	binaryExprEval(t, NewAndNoSourceInfo(NewOrNoSourceInfo(NewBoolLitNoSourceInfo(true), NewBoolLitNoSourceInfo(false)), NewAndNoSourceInfo(NewBoolLitNoSourceInfo(true), NewBoolLitNoSourceInfo(false))), NewBoolLitNoSourceInfo(false))
 }
 
-func testEq(t *testing.T) {
-	binaryExprEval(t, NewEq(BoolLit{true}, BoolLit{false}), BoolLit{false})
+func TestEq(t *testing.T) {
+	binaryExprEval(t, NewEqNoSourceInfo(NewBoolLitNoSourceInfo(true), NewBoolLitNoSourceInfo(false)), NewBoolLitNoSourceInfo(false))
 }
 
-func testNEq(t *testing.T) {
-	binaryExprEval(t, NewNEq(BoolLit{true}, BoolLit{false}), BoolLit{true})
+func TestNEq(t *testing.T) {
+	binaryExprEval(t, NewNEqNoSourceInfo(NewBoolLitNoSourceInfo(true), NewBoolLitNoSourceInfo(false)), NewBoolLitNoSourceInfo(true))
 }

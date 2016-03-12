@@ -14,24 +14,24 @@ func unaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput in
 
 /* Test for unary expressions */
 
-func testNot(t *testing.T) {
-	unaryExprEval(t, NewNot(NewBoolLit(true)), NewBoolLit(false), nil)
+func TestNot(t *testing.T) {
+	unaryExprEval(t, NewNotNoSourceInfo(NewBoolLitNoSourceInfo(true)), NewBoolLitNoSourceInfo(false), nil)
 }
 
-func testPos(t *testing.T) {
-	unaryExprEval(t, NewPos(NewIntLit(-10)), NewIntLit(10), nil)
+func TestPos(t *testing.T) {
+	unaryExprEval(t, NewPosNoSourceInfo(NewIntLitNoSourceInfo(-10)), NewIntLitNoSourceInfo(10), nil)
 }
 
-func testNeg(t *testing.T) {
-	unaryExprEval(t, NewNeg(NewIntLit(10)), NewIntLit(-10), nil)
+func TestNeg(t *testing.T) {
+	unaryExprEval(t, NewNegNoSourceInfo(NewIntLitNoSourceInfo(10)), NewIntLitNoSourceInfo(-10), nil)
 }
 
-func testPosNeg(t *testing.T) {
-	unaryExprEval(t, NewPos(NewNeg(NewIntLit(-10))), NewIntLit(10), nil)
+func TestPosNeg(t *testing.T) {
+	unaryExprEval(t, NewPosNoSourceInfo(NewNegNoSourceInfo(NewIntLitNoSourceInfo(-10))), NewIntLitNoSourceInfo(10), nil)
 }
 
-func testNegPos(t *testing.T) {
-	unaryExprEval(t, NewNeg(NewPos(NewIntLit(10))), NewIntLit(-10), nil)
+func TestNegPos(t *testing.T) {
+	unaryExprEval(t, NewNegNoSourceInfo(NewPosNoSourceInfo(NewIntLitNoSourceInfo(10))), NewIntLitNoSourceInfo(-10), nil)
 }
 
 // FIXME is this a good idea? If not leads to import cycle..
@@ -57,7 +57,7 @@ func (v VarIdentifier) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable
 
 func TestVarExpr(t *testing.T) {
 	symbolTable := symboltable.NewSymbolTable()
-	symbolTable.SetNodeForIdentifier(NewIntLit(2), VarIdentifier{"TestIdentifier"})
+	symbolTable.SetNodeForIdentifier(NewIntLitNoSourceInfo(2), VarIdentifier{"TestIdentifier"})
 
-	unaryExprEval(t, VarExpr{VarIdentifier{"TestIdentifier"}}, NewIntLit(2), symbolTable)
+	unaryExprEval(t, NewVarExprNoSourceInfo(VarIdentifier{"TestIdentifier"}), NewIntLitNoSourceInfo(2), symbolTable)
 }

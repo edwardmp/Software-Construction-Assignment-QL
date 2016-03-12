@@ -9,7 +9,6 @@ _blockComment   : '/' '*' {. | '*'} '*' '/' ;
 /* literals */
 _int            : '0'-'9' {'0'-'9'} ;
 integer_lit     : _int ;
-money_lit       : _int ',' _int ;
 str_lit         : '"' {.} '"' ;
 booltrue_lit    : 't' 'r' 'u' 'e' ;
 boolfalse_lit   : 'f' 'a' 'l' 's' 'e' ;
@@ -48,27 +47,21 @@ ident : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 
 << import(
 	"ql/ast"
-	"ql/token"
-	"ql/util"
+    "ql/token"
 ) 
 >>
 
 /* start symbol */
-Form : "form" VarId Block << ast.NewForm($1, $2) >> ;
+Form : "form" VarId Block << ast.NewForm($1, $2, $0.(*token.Token).Pos) >> ;
 
 /* types */
-Type    : "integer" << ast.NewIntType() >>
-        | "boolean" << ast.NewBoolType() >>
-        | "string"  << ast.NewStringType() >>
-        // | "money"   << vari.MONEY, nil >>
-        // | "date"    << vari.DATE, nil >> 
+Type    : "integer" << ast.NewIntType($0) >>
+        | "boolean" << ast.NewBoolType($0) >>
+        | "string"  << ast.NewStringType($0) >>
         ;
 
-NumLiteral : integer_lit   << ast.NewIntLit((util.IntValue($0.(*token.Token).Lit))) >> ;
-StrLiteral : str_lit       << ast.NewStrLit($0) >> ;
-
-Term    : Term mulop Factor << ast.NewMul($0, $2) >>
-        | Term divop Factor << ast.NewDiv($0, $2) >>
+Term    : Term mulop Factor << ast.NewMul($0, $2, $0.(*token.Token).Pos) >>
+        | Term divop Factor << ast.NewDiv($0, $2, $0.(*token.Token).Pos) >>
         | Factor 
         ;
 
@@ -76,42 +69,44 @@ Factor  : NumLiteral
         | VarId        << ast.NewVarExpr($0) >>
         ;
 
-Bool    : booltrue_lit    << ast.NewBoolLit(ast.TRUE) >>
-        | boolfalse_lit   << ast.NewBoolLit(ast.FALSE) >>
-        ;
+NumLiteral  : integer_lit   << ast.NewIntLit($0) >> ;
+StrLiteral  : str_lit       << ast.NewStrLit($0) >> ;
+BoolLiteral : booltrue_lit  << ast.NewBoolLit(ast.TRUE, $0.(*token.Token).Pos) >>
+            | boolfalse_lit << ast.NewBoolLit(ast.FALSE, $0.(*token.Token).Pos) >>
+            ;
 
-VarDecl : VarId col Type << ast.NewVarDecl($0, $2) >> ;
+VarDecl : VarId col Type << ast.NewVarDecl($0, $2, $1.(*token.Token).Pos) >> ;
 
 VarId   : ident << ast.NewVarId($0) >> ;
 
-Expr    : addop Expr        << ast.NewPos($1) >>
-        | subop Expr        << ast.NewNeg($1) >>
-        | notop Expr        << ast.NewNot($1) >>
-        | Expr addop Term   << ast.NewAdd($0, $2) >>
-        | Expr subop Term   << ast.NewSub($0, $2) >>
-        | Expr eqop Expr    << ast.NewEq($0, $2) >>
-        | Expr neqop Expr   << ast.NewNEq($0, $2) >>
-        | Expr gtop Expr    << ast.NewGT($0, $2) >>
-        | Expr ltop Expr    << ast.NewLT($0, $2) >>
-        | Expr geqop Expr   << ast.NewGEq($0, $2) >>
-        | Expr leqop Expr   << ast.NewLEq($0, $2) >>
-        | Expr andop Expr   << ast.NewAnd($0, $2) >>
-        | Expr orop Expr    << ast.NewOr($0, $2) >>
+Expr    : addop Expr        << ast.NewPos($1, $0.(*token.Token).Pos) >>
+        | subop Expr        << ast.NewNeg($1, $0.(*token.Token).Pos) >>
+        | notop Expr        << ast.NewNot($1, $0.(*token.Token).Pos) >>
+        | Expr addop Term   << ast.NewAdd($0, $2, $1.(*token.Token).Pos) >>
+        | Expr subop Term   << ast.NewSub($0, $2, $1.(*token.Token).Pos) >>
+        | Expr eqop Expr    << ast.NewEq($0, $2, $1.(*token.Token).Pos) >>
+        | Expr neqop Expr   << ast.NewNEq($0, $2, $1.(*token.Token).Pos) >>
+        | Expr gtop Expr    << ast.NewGT($0, $2, $1.(*token.Token).Pos) >>
+        | Expr ltop Expr    << ast.NewLT($0, $2, $1.(*token.Token).Pos) >>
+        | Expr geqop Expr   << ast.NewGEq($0, $2, $1.(*token.Token).Pos) >>
+        | Expr leqop Expr   << ast.NewLEq($0, $2, $1.(*token.Token).Pos) >>
+        | Expr andop Expr   << ast.NewAnd($0, $2, $1.(*token.Token).Pos) >>
+        | Expr orop Expr    << ast.NewOr($0, $2, $1.(*token.Token).Pos) >>
         | lpar Expr rpar    << $1, nil >>
         | Term
-        | Bool
+        | BoolLiteral
         ;
 
-IfStmt  : "if" lpar Expr rpar Block                 << ast.NewIf($2, $4) >>
-        | "if" lpar Expr rpar Block "else" Block    << ast.NewIfElse($2, $4, $6) >>
+IfStmt  : "if" lpar Expr rpar Block                 << ast.NewIf($2, $4, $0.(*token.Token).Pos) >>
+        | "if" lpar Expr rpar Block "else" Block    << ast.NewIfElse($2, $4, $6, $0.(*token.Token).Pos) >>
         ;
 
 Question    : StrLiteral VarDecl                << ast.NewInputQuestion($0, $1) >>
-            | StrLiteral VarDecl assign Expr    << ast.NewComputedQuestion($0, $1, $3) >>
+            | StrLiteral VarDecl assign Expr    << ast.NewComputedQuestion($0, $1, $3, $2.(*token.Token).Pos) >>
             ;
 
 Block   : lbrace StmtList rbrace    << $1, nil >>
-        | lbrace rbrace             << ast.NewEmptyStmtList() >>
+        | lbrace rbrace             << ast.NewEmptyStmtList($0.(*token.Token).Pos) >>
         ;
 
 StmtList    : Stmt          << ast.NewStmtList($0) >>

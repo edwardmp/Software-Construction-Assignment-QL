@@ -120,10 +120,11 @@ func (g GUI) ShowErrorDialog(errors []error) {
 		gtk.MESSAGE_INFO,
 		gtk.BUTTONS_OK,
 		fmt.Sprintf("Errors encountered: \n%s", errorsAsString))
-
 	messagedialog.Response(func() {
 		log.Info("Error dialog displayed")
-
+		messagedialog.Connect("destroy", func() {
+			gtk.MainQuit()
+		})
 		messagedialog.Destroy()
 	})
 

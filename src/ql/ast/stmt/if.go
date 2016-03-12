@@ -8,6 +8,15 @@ import (
 type If struct {
 	Cond interfaces.Expr
 	Body StmtList
+	Stmt
+}
+
+func NewIf(condition interfaces.Expr, body StmtList, sourceInfo interface{}) If {
+	return If{condition, body, NewStmt(sourceInfo)}
+}
+
+func NewIfNoSourceInfo(condition interfaces.Expr, body StmtList) If {
+	return NewIf(condition, body, nil)
 }
 
 func (i If) String() string {
@@ -15,5 +24,5 @@ func (i If) String() string {
 }
 
 func (i If) EvalCondition() bool {
-	return i.Cond.Eval(nil).(bool)
+	return i.Cond.Eval(nil).(bool) // TODO symboltable
 }

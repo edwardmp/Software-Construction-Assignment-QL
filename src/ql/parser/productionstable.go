@@ -3,8 +3,7 @@ package parser
 
 import(
 	"ql/ast"
-	"ql/token"
-	"ql/util"
+    "ql/token"
 )
 
 type (
@@ -34,90 +33,70 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Form : "form" VarId Block	<< ast.NewForm(X[1], X[2]) >>`,
+		String: `Form : "form" VarId Block	<< ast.NewForm(X[1], X[2], X[0].(*token.Token).Pos) >>`,
 		Id: "Form",
 		NTType: 1,
 		Index: 1,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewForm(X[1], X[2])
+			return ast.NewForm(X[1], X[2], X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Type : "integer"	<< ast.NewIntType() >>`,
+		String: `Type : "integer"	<< ast.NewIntType(X[0]) >>`,
 		Id: "Type",
 		NTType: 2,
 		Index: 2,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewIntType()
+			return ast.NewIntType(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `Type : "boolean"	<< ast.NewBoolType() >>`,
+		String: `Type : "boolean"	<< ast.NewBoolType(X[0]) >>`,
 		Id: "Type",
 		NTType: 2,
 		Index: 3,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewBoolType()
+			return ast.NewBoolType(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `Type : "string"	<< ast.NewStringType() >>`,
+		String: `Type : "string"	<< ast.NewStringType(X[0]) >>`,
 		Id: "Type",
 		NTType: 2,
 		Index: 4,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewStringType()
+			return ast.NewStringType(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `NumLiteral : integer_lit	<< ast.NewIntLit((util.IntValue(X[0].(*token.Token).Lit))) >>`,
-		Id: "NumLiteral",
+		String: `Term : Term mulop Factor	<< ast.NewMul(X[0], X[2], X[0].(*token.Token).Pos) >>`,
+		Id: "Term",
 		NTType: 3,
 		Index: 5,
-		NumSymbols: 1,
+		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewIntLit((util.IntValue(X[0].(*token.Token).Lit)))
+			return ast.NewMul(X[0], X[2], X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `StrLiteral : str_lit	<< ast.NewStrLit(X[0]) >>`,
-		Id: "StrLiteral",
-		NTType: 4,
+		String: `Term : Term divop Factor	<< ast.NewDiv(X[0], X[2], X[0].(*token.Token).Pos) >>`,
+		Id: "Term",
+		NTType: 3,
 		Index: 6,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewStrLit(X[0])
-		},
-	},
-	ProdTabEntry{
-		String: `Term : Term mulop Factor	<< ast.NewMul(X[0], X[2]) >>`,
-		Id: "Term",
-		NTType: 5,
-		Index: 7,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewMul(X[0], X[2])
-		},
-	},
-	ProdTabEntry{
-		String: `Term : Term divop Factor	<< ast.NewDiv(X[0], X[2]) >>`,
-		Id: "Term",
-		NTType: 5,
-		Index: 8,
-		NumSymbols: 3,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewDiv(X[0], X[2])
+			return ast.NewDiv(X[0], X[2], X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
 		String: `Term : Factor	<<  >>`,
 		Id: "Term",
-		NTType: 5,
-		Index: 9,
+		NTType: 3,
+		Index: 7,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -126,8 +105,8 @@ var productionsTable = ProdTab {
 	ProdTabEntry{
 		String: `Factor : NumLiteral	<<  >>`,
 		Id: "Factor",
-		NTType: 6,
-		Index: 10,
+		NTType: 4,
+		Index: 8,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -136,41 +115,61 @@ var productionsTable = ProdTab {
 	ProdTabEntry{
 		String: `Factor : VarId	<< ast.NewVarExpr(X[0]) >>`,
 		Id: "Factor",
-		NTType: 6,
-		Index: 11,
+		NTType: 4,
+		Index: 9,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewVarExpr(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `Bool : booltrue_lit	<< ast.NewBoolLit(ast.TRUE) >>`,
-		Id: "Bool",
+		String: `NumLiteral : integer_lit	<< ast.NewIntLit(X[0]) >>`,
+		Id: "NumLiteral",
+		NTType: 5,
+		Index: 10,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return ast.NewIntLit(X[0])
+		},
+	},
+	ProdTabEntry{
+		String: `StrLiteral : str_lit	<< ast.NewStrLit(X[0]) >>`,
+		Id: "StrLiteral",
+		NTType: 6,
+		Index: 11,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return ast.NewStrLit(X[0])
+		},
+	},
+	ProdTabEntry{
+		String: `BoolLiteral : booltrue_lit	<< ast.NewBoolLit(ast.TRUE, X[0].(*token.Token).Pos) >>`,
+		Id: "BoolLiteral",
 		NTType: 7,
 		Index: 12,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewBoolLit(ast.TRUE)
+			return ast.NewBoolLit(ast.TRUE, X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Bool : boolfalse_lit	<< ast.NewBoolLit(ast.FALSE) >>`,
-		Id: "Bool",
+		String: `BoolLiteral : boolfalse_lit	<< ast.NewBoolLit(ast.FALSE, X[0].(*token.Token).Pos) >>`,
+		Id: "BoolLiteral",
 		NTType: 7,
 		Index: 13,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewBoolLit(ast.FALSE)
+			return ast.NewBoolLit(ast.FALSE, X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `VarDecl : VarId col Type	<< ast.NewVarDecl(X[0], X[2]) >>`,
+		String: `VarDecl : VarId col Type	<< ast.NewVarDecl(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "VarDecl",
 		NTType: 8,
 		Index: 14,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewVarDecl(X[0], X[2])
+			return ast.NewVarDecl(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
@@ -184,133 +183,133 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : addop Expr	<< ast.NewPos(X[1]) >>`,
+		String: `Expr : addop Expr	<< ast.NewPos(X[1], X[0].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 16,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewPos(X[1])
+			return ast.NewPos(X[1], X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : subop Expr	<< ast.NewNeg(X[1]) >>`,
+		String: `Expr : subop Expr	<< ast.NewNeg(X[1], X[0].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 17,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewNeg(X[1])
+			return ast.NewNeg(X[1], X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : notop Expr	<< ast.NewNot(X[1]) >>`,
+		String: `Expr : notop Expr	<< ast.NewNot(X[1], X[0].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 18,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewNot(X[1])
+			return ast.NewNot(X[1], X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr addop Term	<< ast.NewAdd(X[0], X[2]) >>`,
+		String: `Expr : Expr addop Term	<< ast.NewAdd(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 19,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewAdd(X[0], X[2])
+			return ast.NewAdd(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr subop Term	<< ast.NewSub(X[0], X[2]) >>`,
+		String: `Expr : Expr subop Term	<< ast.NewSub(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 20,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewSub(X[0], X[2])
+			return ast.NewSub(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr eqop Expr	<< ast.NewEq(X[0], X[2]) >>`,
+		String: `Expr : Expr eqop Expr	<< ast.NewEq(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 21,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewEq(X[0], X[2])
+			return ast.NewEq(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr neqop Expr	<< ast.NewNEq(X[0], X[2]) >>`,
+		String: `Expr : Expr neqop Expr	<< ast.NewNEq(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 22,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewNEq(X[0], X[2])
+			return ast.NewNEq(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr gtop Expr	<< ast.NewGT(X[0], X[2]) >>`,
+		String: `Expr : Expr gtop Expr	<< ast.NewGT(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 23,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewGT(X[0], X[2])
+			return ast.NewGT(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr ltop Expr	<< ast.NewLT(X[0], X[2]) >>`,
+		String: `Expr : Expr ltop Expr	<< ast.NewLT(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 24,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewLT(X[0], X[2])
+			return ast.NewLT(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr geqop Expr	<< ast.NewGEq(X[0], X[2]) >>`,
+		String: `Expr : Expr geqop Expr	<< ast.NewGEq(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 25,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewGEq(X[0], X[2])
+			return ast.NewGEq(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr leqop Expr	<< ast.NewLEq(X[0], X[2]) >>`,
+		String: `Expr : Expr leqop Expr	<< ast.NewLEq(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 26,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewLEq(X[0], X[2])
+			return ast.NewLEq(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr andop Expr	<< ast.NewAnd(X[0], X[2]) >>`,
+		String: `Expr : Expr andop Expr	<< ast.NewAnd(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 27,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewAnd(X[0], X[2])
+			return ast.NewAnd(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Expr orop Expr	<< ast.NewOr(X[0], X[2]) >>`,
+		String: `Expr : Expr orop Expr	<< ast.NewOr(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 28,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewOr(X[0], X[2])
+			return ast.NewOr(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
@@ -334,7 +333,7 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : Bool	<<  >>`,
+		String: `Expr : BoolLiteral	<<  >>`,
 		Id: "Expr",
 		NTType: 10,
 		Index: 31,
@@ -344,23 +343,23 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `IfStmt : "if" lpar Expr rpar Block	<< ast.NewIf(X[2], X[4]) >>`,
+		String: `IfStmt : "if" lpar Expr rpar Block	<< ast.NewIf(X[2], X[4], X[0].(*token.Token).Pos) >>`,
 		Id: "IfStmt",
 		NTType: 11,
 		Index: 32,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewIf(X[2], X[4])
+			return ast.NewIf(X[2], X[4], X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `IfStmt : "if" lpar Expr rpar Block "else" Block	<< ast.NewIfElse(X[2], X[4], X[6]) >>`,
+		String: `IfStmt : "if" lpar Expr rpar Block "else" Block	<< ast.NewIfElse(X[2], X[4], X[6], X[0].(*token.Token).Pos) >>`,
 		Id: "IfStmt",
 		NTType: 11,
 		Index: 33,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewIfElse(X[2], X[4], X[6])
+			return ast.NewIfElse(X[2], X[4], X[6], X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
@@ -374,13 +373,13 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Question : StrLiteral VarDecl assign Expr	<< ast.NewComputedQuestion(X[0], X[1], X[3]) >>`,
+		String: `Question : StrLiteral VarDecl assign Expr	<< ast.NewComputedQuestion(X[0], X[1], X[3], X[2].(*token.Token).Pos) >>`,
 		Id: "Question",
 		NTType: 12,
 		Index: 35,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewComputedQuestion(X[0], X[1], X[3])
+			return ast.NewComputedQuestion(X[0], X[1], X[3], X[2].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
@@ -394,13 +393,13 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Block : lbrace rbrace	<< ast.NewEmptyStmtList() >>`,
+		String: `Block : lbrace rbrace	<< ast.NewEmptyStmtList(X[0].(*token.Token).Pos) >>`,
 		Id: "Block",
 		NTType: 13,
 		Index: 37,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewEmptyStmtList()
+			return ast.NewEmptyStmtList(X[0].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{

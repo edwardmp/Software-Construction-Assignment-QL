@@ -30,7 +30,7 @@ func (g *GUIForm) ShowForm() {
 		fmt.Println("Destroy of window initiated", ctx.Data().(string))
 		g.SaveDataCallback()
 		gtk.MainQuit()
-	}, "foo")
+	})
 
 	vbox := gtk.NewVBox(false, 1)
 

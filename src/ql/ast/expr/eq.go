@@ -6,6 +6,10 @@ type Eq struct {
 	BinaryOperator
 }
 
-func NewEq(lhs interfaces.Expr, rhs interfaces.Expr) Eq {
-	return Eq{BinaryOperator{Lhs: lhs, Rhs: rhs}}
+func NewEq(lhs interfaces.Expr, rhs interfaces.Expr, sourceInfo interface{}) Eq {
+	return Eq{NewBinaryOperator(lhs, rhs, sourceInfo)}
+}
+
+func NewEqNoSourceInfo(lhs interfaces.Expr, rhs interfaces.Expr) Eq {
+	return NewEq(lhs, rhs, nil)
 }

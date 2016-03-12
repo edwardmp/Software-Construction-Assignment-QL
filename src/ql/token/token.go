@@ -64,10 +64,10 @@ var TokMap = TokenMap{
 		"integer",
 		"boolean",
 		"string",
-		"integer_lit",
-		"str_lit",
 		"mulop",
 		"divop",
+		"integer_lit",
+		"str_lit",
 		"booltrue_lit",
 		"boolfalse_lit",
 		"col",
@@ -90,7 +90,6 @@ var TokMap = TokenMap{
 		"assign",
 		"lbrace",
 		"rbrace",
-		"money_lit",
 	},
 
 	idMap: map[string]Type {
@@ -100,10 +99,10 @@ var TokMap = TokenMap{
 		"integer": 3,
 		"boolean": 4,
 		"string": 5,
-		"integer_lit": 6,
-		"str_lit": 7,
-		"mulop": 8,
-		"divop": 9,
+		"mulop": 6,
+		"divop": 7,
+		"integer_lit": 8,
+		"str_lit": 9,
 		"booltrue_lit": 10,
 		"boolfalse_lit": 11,
 		"col": 12,
@@ -126,7 +125,6 @@ var TokMap = TokenMap{
 		"assign": 29,
 		"lbrace": 30,
 		"rbrace": 31,
-		"money_lit": 32,
 	},
 }
 

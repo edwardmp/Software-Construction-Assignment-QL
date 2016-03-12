@@ -11,7 +11,7 @@ import (
 )
 
 func testInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
-	exampleExpr := expr.NewSub(expr.BoolLit{true}, expr.IntLit{10})
+	exampleExpr := expr.NewSubNoSourceInfo(expr.NewBoolLitNoSourceInfo(true), expr.NewIntLitNoSourceInfo(10))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
@@ -23,7 +23,7 @@ func testInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
 }
 
 func testInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) {
-	exampleExpr := expr.NewSub(expr.BoolLit{true}, expr.BoolLit{false})
+	exampleExpr := expr.NewSubNoSourceInfo(expr.NewBoolLitNoSourceInfo(true), expr.NewBoolLitNoSourceInfo(false))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
@@ -35,7 +35,7 @@ func testInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) 
 }
 
 func testInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.T) {
-	exampleExpr := expr.NewAnd(expr.IntLit{10}, expr.IntLit{8})
+	exampleExpr := expr.NewAndNoSourceInfo(expr.NewIntLitNoSourceInfo(10), expr.NewIntLitNoSourceInfo(8))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
@@ -47,7 +47,7 @@ func testInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.
 }
 
 func testInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T) {
-	exampleExpr := expr.NewAnd(expr.StrLit{"Test A"}, expr.StrLit{"Test B"})
+	exampleExpr := expr.NewAndNoSourceInfo(expr.NewStrLitNoSourceInfo("Test A"), expr.NewStrLitNoSourceInfo("Test B"))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
@@ -59,7 +59,7 @@ func testInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T
 }
 
 func testInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
-	exampleExpr := expr.NewNeg(expr.BoolLit{true})
+	exampleExpr := expr.NewNegNoSourceInfo(expr.NewBoolLitNoSourceInfo(true))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
@@ -71,7 +71,7 @@ func testInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
 }
 
 func testInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
-	exampleExpr := expr.NewNot(expr.IntLit{3})
+	exampleExpr := expr.NewNotNoSourceInfo(expr.NewIntLitNoSourceInfo(3))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
@@ -83,7 +83,7 @@ func testInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
 }
 
 func testInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) {
-	exampleExpr := expr.NewNot(expr.StrLit{"Test"})
+	exampleExpr := expr.NewNotNoSourceInfo(expr.NewStrLitNoSourceInfo("Test"))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(&typeChecker, nil)
@@ -95,9 +95,9 @@ func testInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) 
 }
 
 func testUndefinedQuestionReferenceChecker(t *testing.T) {
-	computedQuestion := stmt.ComputedQuestion{expr.NewStrLit("Value residue:"), vari.VarDecl{vari.VarId{"valueResidue"}, vari.IntType{}}, expr.NewSub(expr.VarExpr{vari.VarId{"hasSoldHouse"}}, expr.VarExpr{vari.VarId{"hasMaintLoan"}})}
-	exampleBody := stmt.StmtList{[]interfaces.Question{computedQuestion}, []interfaces.Conditional{}}
-	exampleForm := stmt.Form{vari.VarId{"TestForm"}, exampleBody}
+	computedQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Value residue:"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("valueResidue"), vari.NewIntTypeNoSourceInfo()), expr.NewSubNoSourceInfo(expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse")), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasMaintLoan"))))
+	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{computedQuestion}, []interfaces.Conditional{})
+	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbolTable())

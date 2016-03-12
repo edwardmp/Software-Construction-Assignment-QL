@@ -8,6 +8,15 @@ import (
 type InputQuestion struct {
 	Label   interfaces.StrLit
 	VarDecl interfaces.VarDecl
+	Stmt
+}
+
+func NewInputQuestion(label interfaces.StrLit, varDecl interfaces.VarDecl, sourceInfo interface{}) InputQuestion {
+	return InputQuestion{label, varDecl, NewStmt(sourceInfo)}
+}
+
+func NewInputQuestionNoSourceInfo(label interfaces.StrLit, varDecl interfaces.VarDecl) InputQuestion {
+	return NewInputQuestion(label, varDecl, nil)
 }
 
 func (i InputQuestion) String() string {

@@ -10,7 +10,7 @@ import (
 
 func testSymbolTableAdd(t *testing.T) {
 	newSymbolTable := NewSymbolTable()
-	exampleVarId := vari.VarId{"testIdentifier"}
+	exampleVarId := vari.NewVarIdNoSourceInfo("testIdentifier")
 	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)
 
 	if lookupValue := newSymbolTable.GetNodeForIdentifier(exampleVarId); lookupValue != "testValue" {
@@ -20,7 +20,7 @@ func testSymbolTableAdd(t *testing.T) {
 
 func testSaveToDisk(t *testing.T) {
 	newSymbolTable := NewSymbolTable()
-	exampleVarId := vari.VarId{"testIdentifier"}
+	exampleVarId := vari.NewVarIdNoSourceInfo("testIdentifier")
 	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)
 
 	newSymbolTable.SaveToDisk()
