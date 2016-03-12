@@ -1,7 +1,7 @@
 package interfaces
 
 type Stmt interface {
-	Node
+	ASTNode
 	String() string
 }
 

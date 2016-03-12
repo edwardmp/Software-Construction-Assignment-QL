@@ -91,3 +91,7 @@ func typeCheckUndefinedQuestionReference(varExpr VarExpr, typeChecker interfaces
 		typeChecker.AddEncounteredErrorForCheckType("ReferenceToUndefinedQuestion", fmt.Errorf("Reference to unknown question identifier: %s", varExpr.GetIdentifier()))
 	}
 }
+
+func (this Expr) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+	panic("Expr TypeCheck method not overridden")
+}

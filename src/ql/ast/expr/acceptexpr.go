@@ -155,6 +155,12 @@ func (va VarExpr) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	return nil
 }
 
+func (this Expr) Accept(v interfaces.Visitor, s interface{}) interface{} {
+	panic("Expr Accept method not overridden")
+
+	return nil
+}
+
 func acceptLhsAndRhs(binaryExpr interfaces.BinaryOperatorExpr, v interfaces.Visitor, s interface{}) {
 	binaryExpr.GetLhs().Accept(v, s)
 	binaryExpr.GetRhs().Accept(v, s)

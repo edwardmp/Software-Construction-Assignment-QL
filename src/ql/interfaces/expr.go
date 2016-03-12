@@ -1,7 +1,7 @@
 package interfaces
 
 type Expr interface {
-	Node
+	ASTNode
 	Eval(s interface{}) interface{}
 }
 

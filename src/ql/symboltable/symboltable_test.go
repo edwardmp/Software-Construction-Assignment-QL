@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func testSymbolTableAdd(t *testing.T) {
+func TestSymbolTableAdd(t *testing.T) {
 	newSymbolTable := NewSymbolTable()
 	exampleVarId := vari.NewVarIdNoSourceInfo("testIdentifier")
 	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)
@@ -18,7 +18,7 @@ func testSymbolTableAdd(t *testing.T) {
 	}
 }
 
-func testSaveToDisk(t *testing.T) {
+func TestSaveToDisk(t *testing.T) {
 	newSymbolTable := NewSymbolTable()
 	exampleVarId := vari.NewVarIdNoSourceInfo("testIdentifier")
 	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)

@@ -131,3 +131,8 @@ func (v VarExpr) Eval(s interface{}) interface{} {
 
 	return nil
 }
+
+func (this Expr) Eval(sy interface{}) interface{} {
+	panic("Expr struct Eval method not overridden")
+	return nil
+}

@@ -3,6 +3,7 @@ package expr
 import (
 	"ql/interfaces"
 	"ql/symboltable"
+	"ql/token"
 	"testing"
 )
 
@@ -53,6 +54,13 @@ func (v VarIdentifier) Accept(va interfaces.Visitor, s interface{}) interface{} 
 
 func (v VarIdentifier) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
 
+}
+
+func (v VarIdentifier) GetSourceInfo() token.Pos {
+	return token.Pos{}
+}
+
+func (v VarIdentifier) ResetSourceInfo() {
 }
 
 func TestVarExpr(t *testing.T) {

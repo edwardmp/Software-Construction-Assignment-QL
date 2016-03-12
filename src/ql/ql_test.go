@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"ql/ast/expr"
 	"ql/ast/stmt"
 	"ql/ast/vari"
@@ -10,57 +9,6 @@ import (
 	"ql/parser"
 	"testing"
 )
-
-// slices don't support equality checking, so have to do it manually
-func slicesEqual(a stmt.StmtList, b stmt.StmtList) bool {
-	questionsA := a.Questions
-	questionsB := b.Questions
-
-	if len(questionsA) != len(questionsB) {
-		return false
-	}
-
-	for i, questionA := range questionsA {
-		if questionA != questionsB[i] {
-			fmt.Print(questionA)
-			fmt.Print(questionsB[i])
-
-			return false
-		}
-	}
-
-	conditionalsA := a.Conditionals
-	conditionalsB := b.Conditionals
-
-	for i := range conditionalsA {
-		if conditionalsA[i].(interfaces.Conditional).EvalCondition() != conditionalsB[i].(interfaces.Conditional).EvalCondition() {
-			return false
-		}
-
-		if !slicesEqualConditional(conditionalsA[i].(interfaces.Conditional), conditionalsB[i].(interfaces.Conditional)) {
-			return false
-		}
-	}
-
-	return true
-}
-
-func slicesEqualConditional(ifA, ifB interfaces.Conditional) bool {
-	if fmt.Sprintf("%T", ifA) != fmt.Sprintf("%T", ifB) {
-		panic("Types not equal") // TODO replace with assert
-	}
-
-	switch t := ifA.(type) {
-	default:
-		panic(fmt.Sprintf("unexpected Conditional type %T\n", t))
-	case stmt.If:
-		bodyA := ifA.(stmt.If).Body
-		bodyB := ifB.(stmt.If).Body
-		return slicesEqual(bodyA, bodyB)
-	case stmt.IfElse:
-		return slicesEqual(ifA.(stmt.IfElse).IfBody, ifB.(stmt.IfElse).IfBody) && slicesEqual(ifA.(stmt.IfElse).ElseBody, ifB.(stmt.IfElse).ElseBody)
-	}
-}
 
 func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}) stmt.Form {
 	lex := lexer.NewLexer([]byte(stmtAsString))
@@ -77,7 +25,7 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 				t.Errorf("Form identifiers not equal %v %v", f.Identifier, e.Identifier)
 			}
 
-			if !slicesEqual(f.Content, e.Content) {
+			if !stmt.SlicesEqual(f.Content, e.Content) {
 				t.Errorf("Form content not equal %v %v", f.Content, e.Content)
 			}
 
@@ -85,7 +33,7 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 			eCond := e.Content.Conditionals
 			if len(fCond) != 0 && len(fCond) == len(eCond) {
 				for i := range fCond {
-					if !slicesEqualConditional(fCond[i].(interfaces.Conditional), eCond[i].(interfaces.Conditional)) {
+					if !stmt.SlicesEqualConditional(fCond[i].(interfaces.Conditional), eCond[i].(interfaces.Conditional)) {
 						t.Errorf("parse test failed conditionals not equal: %v %v", fCond, eCond)
 					}
 				}
