@@ -95,6 +95,7 @@ Expr    : addop Expr        << ast.NewPos($1, $0.(*token.Token).Pos) >>
         | lpar Expr rpar    << $1, nil >>
         | Term
         | BoolLiteral
+        | StrLiteral
         ;
 
 IfStmt  : "if" lpar Expr rpar Block                 << ast.NewIf($2, $4, $0.(*token.Token).Pos) >>
