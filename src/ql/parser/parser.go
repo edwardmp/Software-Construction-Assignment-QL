@@ -5,7 +5,7 @@ import(
 	"bytes"
 	"fmt"
 	"errors"
-	parseError "QL/errors"
+	parseError "ql/errors"
 	"ql/token"
 )
 
