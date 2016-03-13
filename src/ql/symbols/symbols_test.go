@@ -1,4 +1,4 @@
-package symboltable
+package symbols
 
 import (
 	"io/ioutil"

@@ -5,26 +5,54 @@ import (
 	"ql/interfaces"
 )
 
-func (b BinaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-	typeCheckForUnequalTypes(b, typeChecker, symbolTable)
-	typeCheckInvalidBinaryOperatorForOperands(b, typeChecker, symbolTable)
+func (b BinaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	typeCheckForUnequalTypes(b, typeChecker, symbols)
+	typeCheckInvalidBinaryOperatorForOperands(b, typeChecker, symbols)
 
-	b.Lhs.TypeCheck(typeChecker, symbolTable)
-	b.Rhs.TypeCheck(typeChecker, symbolTable)
+	b.Lhs.TypeCheck(typeChecker, symbols)
+	b.Rhs.TypeCheck(typeChecker, symbols)
 }
 
-func typeCheckForUnequalTypes(expr BinaryOperator, typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-	lhsTypeOfValue := fmt.Sprintf("%T", expr.Lhs.Eval(symbolTable))
-	rhsTypeOfValue := fmt.Sprintf("%T", expr.Rhs.Eval(symbolTable))
+func (u UnaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	typeCheckInvalidUnaryOperatorForOperands(u, typeChecker, symbols)
+
+	u.Value.(interfaces.Expr).TypeCheck(typeChecker, symbols)
+}
+
+func (v VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	typeCheckUndefinedQuestionReference(v, typeChecker, symbols)
+
+	v.Identifier.TypeCheck(typeChecker, symbols)
+}
+
+func (this Expr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	panic("Expr TypeCheck method not overridden")
+}
+
+func (i IntLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+
+}
+
+func (b BoolLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+
+}
+
+func (s StrLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+
+}
+
+func typeCheckForUnequalTypes(expr BinaryOperator, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	lhsTypeOfValue := fmt.Sprintf("%T", expr.Lhs.Eval(symbols))
+	rhsTypeOfValue := fmt.Sprintf("%T", expr.Rhs.Eval(symbols))
 
 	if lhsTypeOfValue != rhsTypeOfValue {
 		typeChecker.AddEncounteredErrorForCheckType("InvalidOperandsDifferentTypes", fmt.Errorf("Encountered BinaryOperator with operands of different types: %s and %s", lhsTypeOfValue, rhsTypeOfValue))
 	}
 }
 
-func typeCheckInvalidBinaryOperatorForOperands(binaryOperator BinaryOperator, typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+func typeCheckInvalidBinaryOperatorForOperands(binaryOperator BinaryOperator, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 	exprType := fmt.Sprintf("%T", binaryOperator)
-	lhsTypeOfValue := binaryOperator.Lhs.Eval(symbolTable)
+	lhsTypeOfValue := binaryOperator.Lhs.Eval(symbols)
 
 	switch lhsTypeOfValue.(type) {
 	case bool:
@@ -42,15 +70,9 @@ func typeCheckInvalidBinaryOperatorForOperands(binaryOperator BinaryOperator, ty
 	}
 }
 
-func (u UnaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-	typeCheckInvalidUnaryOperatorForOperands(u, typeChecker, symbolTable)
-
-	u.Value.(interfaces.Expr).TypeCheck(typeChecker, symbolTable)
-}
-
-func typeCheckInvalidUnaryOperatorForOperands(unaryOperator UnaryOperator, typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+func typeCheckInvalidUnaryOperatorForOperands(unaryOperator UnaryOperator, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 	exprType := fmt.Sprintf("%T", unaryOperator)
-	evalValue := unaryOperator.Value.Eval(symbolTable)
+	evalValue := unaryOperator.Value.Eval(symbols)
 
 	switch evalValue.(type) {
 	case bool:
@@ -67,30 +89,8 @@ func typeCheckInvalidUnaryOperatorForOperands(unaryOperator UnaryOperator, typeC
 	}
 }
 
-func (i IntLit) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-
-}
-
-func (b BoolLit) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-
-}
-
-func (s StrLit) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-
-}
-
-func (v VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-	typeCheckUndefinedQuestionReference(v, typeChecker, symbolTable)
-
-	v.Identifier.TypeCheck(typeChecker, symbolTable)
-}
-
-func typeCheckUndefinedQuestionReference(varExpr VarExpr, typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-	if symbolTable.GetNodeForIdentifier(varExpr.GetIdentifier()) == nil {
+func typeCheckUndefinedQuestionReference(varExpr VarExpr, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	if symbols.GetNodeForIdentifier(varExpr.GetIdentifier()) == nil {
 		typeChecker.AddEncounteredErrorForCheckType("ReferenceToUndefinedQuestion", fmt.Errorf("Reference to unknown question identifier: %s", varExpr.GetIdentifier()))
 	}
-}
-
-func (this Expr) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-	panic("Expr TypeCheck method not overridden")
 }

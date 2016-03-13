@@ -42,7 +42,7 @@ func main() {
 		log.WithFields(log.Fields{"Result": parsedForm}).Info("Form parsed")
 		fmt.Println(ast.SourcePosInformation)
 		visitor := SymbolTableFillerVisitor{}
-		symbols := symboltable.NewSymbols()
+		symbols := symbols.NewSymbols()
 		parsedForm.Accept(&visitor, symbols)
 
 		typeChecker := typechecker.NewTypeChecker()
@@ -70,6 +70,6 @@ type SymbolTableFillerVisitor struct {
 	visitor.BaseVisitor
 }
 
-func (s *SymbolTableFillerVisitor) VisitVarDecl(va interfaces.VarDecl, sy interface{}) {
-	sy.(interfaces.SymbolTable).SetNodeForIdentifier(va.GetType().GetDefaultValue(), va.GetIdent())
+func (this *SymbolTableFillerVisitor) VisitVarDecl(v interfaces.VarDecl, s interfaces.Symbols) {
+	s.SetNodeForIdentifier(v.GetType().GetDefaultValue(), v.GetIdent())
 }

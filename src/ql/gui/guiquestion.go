@@ -36,19 +36,19 @@ func CreateDisabledGUIQuestion(label string, questionType interfaces.VarType, ca
 }
 
 //
-func (g *GUIQuestion) ChangeFieldValueText(newText string) {
+func (this *GUIQuestion) ChangeFieldValueText(newText string) {
 	log.WithFields(log.Fields{"newLabelText": newText}).Debug("Changing text of element")
-	g.Element.(*ui.Entry).SetText(newText)
+	this.Element.(*ui.Entry).SetText(newText)
 }
 
 // ChangeErrorLabelText changes the error text feedback presented when error occurs
-func (g *GUIQuestion) ChangeErrorLabelText(newText string) {
-	g.ErrorLabel.SetText(newText)
+func (this *GUIQuestion) ChangeErrorLabelText(newText string) {
+	this.ErrorLabel.SetText(newText)
 }
 
 // ResetErrorLabelText removes the error text presented to the user
-func (g *GUIQuestion) ResetErrorLabelText(newText string) {
-	g.ChangeErrorLabelText("")
+func (this *GUIQuestion) ResetErrorLabelText(newText string) {
+	this.ChangeErrorLabelText("")
 }
 
 func createQuestionElement(questionType interfaces.VarType, callback func(interface{}, error), disabled bool) ui.Control {

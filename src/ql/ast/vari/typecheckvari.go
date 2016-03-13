@@ -4,19 +4,19 @@ import (
 	"ql/interfaces"
 )
 
-func (v VarDecl) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-	v.Ident.TypeCheck(typeChecker, symbolTable)
-	v.Type.TypeCheck(typeChecker, symbolTable)
+func (this VarDecl) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	this.Ident.TypeCheck(typeChecker, symbols)
+	this.Type.TypeCheck(typeChecker, symbols)
 }
 
-func (v VarId) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+func (this VarId) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 }
 
-func (i IntType) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+func (this IntType) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 }
 
-func (s StringType) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+func (this StringType) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 }
 
-func (b BoolType) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+func (this BoolType) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 }

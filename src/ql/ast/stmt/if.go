@@ -19,18 +19,18 @@ func NewIfNoSourceInfo(condition interfaces.Expr, body StmtList) If {
 	return NewIf(condition, body, nil)
 }
 
-func (i If) GetBody() interfaces.StmtList {
-	return i.Body
+func (this If) GetBody() interfaces.StmtList {
+	return this.Body
 }
 
-func (i If) GetCondition() interfaces.Expr {
-	return i.Cond
+func (this If) GetCondition() interfaces.Expr {
+	return this.Cond
 }
 
-func (i If) String() string {
-	return fmt.Sprintf("An if statement with condition %s and statement list %s", i.Cond, i.Body)
+func (this If) String() string {
+	return fmt.Sprintf("An if statement with condition %s and statement list %s", this.Cond, this.Body)
 }
 
-func (i If) EvalCondition(symbolTable interfaces.SymbolTable) bool {
-	return i.Cond.Eval(symbolTable).(bool)
+func (this If) EvalCondition(symbolTable interfaces.Symbols) bool {
+	return this.Cond.Eval(symbolTable).(bool)
 }

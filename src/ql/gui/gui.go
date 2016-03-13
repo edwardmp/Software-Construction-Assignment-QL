@@ -6,10 +6,8 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/andlabs/ui"
 	"ql/ast/stmt"
-
 	"ql/ast/visitor"
 	"ql/interfaces"
-	"ql/symbols"
 	"strconv"
 	"strings"
 )
@@ -17,7 +15,7 @@ import (
 type GUI struct {
 	visitor.BaseVisitor
 	GUIForm                   *GUIForm
-	Symbols                   *symboltable.Symbols
+	Symbols                   interfaces.Symbols
 	typeCheckerErrors         []error
 	RegisteredOnShowCallbacks []func()
 	SaveDataCallback          func() (interface{}, error)
@@ -25,7 +23,7 @@ type GUI struct {
 }
 
 // CreateGUI is a constructor method returning a new GUI
-func CreateGUI(form stmt.Form, symbols *symboltable.Symbols, typeCheckerErrors []error) GUI {
+func CreateGUI(form stmt.Form, symbols interfaces.Symbols, typeCheckerErrors []error) GUI {
 	gui := GUI{GUIForm: NewGUIForm(form), Symbols: symbols, typeCheckerErrors: typeCheckerErrors}
 
 	gui.SaveDataCallback = symbols.SaveToDisk
@@ -38,37 +36,38 @@ func CreateGUI(form stmt.Form, symbols *symboltable.Symbols, typeCheckerErrors [
 }
 
 // RegisterOnShowCallback registers callback functions that are called once the UI is presented to the user.
-func (g *GUI) RegisterOnShowCallback(callback func()) {
-	g.RegisteredOnShowCallbacks = append(g.RegisteredOnShowCallbacks, callback)
+func (this *GUI) RegisterOnShowCallback(callback func()) {
+	this.RegisteredOnShowCallbacks = append(this.RegisteredOnShowCallbacks, callback)
 }
 
 // Show shows the UI after calling
-func (g *GUI) Show() {
+func (this *GUI) Show() {
 	log.Info("Showing GUI")
 
 	err := ui.Main(func() {
 		box := ui.NewVerticalBox()
 		box.SetPadded(true)
-		g.Window = ui.NewWindow("QL", 800, 600, false)
+		this.Window = ui.NewWindow("QL", 800, 600, false)
 
-		g.Window.OnClosing(func(w *ui.Window) bool {
+		this.Window.OnClosing(func(w *ui.Window) bool {
 			log.Info("Destroy of window initiated")
-			g.SaveDataCallback()
+			this.SaveDataCallback()
 			ui.Quit()
 			return true
 		})
 
-		g.Window.SetChild(box)
+		this.Window.SetChild(box)
 
-		g.Window.Show()
+		this.Window.Show()
 
-		g.GUIForm.Window = g.Window
+		this.GUIForm.Window = this.Window
 
-		//if len(g.typeCheckerErrors) != 0 {
-		// g.showErrorDialog() FIXME reenable
+		// FIXME reenable
+		//if len(this.typeCheckerErrors) != 0 {
+		// this.showErrorDialog()
 		//} else {
-		g.GUIForm.ShowForm()
-		for _, registeredCallback := range g.RegisteredOnShowCallbacks {
+		this.GUIForm.ShowForm()
+		for _, registeredCallback := range this.RegisteredOnShowCallbacks {
 			registeredCallback()
 		}
 		//}
@@ -81,56 +80,52 @@ func (g *GUI) Show() {
 }
 
 // VisitForm creates the top level questions
-func (g *GUI) VisitForm(f interfaces.Form, s interface{}) {
-	guiQuestions := handleQuestions(g, f.GetQuestions(), s.(interfaces.SymbolTable))
+func (this *GUI) VisitForm(f interfaces.Form, symbols interfaces.Symbols) {
+	guiQuestions := handleQuestions(this, f.GetQuestions(), symbols)
 
-	g.RegisterOnShowCallback(func() {
-		g.GUIForm.AddQuestionContainer(g.GUIForm.CreateQuestionTableWithRows(guiQuestions))
+	this.RegisterOnShowCallback(func() {
+		this.GUIForm.AddQuestionContainer(this.GUIForm.CreateQuestionTableWithRows(guiQuestions))
 	})
 }
 
-func (g *GUI) VisitIf(i interfaces.If, s interface{}) {
-	symbolTable := s.(interfaces.SymbolTable)
+func (this *GUI) VisitIf(i interfaces.If, symbols interfaces.Symbols) {
+	guiQuestions := handleQuestions(this, i.GetBody().GetQuestions(), symbols)
+	questionsEncompassingContainer := this.GUIForm.CreateQuestionTableWithRows(guiQuestions)
 
-	guiQuestions := handleQuestions(g, i.GetBody().GetQuestions(), symbolTable)
-	questionsEncompassingContainer := g.GUIForm.CreateQuestionTableWithRows(guiQuestions)
-
-	g.RegisterOnShowCallback(func() {
-		g.GUIForm.AddQuestionContainer(questionsEncompassingContainer)
-		hideContainerWhenIfEvalToFalse(i, questionsEncompassingContainer, symbolTable)
+	this.RegisterOnShowCallback(func() {
+		this.GUIForm.AddQuestionContainer(questionsEncompassingContainer)
+		hideContainerWhenIfEvalToFalse(i, questionsEncompassingContainer, symbols)
 	})
 
-	g.Symbols.RegisterCallback(func(s interfaces.SymbolTable) {
-		log.Debug("Received symbolTable update callback")
+	this.Symbols.RegisterCallback(func(s interfaces.Symbols) {
+		log.Debug("Received symbols update callback")
 
-		hideContainerWhenIfEvalToFalse(i, questionsEncompassingContainer, symbolTable)
+		hideContainerWhenIfEvalToFalse(i, questionsEncompassingContainer, symbols)
 	})
 }
 
-func (g *GUI) VisitIfElse(i interfaces.IfElse, s interface{}) {
-	symbolTable := s.(interfaces.SymbolTable)
+func (this *GUI) VisitIfElse(i interfaces.IfElse, symbols interfaces.Symbols) {
+	guiQuestionsIfBody := handleQuestions(this, i.GetIfBody().GetQuestions(), symbols)
+	guiQuestionsElseBody := handleQuestions(this, i.GetElseBody().GetQuestions(), symbols)
 
-	guiQuestionsIfBody := handleQuestions(g, i.GetIfBody().GetQuestions(), symbolTable)
-	guiQuestionsElseBody := handleQuestions(g, i.GetElseBody().GetQuestions(), symbolTable)
+	ifQuestionsEncompassingContainer := this.GUIForm.CreateQuestionTableWithRows(guiQuestionsIfBody)
+	elseQuestionsEncompassingContainer := this.GUIForm.CreateQuestionTableWithRows(guiQuestionsElseBody)
 
-	ifQuestionsEncompassingContainer := g.GUIForm.CreateQuestionTableWithRows(guiQuestionsIfBody)
-	elseQuestionsEncompassingContainer := g.GUIForm.CreateQuestionTableWithRows(guiQuestionsElseBody)
-
-	g.RegisterOnShowCallback(func() {
-		g.GUIForm.AddQuestionContainer(ifQuestionsEncompassingContainer)
-		g.GUIForm.AddQuestionContainer(elseQuestionsEncompassingContainer)
-		hideContainerWhenIfElseEvalsToFalse(i, ifQuestionsEncompassingContainer, elseQuestionsEncompassingContainer, symbolTable)
+	this.RegisterOnShowCallback(func() {
+		this.GUIForm.AddQuestionContainer(ifQuestionsEncompassingContainer)
+		this.GUIForm.AddQuestionContainer(elseQuestionsEncompassingContainer)
+		hideContainerWhenIfElseEvalsToFalse(i, ifQuestionsEncompassingContainer, elseQuestionsEncompassingContainer, symbols)
 	})
 
-	g.Symbols.RegisterCallback(func(s interfaces.SymbolTable) {
-		log.Debug("Received symbolTable update callback")
+	this.Symbols.RegisterCallback(func(s interfaces.Symbols) {
+		log.Debug("Received symbols update callback")
 
-		hideContainerWhenIfElseEvalsToFalse(i, ifQuestionsEncompassingContainer, elseQuestionsEncompassingContainer, symbolTable)
+		hideContainerWhenIfElseEvalsToFalse(i, ifQuestionsEncompassingContainer, elseQuestionsEncompassingContainer, symbols)
 	})
 }
 
-func hideContainerWhenIfEvalToFalse(conditionalStmt interfaces.Conditional, conditionalContainer *ui.Box, symbolTable interfaces.SymbolTable) {
-	conditionValue := conditionalStmt.EvalCondition(symbolTable)
+func hideContainerWhenIfEvalToFalse(conditionalStmt interfaces.Conditional, conditionalContainer *ui.Box, symbols interfaces.Symbols) {
+	conditionValue := conditionalStmt.EvalCondition(symbols)
 
 	if conditionValue {
 		conditionalContainer.Show()
@@ -139,8 +134,8 @@ func hideContainerWhenIfEvalToFalse(conditionalStmt interfaces.Conditional, cond
 	}
 }
 
-func hideContainerWhenIfElseEvalsToFalse(conditionalStmt interfaces.Conditional, conditionalContainerIfBody *ui.Box, conditionalContainerElseBody *ui.Box, symbolTable interfaces.SymbolTable) {
-	conditionValue := conditionalStmt.EvalCondition(symbolTable)
+func hideContainerWhenIfElseEvalsToFalse(conditionalStmt interfaces.Conditional, conditionalContainerIfBody *ui.Box, conditionalContainerElseBody *ui.Box, symbols interfaces.Symbols) {
+	conditionValue := conditionalStmt.EvalCondition(symbols)
 
 	if conditionValue {
 		conditionalContainerIfBody.Show()
@@ -151,16 +146,16 @@ func hideContainerWhenIfElseEvalsToFalse(conditionalStmt interfaces.Conditional,
 	}
 }
 
-func handleQuestions(g *GUI, q []interfaces.Question, s interfaces.SymbolTable) []*GUIQuestion {
+func handleQuestions(this *GUI, q []interfaces.Question, symbols interfaces.Symbols) []*GUIQuestion {
 	guiQuestions := make([]*GUIQuestion, 0)
 
 	for _, question := range q {
 		switch question.(type) {
 		case interfaces.ComputedQuestion:
-			guiQuestion := g.handleComputedQuestion(question.(interfaces.ComputedQuestion), s.(interfaces.SymbolTable)).GUIQuestion
+			guiQuestion := this.handleComputedQuestion(question.(interfaces.ComputedQuestion), symbols).GUIQuestion
 			guiQuestions = append(guiQuestions, guiQuestion)
 		case interfaces.InputQuestion:
-			guiQuestion := g.handleInputQuestion(question.(interfaces.InputQuestion), s.(interfaces.SymbolTable)).GUIQuestion
+			guiQuestion := this.handleInputQuestion(question.(interfaces.InputQuestion), symbols).GUIQuestion
 			guiQuestions = append(guiQuestions, guiQuestion)
 		}
 	}
@@ -168,7 +163,7 @@ func handleQuestions(g *GUI, q []interfaces.Question, s interfaces.SymbolTable) 
 	return guiQuestions
 }
 
-func (v *GUI) handleInputQuestion(question interfaces.InputQuestion, symbolTable interfaces.SymbolTable) *GUIInputQuestion {
+func (v *GUI) handleInputQuestion(question interfaces.InputQuestion, symbols interfaces.Symbols) *GUIInputQuestion {
 	var guiQuestion *GUIInputQuestion
 	questionCallback := func(input interface{}, err error) {
 		guiQuestion.ChangeErrorLabelText("")
@@ -185,9 +180,9 @@ func (v *GUI) handleInputQuestion(question interfaces.InputQuestion, symbolTable
 
 		questionIdentifier := question.GetVarDecl().GetIdent()
 		log.WithFields(log.Fields{"input": input, "identifier": questionIdentifier}).Debug("Question input received")
-		symbolTable.SetNodeForIdentifier(input, questionIdentifier)
+		symbols.SetNodeForIdentifier(input, questionIdentifier)
 
-		v.updateComputedQuestions(symbolTable)
+		v.updateComputedQuestions(symbols)
 	}
 
 	guiQuestion = CreateGUIInputQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), questionCallback)
@@ -195,7 +190,7 @@ func (v *GUI) handleInputQuestion(question interfaces.InputQuestion, symbolTable
 	return guiQuestion
 }
 
-func (v *GUI) handleComputedQuestion(question interfaces.ComputedQuestion, symbolTable interfaces.SymbolTable) *GUIComputedQuestion {
+func (v *GUI) handleComputedQuestion(question interfaces.ComputedQuestion, symbols interfaces.Symbols) *GUIComputedQuestion {
 	computation := question.GetComputation()
 	guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), computation, question.GetVarDecl().GetIdent())
 
@@ -204,19 +199,19 @@ func (v *GUI) handleComputedQuestion(question interfaces.ComputedQuestion, symbo
 	return guiQuestion
 }
 
-func (g *GUI) updateComputedQuestions(symbolTable interfaces.SymbolTable) {
-	for _, computedQuestion := range g.GUIForm.ComputedQuestions {
-		computedQuestionEval := computedQuestion.Expr.Eval(symbolTable)
+func (this *GUI) updateComputedQuestions(symbols interfaces.Symbols) {
+	for _, computedQuestion := range this.GUIForm.ComputedQuestions {
+		computedQuestionEval := computedQuestion.Expr.Eval(symbols)
 		computedQuestion.ChangeFieldValueText(fmt.Sprintf("%v", computedQuestionEval))
 
 		// save the computed value to the symbol table
-		symbolTable.SetNodeForIdentifier(computedQuestionEval, computedQuestion.VarId)
+		symbols.SetNodeForIdentifier(computedQuestionEval, computedQuestion.VarId)
 		log.WithFields(log.Fields{"eval": computedQuestionEval}).Info("Computed question value changed")
 	}
 }
 
-func (g *GUI) showErrorDialog() {
-	ui.MsgBoxError(g.Window, "Errors encountered", convertErrorStringListToString(g.typeCheckerErrors))
+func (this *GUI) showErrorDialog() {
+	ui.MsgBoxError(this.Window, "Errors encountered", convertErrorStringListToString(this.typeCheckerErrors))
 }
 
 // convertErrorStringListToString converts a list of errors to a concatenated error string and returns it.

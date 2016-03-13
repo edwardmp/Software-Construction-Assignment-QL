@@ -15,10 +15,11 @@ func NewBoolLitNoSourceInfo(value bool) BoolLit {
 	return NewBoolLit(value, nil)
 }
 
-func (b BoolLit) GetValue() bool {
-	return b.Value
+func (this BoolLit) GetValue() bool {
+	return this.Value
 }
 
-func (b BoolLit) String() string {
-	return fmt.Sprintf("%t", b.Value)
+// FIXME needed for test comparison due to strange behavior. Find better solution.
+func (this BoolLit) String() string {
+	return fmt.Sprintf("%t", this.Value)
 }

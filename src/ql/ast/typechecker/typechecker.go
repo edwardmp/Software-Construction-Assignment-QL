@@ -16,46 +16,46 @@ func NewTypeChecker() TypeChecker {
 	return TypeChecker{ErrorsEncounteredForCheckType: make(map[string][]error), UsedLabels: make(map[interfaces.StrLit]interfaces.VarId), KnownIdentifiers: make(map[interfaces.VarId]interfaces.VarType)}
 }
 
-func (t *TypeChecker) AddEncounteredErrorForCheckType(checkType string, encounteredError error) {
+func (this *TypeChecker) AddEncounteredErrorForCheckType(checkType string, encounteredError error) {
 	log.WithFields(log.Fields{"checkType": checkType, "errorEncountered": encounteredError}).Info("Added encountered error for check type")
 
-	t.ErrorsEncounteredForCheckType[checkType] = append(t.ErrorsEncounteredForCheckType[checkType], encounteredError)
+	this.ErrorsEncounteredForCheckType[checkType] = append(this.ErrorsEncounteredForCheckType[checkType], encounteredError)
 }
 
-func (t *TypeChecker) GetEncountedErrorsForCheckType(checkType string) []error {
-	return t.ErrorsEncounteredForCheckType[checkType]
+func (this *TypeChecker) GetEncountedErrorsForCheckType(checkType string) []error {
+	return this.ErrorsEncounteredForCheckType[checkType]
 }
 
-func (t *TypeChecker) IsLabelUsed(label interfaces.StrLit) bool {
-	if _, exists := t.UsedLabels[label]; exists {
+func (this *TypeChecker) IsLabelUsed(label interfaces.StrLit) bool {
+	if _, exists := this.UsedLabels[label]; exists {
 		return true
 	}
 
 	return false
 }
 
-func (t *TypeChecker) VarIdForLabel(label interfaces.StrLit) interfaces.VarId {
-	return t.UsedLabels[label]
+func (this *TypeChecker) VarIdForLabel(label interfaces.StrLit) interfaces.VarId {
+	return this.UsedLabels[label]
 }
 
-func (t *TypeChecker) MarkLabelAsUsed(label interfaces.StrLit, varDecl interfaces.VarDecl) {
+func (this *TypeChecker) MarkLabelAsUsed(label interfaces.StrLit, varDecl interfaces.VarDecl) {
 	log.WithFields(log.Fields{"label": label}).Debug("Marking label as used")
-	t.UsedLabels[label] = varDecl.GetIdent()
+	this.UsedLabels[label] = varDecl.GetIdent()
 }
 
-func (t *TypeChecker) VarDeclIsKnown(varDecl interfaces.VarDecl) bool {
-	if _, exists := t.KnownIdentifiers[varDecl.GetIdent()]; exists {
+func (this *TypeChecker) VarDeclIsKnown(varDecl interfaces.VarDecl) bool {
+	if _, exists := this.KnownIdentifiers[varDecl.GetIdent()]; exists {
 		return true
 	}
 
 	return false
 }
 
-func (t *TypeChecker) MarkVarDeclAsKnown(varDecl interfaces.VarDecl) {
+func (this *TypeChecker) MarkVarDeclAsKnown(varDecl interfaces.VarDecl) {
 	log.WithFields(log.Fields{"VarDecl": varDecl}).Debug("Marking VarDecl as known")
-	t.KnownIdentifiers[varDecl.GetIdent()] = varDecl.GetType()
+	this.KnownIdentifiers[varDecl.GetIdent()] = varDecl.GetType()
 }
 
-func (t *TypeChecker) TypeForVarDecl(varDecl interfaces.VarDecl) interfaces.VarType {
-	return t.KnownIdentifiers[varDecl.GetIdent()]
+func (this *TypeChecker) TypeForVarDecl(varDecl interfaces.VarDecl) interfaces.VarType {
+	return this.KnownIdentifiers[varDecl.GetIdent()]
 }

@@ -2,6 +2,6 @@ package interfaces
 
 type ASTNode interface {
 	Node
-	Accept(Visitor, interface{}) interface{}
-	TypeCheck(TypeChecker, SymbolTable)
+	Accept(Visitor, Symbols) interface{}
+	TypeCheck(TypeChecker, Symbols)
 }

@@ -13,10 +13,11 @@ func NewStrLitNoSourceInfo(value string) StrLit {
 	return NewStrLit(value, nil)
 }
 
-func (s StrLit) GetValue() string {
-	return s.Value
+func (this StrLit) GetValue() string {
+	return this.Value
 }
 
-func (s StrLit) String() string {
-	return s.Value
+// FIXME needed for test comparison due to strange behavior. Find better solution.
+func (this StrLit) String() string {
+	return this.Value
 }

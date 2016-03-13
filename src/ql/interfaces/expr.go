@@ -2,7 +2,7 @@ package interfaces
 
 type Expr interface {
 	ASTNode
-	Eval(s interface{}) interface{}
+	Eval(s Symbols) interface{}
 }
 
 type BinaryOperatorExpr interface {

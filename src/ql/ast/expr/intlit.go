@@ -15,10 +15,11 @@ func NewIntLitNoSourceInfo(value int) IntLit {
 	return NewIntLit(value, nil)
 }
 
-func (i IntLit) GetValue() int {
-	return i.Value
+func (this IntLit) GetValue() int {
+	return this.Value
 }
 
-func (i IntLit) String() string {
-	return fmt.Sprintf("%d", i.Value)
+// FIXME needed for test comparison due to strange behavior. Find better solution.
+func (this IntLit) String() string {
+	return fmt.Sprintf("%d", this.Value)
 }

@@ -20,27 +20,27 @@ func NewGUIForm(form interfaces.Form) *GUIForm {
 }
 
 // AddQuestionContainer appends the question container box to the form container
-func (g *GUIForm) AddQuestionContainer(questionContainer *ui.Box) {
-	g.Container.Append(questionContainer, false)
+func (this *GUIForm) AddQuestionContainer(questionContainer *ui.Box) {
+	this.Container.Append(questionContainer, false)
 	log.Info("Adding question container to form")
-	g.QuestionContainers = append(g.QuestionContainers, questionContainer)
+	this.QuestionContainers = append(this.QuestionContainers, questionContainer)
 }
 
-func (g *GUIForm) AddComputedQuestion(question *GUIComputedQuestion) {
+func (this *GUIForm) AddComputedQuestion(question *GUIComputedQuestion) {
 	log.Info("Adding computed question to form")
-	g.ComputedQuestions = append(g.ComputedQuestions, question)
+	this.ComputedQuestions = append(this.ComputedQuestions, question)
 }
 
 // ShowForm displays the form box. It should only be called if no semantic errors are present.
-func (g *GUIForm) ShowForm() {
-	log.WithFields(log.Fields{"identifier": g.Form.GetIdentifier()}).Info("Showing form")
+func (this *GUIForm) ShowForm() {
+	log.WithFields(log.Fields{"identifier": this.Form.GetIdentifier()}).Info("Showing form")
 
 	box := ui.NewVerticalBox()
-	g.Container = box
+	this.Container = box
 
-	g.Window.SetChild(g.Container)
+	this.Window.SetChild(this.Container)
 
-	g.addSubmitButton()
+	this.addSubmitButton()
 }
 
 func extractEmbeddedGUIQuestions(inputQuestions []*GUIInputQuestion, computedQuestions []*GUIComputedQuestion) []*GUIQuestion {

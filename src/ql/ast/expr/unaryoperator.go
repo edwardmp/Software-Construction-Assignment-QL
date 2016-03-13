@@ -11,6 +11,6 @@ func NewUnaryOperator(value interfaces.Expr, sourceInfo interface{}) UnaryOperat
 	return UnaryOperator{value, NewExpr(sourceInfo)}
 }
 
-func (u UnaryOperator) GetValue() interfaces.Expr {
-	return u.Value
+func (this UnaryOperator) GetValue() interfaces.Expr {
+	return this.Value
 }

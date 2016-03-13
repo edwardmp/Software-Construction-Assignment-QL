@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-func unaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput interfaces.Expr, symbolTable interface{}) {
-	if eval, expectedOutputEval := exampleInput.Eval(symbolTable), expectedOutput.(interfaces.Expr).Eval(symbolTable); eval != expectedOutputEval {
+func unaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput interfaces.Expr, symbols interfaces.Symbols) {
+	if eval, expectedOutputEval := exampleInput.Eval(symbols), expectedOutput.(interfaces.Expr).Eval(symbols); eval != expectedOutputEval {
 		t.Errorf("interfaces.Expr test error: should be %v (%T) for %v but is %v (%T)", expectedOutputEval, expectedOutputEval, eval, eval)
 	}
 }
@@ -48,11 +48,11 @@ func (v VarIdentifier) String() string {
 	return v.Ident
 }
 
-func (v VarIdentifier) Accept(va interfaces.Visitor, s interface{}) interface{} {
+func (v VarIdentifier) Accept(va interfaces.Visitor, s interfaces.Symbols) interface{} {
 	return nil
 }
 
-func (v VarIdentifier) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
+func (v VarIdentifier) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 
 }
 
@@ -64,8 +64,8 @@ func (v VarIdentifier) ResetSourceInfo() {
 }
 
 func TestVarExpr(t *testing.T) {
-	symbolTable := symboltable.NewSymbols()
-	symbolTable.SetNodeForIdentifier(NewIntLitNoSourceInfo(2), VarIdentifier{"TestIdentifier"})
+	symbols := symbols.NewSymbols()
+	symbols.SetNodeForIdentifier(NewIntLitNoSourceInfo(2), VarIdentifier{"TestIdentifier"})
 
-	unaryExprEval(t, NewVarExprNoSourceInfo(VarIdentifier{"TestIdentifier"}), NewIntLitNoSourceInfo(2), symbolTable)
+	unaryExprEval(t, NewVarExprNoSourceInfo(VarIdentifier{"TestIdentifier"}), NewIntLitNoSourceInfo(2), symbols)
 }

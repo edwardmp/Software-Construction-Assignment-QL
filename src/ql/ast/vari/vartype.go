@@ -24,7 +24,7 @@ func NewIntTypeNoSourceInfo() IntType {
 	return NewIntType(nil)
 }
 
-func (i IntType) GetDefaultValue() interface{} {
+func (this IntType) GetDefaultValue() interface{} {
 	return expr.NewIntLitNoSourceInfo(0)
 }
 
@@ -40,7 +40,7 @@ type StringType struct {
 	VarType
 }
 
-func (s StringType) GetDefaultValue() interface{} {
+func (this StringType) GetDefaultValue() interface{} {
 	return expr.NewStrLitNoSourceInfo("")
 }
 
@@ -56,6 +56,6 @@ type BoolType struct {
 	VarType
 }
 
-func (b BoolType) GetDefaultValue() interface{} {
+func (this BoolType) GetDefaultValue() interface{} {
 	return expr.NewBoolLitNoSourceInfo(false)
 }

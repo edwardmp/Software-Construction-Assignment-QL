@@ -1,4 +1,4 @@
-package symboltable
+package symbols
 
 import (
 	"encoding/json"
@@ -9,11 +9,11 @@ import (
 
 type Symbols struct {
 	Table               SymbolTable
-	RegisteredCallbacks []func(interfaces.SymbolTable)
+	RegisteredCallbacks []func(interfaces.Symbols)
 }
 
 func NewSymbols() *Symbols {
-	return &Symbols{Table: newSymbolTable(), RegisteredCallbacks: make([]func(interfaces.SymbolTable), 0)}
+	return &Symbols{Table: newSymbolTable(), RegisteredCallbacks: make([]func(interfaces.Symbols), 0)}
 }
 
 type SymbolTable map[interfaces.VarId]interface{}
@@ -23,28 +23,28 @@ func newSymbolTable() SymbolTable {
 	return make(SymbolTable)
 }
 
-func (s *Symbols) RegisterCallback(callback func(interfaces.SymbolTable)) {
-	s.RegisteredCallbacks = append(s.RegisteredCallbacks, callback)
+func (this *Symbols) RegisterCallback(callback func(interfaces.Symbols)) {
+	this.RegisteredCallbacks = append(this.RegisteredCallbacks, callback)
 }
 
-func (s *Symbols) GetNodeForIdentifier(v interfaces.VarId) interface{} {
-	value := s.Table[v]
+func (this *Symbols) GetNodeForIdentifier(v interfaces.VarId) interface{} {
+	value := this.Table[v]
 	log.WithFields(log.Fields{"Identifier": v, "Value": value}).Debug("Looking up identifier in SymbolTable")
 
 	return value
 }
 
-func (s *Symbols) SetNodeForIdentifier(e interface{}, v interfaces.VarId) {
-	s.Table[v] = e
-	log.WithFields(log.Fields{"Identifier": v, "Current": s.Table[v]}).Debug("Set node for identifier")
+func (this *Symbols) SetNodeForIdentifier(e interface{}, v interfaces.VarId) {
+	this.Table[v] = e
+	log.WithFields(log.Fields{"Identifier": v, "Current": this.Table[v]}).Debug("Set node for identifier")
 
-	for _, registeredCallback := range s.RegisteredCallbacks {
-		registeredCallback(s)
+	for _, registeredCallback := range this.RegisteredCallbacks {
+		registeredCallback(this)
 	}
 }
 
-func (s *Symbols) SaveToDisk() (interface{}, error) {
-	formDataAsJSON, _ := convertSymbolTableToJSON(convertSymbolTableKeysToStrings(s.Table))
+func (this *Symbols) SaveToDisk() (interface{}, error) {
+	formDataAsJSON, _ := convertSymbolTableToJSON(convertSymbolTableKeysToStrings(this.Table))
 
 	writeErr := ioutil.WriteFile("savedForm.json", formDataAsJSON, 0644)
 

@@ -19,18 +19,18 @@ func NewInputQuestionNoSourceInfo(label interfaces.StrLit, varDecl interfaces.Va
 	return NewInputQuestion(label, varDecl, nil)
 }
 
-func (i InputQuestion) String() string {
-	return fmt.Sprintf("A question with label %s, var decl %s", i.Label, i.VarDecl)
+func (this InputQuestion) String() string {
+	return fmt.Sprintf("A question with label %s, var decl %s", this.Label, this.VarDecl)
 }
 
-func (i InputQuestion) GetLabel() interfaces.StrLit {
-	return i.Label
+func (this InputQuestion) GetLabel() interfaces.StrLit {
+	return this.Label
 }
 
-func (i InputQuestion) GetLabelAsString() string {
-	return i.Label.GetValue()
+func (this InputQuestion) GetLabelAsString() string {
+	return this.Label.GetValue()
 }
 
-func (i InputQuestion) GetVarDecl() interfaces.VarDecl {
-	return i.VarDecl
+func (this InputQuestion) GetVarDecl() interfaces.VarDecl {
+	return this.VarDecl
 }
