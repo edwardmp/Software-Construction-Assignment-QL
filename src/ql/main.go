@@ -12,7 +12,7 @@ import (
 	"ql/interfaces"
 	"ql/lexer"
 	"ql/parser"
-	"ql/symboltable"
+	"ql/symbols"
 )
 
 func main() {

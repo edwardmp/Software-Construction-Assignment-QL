@@ -6,7 +6,7 @@ import (
 	"ql/ast/stmt"
 	"ql/ast/vari"
 	"ql/interfaces"
-	"ql/symboltable"
+	"ql/symbols"
 	"testing"
 )
 

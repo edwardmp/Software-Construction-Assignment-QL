@@ -9,7 +9,7 @@ import (
 
 	"ql/ast/visitor"
 	"ql/interfaces"
-	"ql/symboltable"
+	"ql/symbols"
 	"strconv"
 	"strings"
 )

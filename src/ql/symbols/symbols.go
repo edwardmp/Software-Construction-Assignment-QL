@@ -13,12 +13,12 @@ type Symbols struct {
 }
 
 func NewSymbols() *Symbols {
-	return &Symbols{Table: NewSymbolTable(), RegisteredCallbacks: make([]func(interfaces.SymbolTable), 0)}
+	return &Symbols{Table: newSymbolTable(), RegisteredCallbacks: make([]func(interfaces.SymbolTable), 0)}
 }
 
 type SymbolTable map[interfaces.VarId]interface{}
 
-func NewSymbolTable() SymbolTable {
+func newSymbolTable() SymbolTable {
 	log.Debug("Creating new symbol table")
 	return make(SymbolTable)
 }

@@ -2,7 +2,7 @@ package expr
 
 import (
 	"ql/interfaces"
-	"ql/symboltable"
+	"ql/symbols"
 	"ql/token"
 	"testing"
 )
