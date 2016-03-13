@@ -17,6 +17,12 @@ gocc -a grammar/ql.bnf
 
 All files in the aforementioned folders will be replaced if they already exist.
 
+Currently, there is a bug in the parser generator library that upercases part of the package name when it shouldn't. Therefore, after generation is done all files containing the string `QL/token` should be changed to `ql/token` instead. You can do this quickly by using the [`rpl`](http://linux.die.net/man/1/rpl)  command line tool, e.g.:
+
+```
+rpl -R "QL/token" "ql/token" .
+```
+
 ## Run tests
 To run all tests, execute:
 
@@ -35,5 +41,20 @@ To clean up all binary executables, execute:
 
 ```
 make clean
+```
+
+## Running
+Due to the GUI library used (inclusion of dylib file path issue), the `go run` command can not be used to build and run afterwards. Just first do `go build` and then execute `./main`.
+
+```
+go build
+./main
+```
+
+## Viewing documentation
+All documentation can be viewed in your browser by visiting the url [`http://localhost:6060`](http://localhost:6060) after you've executed:
+
+```
+godoc -http=:6060
 ```
 

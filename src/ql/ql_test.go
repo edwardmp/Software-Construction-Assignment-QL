@@ -21,7 +21,7 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}
 
 	if f, fOk := parseResult.(stmt.Form); fOk {
 		if e, eOk := expectedOutput.(stmt.Form); eOk {
-			if f.GetIdentifier() != e.GetIdentifier()) {
+			if f.GetIdentifier() != e.GetIdentifier() {
 				t.Errorf("Form identifiers not equal %v %v", f.Identifier, e.Identifier)
 			}
 
