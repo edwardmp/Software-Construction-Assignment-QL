@@ -1,0 +1,5 @@
+package: ql
+import:
+- package: github.com/Sirupsen/logrus
+- package: github.com/andlabs/ui
+- package: github.com/goccmack/gocc
