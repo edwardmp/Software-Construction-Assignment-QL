@@ -19,6 +19,10 @@ func NewIfNoSourceInfo(condition interfaces.Expr, body StmtList) If {
 	return NewIf(condition, body, nil)
 }
 
+func (i If) GetBody() interfaces.StmtList {
+	return i.Body
+}
+
 func (i If) String() string {
 	return fmt.Sprintf("An if statement with condition %s and statement list %s", i.Cond, i.Body)
 }

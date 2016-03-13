@@ -1,10 +1,8 @@
 package gui
 
 import (
-	"fmt"
 	log "github.com/Sirupsen/logrus"
-	"github.com/mattn/go-gtk/glib"
-	"github.com/mattn/go-gtk/gtk"
+	"github.com/andlabs/ui"
 )
 
 type GUIForm struct {
@@ -12,44 +10,36 @@ type GUIForm struct {
 	InputQuestions    []GUIInputQuestion
 	ComputedQuestions []GUIComputedQuestion
 	SaveDataCallback  func() (interface{}, error)
-	Window            *gtk.Window
+	Window            *ui.Window
+	Container         *ui.Box
 }
 
 func (g *GUIForm) AddInputQuestion(question GUIInputQuestion) {
+	log.Info("Adding input question to form")
 	g.InputQuestions = append(g.InputQuestions, question)
 }
 
 func (g *GUIForm) AddComputedQuestion(question GUIComputedQuestion) {
+	log.Info("Adding computed question to form")
 	g.ComputedQuestions = append(g.ComputedQuestions, question)
 }
 
 func (g *GUIForm) ShowForm() {
 	log.Info("Showing form")
 
-	g.Window.Connect("destroy", func(ctx *glib.CallbackContext) {
-		fmt.Println("Destroy of window initiated", ctx.Data().(string))
+	g.Window.OnClosing(func(w *ui.Window) bool {
+		log.Info("Destroy of window initiated")
 		g.SaveDataCallback()
-		gtk.MainQuit()
+		ui.Quit()
+		return true
 	})
 
-	vbox := gtk.NewVBox(false, 1)
+	box := ui.NewVerticalBox()
+	g.Container = box
+	g.Window.SetChild(box)
 
-	vpaned := gtk.NewVPaned()
-	vbox.Add(vpaned)
-
-	frame := gtk.NewFrame(fmt.Sprintf("Form %s", g.Title))
-	framebox := gtk.NewVBox(false, 5)
-	frame.Add(framebox)
-	vpaned.Pack1(frame, false, false)
-
-	createQuestions(extractEmbeddedGUIQuestions(g.InputQuestions, g.ComputedQuestions), framebox)
-
-	vsep := gtk.NewVSeparator()
-	vbox.PackStart(vsep, false, false, 1)
-
-	vbox.PackStart(createSubmitButton(g, g.Window), false, true, 1)
-
-	g.Window.Add(vbox)
+	box.Append(CreateQuestions(extractEmbeddedGUIQuestions(g.InputQuestions, g.ComputedQuestions), box), false)
+	createSubmitButton(g, box)
 }
 
 func extractEmbeddedGUIQuestions(inputQuestions []GUIInputQuestion, computedQuestions []GUIComputedQuestion) []GUIQuestion {
@@ -66,27 +56,33 @@ func extractEmbeddedGUIQuestions(inputQuestions []GUIInputQuestion, computedQues
 	return guiQuestions
 }
 
-func createQuestions(questions []GUIQuestion, vbox *gtk.VBox) {
-	table := gtk.NewTable(uint(len(questions)), 1, false)
-	for index, question := range questions {
-		attachToTable(table, question, index)
+func CreateQuestions(questions []GUIQuestion, box *ui.Box) *ui.Box {
+	table := ui.NewVerticalBox()
+
+	for _, question := range questions {
+		attachQuestionToTable(table, question)
 	}
 
-	vbox.Add(table)
-
 	log.WithFields(log.Fields{"NumOfQuestions": len(questions)}).Info("Created question table")
+
+	return table
 }
 
-func attachToTable(table *gtk.Table, question GUIQuestion, rowStart int) {
-	table.AttachDefaults(question.Label, 0, 1, uint(rowStart), uint(rowStart+1))
-	table.AttachDefaults(question.Element.(gtk.IWidget), 1, 2, uint(rowStart), uint(rowStart+1))
-	table.AttachDefaults(question.ErrorLabel, 2, 3, uint(rowStart), uint(rowStart+1))
+func attachQuestionToTable(table *ui.Box, question GUIQuestion) {
+	table.Append(question.Label, false)
+	table.Append(question.Element, false)
+	table.Append(question.ErrorLabel, false)
 }
 
-func createSubmitButton(form *GUIForm, window *gtk.Window) *gtk.Button {
-	button := CreateButton("Submit", func() {
+func createSubmitButton(form *GUIForm, box *ui.Box) {
+	button := CreateButton("Submit", func(b *ui.Button) {
 		log.Debug("Submit button clicked")
 		form.SaveDataCallback()
+	})
+
+	box.Append(button, false)
+
+	/*
 		messagedialog := gtk.NewMessageDialog(
 			window,
 			gtk.DIALOG_MODAL,
@@ -99,7 +95,5 @@ func createSubmitButton(form *GUIForm, window *gtk.Window) *gtk.Button {
 			messagedialog.Destroy()
 		})
 		messagedialog.Run()
-	})
-
-	return button
+	*/
 }

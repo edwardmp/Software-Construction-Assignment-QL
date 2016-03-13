@@ -7,6 +7,7 @@ type Stmt interface {
 
 type Form interface {
 	Stmt
+	GetQuestions() []Question
 }
 
 type Question interface {
@@ -32,6 +33,7 @@ type Conditional interface {
 
 type If interface {
 	Conditional
+	GetBody() StmtList
 }
 
 type IfElse interface {
@@ -40,4 +42,6 @@ type IfElse interface {
 
 type StmtList interface {
 	Stmt
+	GetConditionals() []Conditional
+	GetQuestions() []Question
 }

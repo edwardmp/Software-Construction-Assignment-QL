@@ -7,6 +7,15 @@ import (
 	"ql/interfaces"
 )
 
+type Symbols struct {
+	Table               SymbolTable
+	RegisteredCallbacks []func(interfaces.VarId)
+}
+
+func NewSymbols() *Symbols {
+	return &Symbols{Table: NewSymbolTable(), RegisteredCallbacks: make([]func(interfaces.VarId), 0)}
+}
+
 type SymbolTable map[interfaces.VarId]interface{}
 
 func NewSymbolTable() SymbolTable {
@@ -14,22 +23,25 @@ func NewSymbolTable() SymbolTable {
 	return make(SymbolTable)
 }
 
-func (s SymbolTable) GetNodeForIdentifier(v interfaces.VarId) interface{} {
-	return s[v]
+func (s *Symbols) RegisterCallback(callback func(varId interfaces.VarId)) {
+	s.RegisteredCallbacks = append(s.RegisteredCallbacks, callback)
 }
 
-func (s SymbolTable) SetNodeForIdentifier(e interface{}, v interfaces.VarId) {
-	if previousValue, keyExists := s[v]; keyExists {
-		s[v] = e
-		log.WithFields(log.Fields{"Identifier": v, "Current": s[v], "Previous": previousValue}).Debug("Set node for identifier")
-	} else {
-		s[v] = e
-		log.WithFields(log.Fields{"Identifier": v, "Current": s[v]}).Debug("Set node for identifier")
+func (s *Symbols) GetNodeForIdentifier(v interfaces.VarId) interface{} {
+	return s.Table[v]
+}
+
+func (s *Symbols) SetNodeForIdentifier(e interface{}, v interfaces.VarId) {
+	s.Table[v] = e
+	log.WithFields(log.Fields{"Identifier": v, "Current": s.Table[v]}).Debug("Set node for identifier")
+
+	for _, registeredCallback := range s.RegisteredCallbacks {
+		registeredCallback(v)
 	}
 }
 
-func (s SymbolTable) SaveToDisk() (interface{}, error) {
-	formDataAsJSON, _ := convertSymbolTableToJSON(convertSymbolTableKeysToStrings(s))
+func (s *Symbols) SaveToDisk() (interface{}, error) {
+	formDataAsJSON, _ := convertSymbolTableToJSON(convertSymbolTableKeysToStrings(s.Table))
 
 	writeErr := ioutil.WriteFile("savedForm.json", formDataAsJSON, 0644)
 

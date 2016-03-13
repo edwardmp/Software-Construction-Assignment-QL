@@ -32,7 +32,6 @@ func typeCheckInvalidBinaryOperatorForOperands(binaryOperator BinaryOperator, ty
 			typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for bool operands"))
 		}
 	case int:
-		fmt.Printf("YOLO %v", exprType)
 		if exprType != "Add" && exprType != "Div" && exprType != "Eq" && exprType != "NEq" && exprType != "GEq" && exprType != "GT" && exprType != "GEq" && exprType != "LEq" && exprType != "LT" && exprType != "Mul" && exprType != "Sub" {
 			typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for int operands"))
 		}

@@ -3,7 +3,7 @@ package gui
 import (
 	"errors"
 	log "github.com/Sirupsen/logrus"
-	"github.com/mattn/go-gtk/gtk"
+	"github.com/andlabs/ui"
 	"ql/ast/expr"
 	"ql/ast/vari"
 	"ql/interfaces"
@@ -11,9 +11,9 @@ import (
 )
 
 type GUIQuestion struct {
-	Label      *gtk.Label
-	Element    gtk.IWidget
-	ErrorLabel *gtk.Label
+	Label      *ui.Label
+	Element    ui.Control
+	ErrorLabel *ui.Label
 }
 
 func CreateEnabledGUIQuestion(label string, questionType interfaces.VarType, callback func(interface{}, error)) GUIQuestion {
@@ -33,40 +33,41 @@ func createGUIQuestion(label string, questionType interfaces.VarType, callback f
 }
 
 func (g GUIQuestion) ChangeElementText(newText string) {
-	log.WithFields(log.Fields{"oldLabelText": g.Label.GetText(), "newLabelText": newText}).Debug("Changing text of element")
-	g.Element.(*gtk.Entry).SetText(newText)
+	text := g.Label.Text()
+	log.WithFields(log.Fields{"oldLabelText": text, "newLabelText": newText}).Debug("Changing text of element")
+	g.Element.(*ui.Entry).SetText(newText)
 }
 
 func (g GUIQuestion) ChangeErrorLabelText(newText string) {
 	g.ErrorLabel.SetText(newText)
 }
 
-func createQuestionElement(questionType interfaces.VarType, callback func(interface{}, error), disabled bool) gtk.IWidget {
-	var GTKEntity gtk.IWidget
+func createQuestionElement(questionType interfaces.VarType, callback func(interface{}, error), disabled bool) ui.Control {
+	var UIEntity ui.Control
 
 	switch questionType.(type) {
 	case vari.BoolType:
 		checkbox := CreateCheckboxConditional()
-		checkbox.Connect("clicked", func() {
-			log.WithFields(log.Fields{"value": checkbox.GetActive()}).Debug("Checkbox value changed")
-			callback(expr.NewBoolLitNoSourceInfo(checkbox.GetActive()), nil)
+		checkbox.OnToggled(func(*ui.Checkbox) {
+			log.WithFields(log.Fields{"value": checkbox.Checked()}).Debug("Checkbox value changed")
+			callback(expr.NewBoolLitNoSourceInfo(checkbox.Checked()), nil)
 		})
-		GTKEntity = checkbox
+		UIEntity = checkbox
 	case vari.StringType:
 		inputField := CreateInputTextField("", disabled)
-		inputField.Connect("changed", func() {
-			inputText := inputField.GetText()
+		inputField.OnChanged(func(*ui.Entry) {
+			inputText := inputField.Text()
 
-			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed")
+			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (string field)")
 
 			callback(expr.NewStrLitNoSourceInfo(inputText), nil) // TODO check if really is string
 		})
-		GTKEntity = inputField
+		UIEntity = inputField
 	case vari.IntType:
 		inputField := CreateInputTextField("", disabled)
-		inputField.Connect("changed", func() {
-			inputText := inputField.GetText()
-			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed")
+		inputField.OnChanged(func(*ui.Entry) {
+			inputText := inputField.Text()
+			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (int field)")
 
 			inputTextAsInt, err := strconv.Atoi(inputText)
 			if inputText == "" {
@@ -88,10 +89,10 @@ func createQuestionElement(questionType interfaces.VarType, callback func(interf
 				callback(expr.NewIntLitNoSourceInfo(inputTextAsInt), nil)
 			}
 		})
-		GTKEntity = inputField
+		UIEntity = inputField
 	default:
 		errors.New("Unknown question type, can not create correct GTK object")
 	}
 
-	return GTKEntity
+	return UIEntity
 }

@@ -27,6 +27,14 @@ func NewEmptyStmtListNoSourceInfo() StmtList {
 	return NewEmptyStmtList(nil)
 }
 
+func (this StmtList) GetQuestions() []interfaces.Question {
+	return this.Questions
+}
+
+func (this StmtList) GetConditionals() []interfaces.Conditional {
+	return this.Conditionals
+}
+
 func (s StmtList) AddToCorrectSlice(i interface{}) StmtList {
 	switch t := i.(type) {
 	default:
