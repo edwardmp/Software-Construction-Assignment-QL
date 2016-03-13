@@ -8,6 +8,7 @@ type Stmt interface {
 type Form interface {
 	Stmt
 	GetQuestions() []Question
+	GetIdentifier() VarId
 }
 
 type Question interface {
@@ -28,7 +29,8 @@ type ComputedQuestion interface {
 
 type Conditional interface {
 	Stmt
-	EvalCondition() bool
+	EvalCondition(SymbolTable) bool
+	GetCondition() Expr
 }
 
 type If interface {
@@ -38,6 +40,8 @@ type If interface {
 
 type IfElse interface {
 	Conditional
+	GetIfBody() StmtList
+	GetElseBody() StmtList
 }
 
 type StmtList interface {

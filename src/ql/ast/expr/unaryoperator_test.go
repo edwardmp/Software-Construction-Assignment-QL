@@ -64,7 +64,7 @@ func (v VarIdentifier) ResetSourceInfo() {
 }
 
 func TestVarExpr(t *testing.T) {
-	symbolTable := symboltable.NewSymbolTable()
+	symbolTable := symboltable.NewSymbols()
 	symbolTable.SetNodeForIdentifier(NewIntLitNoSourceInfo(2), VarIdentifier{"TestIdentifier"})
 
 	unaryExprEval(t, NewVarExprNoSourceInfo(VarIdentifier{"TestIdentifier"}), NewIntLitNoSourceInfo(2), symbolTable)

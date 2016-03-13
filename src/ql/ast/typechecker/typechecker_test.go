@@ -100,7 +100,7 @@ func TestUndefinedQuestionReferenceChecker(t *testing.T) {
 	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
-	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbolTable())
+	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbols())
 	errorsReported := typeChecker.GetEncountedErrorsForCheckType("ReferenceToUndefinedQuestion")
 
 	if len(errorsReported) != 2 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Reference to unknown question identifier: hasSoldHouse")) || fmt.Sprintf("%v", errorsReported[1]) != fmt.Sprintf("%v", fmt.Errorf("Reference to unknown question identifier: hasMaintLoan")) {
@@ -115,7 +115,7 @@ func TestNonBoolConditionalChecker(t *testing.T) {
 	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
-	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbolTable())
+	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbols())
 	errorsReported := typeChecker.GetEncountedErrorsForCheckType("NonBoolConditionals")
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Non-boolean type used as condition: int")) {
@@ -130,7 +130,7 @@ func TestDuplicateLabelChecker(t *testing.T) {
 	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
-	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbolTable())
+	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbols())
 	warningsReported := typeChecker.GetEncountedErrorsForCheckType("DuplicateLabels")
 
 	if len(warningsReported) != 1 || fmt.Sprintf("%v", warningsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Label \"Did you sell a house in 2010?\" already used for question with identifier hasSoldHouse, using again for question with identifier hasMaintLoan")) {
@@ -145,7 +145,7 @@ func TestDuplicateVarDeclChecker(t *testing.T) {
 	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
-	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbolTable())
+	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbols())
 	errorsReported := typeChecker.GetEncountedErrorsForCheckType("DuplicateVarDeclarations")
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Question redeclared with different types: vari.IntType and vari.BoolType")) {

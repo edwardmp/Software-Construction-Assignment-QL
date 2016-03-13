@@ -23,10 +23,14 @@ func (i If) GetBody() interfaces.StmtList {
 	return i.Body
 }
 
+func (i If) GetCondition() interfaces.Expr {
+	return i.Cond
+}
+
 func (i If) String() string {
 	return fmt.Sprintf("An if statement with condition %s and statement list %s", i.Cond, i.Body)
 }
 
-func (i If) EvalCondition() bool {
-	return i.Cond.Eval(nil).(bool) // TODO symboltable
+func (i If) EvalCondition(symbolTable interfaces.SymbolTable) bool {
+	return i.Cond.Eval(symbolTable).(bool)
 }

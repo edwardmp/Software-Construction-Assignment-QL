@@ -122,11 +122,11 @@ func (v VarExpr) Eval(s interface{}) interface{} {
 
 	if !castOK {
 		fmt.Print(s)
-		panic("No symbol table passed to Eval Varinterfaces.Expr")
+		panic("No symbol table passed to Eval VarExpr")
 	}
 
-	if node := symbolTable.GetNodeForIdentifier(v.Identifier); node != nil {
-		return node.(interfaces.Expr).Eval(s)
+	if referencedExpr := symbolTable.GetNodeForIdentifier(v.Identifier); referencedExpr != nil {
+		return referencedExpr.(interfaces.Expr).Eval(symbolTable)
 	}
 
 	return nil

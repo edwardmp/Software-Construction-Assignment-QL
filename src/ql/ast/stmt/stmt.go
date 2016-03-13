@@ -41,7 +41,7 @@ func SlicesEqual(a StmtList, b StmtList) bool {
 	conditionalsB := b.Conditionals
 
 	for i := range conditionalsA {
-		if conditionalsA[i].(interfaces.Conditional).EvalCondition() != conditionalsB[i].(interfaces.Conditional).EvalCondition() {
+		if conditionalsA[i].(interfaces.Conditional).GetCondition() != conditionalsB[i].(interfaces.Conditional).GetCondition() {
 			return false
 		}
 

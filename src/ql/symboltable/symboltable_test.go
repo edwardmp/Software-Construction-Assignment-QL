@@ -9,7 +9,7 @@ import (
 )
 
 func TestSymbolTableAdd(t *testing.T) {
-	newSymbolTable := NewSymbolTable()
+	newSymbolTable := NewSymbols()
 	exampleVarId := vari.NewVarIdNoSourceInfo("testIdentifier")
 	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)
 
@@ -19,7 +19,7 @@ func TestSymbolTableAdd(t *testing.T) {
 }
 
 func TestSaveToDisk(t *testing.T) {
-	newSymbolTable := NewSymbolTable()
+	newSymbolTable := NewSymbols()
 	exampleVarId := vari.NewVarIdNoSourceInfo("testIdentifier")
 	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)
 

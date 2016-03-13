@@ -9,11 +9,11 @@ import (
 
 type Symbols struct {
 	Table               SymbolTable
-	RegisteredCallbacks []func(interfaces.VarId)
+	RegisteredCallbacks []func(interfaces.SymbolTable)
 }
 
 func NewSymbols() *Symbols {
-	return &Symbols{Table: NewSymbolTable(), RegisteredCallbacks: make([]func(interfaces.VarId), 0)}
+	return &Symbols{Table: NewSymbolTable(), RegisteredCallbacks: make([]func(interfaces.SymbolTable), 0)}
 }
 
 type SymbolTable map[interfaces.VarId]interface{}
@@ -23,12 +23,15 @@ func NewSymbolTable() SymbolTable {
 	return make(SymbolTable)
 }
 
-func (s *Symbols) RegisterCallback(callback func(varId interfaces.VarId)) {
+func (s *Symbols) RegisterCallback(callback func(interfaces.SymbolTable)) {
 	s.RegisteredCallbacks = append(s.RegisteredCallbacks, callback)
 }
 
 func (s *Symbols) GetNodeForIdentifier(v interfaces.VarId) interface{} {
-	return s.Table[v]
+	value := s.Table[v]
+	log.WithFields(log.Fields{"Identifier": v, "Value": value}).Debug("Looking up identifier in SymbolTable")
+
+	return value
 }
 
 func (s *Symbols) SetNodeForIdentifier(e interface{}, v interfaces.VarId) {
@@ -36,7 +39,7 @@ func (s *Symbols) SetNodeForIdentifier(e interface{}, v interfaces.VarId) {
 	log.WithFields(log.Fields{"Identifier": v, "Current": s.Table[v]}).Debug("Set node for identifier")
 
 	for _, registeredCallback := range s.RegisteredCallbacks {
-		registeredCallback(v)
+		registeredCallback(s)
 	}
 }
 

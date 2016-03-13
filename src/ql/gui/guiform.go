@@ -3,47 +3,48 @@ package gui
 import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/andlabs/ui"
+	"ql/interfaces"
 )
 
 type GUIForm struct {
-	Title             string
-	InputQuestions    []GUIInputQuestion
-	ComputedQuestions []GUIComputedQuestion
-	SaveDataCallback  func() (interface{}, error)
-	Window            *ui.Window
-	Container         *ui.Box
+	Form               interfaces.Form
+	QuestionContainers []*ui.Box
+	ComputedQuestions  []*GUIComputedQuestion
+	Window             *ui.Window
+	Container          *ui.Box
 }
 
-func (g *GUIForm) AddInputQuestion(question GUIInputQuestion) {
-	log.Info("Adding input question to form")
-	g.InputQuestions = append(g.InputQuestions, question)
+// NewGUIForm is a constructor method returning a new GUIForm with initialized embedded Form
+func NewGUIForm(form interfaces.Form) *GUIForm {
+	return &GUIForm{Form: form}
 }
 
-func (g *GUIForm) AddComputedQuestion(question GUIComputedQuestion) {
+// AddQuestionContainer appends the question container box to the form container
+func (g *GUIForm) AddQuestionContainer(questionContainer *ui.Box) {
+	g.Container.Append(questionContainer, false)
+	log.Info("Adding question container to form")
+	g.QuestionContainers = append(g.QuestionContainers, questionContainer)
+}
+
+func (g *GUIForm) AddComputedQuestion(question *GUIComputedQuestion) {
 	log.Info("Adding computed question to form")
 	g.ComputedQuestions = append(g.ComputedQuestions, question)
 }
 
+// ShowForm displays the form box. It should only be called if no semantic errors are present.
 func (g *GUIForm) ShowForm() {
-	log.Info("Showing form")
-
-	g.Window.OnClosing(func(w *ui.Window) bool {
-		log.Info("Destroy of window initiated")
-		g.SaveDataCallback()
-		ui.Quit()
-		return true
-	})
+	log.WithFields(log.Fields{"identifier": g.Form.GetIdentifier()}).Info("Showing form")
 
 	box := ui.NewVerticalBox()
 	g.Container = box
-	g.Window.SetChild(box)
 
-	box.Append(CreateQuestions(extractEmbeddedGUIQuestions(g.InputQuestions, g.ComputedQuestions), box), false)
-	createSubmitButton(g, box)
+	g.Window.SetChild(g.Container)
+
+	g.addSubmitButton()
 }
 
-func extractEmbeddedGUIQuestions(inputQuestions []GUIInputQuestion, computedQuestions []GUIComputedQuestion) []GUIQuestion {
-	guiQuestions := make([]GUIQuestion, 0)
+func extractEmbeddedGUIQuestions(inputQuestions []*GUIInputQuestion, computedQuestions []*GUIComputedQuestion) []*GUIQuestion {
+	guiQuestions := make([]*GUIQuestion, 0)
 
 	for _, question := range inputQuestions {
 		guiQuestions = append(guiQuestions, question.GUIQuestion)
@@ -56,7 +57,8 @@ func extractEmbeddedGUIQuestions(inputQuestions []GUIInputQuestion, computedQues
 	return guiQuestions
 }
 
-func CreateQuestions(questions []GUIQuestion, box *ui.Box) *ui.Box {
+// CreateQuestionTableWithRows creates a table box containing the passed GUIQuestions.
+func (this *GUIForm) CreateQuestionTableWithRows(questions []*GUIQuestion) *ui.Box {
 	table := ui.NewVerticalBox()
 
 	for _, question := range questions {
@@ -68,32 +70,26 @@ func CreateQuestions(questions []GUIQuestion, box *ui.Box) *ui.Box {
 	return table
 }
 
-func attachQuestionToTable(table *ui.Box, question GUIQuestion) {
+// attachQuestionToTable is a helper method that attaches a GUIQuestion to the supplied box.
+func attachQuestionToTable(table *ui.Box, question *GUIQuestion) {
 	table.Append(question.Label, false)
 	table.Append(question.Element, false)
 	table.Append(question.ErrorLabel, false)
 }
 
-func createSubmitButton(form *GUIForm, box *ui.Box) {
+// addSubmitButton adds a submit button to the form.
+func (this *GUIForm) addSubmitButton() {
+	log.Info("Adding submit button to form")
+
 	button := CreateButton("Submit", func(b *ui.Button) {
 		log.Debug("Submit button clicked")
-		form.SaveDataCallback()
+		// this.SaveDataCallback() FIXME place in Gui.go?
 	})
 
-	box.Append(button, false)
+	this.Container.Append(button, false)
 
 	/*
-		messagedialog := gtk.NewMessageDialog(
-			window,
-			gtk.DIALOG_MODAL,
-			gtk.MESSAGE_INFO,
-			gtk.BUTTONS_OK,
-			"Form saved")
-		messagedialog.Response(func() {
-			log.Info("Submit dialog displayed")
-
-			messagedialog.Destroy()
-		})
-		messagedialog.Run()
+		display messagedialog that submit is OK
+		log.Info("Submit dialog displayed")
 	*/
 }
