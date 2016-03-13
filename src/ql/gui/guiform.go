@@ -38,9 +38,9 @@ func (this *GUIForm) ShowForm() {
 	box := ui.NewVerticalBox()
 	this.Container = box
 
-	this.Window.SetChild(this.Container)
-
 	this.addSubmitButton()
+	this.Container.Append(ui.NewHorizontalSeparator(), false)
+	this.Window.SetChild(this.Container)
 }
 
 func extractEmbeddedGUIQuestions(inputQuestions []*GUIInputQuestion, computedQuestions []*GUIComputedQuestion) []*GUIQuestion {

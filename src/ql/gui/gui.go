@@ -67,11 +67,10 @@ func (this *GUI) Show() {
 		// this.showErrorDialog()
 		//} else {
 		this.GUIForm.ShowForm()
-		for _, registeredCallback := range this.RegisteredOnShowCallbacks {
-			registeredCallback()
+		for _, registeredOnShowCallback := range this.RegisteredOnShowCallbacks {
+			registeredOnShowCallback()
 		}
 		//}
-
 	})
 
 	if err != nil {
@@ -226,6 +225,7 @@ func convertErrorStringListToString(errorStringList []error) string {
 }
 
 /*
+TODO
 func presentOpenFileDialog(window *gtk.Window) {
     messagedialog := gtk.NewMessageDialog(
         window,
@@ -257,6 +257,7 @@ func presentOpenFileDialog(window *gtk.Window) {
 */
 
 /*
+TODO
 func openQLFile(filePath string) string {
     qlFile, _ := ioutil.ReadFile(filePath)
     return string(qlFile)

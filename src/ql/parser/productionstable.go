@@ -73,23 +73,23 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Term : Term mulop Factor	<< ast.NewMul(X[0], X[2], X[0].(*token.Token).Pos) >>`,
+		String: `Term : Term mulop Factor	<< ast.NewMul(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Term",
 		NTType: 3,
 		Index: 5,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewMul(X[0], X[2], X[0].(*token.Token).Pos)
+			return ast.NewMul(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Term : Term divop Factor	<< ast.NewDiv(X[0], X[2], X[0].(*token.Token).Pos) >>`,
+		String: `Term : Term divop Factor	<< ast.NewDiv(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Term",
 		NTType: 3,
 		Index: 6,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewDiv(X[0], X[2], X[0].(*token.Token).Pos)
+			return ast.NewDiv(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{

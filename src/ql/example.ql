@@ -6,7 +6,7 @@ form taxOfficeExample {
   if (hasSoldHouse && hasMaintLoan) {
     "What was the selling price?" sellingPrice: integer
     "Private debts for the sold house:" privateDebt: integer
-    "Value residue:" valueResidue: integer = (sellingPrice - privateDebt)
+    "Value residue:" valueResidue: integer = ((sellingPrice * privateDebt) + privateDebt)
 
     if (privateDebt > 100) {
       "Why do you have so much debt?" muchDebt: string

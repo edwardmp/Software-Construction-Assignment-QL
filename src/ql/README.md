@@ -19,10 +19,10 @@ gocc -a grammar/ql.bnf
 
 All files in the aforementioned folders will be replaced if they already exist.
 
-Currently, there is a bug in the parser generator library that upercases part of the package name when it shouldn't. Therefore, after generation is done all files containing the string `QL/token` should be changed to `ql/token` instead. You can do this quickly by using the [`rpl`](http://linux.die.net/man/1/rpl)  command line tool, e.g.:
+Currently, there is a bug in the parser generator library that upercases part of the package name when it shouldn't. Therefore, after generation is done all files containing the string `ql/token` should be changed to `ql/token` instead. You can do this quickly by using the [`rpl`](http://linux.die.net/man/1/rpl)  command line tool, e.g.:
 
 ```
-rpl -R "QL/token" "ql/token" .
+rpl -R "ql/token" "ql/token" .
 ```
 
 ## Run tests
