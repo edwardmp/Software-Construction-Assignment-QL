@@ -29,6 +29,7 @@ This will run all tests, except the one in the top level dir. Due to the aforeme
 ```
 go test -c
 ./QL.test
+```
 
 ## Build
 To build the program, execute:
@@ -36,6 +37,7 @@ To build the program, execute:
 ```
 make build
 ```
+
 ## Clean
 To clean up all binary executables, execute:
 

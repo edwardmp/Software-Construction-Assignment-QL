@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"ql/ast"
 	"ql/ast/stmt"
-	"ql/ast/typechecker"
+	"ql/typechecker"
 	"ql/ast/visitor"
 	"ql/gui"
 	"ql/interfaces"
