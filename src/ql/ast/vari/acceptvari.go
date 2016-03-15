@@ -2,30 +2,30 @@ package vari
 
 import "ql/interfaces"
 
-func (va VarDecl) Accept(v interfaces.Visitor, s interface{}) interface{} {
-	v.VisitVarDecl(va, s)
+func (this VarDecl) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+	v.VisitVarDecl(this, s)
 
-	va.Ident.Accept(v, s)
+	this.Ident.Accept(v, s)
 
 	return nil
 }
 
-func (va VarId) Accept(v interfaces.Visitor, s interface{}) interface{} {
-	v.VisitVarId(va, s)
+func (this VarId) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+	v.VisitVarId(this, s)
 	return nil
 }
 
-func (i IntType) Accept(v interfaces.Visitor, s interface{}) interface{} {
-	v.VisitIntType(i, s)
+func (this IntType) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+	v.VisitIntType(this, s)
 	return nil
 }
 
-func (b BoolType) Accept(v interfaces.Visitor, s interface{}) interface{} {
-	v.VisitBoolType(b, s)
+func (this BoolType) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+	v.VisitBoolType(this, s)
 	return nil
 }
 
-func (s StringType) Accept(v interfaces.Visitor, sy interface{}) interface{} {
-	v.VisitStringType(s, sy)
+func (this StringType) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+	v.VisitStringType(this, s)
 	return nil
 }

@@ -5,12 +5,13 @@ import (
 )
 
 type GUIComputedQuestion struct {
-	GUIQuestion
+	*GUIQuestion
 	Expr  interfaces.Expr
 	VarId interfaces.VarId
 }
 
-func CreateGUIComputedQuestion(label string, questionType interfaces.VarType, expr interfaces.Expr, varId interfaces.VarId) GUIComputedQuestion {
+// CreateGUIComputedQuestion is a constructr method returning a new GUIComputedQuestion
+func CreateGUIComputedQuestion(label string, questionType interfaces.VarType, expr interfaces.Expr, varId interfaces.VarId) *GUIComputedQuestion {
 	guiQuestion := CreateDisabledGUIQuestion(label, questionType, nil)
-	return GUIComputedQuestion{GUIQuestion: guiQuestion, Expr: expr, VarId: varId}
+	return &GUIComputedQuestion{GUIQuestion: guiQuestion, Expr: expr, VarId: varId}
 }

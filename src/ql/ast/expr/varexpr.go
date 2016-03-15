@@ -15,6 +15,6 @@ func NewVarExprNoSourceInfo(identifier interfaces.VarId) VarExpr {
 	return NewVarExpr(identifier, nil)
 }
 
-func (v VarExpr) GetIdentifier() interfaces.VarId {
-	return v.Identifier
+func (this VarExpr) GetIdentifier() interfaces.VarId {
+	return this.Identifier
 }

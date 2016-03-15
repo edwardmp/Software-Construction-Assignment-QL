@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ql/ast/expr"
+
 	"ql/ast/stmt"
 	"ql/ast/vari"
 	"ql/interfaces"
@@ -15,11 +16,15 @@ const (
 	FALSE = false
 )
 
-/** expressions **/
+var SourcePosInformation map[interfaces.Node]token.Pos = make(map[interfaces.Node]token.Pos)
+
+/** Expressions **/
 
 /* unary operator expressions */
 func NewPos(value interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewPos(value.(interfaces.Expr), sourcePosInfo), nil
+	pos := expr.NewPos(value.(interfaces.Expr), sourcePosInfo)
+	SourcePosInformation[pos] = sourcePosInfo.(token.Pos)
+	return pos, nil
 }
 
 func NewNeg(value interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
@@ -49,7 +54,9 @@ func NewAdd(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interf
 }
 
 func NewSub(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewSub(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	pos := expr.NewSub(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo)
+	SourcePosInformation[pos] = sourcePosInfo.(token.Pos)
+	return pos, nil
 }
 
 func NewEq(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
@@ -84,8 +91,7 @@ func NewOr(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfa
 	return expr.NewOr(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
 }
 
-/* Literals */
-
+/* literals */
 func NewIntLit(litValueToken interface{}) (interfaces.Expr, error) {
 	sourcePosInfo := litValueToken.(*token.Token).Pos
 	value, err := util.IntValue(litValueToken.(*token.Token).Lit)
@@ -102,7 +108,17 @@ func NewStrLit(valueToken interface{}) (interfaces.Expr, error) {
 	return expr.NewStrLit(literalString, sourcePosInfo), nil
 }
 
-/** vari **/
+/** Vari **/
+
+func NewVarDecl(ident interface{}, typeIdent interface{}, sourcePosInfo interface{}) (interfaces.VarDecl, error) {
+	return vari.NewVarDecl(ident.(interfaces.VarId), typeIdent.(interfaces.VarType), sourcePosInfo), nil
+}
+
+func NewVarId(identToken interface{}) (vari.VarId, error) {
+	sourcePosInfo := identToken.(*token.Token).Pos
+	identifierString := string(identToken.(*token.Token).Lit)
+	return vari.NewVarId(identifierString, sourcePosInfo), nil
+}
 
 func NewIntType(typeTokenLit interface{}) (vari.IntType, error) {
 	token := typeTokenLit.(*token.Token)
@@ -119,7 +135,7 @@ func NewStringType(typeTokenLit interface{}) (vari.StringType, error) {
 	return vari.NewStringType(token.Pos), nil
 }
 
-/** statements **/
+/** Statements **/
 
 func NewForm(identifier interface{}, body interface{}, sourcePosInfo interface{}) (stmt.Form, error) {
 	return stmt.NewForm(identifier.(vari.VarId), body.(stmt.StmtList), sourcePosInfo), nil
@@ -156,16 +172,7 @@ func NewIfElse(cond interface{}, ifBody interface{}, elseBody interface{}, sourc
 	return stmt.NewIfElse(cond.(interfaces.Expr), ifBody.(stmt.StmtList), elseBody.(stmt.StmtList), sourcePosInfo), nil
 }
 
-func NewVarDecl(ident interface{}, typeIdent interface{}, sourcePosInfo interface{}) (interfaces.VarDecl, error) {
-	return vari.NewVarDecl(ident.(interfaces.VarId), typeIdent.(interfaces.VarType), sourcePosInfo), nil
-}
-
-func NewVarId(identToken interface{}) (vari.VarId, error) {
-	sourcePosInfo := identToken.(*token.Token).Pos
-	identifierString := string(identToken.(*token.Token).Lit)
-	return vari.NewVarId(identifierString, sourcePosInfo), nil
-}
-
+// TODO place in util?
 func stringLiteralTokensToString(token *token.Token) (str string) {
 	astr, err := strconv.Unquote(string(token.Lit))
 	if err != nil {

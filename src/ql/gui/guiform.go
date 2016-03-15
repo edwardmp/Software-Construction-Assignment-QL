@@ -1,59 +1,50 @@
 package gui
 
 import (
-	"fmt"
 	log "github.com/Sirupsen/logrus"
-	"github.com/mattn/go-gtk/glib"
-	"github.com/mattn/go-gtk/gtk"
+	"github.com/andlabs/ui"
+	"ql/interfaces"
 )
 
 type GUIForm struct {
-	Title             string
-	InputQuestions    []GUIInputQuestion
-	ComputedQuestions []GUIComputedQuestion
-	SaveDataCallback  func() (interface{}, error)
-	Window            *gtk.Window
+	Form               interfaces.Form
+	QuestionContainers []*ui.Box
+	ComputedQuestions  []*GUIComputedQuestion
+	Window             *ui.Window
+	Container          *ui.Box
 }
 
-func (g *GUIForm) AddInputQuestion(question GUIInputQuestion) {
-	g.InputQuestions = append(g.InputQuestions, question)
+// NewGUIForm is a constructor method returning a new GUIForm with initialized embedded Form
+func NewGUIForm(form interfaces.Form) *GUIForm {
+	return &GUIForm{Form: form}
 }
 
-func (g *GUIForm) AddComputedQuestion(question GUIComputedQuestion) {
-	g.ComputedQuestions = append(g.ComputedQuestions, question)
+// AddQuestionContainer appends the question container box to the form container
+func (this *GUIForm) AddQuestionContainer(questionContainer *ui.Box) {
+	this.Container.Append(questionContainer, false)
+	log.Info("Adding question container to form")
+	this.QuestionContainers = append(this.QuestionContainers, questionContainer)
 }
 
-func (g *GUIForm) ShowForm() {
-	log.Info("Showing form")
-
-	g.Window.Connect("destroy", func(ctx *glib.CallbackContext) {
-		fmt.Println("Destroy of window initiated", ctx.Data().(string))
-		g.SaveDataCallback()
-		gtk.MainQuit()
-	})
-
-	vbox := gtk.NewVBox(false, 1)
-
-	vpaned := gtk.NewVPaned()
-	vbox.Add(vpaned)
-
-	frame := gtk.NewFrame(fmt.Sprintf("Form %s", g.Title))
-	framebox := gtk.NewVBox(false, 5)
-	frame.Add(framebox)
-	vpaned.Pack1(frame, false, false)
-
-	createQuestions(extractEmbeddedGUIQuestions(g.InputQuestions, g.ComputedQuestions), framebox)
-
-	vsep := gtk.NewVSeparator()
-	vbox.PackStart(vsep, false, false, 1)
-
-	vbox.PackStart(createSubmitButton(g, g.Window), false, true, 1)
-
-	g.Window.Add(vbox)
+func (this *GUIForm) AddComputedQuestion(question *GUIComputedQuestion) {
+	log.Info("Adding computed question to form")
+	this.ComputedQuestions = append(this.ComputedQuestions, question)
 }
 
-func extractEmbeddedGUIQuestions(inputQuestions []GUIInputQuestion, computedQuestions []GUIComputedQuestion) []GUIQuestion {
-	guiQuestions := make([]GUIQuestion, 0)
+// ShowForm displays the form box. It should only be called if no semantic errors are present.
+func (this *GUIForm) ShowForm() {
+	log.WithFields(log.Fields{"identifier": this.Form.GetIdentifier()}).Info("Showing form")
+
+	box := ui.NewVerticalBox()
+	this.Container = box
+
+	this.addSubmitButton()
+	this.Container.Append(ui.NewHorizontalSeparator(), false)
+	this.Window.SetChild(this.Container)
+}
+
+func extractEmbeddedGUIQuestions(inputQuestions []*GUIInputQuestion, computedQuestions []*GUIComputedQuestion) []*GUIQuestion {
+	guiQuestions := make([]*GUIQuestion, 0)
 
 	for _, question := range inputQuestions {
 		guiQuestions = append(guiQuestions, question.GUIQuestion)
@@ -66,40 +57,39 @@ func extractEmbeddedGUIQuestions(inputQuestions []GUIInputQuestion, computedQues
 	return guiQuestions
 }
 
-func createQuestions(questions []GUIQuestion, vbox *gtk.VBox) {
-	table := gtk.NewTable(uint(len(questions)), 1, false)
-	for index, question := range questions {
-		attachToTable(table, question, index)
+// CreateQuestionTableWithRows creates a table box containing the passed GUIQuestions.
+func (this *GUIForm) CreateQuestionTableWithRows(questions []*GUIQuestion) *ui.Box {
+	table := ui.NewVerticalBox()
+
+	for _, question := range questions {
+		attachQuestionToTable(table, question)
 	}
 
-	vbox.Add(table)
-
 	log.WithFields(log.Fields{"NumOfQuestions": len(questions)}).Info("Created question table")
+
+	return table
 }
 
-func attachToTable(table *gtk.Table, question GUIQuestion, rowStart int) {
-	table.AttachDefaults(question.Label, 0, 1, uint(rowStart), uint(rowStart+1))
-	table.AttachDefaults(question.Element.(gtk.IWidget), 1, 2, uint(rowStart), uint(rowStart+1))
-	table.AttachDefaults(question.ErrorLabel, 2, 3, uint(rowStart), uint(rowStart+1))
+// attachQuestionToTable is a helper method that attaches a GUIQuestion to the supplied box.
+func attachQuestionToTable(table *ui.Box, question *GUIQuestion) {
+	table.Append(question.Label, false)
+	table.Append(question.Element, false)
+	table.Append(question.ErrorLabel, false)
 }
 
-func createSubmitButton(form *GUIForm, window *gtk.Window) *gtk.Button {
-	button := CreateButton("Submit", func() {
+// addSubmitButton adds a submit button to the form.
+func (this *GUIForm) addSubmitButton() {
+	log.Info("Adding submit button to form")
+
+	button := CreateButton("Submit", func(b *ui.Button) {
 		log.Debug("Submit button clicked")
-		form.SaveDataCallback()
-		messagedialog := gtk.NewMessageDialog(
-			window,
-			gtk.DIALOG_MODAL,
-			gtk.MESSAGE_INFO,
-			gtk.BUTTONS_OK,
-			"Form saved")
-		messagedialog.Response(func() {
-			log.Info("Submit dialog displayed")
-
-			messagedialog.Destroy()
-		})
-		messagedialog.Run()
+		// this.SaveDataCallback() FIXME place in Gui.go?
 	})
 
-	return button
+	this.Container.Append(button, false)
+
+	/*
+		display messagedialog that submit is OK
+		log.Info("Submit dialog displayed")
+	*/
 }

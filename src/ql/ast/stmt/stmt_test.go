@@ -1,63 +1,11 @@
 package stmt
 
 import (
-	"fmt"
 	"ql/ast/expr"
-	"ql/ast/typechecker"
 	"ql/ast/vari"
 	"ql/interfaces"
-	"ql/symboltable"
 	"testing"
 )
-
-// TODO PUT IN HELPER FILE
-// slices don't support equality checking, so have to do it manually
-func slicesEqual(a StmtList, b StmtList) bool {
-	questionsA := a.Questions
-	questionsB := b.Questions
-
-	if len(questionsA) != len(questionsB) {
-		return false
-	}
-
-	for i := range questionsA {
-		if questionsA[i] != questionsB[i] {
-			return false
-		}
-	}
-
-	conditionalsA := a.Conditionals
-	conditionalsB := b.Conditionals
-
-	for i := range conditionalsA {
-		if conditionalsA[i].(interfaces.Conditional).EvalCondition() != conditionalsB[i].(interfaces.Conditional).EvalCondition() {
-			return false
-		}
-
-		if !slicesEqualConditional(conditionalsA[i].(interfaces.Conditional), conditionalsB[i].(interfaces.Conditional)) {
-			return true
-		}
-	}
-
-	return true
-}
-
-func slicesEqualConditional(ifA, ifB interfaces.Conditional) bool {
-	if fmt.Sprintf("%T", ifA) != fmt.Sprintf("%T", ifB) {
-		panic("Types not equal") // TODO replace with assert
-	}
-
-	switch t := ifA.(type) {
-	default:
-		panic(fmt.Sprintf("unexpected Conditional type %T\n", t))
-	case If:
-		bodyA := ifA.(If).Body
-		bodyB := ifB.(If).Body
-		return slicesEqual(bodyA, bodyB)
-	case IfElse:
-		return slicesEqual(ifA.(IfElse).IfBody, ifB.(IfElse).IfBody) && slicesEqual(ifA.(IfElse).ElseBody, ifB.(IfElse).ElseBody)
-	}
-}
 
 /* Tests for statements */
 
@@ -89,7 +37,7 @@ func TestFormWithNonEmptyContent(t *testing.T) {
 		t.Errorf("Form content questions does not have 1 question while it should")
 	}
 
-	if !slicesEqual(exampleForm.Content, stmtListExample) {
+	if !SlicesEqual(exampleForm.Content, stmtListExample) {
 		t.Errorf("Form content not set correctly")
 	}
 }
@@ -127,7 +75,7 @@ func TestIf(t *testing.T) {
 	ifCondExample := expr.NewBoolLitNoSourceInfo(true)
 	ifExample := NewIfNoSourceInfo(ifCondExample, ifBodyExample)
 
-	if !slicesEqual(ifExample.Body, ifBodyExample) {
+	if !SlicesEqual(ifExample.Body, ifBodyExample) {
 		t.Errorf("If body is not set correctly")
 	}
 
@@ -146,11 +94,11 @@ func TestIfElse(t *testing.T) {
 
 	ifElseExample := NewIfElseNoSourceInfo(ifCondExample, ifBodyExample, elseBodyExample)
 
-	if !slicesEqual(ifElseExample.IfBody, ifBodyExample) {
+	if !SlicesEqual(ifElseExample.IfBody, ifBodyExample) {
 		t.Errorf("IfElse else body is not set correctly")
 	}
 
-	if !slicesEqual(ifElseExample.ElseBody, elseBodyExample) {
+	if !SlicesEqual(ifElseExample.ElseBody, elseBodyExample) {
 		t.Errorf("IfElse if body is not set correctly")
 	}
 
@@ -163,7 +111,7 @@ func TestStmtList(t *testing.T) {
 	questionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
 	questionListExample := []interfaces.Question{questionExample}
 
-	ifExample := NewIfNoSourceInfo(expr.NewBoolLitNoSourceInfo(true), StmtList{})
+	ifExample := NewIfNoSourceInfo(expr.NewBoolLitNoSourceInfo(true), NewEmptyStmtListNoSourceInfo())
 	conditionalListExample := []interfaces.Conditional{ifExample}
 
 	stmtListExample := NewStmtListNoSourceInfo(questionListExample, conditionalListExample)
@@ -174,50 +122,5 @@ func TestStmtList(t *testing.T) {
 
 	if len(stmtListExample.Conditionals) != len(conditionalListExample) {
 		t.Errorf("Stmtlist conditionals list is not set correctly")
-	}
-}
-
-func TestNonBoolConditionalChecker(t *testing.T) {
-	exampleQuestion := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
-	exampleIf := NewIfNoSourceInfo(expr.NewIntLitNoSourceInfo(10), NewStmtListNoSourceInfo([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{}))
-	exampleBody := NewStmtListNoSourceInfo([]interfaces.Question{}, []interfaces.Conditional{exampleIf})
-	exampleForm := NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
-
-	typeChecker := typechecker.NewTypeChecker()
-	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbolTable())
-	errorsReported := typeChecker.GetEncountedErrorsForCheckType("NonBoolConditionals")
-
-	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Non-boolean type used as condition: int")) {
-		t.Errorf("Non bool condition type checker did not correctly report condition of invalid type %v", errorsReported)
-	}
-}
-
-func TestDuplicateLabelChecker(t *testing.T) {
-	firstQuestion := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
-	secondQuestion := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasMaintLoan"), vari.NewBoolTypeNoSourceInfo()))
-	exampleBody := NewStmtListNoSourceInfo([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
-	exampleForm := NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
-
-	typeChecker := typechecker.NewTypeChecker()
-	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbolTable())
-	warningsReported := typeChecker.GetEncountedErrorsForCheckType("DuplicateLabels")
-
-	if len(warningsReported) != 1 || fmt.Sprintf("%v", warningsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Label \"Did you sell a house in 2010?\" already used for question with identifier hasSoldHouse, using again for question with identifier hasMaintLoan")) {
-		t.Errorf("Duplicate label not reported correctly by type checker")
-	}
-}
-
-func TestDuplicateVarDeclChecker(t *testing.T) {
-	firstQuestion := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
-	secondQuestion := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewIntTypeNoSourceInfo()))
-	exampleBody := NewStmtListNoSourceInfo([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
-	exampleForm := NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
-
-	typeChecker := typechecker.NewTypeChecker()
-	exampleForm.TypeCheck(&typeChecker, symboltable.NewSymbolTable())
-	errorsReported := typeChecker.GetEncountedErrorsForCheckType("DuplicateVarDeclarations")
-
-	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Question redeclared with different types: vari.IntType and vari.BoolType")) {
-		t.Errorf("Duplicate var decl not reported correctly by type checker")
 	}
 }

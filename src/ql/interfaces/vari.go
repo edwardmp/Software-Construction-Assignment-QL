@@ -1,18 +1,18 @@
 package interfaces
 
 type VarDecl interface {
-	Node
+	ASTNode
 	GetIdent() VarId
 	GetType() VarType
 }
 
 type VarId interface {
-	Node
+	ASTNode
 	GetIdent() string
 }
 
 type VarType interface {
-	Node
+	ASTNode
 	GetDefaultValue() interface{}
 }
 

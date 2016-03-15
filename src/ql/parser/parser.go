@@ -5,13 +5,13 @@ import(
 	"bytes"
 	"fmt"
 	"errors"
-	parseError "QL/errors"
+	parseError "ql/errors"
 	"ql/token"
 )
 
 const (
-	numProductions = 42
-	numStates      = 125
+	numProductions = 43
+	numStates      = 129
 	numSymbols     = 48
 )
 
