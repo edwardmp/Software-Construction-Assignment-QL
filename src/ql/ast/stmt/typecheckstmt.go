@@ -100,7 +100,7 @@ func checkForNonBoolCondition(condition interfaces.Expr, typeChecker interfaces.
 	typeOfCondition := condition.TypeCheck(typeChecker, symbols)
 
 	if typeOfCondition != expr.NewBoolTypeNoSourceInfo() {
-		typeChecker.AddEncounteredErrorForCheckType("NonBoolConditionals", fmt.Errorf("Non-boolean type used as condition: %s", typeOfCondition))
+		typeChecker.AddEncounteredError(fmt.Errorf("Non-boolean type used as condition: %T", typeOfCondition))
 	}
 }
 
@@ -117,7 +117,7 @@ func typeCheckForCyclicDependencies(question interfaces.Question, typeChecker in
 
 	// if we find our own var id more than once, the dependencyChain is cyclic
 	if numOfTimesQuestionIdFound >= 2 {
-		typeChecker.AddEncounteredErrorForCheckType("CyclicDependencies", fmt.Errorf("Found cyclic dependency: %s", depencyChainForQuestionId))
+		typeChecker.AddEncounteredError(fmt.Errorf("Found cyclic dependency: %s", depencyChainForQuestionId))
 	}
 }
 
@@ -125,7 +125,7 @@ func typeCheckQuestionForDuplicateLabels(question interfaces.Question, typeCheck
 	labelKnown := typeChecker.IsLabelUsed(question.GetLabel())
 
 	if labelKnown {
-		typeChecker.AddEncounteredErrorForCheckType("DuplicateLabels", fmt.Errorf("Label \"%s\" already used for question with identifier %s, using again for question with identifier %s", question.GetLabel(), typeChecker.VarIdForLabel(question.GetLabel()), question.GetVarDecl().GetIdent()))
+		typeChecker.AddEncounteredWarning(fmt.Errorf("Label \"%s\" already used for question with identifier %s, using again for question with identifier %s", question.GetLabel(), typeChecker.VarIdForLabel(question.GetLabel()), question.GetVarDecl().GetIdent()))
 	} else {
 		typeChecker.MarkLabelAsUsed(question.GetLabel(), question.GetVarDecl())
 	}
@@ -136,7 +136,7 @@ func typeCheckQuestionForRedeclaration(question interfaces.Question, typeChecker
 	labelKnown := typeChecker.VarDeclIsKnown(varDecl)
 
 	if labelKnown && typeChecker.TypeForVarDecl(varDecl) != varDecl.GetType() {
-		typeChecker.AddEncounteredErrorForCheckType("DuplicateVarDeclarations", fmt.Errorf("Question redeclared with different types: %T and %T", varDecl.GetType(), typeChecker.TypeForVarDecl(varDecl)))
+		typeChecker.AddEncounteredError(fmt.Errorf("Question redeclared with different types: %T and %T", varDecl.GetType(), typeChecker.TypeForVarDecl(varDecl)))
 	} else {
 		typeChecker.MarkVarDeclAsKnown(varDecl)
 	}

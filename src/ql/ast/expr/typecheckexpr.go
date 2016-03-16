@@ -141,7 +141,7 @@ func checkOperands(binaryExpression interfaces.BinaryOperatorExpr, expectedType 
 
 func checkForUnequalTypes(lhsType, rhsType interfaces.ValueType, typeChecker interfaces.TypeChecker) bool {
 	if lhsType != rhsType {
-		typeChecker.AddEncounteredErrorForCheckType("InvalidOperandsDifferentTypes", fmt.Errorf("Encountered BinaryOperator with operands of different types: %s and %s", lhsType, rhsType))
+		typeChecker.AddEncounteredError(fmt.Errorf("Encountered BinaryOperator with operands of different types: %s and %s", lhsType, rhsType))
 		return false
 	}
 
@@ -152,12 +152,12 @@ func checkForInvalidOperationOperand(expr interfaces.Expr, expectedType interfac
 	actualType := expr.TypeCheck(typeChecker, symbols)
 
 	if actualType != expectedType {
-		typeChecker.AddEncounteredErrorForCheckType("InvalidOperandForOperation", fmt.Errorf("Encountered invalid operand type for operator, expected type: %s, actual type: %s", expectedType, actualType))
+		typeChecker.AddEncounteredError(fmt.Errorf("Encountered invalid operand type for operator, expected type: %s, actual type: %s", expectedType, actualType))
 	}
 }
 
 func checkUndefinedQuestionReference(varExpr VarExpr, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	if !symbols.IsTypeSetForVarId(varExpr.GetIdentifier()) {
-		typeChecker.AddEncounteredErrorForCheckType("ReferenceToUndefinedQuestion", fmt.Errorf("Reference to unknown question identifier: %s", varExpr.GetIdentifier()))
+		typeChecker.AddEncounteredError(fmt.Errorf("Reference to unknown question identifier: %s", varExpr.GetIdentifier()))
 	}
 }

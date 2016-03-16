@@ -38,12 +38,11 @@ func main() {
 	} else {
 		log.WithFields(log.Fields{"Result": parsedForm}).Info("Form parsed")
 
-		typeCheckSymbols := symbols.NewTypeCheckSymbols()
+		// conduct typechecking
 		typeChecker := typechecker.NewTypeChecker()
-		parsedForm.TypeCheck(&typeChecker, typeCheckSymbols)
-
-		warnings := typeChecker.GetEncountedWarnings()
-		errors := typeChecker.GetEncountedErrors()
+		parsedForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
+		warnings := typeChecker.GetEncounteredWarnings()
+		errors := typeChecker.GetEncounteredErrors()
 
 		log.WithFields(log.Fields{"errors": errors, "warnings": warnings}).Error("Type checking finished")
 

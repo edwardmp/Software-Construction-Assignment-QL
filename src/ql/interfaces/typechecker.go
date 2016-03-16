@@ -1,7 +1,8 @@
 package interfaces
 
 type TypeChecker interface {
-	AddEncounteredErrorForCheckType(string, error)
+	AddEncounteredError(error)
+	AddEncounteredWarning(error)
 	GetEncountedWarnings() []error
 	GetEncountedErrors() []error
 	IsLabelUsed(StrLit) bool

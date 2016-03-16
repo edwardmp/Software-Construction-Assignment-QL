@@ -7,16 +7,17 @@ import (
 
 type TypeChecker struct {
 	interfaces.TypeChecker
-	ErrorsEncounteredForCheckType map[string][]error
-	UsedLabels                    map[interfaces.StrLit]interfaces.VarId
-	KnownIdentifiers              map[interfaces.VarId]interfaces.ValueType
-	CurrentVarIdVisited           interfaces.VarId
-	DependenciesPerVarId          map[interfaces.VarId][]interfaces.VarId
-	ConditionsDependentOn         []interfaces.Expr
+	ErrorsEncountered     []error
+	WarningsEncountered   []error
+	UsedLabels            map[interfaces.StrLit]interfaces.VarId
+	KnownIdentifiers      map[interfaces.VarId]interfaces.ValueType
+	CurrentVarIdVisited   interfaces.VarId
+	DependenciesPerVarId  map[interfaces.VarId][]interfaces.VarId
+	ConditionsDependentOn []interfaces.Expr
 }
 
-func NewTypeChecker() TypeChecker {
-	return TypeChecker{ErrorsEncounteredForCheckType: make(map[string][]error), UsedLabels: make(map[interfaces.StrLit]interfaces.VarId), KnownIdentifiers: make(map[interfaces.VarId]interfaces.ValueType), DependenciesPerVarId: make(map[interfaces.VarId][]interfaces.VarId)}
+func NewTypeChecker() *TypeChecker {
+	return &TypeChecker{ErrorsEncountered: make([]error, 0), WarningsEncountered: make([]error, 0), UsedLabels: make(map[interfaces.StrLit]interfaces.VarId), KnownIdentifiers: make(map[interfaces.VarId]interfaces.ValueType), DependenciesPerVarId: make(map[interfaces.VarId][]interfaces.VarId)}
 }
 
 func (this *TypeChecker) AddConditionDependentOn(condition interfaces.Expr) {
@@ -130,25 +131,18 @@ func (this *TypeChecker) AddDependencyForCurrentlyVisitedVarDecl(dependingVarId 
 	log.WithFields(log.Fields{"visitedVarId": this.CurrentVarIdVisited, "dependingVarId": dependingVarId, "resultingMap": this.DependenciesPerVarId}).Debug("Added dependency for currently visited VarId for type checking")
 }
 
-func (this *TypeChecker) AddEncounteredErrorForCheckType(checkType string, encounteredError error) {
-	log.WithFields(log.Fields{"checkType": checkType, "errorEncountered": encounteredError}).Info("Added encountered error for check type")
+func (this *TypeChecker) AddEncounteredError(encounteredError error) {
+	log.WithFields(log.Fields{"errorEncountered": encounteredError}).Info("Added encountered type checking error")
 
-	this.ErrorsEncounteredForCheckType[checkType] = append(this.ErrorsEncounteredForCheckType[checkType], encounteredError)
+	this.ErrorsEncountered = append(this.ErrorsEncountered, encounteredError)
 }
 
-func (this *TypeChecker) GetEncountedErrors() []error {
-	errorsCollected := make([]error, 0)
-	errorsCollected = append(errorsCollected, this.ErrorsEncounteredForCheckType["InvalidOperandsDifferentTypes"]...)
-	errorsCollected = append(errorsCollected, this.ErrorsEncounteredForCheckType["ReferenceToUndefinedQuestion"]...)
-	errorsCollected = append(errorsCollected, this.ErrorsEncounteredForCheckType["InvalidOperationOnOperands"]...)
-	errorsCollected = append(errorsCollected, this.ErrorsEncounteredForCheckType["NonBoolConditionals"]...)
-	errorsCollected = append(errorsCollected, this.ErrorsEncounteredForCheckType["CyclicalDependencies"]...)
-
-	return errorsCollected
+func (this *TypeChecker) GetEncounteredErrors() []error {
+	return this.ErrorsEncountered
 }
 
-func (this *TypeChecker) GetEncountedWarnings() []error {
-	return this.ErrorsEncounteredForCheckType["DuplicateLabels"]
+func (this *TypeChecker) GetEncounteredWarnings() []error {
+	return this.WarningsEncountered
 }
 
 func (this *TypeChecker) IsLabelUsed(label interfaces.StrLit) bool {
