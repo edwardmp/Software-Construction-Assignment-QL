@@ -1,18 +1,15 @@
 package main
 
 import (
-	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"io/ioutil"
-	"ql/ast"
-	"ql/ast/stmt"
-	"ql/typechecker"
 	"ql/ast/visitor"
 	"ql/gui"
 	"ql/interfaces"
 	"ql/lexer"
 	"ql/parser"
 	"ql/symbols"
+	"ql/typechecker"
 )
 
 func main() {
@@ -36,11 +33,11 @@ func main() {
 		log.WithFields(log.Fields{"err": parseErr}).Panic("Could not parse")
 	}
 
-	if parsedForm, ok := parseResult.(stmt.Form); !ok {
+	if parsedForm, ok := parseResult.(interfaces.Form); !ok {
 		log.Panic("Parse result is not form")
 	} else {
 		log.WithFields(log.Fields{"Result": parsedForm}).Info("Form parsed")
-		fmt.Println(ast.SourcePosInformation)
+
 		visitor := SymbolTableFillerVisitor{}
 		symbols := symbols.NewSymbols()
 		parsedForm.Accept(&visitor, symbols)
@@ -48,14 +45,8 @@ func main() {
 		typeChecker := typechecker.NewTypeChecker()
 		parsedForm.TypeCheck(&typeChecker, symbols)
 
-		errors := make([]error, 0)
-		warnings := make([]error, 0)
-
-		warnings = append(warnings, typeChecker.GetEncountedErrorsForCheckType("DuplicateLabels")...)
-		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("InvalidOperandsDifferentTypes")...)
-		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("ReferenceToUndefinedQuestion")...)
-		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("InvalidOperationOnOperands")...)
-		errors = append(errors, typeChecker.GetEncountedErrorsForCheckType("NonBoolConditionals")...)
+		warnings := typeChecker.GetEncountedWarnings()
+		errors := typeChecker.GetEncountedErrors()
 
 		log.WithFields(log.Fields{"errors": errors, "warnings": warnings}).Error("Type checking finished")
 		gui.CreateGUI(parsedForm, symbols, errors)

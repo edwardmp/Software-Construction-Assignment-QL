@@ -5,7 +5,6 @@ import (
 	//"io/ioutil"
 	log "github.com/Sirupsen/logrus"
 	"github.com/andlabs/ui"
-	"ql/ast/stmt"
 	"ql/ast/visitor"
 	"ql/interfaces"
 	"strconv"
@@ -23,7 +22,7 @@ type GUI struct {
 }
 
 // CreateGUI is a constructor method returning a new GUI
-func CreateGUI(form stmt.Form, symbols interfaces.Symbols, typeCheckerErrors []error) GUI {
+func CreateGUI(form interfaces.Form, symbols interfaces.Symbols, typeCheckerErrors []error) GUI {
 	gui := GUI{GUIForm: NewGUIForm(form), Symbols: symbols, typeCheckerErrors: typeCheckerErrors}
 
 	gui.SaveDataCallback = symbols.SaveToDisk

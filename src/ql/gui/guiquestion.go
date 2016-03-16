@@ -59,6 +59,7 @@ func createQuestionElement(questionType interfaces.VarType, callback func(interf
 		checkbox := CreateCheckboxConditional()
 		checkbox.OnToggled(func(*ui.Checkbox) {
 			log.WithFields(log.Fields{"value": checkbox.Checked()}).Debug("Checkbox value changed")
+
 			callback(expr.NewBoolLitNoSourceInfo(checkbox.Checked()), nil)
 		})
 		UIEntity = checkbox

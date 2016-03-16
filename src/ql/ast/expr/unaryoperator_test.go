@@ -1,6 +1,7 @@
 package expr
 
 import (
+	"ql/ast/vari"
 	"ql/interfaces"
 	"ql/symbols"
 	"ql/token"
@@ -35,37 +36,9 @@ func TestNegPos(t *testing.T) {
 	unaryExprEval(t, NewNegNoSourceInfo(NewPosNoSourceInfo(NewIntLitNoSourceInfo(10))), NewIntLitNoSourceInfo(-10), nil)
 }
 
-// FIXME is this a good idea? If not leads to import cycle..
-type VarIdentifier struct {
-	Ident string
-}
-
-func (v VarIdentifier) GetIdent() string {
-	return v.Ident
-}
-
-func (v VarIdentifier) String() string {
-	return v.Ident
-}
-
-func (v VarIdentifier) Accept(va interfaces.Visitor, s interfaces.Symbols) interface{} {
-	return nil
-}
-
-func (v VarIdentifier) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-
-}
-
-func (v VarIdentifier) GetSourceInfo() token.Pos {
-	return token.Pos{}
-}
-
-func (v VarIdentifier) ResetSourceInfo() {
-}
-
 func TestVarExpr(t *testing.T) {
 	symbols := symbols.NewSymbols()
-	symbols.SetNodeForIdentifier(NewIntLitNoSourceInfo(2), VarIdentifier{"TestIdentifier"})
+	symbols.SetNodeForIdentifier(NewIntLitNoSourceInfo(2), vari.VarId{"TestIdentifier"})
 
-	unaryExprEval(t, NewVarExprNoSourceInfo(VarIdentifier{"TestIdentifier"}), NewIntLitNoSourceInfo(2), symbols)
+	unaryExprEval(t, NewVarExprNoSourceInfo(vari.Varid{"TestIdentifier"}), NewIntLitNoSourceInfo(2), symbols)
 }
