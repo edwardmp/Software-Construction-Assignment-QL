@@ -1,12 +1,14 @@
 package interfaces
 
 type Stmt interface {
-	Node
+	ASTNode
 	String() string
 }
 
 type Form interface {
 	Stmt
+	GetQuestions() []Question
+	GetIdentifier() VarId
 }
 
 type Question interface {
@@ -27,17 +29,23 @@ type ComputedQuestion interface {
 
 type Conditional interface {
 	Stmt
-	EvalCondition() bool
+	EvalCondition(Symbols) bool
+	GetCondition() Expr
 }
 
 type If interface {
 	Conditional
+	GetBody() StmtList
 }
 
 type IfElse interface {
 	Conditional
+	GetIfBody() StmtList
+	GetElseBody() StmtList
 }
 
 type StmtList interface {
 	Stmt
+	GetConditionals() []Conditional
+	GetQuestions() []Question
 }

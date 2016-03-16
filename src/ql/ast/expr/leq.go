@@ -11,5 +11,5 @@ func NewLEq(lhs interfaces.Expr, rhs interfaces.Expr, sourceInfo interface{}) LE
 }
 
 func NewLEqNoSourceInfo(lhs interfaces.Expr, rhs interfaces.Expr) LEq {
-	return LEq{NewBinaryOperator(lhs, rhs, nil)}
+	return NewLEq(lhs, rhs, nil)
 }
