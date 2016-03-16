@@ -31,6 +31,6 @@ func (this If) String() string {
 	return fmt.Sprintf("An if statement with condition %s and statement list %s", this.Cond, this.Body)
 }
 
-func (this If) EvalCondition(symbolTable interfaces.Symbols) bool {
+func (this If) EvalCondition(symbolTable interfaces.VarIdValueSymbols) bool {
 	return this.Cond.Eval(symbolTable).(bool)
 }

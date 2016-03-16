@@ -2,15 +2,15 @@ package stmt
 
 import (
 	"fmt"
-	log "github.com/Sirupsen/logrus"
+	"ql/ast/expr"
 	"ql/interfaces"
 )
 
-func (this Form) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this Form) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	this.Content.TypeCheck(typeChecker, symbols)
 }
 
-func (this If) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this If) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	this.typeCheckIfForNonBoolConditions(typeChecker, symbols)
 
 	typeChecker.AddConditionDependentOn(this.Cond)
@@ -21,7 +21,7 @@ func (this If) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.
 	typeChecker.PopLastConditionDependentOn()
 }
 
-func (this IfElse) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this IfElse) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	this.typeCheckIfElseForNonBoolConditions(typeChecker, symbols)
 
 	typeChecker.AddConditionDependentOn(this.Cond)
@@ -33,7 +33,7 @@ func (this IfElse) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfa
 	typeChecker.PopLastConditionDependentOn()
 }
 
-func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	typeCheckQuestionForDuplicateLabels(this, typeChecker)
 	typeCheckQuestionForRedeclaration(this, typeChecker)
 
@@ -46,12 +46,12 @@ func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbo
 		conditionDependentOn.TypeCheck(typeChecker, symbols)
 	}
 
-	typeCheckForCyclicalDependencies(this, typeChecker, symbols)
+	typeCheckForCyclicDependencies(this, typeChecker, symbols)
 	typeChecker.UnsetCurrentVarIdVisited()
 
 }
 
-func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	typeCheckQuestionForDuplicateLabels(this, typeChecker)
 	typeCheckQuestionForRedeclaration(this, typeChecker)
 
@@ -64,20 +64,11 @@ func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols 
 		conditionDependentOn.TypeCheck(typeChecker, symbols)
 	}
 
-	typeCheckForCyclicalDependencies(this, typeChecker, symbols)
+	typeCheckForCyclicDependencies(this, typeChecker, symbols)
 	typeChecker.UnsetCurrentVarIdVisited()
 }
 
-func (this StmtList) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	for _, conditional := range this.Conditionals {
-		switch conditional.(type) {
-		case If:
-			conditional.(If).TypeCheck(typeChecker, symbols)
-		case IfElse:
-			conditional.(IfElse).TypeCheck(typeChecker, symbols)
-		}
-	}
-
+func (this StmtList) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	for _, question := range this.Questions {
 		switch question.(type) {
 		case InputQuestion:
@@ -86,39 +77,47 @@ func (this StmtList) TypeCheck(typeChecker interfaces.TypeChecker, symbols inter
 			question.(ComputedQuestion).TypeCheck(typeChecker, symbols)
 		}
 	}
+
+	for _, conditional := range this.Conditionals {
+		switch conditional.(type) {
+		case If:
+			conditional.(If).TypeCheck(typeChecker, symbols)
+		case IfElse:
+			conditional.(IfElse).TypeCheck(typeChecker, symbols)
+		}
+	}
 }
 
-func typeCheckForCyclicalDependencies(question interfaces.Question, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this If) typeCheckIfForNonBoolConditions(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+	checkForNonBoolCondition(this.GetCondition(), typeChecker, symbols)
+}
+
+func (this IfElse) typeCheckIfElseForNonBoolConditions(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+	checkForNonBoolCondition(this.GetCondition(), typeChecker, symbols)
+}
+
+func checkForNonBoolCondition(condition interfaces.Expr, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+	typeOfCondition := condition.TypeCheck(typeChecker, symbols)
+
+	if typeOfCondition != expr.NewBoolTypeNoSourceInfo() {
+		typeChecker.AddEncounteredErrorForCheckType("NonBoolConditionals", fmt.Errorf("Non-boolean type used as condition: %s", typeOfCondition))
+	}
+}
+
+func typeCheckForCyclicDependencies(question interfaces.Question, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	varIdOfCurrentlyVisitingQuestion := question.GetVarDecl().GetIdent()
 
-	numOfTimesQuestionVarIdFound := 0
-	depencyChainForQuestionVarId := typeChecker.GetDependencyChainForVarId(varIdOfCurrentlyVisitingQuestion)
-	for _, dependingVarId := range depencyChainForQuestionVarId {
+	numOfTimesQuestionIdFound := 0
+	depencyChainForQuestionId := typeChecker.GetDependencyChainForVarId(varIdOfCurrentlyVisitingQuestion)
+	for _, dependingVarId := range depencyChainForQuestionId {
 		if dependingVarId == varIdOfCurrentlyVisitingQuestion {
-			numOfTimesQuestionVarIdFound++
+			numOfTimesQuestionIdFound++
 		}
 	}
 
-	// if we find our own var id more than once, the dependencyChain is cyclical
-	if numOfTimesQuestionVarIdFound >= 2 {
-		log.WithFields(log.Fields{"Cyclical": depencyChainForQuestionVarId}).Error("Cyclic dependency found")
-		typeChecker.AddEncounteredErrorForCheckType("CyclicalDependencies", fmt.Errorf("Found cyclical dependency: %s", depencyChainForQuestionVarId))
-	}
-}
-
-func (this If) typeCheckIfForNonBoolConditions(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	evalCond := this.Cond.Eval(symbols)
-
-	if _, CondIsBoolType := evalCond.(bool); !CondIsBoolType {
-		typeChecker.AddEncounteredErrorForCheckType("NonBoolConditionals", fmt.Errorf("Non-boolean type used as condition: %T", evalCond))
-	}
-}
-
-func (this IfElse) typeCheckIfElseForNonBoolConditions(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	evalCond := this.Cond.Eval(symbols)
-
-	if _, CondIsBoolType := evalCond.(bool); !CondIsBoolType {
-		typeChecker.AddEncounteredErrorForCheckType("NonBoolConditionals", fmt.Errorf("Non-boolean type used as condition: %T", evalCond))
+	// if we find our own var id more than once, the dependencyChain is cyclic
+	if numOfTimesQuestionIdFound >= 2 {
+		typeChecker.AddEncounteredErrorForCheckType("CyclicDependencies", fmt.Errorf("Found cyclic dependency: %s", depencyChainForQuestionId))
 	}
 }
 

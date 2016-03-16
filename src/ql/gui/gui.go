@@ -5,7 +5,6 @@ import (
 	//"io/ioutil"
 	log "github.com/Sirupsen/logrus"
 	"github.com/andlabs/ui"
-	"ql/ast/stmt"
 	"ql/ast/visitor"
 	"ql/interfaces"
 	"strconv"
@@ -15,7 +14,7 @@ import (
 type GUI struct {
 	visitor.BaseVisitor
 	GUIForm                   *GUIForm
-	Symbols                   interfaces.Symbols
+	Symbols                   interfaces.VarIdValueSymbols
 	typeCheckerErrors         []error
 	RegisteredOnShowCallbacks []func()
 	SaveDataCallback          func() (interface{}, error)
@@ -23,7 +22,7 @@ type GUI struct {
 }
 
 // CreateGUI is a constructor method returning a new GUI
-func CreateGUI(form stmt.Form, symbols interfaces.Symbols, typeCheckerErrors []error) GUI {
+func CreateGUI(form interfaces.Form, symbols interfaces.VarIdValueSymbols, typeCheckerErrors []error) GUI {
 	gui := GUI{GUIForm: NewGUIForm(form), Symbols: symbols, typeCheckerErrors: typeCheckerErrors}
 
 	gui.SaveDataCallback = symbols.SaveToDisk
@@ -62,15 +61,14 @@ func (this *GUI) Show() {
 
 		this.GUIForm.Window = this.Window
 
-		// FIXME reenable
-		//if len(this.typeCheckerErrors) != 0 {
-		// this.showErrorDialog()
-		//} else {
-		this.GUIForm.ShowForm()
-		for _, registeredOnShowCallback := range this.RegisteredOnShowCallbacks {
-			registeredOnShowCallback()
+		if len(this.typeCheckerErrors) != 0 {
+			this.showErrorDialog()
+		} else {
+			this.GUIForm.ShowForm()
+			for _, registeredOnShowCallback := range this.RegisteredOnShowCallbacks {
+				registeredOnShowCallback()
+			}
 		}
-		//}
 	})
 
 	if err != nil {
@@ -79,7 +77,9 @@ func (this *GUI) Show() {
 }
 
 // VisitForm creates the top level questions
-func (this *GUI) VisitForm(f interfaces.Form, symbols interfaces.Symbols) {
+func (this *GUI) VisitForm(f interfaces.Form, context interface{}) {
+	symbols := context.(interfaces.VarIdValueSymbols)
+
 	guiQuestions := handleQuestions(this, f.GetQuestions(), symbols)
 
 	this.RegisterOnShowCallback(func() {
@@ -87,7 +87,9 @@ func (this *GUI) VisitForm(f interfaces.Form, symbols interfaces.Symbols) {
 	})
 }
 
-func (this *GUI) VisitIf(i interfaces.If, symbols interfaces.Symbols) {
+func (this *GUI) VisitIf(i interfaces.If, context interface{}) {
+	symbols := context.(interfaces.VarIdValueSymbols)
+
 	guiQuestions := handleQuestions(this, i.GetBody().GetQuestions(), symbols)
 	questionsEncompassingContainer := this.GUIForm.CreateQuestionTableWithRows(guiQuestions)
 
@@ -96,14 +98,16 @@ func (this *GUI) VisitIf(i interfaces.If, symbols interfaces.Symbols) {
 		hideContainerWhenIfEvalToFalse(i, questionsEncompassingContainer, symbols)
 	})
 
-	this.Symbols.RegisterCallback(func(s interfaces.Symbols) {
+	this.Symbols.RegisterCallback(func(s interfaces.VarIdValueSymbols) {
 		log.Debug("Received symbols update callback")
 
 		hideContainerWhenIfEvalToFalse(i, questionsEncompassingContainer, symbols)
 	})
 }
 
-func (this *GUI) VisitIfElse(i interfaces.IfElse, symbols interfaces.Symbols) {
+func (this *GUI) VisitIfElse(i interfaces.IfElse, context interface{}) {
+	symbols := context.(interfaces.VarIdValueSymbols)
+
 	guiQuestionsIfBody := handleQuestions(this, i.GetIfBody().GetQuestions(), symbols)
 	guiQuestionsElseBody := handleQuestions(this, i.GetElseBody().GetQuestions(), symbols)
 
@@ -116,14 +120,14 @@ func (this *GUI) VisitIfElse(i interfaces.IfElse, symbols interfaces.Symbols) {
 		hideContainerWhenIfElseEvalsToFalse(i, ifQuestionsEncompassingContainer, elseQuestionsEncompassingContainer, symbols)
 	})
 
-	this.Symbols.RegisterCallback(func(s interfaces.Symbols) {
+	this.Symbols.RegisterCallback(func(s interfaces.VarIdValueSymbols) {
 		log.Debug("Received symbols update callback")
 
 		hideContainerWhenIfElseEvalsToFalse(i, ifQuestionsEncompassingContainer, elseQuestionsEncompassingContainer, symbols)
 	})
 }
 
-func hideContainerWhenIfEvalToFalse(conditionalStmt interfaces.Conditional, conditionalContainer *ui.Box, symbols interfaces.Symbols) {
+func hideContainerWhenIfEvalToFalse(conditionalStmt interfaces.Conditional, conditionalContainer *ui.Box, symbols interfaces.VarIdValueSymbols) {
 	conditionValue := conditionalStmt.EvalCondition(symbols)
 
 	if conditionValue {
@@ -133,7 +137,7 @@ func hideContainerWhenIfEvalToFalse(conditionalStmt interfaces.Conditional, cond
 	}
 }
 
-func hideContainerWhenIfElseEvalsToFalse(conditionalStmt interfaces.Conditional, conditionalContainerIfBody *ui.Box, conditionalContainerElseBody *ui.Box, symbols interfaces.Symbols) {
+func hideContainerWhenIfElseEvalsToFalse(conditionalStmt interfaces.Conditional, conditionalContainerIfBody *ui.Box, conditionalContainerElseBody *ui.Box, symbols interfaces.VarIdValueSymbols) {
 	conditionValue := conditionalStmt.EvalCondition(symbols)
 
 	if conditionValue {
@@ -145,7 +149,7 @@ func hideContainerWhenIfElseEvalsToFalse(conditionalStmt interfaces.Conditional,
 	}
 }
 
-func handleQuestions(this *GUI, q []interfaces.Question, symbols interfaces.Symbols) []*GUIQuestion {
+func handleQuestions(this *GUI, q []interfaces.Question, symbols interfaces.VarIdValueSymbols) []*GUIQuestion {
 	guiQuestions := make([]*GUIQuestion, 0)
 
 	for _, question := range q {
@@ -162,9 +166,9 @@ func handleQuestions(this *GUI, q []interfaces.Question, symbols interfaces.Symb
 	return guiQuestions
 }
 
-func (v *GUI) handleInputQuestion(question interfaces.InputQuestion, symbols interfaces.Symbols) *GUIInputQuestion {
+func (v *GUI) handleInputQuestion(question interfaces.InputQuestion, symbols interfaces.VarIdValueSymbols) *GUIInputQuestion {
 	var guiQuestion *GUIInputQuestion
-	questionCallback := func(input interface{}, err error) {
+	questionCallback := func(inputExpr interfaces.Expr, err error) {
 		guiQuestion.ChangeErrorLabelText("")
 		if err != nil {
 			if numError, ok := err.(*strconv.NumError); err != nil && ok {
@@ -178,8 +182,8 @@ func (v *GUI) handleInputQuestion(question interfaces.InputQuestion, symbols int
 		}
 
 		questionIdentifier := question.GetVarDecl().GetIdent()
-		log.WithFields(log.Fields{"input": input, "identifier": questionIdentifier}).Debug("Question input received")
-		symbols.SetNodeForIdentifier(input, questionIdentifier)
+		log.WithFields(log.Fields{"input": inputExpr, "identifier": questionIdentifier}).Debug("Question input received")
+		symbols.SetExprForVarId(inputExpr, questionIdentifier)
 
 		v.updateComputedQuestions(symbols)
 	}
@@ -189,7 +193,7 @@ func (v *GUI) handleInputQuestion(question interfaces.InputQuestion, symbols int
 	return guiQuestion
 }
 
-func (v *GUI) handleComputedQuestion(question interfaces.ComputedQuestion, symbols interfaces.Symbols) *GUIComputedQuestion {
+func (v *GUI) handleComputedQuestion(question interfaces.ComputedQuestion, symbols interfaces.VarIdValueSymbols) *GUIComputedQuestion {
 	computation := question.GetComputation()
 	guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), computation, question.GetVarDecl().GetIdent())
 
@@ -198,13 +202,13 @@ func (v *GUI) handleComputedQuestion(question interfaces.ComputedQuestion, symbo
 	return guiQuestion
 }
 
-func (this *GUI) updateComputedQuestions(symbols interfaces.Symbols) {
+func (this *GUI) updateComputedQuestions(symbols interfaces.VarIdValueSymbols) {
 	for _, computedQuestion := range this.GUIForm.ComputedQuestions {
 		computedQuestionEval := computedQuestion.Expr.Eval(symbols)
 		computedQuestion.ChangeFieldValueText(fmt.Sprintf("%v", computedQuestionEval))
 
 		// save the computed value to the symbol table
-		symbols.SetNodeForIdentifier(computedQuestionEval, computedQuestion.VarId)
+		symbols.SetExprForVarId(computedQuestion.Expr, computedQuestion.VarId)
 		log.WithFields(log.Fields{"eval": computedQuestionEval}).Info("Computed question value changed")
 	}
 }

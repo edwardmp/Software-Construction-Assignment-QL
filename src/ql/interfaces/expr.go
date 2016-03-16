@@ -2,7 +2,8 @@ package interfaces
 
 type Expr interface {
 	ASTNode
-	Eval(s Symbols) interface{}
+	Eval(s VarIdValueSymbols) interface{}
+	TypeCheck(TypeChecker, TypeCheckSymbols) ValueType
 }
 
 type BinaryOperatorExpr interface {
@@ -97,4 +98,21 @@ type Pos interface {
 
 type VarExpr interface {
 	// TODO body?
+}
+
+type ValueType interface {
+	Expr
+	GetDefaultValue() interface{}
+}
+
+type IntType interface {
+	ValueType
+}
+
+type BoolType interface {
+	ValueType
+}
+
+type StringType interface {
+	ValueType
 }

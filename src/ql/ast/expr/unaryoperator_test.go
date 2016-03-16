@@ -1,14 +1,13 @@
 package expr
 
 import (
-	"ql/ast/vari"
+	//"ql/ast/vari"
 	"ql/interfaces"
-	"ql/symbols"
-	"ql/token"
+	//"ql/symbols"
 	"testing"
 )
 
-func unaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput interfaces.Expr, symbols interfaces.Symbols) {
+func unaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput interfaces.Expr, symbols interfaces.VarIdValueSymbols) {
 	if eval, expectedOutputEval := exampleInput.Eval(symbols), expectedOutput.(interfaces.Expr).Eval(symbols); eval != expectedOutputEval {
 		t.Errorf("interfaces.Expr test error: should be %v (%T) for %v but is %v (%T)", expectedOutputEval, expectedOutputEval, eval, eval)
 	}
@@ -36,9 +35,11 @@ func TestNegPos(t *testing.T) {
 	unaryExprEval(t, NewNegNoSourceInfo(NewPosNoSourceInfo(NewIntLitNoSourceInfo(10))), NewIntLitNoSourceInfo(-10), nil)
 }
 
+/*
 func TestVarExpr(t *testing.T) {
 	symbols := symbols.NewSymbols()
 	symbols.SetNodeForIdentifier(NewIntLitNoSourceInfo(2), vari.VarId{"TestIdentifier"})
 
 	unaryExprEval(t, NewVarExprNoSourceInfo(vari.Varid{"TestIdentifier"}), NewIntLitNoSourceInfo(2), symbols)
 }
+*/

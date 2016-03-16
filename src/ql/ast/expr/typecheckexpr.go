@@ -5,94 +5,159 @@ import (
 	"ql/interfaces"
 )
 
-func (this BinaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	typeCheckForUnequalTypes(this, typeChecker, symbols)
-	typeCheckInvalidBinaryOperatorForOperands(this, typeChecker, symbols)
-
-	this.Lhs.TypeCheck(typeChecker, symbols)
-	this.Rhs.TypeCheck(typeChecker, symbols)
-}
-
-func (this UnaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	typeCheckInvalidUnaryOperatorForOperands(this, typeChecker, symbols)
-
-	this.Value.(interfaces.Expr).TypeCheck(typeChecker, symbols)
-}
-
-func (this VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	typeCheckUndefinedQuestionReference(this, typeChecker, symbols)
+func (this VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkUndefinedQuestionReference(this, typeChecker, symbols)
 
 	typeChecker.AddDependencyForCurrentlyVisitedVarDecl(this.Identifier)
 
-	this.Identifier.TypeCheck(typeChecker, symbols)
+	if symbols.IsTypeSetForVarId(this.Identifier) {
+		return symbols.GetTypeForVarId(this.Identifier).(interfaces.ValueType)
+	}
+
+	return nil
 }
 
-func (this Expr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this Add) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+
+	return NewIntTypeNoSourceInfo()
+}
+
+func (this And) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this Div) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+
+	return NewIntTypeNoSourceInfo()
+}
+
+func (this Eq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this GEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this GT) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this LEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this LT) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this Mul) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+
+	return NewIntTypeNoSourceInfo()
+}
+
+func (this Neg) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperand(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+
+	return NewIntTypeNoSourceInfo()
+}
+
+func (this NEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this Not) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperand(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this Or) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this Pos) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperand(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+
+	return NewIntTypeNoSourceInfo()
+}
+
+func (this Sub) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
+	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+
+	return NewIntTypeNoSourceInfo()
+}
+
+func (this IntLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
+	return NewIntTypeNoSourceInfo()
+}
+
+func (this BoolLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
+	return NewBoolTypeNoSourceInfo()
+}
+
+func (this StrLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
+	return NewStringTypeNoSourceInfo()
+}
+
+func (this Expr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
 	panic("Expr TypeCheck method not overridden")
 }
 
-func (this IntLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-
+func checkOperand(unaryExpr interfaces.UnaryOperatorExpr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+	checkForInvalidOperationOperand(unaryExpr.GetValue(), expectedType, typeChecker, s)
 }
 
-func (this BoolLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func checkOperands(binaryExpression interfaces.BinaryOperatorExpr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+	lhsType := binaryExpression.GetLhs().TypeCheck(typeChecker, s)
+	rhsType := binaryExpression.GetRhs().TypeCheck(typeChecker, s)
 
-}
+	typesEqual := checkForUnequalTypes(lhsType, rhsType, typeChecker)
 
-func (this StrLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-
-}
-
-func typeCheckForUnequalTypes(expr BinaryOperator, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	lhsTypeOfValue := fmt.Sprintf("%T", expr.Lhs.Eval(symbols))
-	rhsTypeOfValue := fmt.Sprintf("%T", expr.Rhs.Eval(symbols))
-
-	if lhsTypeOfValue != rhsTypeOfValue {
-		typeChecker.AddEncounteredErrorForCheckType("InvalidOperandsDifferentTypes", fmt.Errorf("Encountered BinaryOperator with operands of different types: %s and %s", lhsTypeOfValue, rhsTypeOfValue))
+	if typesEqual {
+		checkForInvalidOperationOperand(binaryExpression.GetLhs(), expectedType, typeChecker, s)
+		checkForInvalidOperationOperand(binaryExpression.GetRhs(), expectedType, typeChecker, s)
 	}
 }
 
-func typeCheckInvalidBinaryOperatorForOperands(binaryOperator BinaryOperator, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	exprType := fmt.Sprintf("%T", binaryOperator)
-	lhsTypeOfValue := binaryOperator.Lhs.Eval(symbols)
+func checkForUnequalTypes(lhsType, rhsType interfaces.ValueType, typeChecker interfaces.TypeChecker) bool {
+	if lhsType != rhsType {
+		typeChecker.AddEncounteredErrorForCheckType("InvalidOperandsDifferentTypes", fmt.Errorf("Encountered BinaryOperator with operands of different types: %s and %s", lhsType, rhsType))
+		return false
+	}
 
-	switch lhsTypeOfValue.(type) {
-	case bool:
-		if exprType != "And" && exprType != "Or" && exprType != "Eq" && exprType != "NEq" {
-			typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for bool operands"))
-		}
-	case int:
-		if exprType != "Add" && exprType != "Div" && exprType != "Eq" && exprType != "NEq" && exprType != "GEq" && exprType != "GT" && exprType != "GEq" && exprType != "LEq" && exprType != "LT" && exprType != "Mul" && exprType != "Sub" {
-			typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for int operands"))
-		}
-	case string:
-		if exprType != "Eq" && exprType != "NEq" && exprType != "GEq" && exprType != "GT" && exprType != "GEq" && exprType != "LEq" && exprType != "LT" {
-			typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for string operands"))
-		}
+	return true
+}
+
+func checkForInvalidOperationOperand(expr interfaces.Expr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+	actualType := expr.TypeCheck(typeChecker, symbols)
+
+	if actualType != expectedType {
+		typeChecker.AddEncounteredErrorForCheckType("InvalidOperandForOperation", fmt.Errorf("Encountered invalid operand type for operator, expected type: %s, actual type: %s", expectedType, actualType))
 	}
 }
 
-func typeCheckInvalidUnaryOperatorForOperands(unaryOperator UnaryOperator, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	exprType := fmt.Sprintf("%T", unaryOperator)
-	evalValue := unaryOperator.Value.Eval(symbols)
-
-	switch evalValue.(type) {
-	case bool:
-		if exprType != "unaryoperatorNot" {
-			typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for bool operand"))
-		}
-	case int:
-		if exprType != "unaryoperatorNeg" && exprType != "unaryoperatorPos" {
-			typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for int operand"))
-		}
-	case string:
-		// there are no unary operators on strings, so always return error
-		typeChecker.AddEncounteredErrorForCheckType("InvalidOperationOnOperands", fmt.Errorf("Encountered invalid operation for string operand"))
-	}
-}
-
-func typeCheckUndefinedQuestionReference(varExpr VarExpr, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	if symbols.GetNodeForIdentifier(varExpr.GetIdentifier()) == nil {
+func checkUndefinedQuestionReference(varExpr VarExpr, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+	if !symbols.IsTypeSetForVarId(varExpr.GetIdentifier()) {
 		typeChecker.AddEncounteredErrorForCheckType("ReferenceToUndefinedQuestion", fmt.Errorf("Reference to unknown question identifier: %s", varExpr.GetIdentifier()))
 	}
 }

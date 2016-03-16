@@ -36,6 +36,6 @@ func (this IfElse) String() string {
 	return fmt.Sprintf("An if/else statement with condition %s", this.Cond)
 }
 
-func (this IfElse) EvalCondition(symbols interfaces.Symbols) bool {
+func (this IfElse) EvalCondition(symbols interfaces.VarIdValueSymbols) bool {
 	return this.Cond.Eval(symbols).(bool)
 }

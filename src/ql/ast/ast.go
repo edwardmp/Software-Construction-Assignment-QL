@@ -111,7 +111,7 @@ func NewStrLit(valueToken interface{}) (interfaces.Expr, error) {
 /** Vari **/
 
 func NewVarDecl(ident interface{}, typeIdent interface{}, sourcePosInfo interface{}) (interfaces.VarDecl, error) {
-	return vari.NewVarDecl(ident.(interfaces.VarId), typeIdent.(interfaces.VarType), sourcePosInfo), nil
+	return vari.NewVarDecl(ident.(interfaces.VarId), typeIdent.(interfaces.ValueType), sourcePosInfo), nil
 }
 
 func NewVarId(identToken interface{}) (vari.VarId, error) {
@@ -120,55 +120,55 @@ func NewVarId(identToken interface{}) (vari.VarId, error) {
 	return vari.NewVarId(identifierString, sourcePosInfo), nil
 }
 
-func NewIntType(typeTokenLit interface{}) (vari.IntType, error) {
+func NewIntType(typeTokenLit interface{}) (interfaces.IntType, error) {
 	token := typeTokenLit.(*token.Token)
-	return vari.NewIntType(token.Pos), nil
+	return expr.NewIntType(token.Pos), nil
 }
 
-func NewBoolType(typeTokenLit interface{}) (vari.BoolType, error) {
+func NewBoolType(typeTokenLit interface{}) (interfaces.BoolType, error) {
 	token := typeTokenLit.(*token.Token)
-	return vari.NewBoolType(token.Pos), nil
+	return expr.NewBoolType(token.Pos), nil
 }
 
-func NewStringType(typeTokenLit interface{}) (vari.StringType, error) {
+func NewStringType(typeTokenLit interface{}) (interfaces.StringType, error) {
 	token := typeTokenLit.(*token.Token)
-	return vari.NewStringType(token.Pos), nil
+	return expr.NewStringType(token.Pos), nil
 }
 
 /** Statements **/
 
-func NewForm(identifier interface{}, body interface{}, sourcePosInfo interface{}) (stmt.Form, error) {
+func NewForm(identifier interface{}, body interface{}, sourcePosInfo interface{}) (interfaces.Form, error) {
 	return stmt.NewForm(identifier.(vari.VarId), body.(stmt.StmtList), sourcePosInfo), nil
 }
 
-func NewInputQuestion(label interface{}, varDecl interface{}) (stmt.InputQuestion, error) {
+func NewInputQuestion(label interface{}, varDecl interface{}) (interfaces.InputQuestion, error) {
 	labelStrLit := label.(expr.StrLit)
 	return stmt.NewInputQuestion(labelStrLit, varDecl.(vari.VarDecl), labelStrLit.GetSourceInfo()), nil
 }
 
-func NewComputedQuestion(label interface{}, varDecl interface{}, computation interface{}, sourcePosInfo interface{}) (stmt.ComputedQuestion, error) {
+func NewComputedQuestion(label interface{}, varDecl interface{}, computation interface{}, sourcePosInfo interface{}) (interfaces.ComputedQuestion, error) {
 	return stmt.NewComputedQuestion(label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(interfaces.Expr), sourcePosInfo), nil
 }
 
-func NewStmtList(stmtElt interface{}) (stmt.StmtList, error) {
+func NewStmtList(stmtElt interface{}) (interfaces.StmtList, error) {
 	stmtEltTypeAsserted := stmtElt.(interfaces.Stmt)
 	s := stmt.NewEmptyStmtList(stmtEltTypeAsserted.GetSourceInfo())
 	return s.AddToCorrectSlice(stmtElt), nil
 }
 
-func NewEmptyStmtList(sourcePosInfo interface{}) (stmt.StmtList, error) {
+func NewEmptyStmtList(sourcePosInfo interface{}) (interfaces.StmtList, error) {
 	return stmt.NewEmptyStmtList(sourcePosInfo), nil
 }
 
-func AppendStmt(stmtList, stmtElt interface{}) (stmt.StmtList, error) {
+func AppendStmt(stmtList, stmtElt interface{}) (interfaces.StmtList, error) {
 	return stmtList.(stmt.StmtList).AddToCorrectSlice(stmtElt), nil
 }
 
-func NewIf(cond interface{}, body interface{}, sourcePosInfo interface{}) (stmt.If, error) {
+func NewIf(cond interface{}, body interface{}, sourcePosInfo interface{}) (interfaces.If, error) {
 	return stmt.NewIf(cond.(interfaces.Expr), body.(stmt.StmtList), sourcePosInfo), nil
 }
 
-func NewIfElse(cond interface{}, ifBody interface{}, elseBody interface{}, sourcePosInfo interface{}) (stmt.IfElse, error) {
+func NewIfElse(cond interface{}, ifBody interface{}, elseBody interface{}, sourcePosInfo interface{}) (interfaces.IfElse, error) {
 	return stmt.NewIfElse(cond.(interfaces.Expr), ifBody.(stmt.StmtList), elseBody.(stmt.StmtList), sourcePosInfo), nil
 }
 

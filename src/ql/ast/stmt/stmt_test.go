@@ -28,7 +28,7 @@ func TestFormWithEmptyContent(t *testing.T) {
 
 func TestFormWithNonEmptyContent(t *testing.T) {
 	identifier := vari.NewVarIdNoSourceInfo("TestForm")
-	questionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("What was the selling price?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("sellingPrice"), vari.NewIntTypeNoSourceInfo()))
+	questionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("What was the selling price?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("sellingPrice"), expr.NewIntTypeNoSourceInfo()))
 	questionsListExample := []interfaces.Question{questionExample}
 	stmtListExample := NewStmtListNoSourceInfo(questionsListExample, []interfaces.Conditional{})
 	exampleForm := NewFormNoSourceInfo(identifier, stmtListExample)
@@ -44,7 +44,7 @@ func TestFormWithNonEmptyContent(t *testing.T) {
 
 func TestInputQuestion(t *testing.T) {
 	exampleLabel := expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?")
-	exampleVarDecl := vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo())
+	exampleVarDecl := vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo())
 
 	exampleQuestion := NewInputQuestionNoSourceInfo(exampleLabel, exampleVarDecl)
 
@@ -55,7 +55,7 @@ func TestInputQuestion(t *testing.T) {
 
 func TestComputedQuestion(t *testing.T) {
 	exampleLabel := expr.NewStrLitNoSourceInfo("Value residue")
-	exampleVarDecl := vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewIntTypeNoSourceInfo())
+	exampleVarDecl := vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewIntTypeNoSourceInfo())
 	exampleComputation := expr.NewSubNoSourceInfo(expr.NewIntLitNoSourceInfo(10), expr.NewIntLitNoSourceInfo(5))
 
 	exampleQuestion := NewComputedQuestionNoSourceInfo(exampleLabel, exampleVarDecl, exampleComputation)
@@ -70,7 +70,7 @@ func TestComputedQuestion(t *testing.T) {
 }
 
 func TestIf(t *testing.T) {
-	questionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("What was the selling price?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("sellingPrice"), vari.NewIntTypeNoSourceInfo()))
+	questionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("What was the selling price?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("sellingPrice"), expr.NewIntTypeNoSourceInfo()))
 	ifBodyExample := NewStmtListNoSourceInfo([]interfaces.Question{questionExample}, []interfaces.Conditional{})
 	ifCondExample := expr.NewBoolLitNoSourceInfo(true)
 	ifExample := NewIfNoSourceInfo(ifCondExample, ifBodyExample)
@@ -85,11 +85,11 @@ func TestIf(t *testing.T) {
 }
 
 func TestIfElse(t *testing.T) {
-	ifQuestionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
+	ifQuestionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()))
 	ifBodyExample := NewStmtListNoSourceInfo([]interfaces.Question{ifQuestionExample}, []interfaces.Conditional{})
 	ifCondExample := expr.NewBoolLitNoSourceInfo(true)
 
-	elseQuestionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("What was the selling price?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("sellingPrice"), vari.NewIntTypeNoSourceInfo()))
+	elseQuestionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("What was the selling price?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("sellingPrice"), expr.NewIntTypeNoSourceInfo()))
 	elseBodyExample := NewStmtListNoSourceInfo([]interfaces.Question{elseQuestionExample}, []interfaces.Conditional{})
 
 	ifElseExample := NewIfElseNoSourceInfo(ifCondExample, ifBodyExample, elseBodyExample)
@@ -108,7 +108,7 @@ func TestIfElse(t *testing.T) {
 }
 
 func TestStmtList(t *testing.T) {
-	questionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
+	questionExample := NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()))
 	questionListExample := []interfaces.Question{questionExample}
 
 	ifExample := NewIfNoSourceInfo(expr.NewBoolLitNoSourceInfo(true), NewEmptyStmtListNoSourceInfo())

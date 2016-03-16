@@ -5,7 +5,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/andlabs/ui"
 	"ql/ast/expr"
-	"ql/ast/vari"
 	"ql/interfaces"
 	"strconv"
 )
@@ -17,7 +16,7 @@ type GUIQuestion struct {
 }
 
 // createGUIQuestion creates a GUIQuestion. The last argument indicates if the question should be disabled (no entry allowed).
-func createGUIQuestion(label string, questionType interfaces.VarType, callback func(interface{}, error), disabled bool) *GUIQuestion {
+func createGUIQuestion(label string, questionType interfaces.ValueType, callback func(interfaces.Expr, error), disabled bool) *GUIQuestion {
 	questionLabel := CreateLabel(label)
 	questionElement := createQuestionElement(questionType, callback, disabled)
 	errorLabel := CreateLabel("")
@@ -26,12 +25,12 @@ func createGUIQuestion(label string, questionType interfaces.VarType, callback f
 }
 
 // CreateEnabledGUIQuestion is a convenience method for creating a GUIQuestion that is enabled
-func CreateEnabledGUIQuestion(label string, questionType interfaces.VarType, callback func(interface{}, error)) *GUIQuestion {
+func CreateEnabledGUIQuestion(label string, questionType interfaces.ValueType, callback func(interfaces.Expr, error)) *GUIQuestion {
 	return createGUIQuestion(label, questionType, callback, false)
 }
 
 // CreateDisabledGUIQuestion is a convenience method for creating a GUIQuestion that is disabled
-func CreateDisabledGUIQuestion(label string, questionType interfaces.VarType, callback func(interface{}, error)) *GUIQuestion {
+func CreateDisabledGUIQuestion(label string, questionType interfaces.ValueType, callback func(interfaces.Expr, error)) *GUIQuestion {
 	return createGUIQuestion(label, questionType, callback, true)
 }
 
@@ -51,11 +50,11 @@ func (this *GUIQuestion) ResetErrorLabelText(newText string) {
 	this.ChangeErrorLabelText("")
 }
 
-func createQuestionElement(questionType interfaces.VarType, callback func(interface{}, error), disabled bool) ui.Control {
+func createQuestionElement(questionType interfaces.ValueType, callback func(interfaces.Expr, error), disabled bool) ui.Control {
 	var UIEntity ui.Control
 
 	switch questionType.(type) {
-	case vari.BoolType:
+	case expr.BoolType:
 		checkbox := CreateCheckboxConditional()
 		checkbox.OnToggled(func(*ui.Checkbox) {
 			log.WithFields(log.Fields{"value": checkbox.Checked()}).Debug("Checkbox value changed")
@@ -63,7 +62,7 @@ func createQuestionElement(questionType interfaces.VarType, callback func(interf
 			callback(expr.NewBoolLitNoSourceInfo(checkbox.Checked()), nil)
 		})
 		UIEntity = checkbox
-	case vari.StringType:
+	case expr.StringType:
 		inputField := CreateInputTextField("", disabled)
 		inputField.OnChanged(func(*ui.Entry) {
 			inputText := inputField.Text()
@@ -73,7 +72,7 @@ func createQuestionElement(questionType interfaces.VarType, callback func(interf
 			callback(expr.NewStrLitNoSourceInfo(inputText), nil) // TODO check if really is string
 		})
 		UIEntity = inputField
-	case vari.IntType:
+	case expr.IntType:
 		inputField := CreateInputTextField("", disabled)
 		inputField.OnChanged(func(*ui.Entry) {
 			inputText := inputField.Text()
@@ -83,7 +82,7 @@ func createQuestionElement(questionType interfaces.VarType, callback func(interf
 			inputTextAsInt, err := strconv.Atoi(inputText)
 			if inputText == "" {
 				if callback != nil {
-					callback(questionType.GetDefaultValue(), nil)
+					callback(expr.NewIntLitNoSourceInfo(inputTextAsInt), nil)
 				}
 				return
 			} else if err != nil {

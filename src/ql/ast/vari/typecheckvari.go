@@ -4,19 +4,9 @@ import (
 	"ql/interfaces"
 )
 
-func (this VarDecl) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	this.Ident.TypeCheck(typeChecker, symbols)
-	this.Type.TypeCheck(typeChecker, symbols)
-}
+func (this VarDecl) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interface{} {
+	// store type for identifier so when we find VarExpr with this id we know type (used during typechecking)
+	symbols.SetTypeForVarId(this.Type, this.Ident)
 
-func (this VarId) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-}
-
-func (this IntType) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-}
-
-func (this StringType) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-}
-
-func (this BoolType) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	return nil
 }

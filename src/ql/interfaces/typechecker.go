@@ -9,7 +9,7 @@ type TypeChecker interface {
 	VarIdForLabel(StrLit) VarId
 	VarDeclIsKnown(VarDecl) bool
 	MarkVarDeclAsKnown(varDecl VarDecl)
-	TypeForVarDecl(varDecl VarDecl) VarType
+	TypeForVarDecl(varDecl VarDecl) ValueType
 	SetCurrentVarIdVisited(VarDecl)
 	AddDependencyForCurrentlyVisitedVarDecl(VarId)
 	UnsetCurrentVarIdVisited()

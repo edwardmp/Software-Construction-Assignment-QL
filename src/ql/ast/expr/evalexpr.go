@@ -5,23 +5,19 @@ import (
 	"ql/interfaces"
 )
 
-func (this Add) Eval(s interfaces.Symbols) interface{} {
+func (this Add) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return this.Lhs.Eval(s).(int) + this.Rhs.Eval(s).(int)
 }
 
-func (this And) Eval(s interfaces.Symbols) interface{} {
+func (this And) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return this.Lhs.Eval(s).(bool) && this.Rhs.Eval(s).(bool)
 }
 
-func (this BoolLit) Eval(s interfaces.Symbols) interface{} {
-	return bool(this.Value)
-}
-
-func (this Div) Eval(s interfaces.Symbols) interface{} {
+func (this Div) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return this.Lhs.Eval(s).(int) / this.Rhs.Eval(s).(int)
 }
 
-func (this Eq) Eval(s interfaces.Symbols) interface{} {
+func (this Eq) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	switch this.Lhs.Eval(s).(type) {
 	case int:
 		return this.Lhs.Eval(s).(int) == this.Rhs.Eval(s).(int)
@@ -34,7 +30,7 @@ func (this Eq) Eval(s interfaces.Symbols) interface{} {
 	return nil
 }
 
-func (this GEq) Eval(s interfaces.Symbols) interface{} {
+func (this GEq) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	switch this.Lhs.Eval(s).(type) {
 	case int:
 		return this.Lhs.Eval(s).(int) >= this.Rhs.Eval(s).(int)
@@ -45,7 +41,7 @@ func (this GEq) Eval(s interfaces.Symbols) interface{} {
 	return nil
 }
 
-func (this GT) Eval(s interfaces.Symbols) interface{} {
+func (this GT) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	switch this.Lhs.Eval(s).(type) {
 	case int:
 		return this.Lhs.Eval(s).(int) > this.Rhs.Eval(s).(int)
@@ -56,11 +52,7 @@ func (this GT) Eval(s interfaces.Symbols) interface{} {
 	return nil
 }
 
-func (this IntLit) Eval(s interfaces.Symbols) interface{} {
-	return this.Value
-}
-
-func (this LEq) Eval(s interfaces.Symbols) interface{} {
+func (this LEq) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	switch this.Lhs.Eval(s).(type) {
 	case int:
 		return this.Lhs.Eval(s).(int) <= this.Rhs.Eval(s).(int)
@@ -71,19 +63,19 @@ func (this LEq) Eval(s interfaces.Symbols) interface{} {
 	return nil
 }
 
-func (this LT) Eval(s interfaces.Symbols) interface{} {
+func (this LT) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return this.Lhs.Eval(s).(int) < this.Rhs.Eval(s).(int)
 }
 
-func (this Mul) Eval(s interfaces.Symbols) interface{} {
+func (this Mul) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return this.Lhs.Eval(s).(int) * this.Rhs.Eval(s).(int)
 }
 
-func (this Neg) Eval(s interfaces.Symbols) interface{} {
+func (this Neg) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return int(math.Abs(float64(this.Value.Eval(s).(int))) * -1)
 }
 
-func (this NEq) Eval(s interfaces.Symbols) interface{} {
+func (this NEq) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	switch this.Lhs.Eval(s).(type) {
 	case int:
 		return this.Lhs.Eval(s).(int) != this.Rhs.Eval(s).(int)
@@ -96,39 +88,48 @@ func (this NEq) Eval(s interfaces.Symbols) interface{} {
 	return nil
 }
 
-func (this Not) Eval(s interfaces.Symbols) interface{} {
+func (this Not) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return !this.Value.Eval(s).(bool)
 }
 
-func (this Or) Eval(s interfaces.Symbols) interface{} {
+func (this Or) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return this.Lhs.Eval(s).(bool) || this.Rhs.Eval(s).(bool)
 }
 
-func (this Pos) Eval(s interfaces.Symbols) interface{} {
+func (this Pos) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return int(math.Abs(float64(this.Value.Eval(s).(int))))
 }
 
-func (this StrLit) Eval(s interfaces.Symbols) interface{} {
-	return string(this.Value)
+func (this IntLit) Eval(s interfaces.VarIdValueSymbols) interface{} {
+	return this.Value
 }
 
-func (this Sub) Eval(s interfaces.Symbols) interface{} {
+func (this StrLit) Eval(s interfaces.VarIdValueSymbols) interface{} {
+	return this.Value
+}
+
+func (this BoolLit) Eval(s interfaces.VarIdValueSymbols) interface{} {
+	return this.Value
+}
+
+func (this Sub) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	return this.Lhs.Eval(s).(int) - this.Rhs.Eval(s).(int)
 }
 
-func (this VarExpr) Eval(symbols interfaces.Symbols) interface{} {
+func (this VarExpr) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
 	if symbols == nil {
 		panic("No symbol table passed to Eval VarExpr")
 	}
 
-	if referencedExpr := symbols.GetNodeForIdentifier(this.Identifier); referencedExpr != nil {
-		return referencedExpr.(interfaces.Expr).Eval(symbols)
+	if referencedExpr := symbols.GetExprForVarId(this.Identifier); referencedExpr != nil {
+		return referencedExpr.Eval(symbols)
 	}
 
 	return nil
 }
 
-func (this Expr) Eval(s interfaces.Symbols) interface{} {
+func (this Expr) Eval(s interfaces.VarIdValueSymbols) interface{} {
 	panic("Expr struct Eval method not overridden")
+
 	return nil
 }

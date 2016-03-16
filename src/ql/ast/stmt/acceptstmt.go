@@ -5,68 +5,68 @@ import (
 	"ql/interfaces"
 )
 
-func (this Form) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (this Form) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	log.Debug("Accept form")
-	v.VisitForm(this, s)
+	visitor.VisitForm(this, context)
 
-	this.Identifier.Accept(v, s)
-	this.Content.Accept(v, s)
+	this.Identifier.Accept(visitor, context)
+	this.Content.Accept(visitor, context)
 
 	return nil
 }
 
-func (this If) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (this If) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	log.Debug("Accept If")
-	v.VisitIf(this, s)
+	visitor.VisitIf(this, context)
 
-	this.Cond.Accept(v, s)
-	this.Body.Accept(v, s)
+	this.Cond.Accept(visitor, context)
+	this.Body.Accept(visitor, context)
 
 	return nil
 }
 
-func (this IfElse) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (this IfElse) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	log.Debug("Accept IfElse")
-	v.VisitIfElse(this, s)
+	visitor.VisitIfElse(this, context)
 
-	this.Cond.Accept(v, s)
-	this.IfBody.Accept(v, s)
-	this.ElseBody.Accept(v, s)
+	this.Cond.Accept(visitor, context)
+	this.IfBody.Accept(visitor, context)
+	this.ElseBody.Accept(visitor, context)
 
 	return nil
 }
 
-func (this InputQuestion) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (this InputQuestion) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	log.Debug("Accept InputQuestion")
-	v.VisitInputQuestion(this, s)
+	visitor.VisitInputQuestion(this, context)
 
-	this.Label.Accept(v, s)
-	this.VarDecl.Accept(v, s)
+	this.Label.Accept(visitor, context)
+	this.VarDecl.Accept(visitor, context)
 
 	return nil
 }
 
-func (this ComputedQuestion) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (this ComputedQuestion) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	log.Debug("Accept ComputedQuestion")
-	v.VisitComputedQuestion(this, s)
+	visitor.VisitComputedQuestion(this, context)
 
-	this.Label.Accept(v, s)
-	this.VarDecl.Accept(v, s)
-	this.Computation.Accept(v, s)
+	this.Label.Accept(visitor, context)
+	this.VarDecl.Accept(visitor, context)
+	this.Computation.Accept(visitor, context)
 
 	return nil
 }
 
-func (this StmtList) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (this StmtList) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	log.Debug("Accept StmtList")
-	v.VisitStmtList(this, s)
+	visitor.VisitStmtList(this, context)
 
 	for _, question := range this.Questions {
-		question.Accept(v, s)
+		question.Accept(visitor, context)
 	}
 
 	for _, conditional := range this.Conditionals {
-		conditional.Accept(v, s)
+		conditional.Accept(visitor, context)
 	}
 
 	return nil

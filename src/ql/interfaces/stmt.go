@@ -3,6 +3,7 @@ package interfaces
 type Stmt interface {
 	ASTNode
 	String() string
+	TypeCheck(TypeChecker, TypeCheckSymbols)
 }
 
 type Form interface {
@@ -29,7 +30,7 @@ type ComputedQuestion interface {
 
 type Conditional interface {
 	Stmt
-	EvalCondition(Symbols) bool
+	EvalCondition(VarIdValueSymbols) bool
 	GetCondition() Expr
 }
 

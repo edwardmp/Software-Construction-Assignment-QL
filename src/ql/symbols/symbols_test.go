@@ -3,25 +3,27 @@ package symbols
 import (
 	"io/ioutil"
 	"os"
+	"ql/ast/expr"
 	"ql/ast/vari"
 	"strings"
 	"testing"
 )
 
 func TestSymbolTableAdd(t *testing.T) {
-	newSymbolTable := NewSymbols()
+	newSymbolTable := newSymbols()
 	exampleVarId := vari.NewVarIdNoSourceInfo("testIdentifier")
-	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)
+	newSymbolTable.setNodeForIdentifier("testValue", exampleVarId)
 
-	if lookupValue := newSymbolTable.GetNodeForIdentifier(exampleVarId); lookupValue != "testValue" {
+	if lookupValue := newSymbolTable.getNodeForIdentifier(exampleVarId); lookupValue != "testValue" {
 		t.Errorf("New symbol table created not correct, expected value %s for key %s, is %s", "testValue", exampleVarId, lookupValue)
 	}
 }
 
+// TODO move to own file for that type of symboltable
 func TestSaveToDisk(t *testing.T) {
-	newSymbolTable := NewSymbols()
+	newSymbolTable := NewVarIdValueSymbols()
 	exampleVarId := vari.NewVarIdNoSourceInfo("testIdentifier")
-	newSymbolTable.SetNodeForIdentifier("testValue", exampleVarId)
+	newSymbolTable.SetExprForVarId(expr.NewStrLitNoSourceInfo("testValue"), exampleVarId)
 
 	newSymbolTable.SaveToDisk()
 

@@ -9,14 +9,14 @@ type TypeChecker struct {
 	interfaces.TypeChecker
 	ErrorsEncounteredForCheckType map[string][]error
 	UsedLabels                    map[interfaces.StrLit]interfaces.VarId
-	KnownIdentifiers              map[interfaces.VarId]interfaces.VarType
+	KnownIdentifiers              map[interfaces.VarId]interfaces.ValueType
 	CurrentVarIdVisited           interfaces.VarId
 	DependenciesPerVarId          map[interfaces.VarId][]interfaces.VarId
 	ConditionsDependentOn         []interfaces.Expr
 }
 
 func NewTypeChecker() TypeChecker {
-	return TypeChecker{ErrorsEncounteredForCheckType: make(map[string][]error), UsedLabels: make(map[interfaces.StrLit]interfaces.VarId), KnownIdentifiers: make(map[interfaces.VarId]interfaces.VarType), DependenciesPerVarId: make(map[interfaces.VarId][]interfaces.VarId)}
+	return TypeChecker{ErrorsEncounteredForCheckType: make(map[string][]error), UsedLabels: make(map[interfaces.StrLit]interfaces.VarId), KnownIdentifiers: make(map[interfaces.VarId]interfaces.ValueType), DependenciesPerVarId: make(map[interfaces.VarId][]interfaces.VarId)}
 }
 
 func (this *TypeChecker) AddConditionDependentOn(condition interfaces.Expr) {
@@ -41,7 +41,7 @@ func (this *TypeChecker) PopLastConditionDependentOn() {
 	conditionsDependentOn := this.ConditionsDependentOn
 
 	if len(conditionsDependentOn) == 0 {
-		panic("Attempting to pop conditions dependent on but not aware of any")
+		panic("Attempting to pop from conditions dependent on but not aware of any")
 	}
 
 	log.WithFields(log.Fields{"conditionDependentOnPopped": this.ConditionsDependentOn[len(this.ConditionsDependentOn)-1]}).Debug("Pop last condition dependent on")
@@ -181,6 +181,6 @@ func (this *TypeChecker) MarkVarDeclAsKnown(varDecl interfaces.VarDecl) {
 	this.KnownIdentifiers[varDecl.GetIdent()] = varDecl.GetType()
 }
 
-func (this *TypeChecker) TypeForVarDecl(varDecl interfaces.VarDecl) interfaces.VarType {
+func (this *TypeChecker) TypeForVarDecl(varDecl interfaces.VarDecl) interfaces.ValueType {
 	return this.KnownIdentifiers[varDecl.GetIdent()]
 }
