@@ -1,1 +1,5 @@
 *.json
+
+# binary files
+main
+qL.test 

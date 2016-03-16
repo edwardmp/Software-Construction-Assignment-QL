@@ -73,23 +73,23 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Term : Term mulop Factor	<< ast.NewMul(X[0], X[2], X[0].(*token.Token).Pos) >>`,
+		String: `Term : Term mulop Factor	<< ast.NewMul(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Term",
 		NTType: 3,
 		Index: 5,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewMul(X[0], X[2], X[0].(*token.Token).Pos)
+			return ast.NewMul(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
-		String: `Term : Term divop Factor	<< ast.NewDiv(X[0], X[2], X[0].(*token.Token).Pos) >>`,
+		String: `Term : Term divop Factor	<< ast.NewDiv(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "Term",
 		NTType: 3,
 		Index: 6,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewDiv(X[0], X[2], X[0].(*token.Token).Pos)
+			return ast.NewDiv(X[0], X[2], X[1].(*token.Token).Pos)
 		},
 	},
 	ProdTabEntry{
@@ -343,10 +343,20 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
+		String: `Expr : StrLiteral	<<  >>`,
+		Id: "Expr",
+		NTType: 10,
+		Index: 32,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
 		String: `IfStmt : "if" lpar Expr rpar Block	<< ast.NewIf(X[2], X[4], X[0].(*token.Token).Pos) >>`,
 		Id: "IfStmt",
 		NTType: 11,
-		Index: 32,
+		Index: 33,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewIf(X[2], X[4], X[0].(*token.Token).Pos)
@@ -356,7 +366,7 @@ var productionsTable = ProdTab {
 		String: `IfStmt : "if" lpar Expr rpar Block "else" Block	<< ast.NewIfElse(X[2], X[4], X[6], X[0].(*token.Token).Pos) >>`,
 		Id: "IfStmt",
 		NTType: 11,
-		Index: 33,
+		Index: 34,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewIfElse(X[2], X[4], X[6], X[0].(*token.Token).Pos)
@@ -366,7 +376,7 @@ var productionsTable = ProdTab {
 		String: `Question : StrLiteral VarDecl	<< ast.NewInputQuestion(X[0], X[1]) >>`,
 		Id: "Question",
 		NTType: 12,
-		Index: 34,
+		Index: 35,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewInputQuestion(X[0], X[1])
@@ -376,7 +386,7 @@ var productionsTable = ProdTab {
 		String: `Question : StrLiteral VarDecl assign Expr	<< ast.NewComputedQuestion(X[0], X[1], X[3], X[2].(*token.Token).Pos) >>`,
 		Id: "Question",
 		NTType: 12,
-		Index: 35,
+		Index: 36,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewComputedQuestion(X[0], X[1], X[3], X[2].(*token.Token).Pos)
@@ -386,7 +396,7 @@ var productionsTable = ProdTab {
 		String: `Block : lbrace StmtList rbrace	<< X[1], nil >>`,
 		Id: "Block",
 		NTType: 13,
-		Index: 36,
+		Index: 37,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[1], nil
@@ -396,7 +406,7 @@ var productionsTable = ProdTab {
 		String: `Block : lbrace rbrace	<< ast.NewEmptyStmtList(X[0].(*token.Token).Pos) >>`,
 		Id: "Block",
 		NTType: 13,
-		Index: 37,
+		Index: 38,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewEmptyStmtList(X[0].(*token.Token).Pos)
@@ -406,7 +416,7 @@ var productionsTable = ProdTab {
 		String: `StmtList : Stmt	<< ast.NewStmtList(X[0]) >>`,
 		Id: "StmtList",
 		NTType: 14,
-		Index: 38,
+		Index: 39,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewStmtList(X[0])
@@ -416,7 +426,7 @@ var productionsTable = ProdTab {
 		String: `StmtList : StmtList Stmt	<< ast.AppendStmt(X[0], X[1]) >>`,
 		Id: "StmtList",
 		NTType: 14,
-		Index: 39,
+		Index: 40,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.AppendStmt(X[0], X[1])
@@ -426,7 +436,7 @@ var productionsTable = ProdTab {
 		String: `Stmt : Question	<<  >>`,
 		Id: "Stmt",
 		NTType: 15,
-		Index: 40,
+		Index: 41,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -436,7 +446,7 @@ var productionsTable = ProdTab {
 		String: `Stmt : IfStmt	<<  >>`,
 		Id: "Stmt",
 		NTType: 15,
-		Index: 41,
+		Index: 42,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
