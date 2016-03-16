@@ -66,6 +66,8 @@ Term    : Term mulop Factor << ast.NewMul($0, $2, $1.(*token.Token).Pos) >>
         ;
 
 Factor  : NumLiteral 
+        | BoolLiteral
+        | StrLiteral
         | VarId        << ast.NewVarExpr($0) >>
         ;
 

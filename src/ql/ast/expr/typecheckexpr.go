@@ -36,7 +36,7 @@ func (this Div) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeC
 }
 
 func (this Eq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	checkForUnequalTypes(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
@@ -48,19 +48,19 @@ func (this GEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeC
 }
 
 func (this GT) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
 
 func (this LEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
 
 func (this LT) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
@@ -78,7 +78,7 @@ func (this Neg) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeC
 }
 
 func (this NEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	checkForUnequalTypes(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
@@ -128,24 +128,17 @@ func checkOperand(unaryExpr interfaces.UnaryOperatorExpr, expectedType interface
 }
 
 func checkOperands(binaryExpression interfaces.BinaryOperatorExpr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+	checkForInvalidOperationOperand(binaryExpression.GetLhs(), expectedType, typeChecker, s)
+	checkForInvalidOperationOperand(binaryExpression.GetRhs(), expectedType, typeChecker, s)
+}
+
+func checkForUnequalTypes(binaryExpression interfaces.BinaryOperatorExpr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
 	lhsType := binaryExpression.GetLhs().TypeCheck(typeChecker, s)
 	rhsType := binaryExpression.GetRhs().TypeCheck(typeChecker, s)
 
-	typesEqual := checkForUnequalTypes(lhsType, rhsType, typeChecker)
-
-	if typesEqual {
-		checkForInvalidOperationOperand(binaryExpression.GetLhs(), expectedType, typeChecker, s)
-		checkForInvalidOperationOperand(binaryExpression.GetRhs(), expectedType, typeChecker, s)
-	}
-}
-
-func checkForUnequalTypes(lhsType, rhsType interfaces.ValueType, typeChecker interfaces.TypeChecker) bool {
 	if lhsType != rhsType {
 		typeChecker.AddEncounteredError(fmt.Errorf("Encountered BinaryOperator with operands of different types: %s and %s", lhsType, rhsType))
-		return false
 	}
-
-	return true
 }
 
 func checkForInvalidOperationOperand(expr interfaces.Expr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
