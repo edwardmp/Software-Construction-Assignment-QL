@@ -1,7 +1,6 @@
 package typechecker
 
 import (
-	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"ql/interfaces"
 )
@@ -13,10 +12,42 @@ type TypeChecker struct {
 	KnownIdentifiers              map[interfaces.VarId]interfaces.VarType
 	CurrentVarIdVisited           interfaces.VarId
 	DependenciesPerVarId          map[interfaces.VarId][]interfaces.VarId
+	ConditionsDependentOn         []interfaces.Expr
 }
 
 func NewTypeChecker() TypeChecker {
 	return TypeChecker{ErrorsEncounteredForCheckType: make(map[string][]error), UsedLabels: make(map[interfaces.StrLit]interfaces.VarId), KnownIdentifiers: make(map[interfaces.VarId]interfaces.VarType), DependenciesPerVarId: make(map[interfaces.VarId][]interfaces.VarId)}
+}
+
+func (this *TypeChecker) AddConditionDependentOn(condition interfaces.Expr) {
+	if condition == nil {
+		panic("Attempting to add nil dependent condition")
+	}
+
+	log.WithFields(log.Fields{"conditionDependentOn": condition}).Debug("Add condition dependent on")
+
+	this.ConditionsDependentOn = append(this.ConditionsDependentOn, condition)
+}
+
+func (this *TypeChecker) GetConditionsDependentOn() []interfaces.Expr {
+	conditionsDependentOn := this.ConditionsDependentOn
+
+	log.WithFields(log.Fields{"conditionsDependentOn": conditionsDependentOn}).Debug("Getting conditions dependent on")
+
+	return conditionsDependentOn
+}
+
+func (this *TypeChecker) PopLastConditionDependentOn() {
+	conditionsDependentOn := this.ConditionsDependentOn
+
+	if len(conditionsDependentOn) == 0 {
+		panic("Attempting to pop conditions dependent on but not aware of any")
+	}
+
+	log.WithFields(log.Fields{"conditionDependentOnPopped": this.ConditionsDependentOn[len(this.ConditionsDependentOn)-1]}).Debug("Pop last condition dependent on")
+
+	// remove last element
+	this.ConditionsDependentOn = conditionsDependentOn[:len(conditionsDependentOn)-1]
 }
 
 func (this *TypeChecker) SetCurrentVarIdVisited(varDeclVisiting interfaces.VarDecl) {
@@ -46,24 +77,30 @@ func (this *TypeChecker) GetDependencyChainForVarId(varId interfaces.VarId) []in
 
 	for _, directDependency := range this.DependenciesPerVarId[this.CurrentVarIdVisited] {
 		dependencies = append(dependencies, directDependency)
-
 		// add as dependencies: the dependencies of the directDependency (i.e. the indirect dependencies of CurrentVarIdVisited) in a transitive fashion
 		dependencies = append(dependencies, this.getDependenciesOfDirectDependenciesForVarId(directDependency)...)
 	}
-
-	fmt.Println(dependencies)
 
 	return dependencies
 }
 
 func (this *TypeChecker) getDependenciesOfDirectDependenciesForVarId(varId interfaces.VarId) []interfaces.VarId {
-	// if we try to get dependencies of the currently visited var id we've found a cycle
+	if varId == nil {
+		panic("Attempting to get dependencies of nil varId")
+	}
+
+	// if we try to get dependencies of the currently visited VarId we've found a cycle
 	if varId == this.CurrentVarIdVisited {
-		return []interfaces.VarId{}
+		return nil
 	}
 
 	dependencies := make([]interfaces.VarId, 0)
 	for _, directDependency := range this.DependenciesPerVarId[varId] {
+		// if we encounter ourselves, we found a cyclic dependency
+		if directDependency == varId {
+			return nil
+		}
+
 		dependencies = append(dependencies, directDependency)
 		dependencies = append(dependencies, this.getDependenciesOfDirectDependenciesForVarId(directDependency)...)
 	}

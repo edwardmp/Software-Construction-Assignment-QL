@@ -12,15 +12,25 @@ func (this Form) TypeCheck(typeChecker interfaces.TypeChecker, symbols interface
 
 func (this If) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 	this.typeCheckIfForNonBoolConditions(typeChecker, symbols)
-	this.Cond.TypeCheck(typeChecker, symbols)
+
+	typeChecker.AddConditionDependentOn(this.Cond)
+
 	this.Body.TypeCheck(typeChecker, symbols)
+	this.Cond.TypeCheck(typeChecker, symbols)
+
+	typeChecker.PopLastConditionDependentOn()
 }
 
 func (this IfElse) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 	this.typeCheckIfElseForNonBoolConditions(typeChecker, symbols)
+
+	typeChecker.AddConditionDependentOn(this.Cond)
+
 	this.Cond.TypeCheck(typeChecker, symbols)
 	this.IfBody.TypeCheck(typeChecker, symbols)
 	this.ElseBody.TypeCheck(typeChecker, symbols)
+
+	typeChecker.PopLastConditionDependentOn()
 }
 
 func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
@@ -32,16 +42,30 @@ func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbo
 	this.Computation.TypeCheck(typeChecker, symbols)
 	this.VarDecl.TypeCheck(typeChecker, symbols)
 
-	this.typeCheckForCyclicalDependencies(typeChecker, symbols)
+	for _, conditionDependentOn := range typeChecker.GetConditionsDependentOn() {
+		conditionDependentOn.TypeCheck(typeChecker, symbols)
+	}
 
+	typeCheckForCyclicalDependencies(this, typeChecker, symbols)
 	typeChecker.UnsetCurrentVarIdVisited()
+
 }
 
 func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 	typeCheckQuestionForDuplicateLabels(this, typeChecker)
 	typeCheckQuestionForRedeclaration(this, typeChecker)
 
+	typeChecker.SetCurrentVarIdVisited(this.VarDecl)
+
 	this.VarDecl.TypeCheck(typeChecker, symbols)
+
+	// for these condition expressions, running TypeCheck will collect VarIds in them
+	for _, conditionDependentOn := range typeChecker.GetConditionsDependentOn() {
+		conditionDependentOn.TypeCheck(typeChecker, symbols)
+	}
+
+	typeCheckForCyclicalDependencies(this, typeChecker, symbols)
+	typeChecker.UnsetCurrentVarIdVisited()
 }
 
 func (this StmtList) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
@@ -64,8 +88,8 @@ func (this StmtList) TypeCheck(typeChecker interfaces.TypeChecker, symbols inter
 	}
 }
 
-func (this ComputedQuestion) typeCheckForCyclicalDependencies(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	varIdOfCurrentlyVisitingQuestion := this.VarDecl.GetIdent()
+func typeCheckForCyclicalDependencies(question interfaces.Question, typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	varIdOfCurrentlyVisitingQuestion := question.GetVarDecl().GetIdent()
 
 	numOfTimesQuestionVarIdFound := 0
 	depencyChainForQuestionVarId := typeChecker.GetDependencyChainForVarId(varIdOfCurrentlyVisitingQuestion)

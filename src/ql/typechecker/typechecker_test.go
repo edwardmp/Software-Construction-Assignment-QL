@@ -94,7 +94,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) 
 	}
 }
 
-func TestUndefinedQuestionReferenceChecker(t *testing.T) {
+func testUndefinedQuestionReferenceChecker(t *testing.T) {
 	computedQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Value residue:"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("valueResidue"), vari.NewIntTypeNoSourceInfo()), expr.NewSubNoSourceInfo(expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse")), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasMaintLoan"))))
 	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{computedQuestion}, []interfaces.Conditional{})
 	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
@@ -108,7 +108,7 @@ func TestUndefinedQuestionReferenceChecker(t *testing.T) {
 	}
 }
 
-func TestNonBoolConditionalChecker(t *testing.T) {
+func testNonBoolConditionalChecker(t *testing.T) {
 	exampleQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
 	exampleIf := stmt.NewIfNoSourceInfo(expr.NewIntLitNoSourceInfo(10), stmt.NewStmtListNoSourceInfo([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{}))
 	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{}, []interfaces.Conditional{exampleIf})
@@ -123,7 +123,7 @@ func TestNonBoolConditionalChecker(t *testing.T) {
 	}
 }
 
-func TestDuplicateLabelChecker(t *testing.T) {
+func testDuplicateLabelChecker(t *testing.T) {
 	firstQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
 	secondQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasMaintLoan"), vari.NewBoolTypeNoSourceInfo()))
 	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
@@ -138,7 +138,7 @@ func TestDuplicateLabelChecker(t *testing.T) {
 	}
 }
 
-func TestDuplicateVarDeclChecker(t *testing.T) {
+func testDuplicateVarDeclChecker(t *testing.T) {
 	firstQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
 	secondQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewIntTypeNoSourceInfo()))
 	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
@@ -149,6 +149,38 @@ func TestDuplicateVarDeclChecker(t *testing.T) {
 	errorsReported := typeChecker.ErrorsEncounteredForCheckType["DuplicateVarDeclarations"]
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Question redeclared with different types: vari.IntType and vari.BoolType")) {
+		t.Errorf("Duplicate var decl not reported correctly by type checker")
+	}
+}
+
+func testCyclicReferenceCheckerReferenceToEachOther(t *testing.T) {
+	questionPointingToSecondQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasBoughtHouse")))
+	questionPointingToFirstQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you buy a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasBoughtHouse"), vari.NewBoolTypeNoSourceInfo()), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse")))
+	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{questionPointingToFirstQuestion, questionPointingToSecondQuestion}, []interfaces.Conditional{})
+	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
+
+	typeChecker := NewTypeChecker()
+	exampleForm.TypeCheck(&typeChecker, symbols.NewSymbols())
+	errorsReported := typeChecker.ErrorsEncounteredForCheckType["CyclicalDependencies"]
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Found cyclical dependency: [hasSoldHouse hasBoughtHouse hasSoldHouse]")) {
+		t.Errorf("Cyclic reference to self not reported correctly by type checker")
+	}
+}
+
+func TestCyclicReferenceCheckerIfConditionRefersToBody(t *testing.T) {
+	fmt.Println("ho")
+	questionExample := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), vari.NewBoolTypeNoSourceInfo()))
+	ifBodyExample := stmt.NewStmtListNoSourceInfo([]interfaces.Question{questionExample}, []interfaces.Conditional{})
+	ifExample := stmt.NewIfNoSourceInfo(expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse")), ifBodyExample)
+	exampleFormBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{}, []interfaces.Conditional{ifExample})
+	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleFormBody)
+
+	typeChecker := NewTypeChecker()
+	exampleForm.TypeCheck(&typeChecker, symbols.NewSymbols())
+	errorsReported := typeChecker.ErrorsEncounteredForCheckType["CyclicalDependencies"]
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Found cyclical dependency: [hasSoldHouse hasSoldHouse]")) {
 		t.Errorf("Duplicate var decl not reported correctly by type checker")
 	}
 }

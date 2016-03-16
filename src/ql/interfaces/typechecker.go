@@ -14,4 +14,7 @@ type TypeChecker interface {
 	AddDependencyForCurrentlyVisitedVarDecl(VarId)
 	UnsetCurrentVarIdVisited()
 	GetDependencyChainForVarId(VarId) []VarId
+	AddConditionDependentOn(Expr)
+	PopLastConditionDependentOn()
+	GetConditionsDependentOn() []Expr
 }
