@@ -1,13 +1,15 @@
 package expr
 
 import (
+	"ql/ast/vari"
 	"ql/interfaces"
-	"ql/symboltable"
+	"ql/symbols"
+	"ql/token"
 	"testing"
 )
 
-func unaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput interfaces.Expr, symbolTable interface{}) {
-	if eval, expectedOutputEval := exampleInput.Eval(symbolTable), expectedOutput.(interfaces.Expr).Eval(symbolTable); eval != expectedOutputEval {
+func unaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput interfaces.Expr, symbols interfaces.Symbols) {
+	if eval, expectedOutputEval := exampleInput.Eval(symbols), expectedOutput.(interfaces.Expr).Eval(symbols); eval != expectedOutputEval {
 		t.Errorf("interfaces.Expr test error: should be %v (%T) for %v but is %v (%T)", expectedOutputEval, expectedOutputEval, eval, eval)
 	}
 }
@@ -34,30 +36,9 @@ func TestNegPos(t *testing.T) {
 	unaryExprEval(t, NewNegNoSourceInfo(NewPosNoSourceInfo(NewIntLitNoSourceInfo(10))), NewIntLitNoSourceInfo(-10), nil)
 }
 
-// FIXME is this a good idea? If not leads to import cycle..
-type VarIdentifier struct {
-	Ident string
-}
-
-func (v VarIdentifier) GetIdent() string {
-	return v.Ident
-}
-
-func (v VarIdentifier) String() string {
-	return v.Ident
-}
-
-func (v VarIdentifier) Accept(va interfaces.Visitor, s interface{}) interface{} {
-	return nil
-}
-
-func (v VarIdentifier) TypeCheck(typeChecker interfaces.TypeChecker, symbolTable interfaces.SymbolTable) {
-
-}
-
 func TestVarExpr(t *testing.T) {
-	symbolTable := symboltable.NewSymbolTable()
-	symbolTable.SetNodeForIdentifier(NewIntLitNoSourceInfo(2), VarIdentifier{"TestIdentifier"})
+	symbols := symbols.NewSymbols()
+	symbols.SetNodeForIdentifier(NewIntLitNoSourceInfo(2), vari.VarId{"TestIdentifier"})
 
-	unaryExprEval(t, NewVarExprNoSourceInfo(VarIdentifier{"TestIdentifier"}), NewIntLitNoSourceInfo(2), symbolTable)
+	unaryExprEval(t, NewVarExprNoSourceInfo(vari.Varid{"TestIdentifier"}), NewIntLitNoSourceInfo(2), symbols)
 }

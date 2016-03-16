@@ -5,39 +5,41 @@ import (
 	"ql/interfaces"
 )
 
-func (b BinaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	typeCheckForUnequalTypes(b, typeChecker, symbols)
-	typeCheckInvalidBinaryOperatorForOperands(b, typeChecker, symbols)
+func (this BinaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	typeCheckForUnequalTypes(this, typeChecker, symbols)
+	typeCheckInvalidBinaryOperatorForOperands(this, typeChecker, symbols)
 
-	b.Lhs.TypeCheck(typeChecker, symbols)
-	b.Rhs.TypeCheck(typeChecker, symbols)
+	this.Lhs.TypeCheck(typeChecker, symbols)
+	this.Rhs.TypeCheck(typeChecker, symbols)
 }
 
-func (u UnaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	typeCheckInvalidUnaryOperatorForOperands(u, typeChecker, symbols)
+func (this UnaryOperator) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	typeCheckInvalidUnaryOperatorForOperands(this, typeChecker, symbols)
 
-	u.Value.(interfaces.Expr).TypeCheck(typeChecker, symbols)
+	this.Value.(interfaces.Expr).TypeCheck(typeChecker, symbols)
 }
 
-func (v VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
-	typeCheckUndefinedQuestionReference(v, typeChecker, symbols)
+func (this VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	typeCheckUndefinedQuestionReference(this, typeChecker, symbols)
 
-	v.Identifier.TypeCheck(typeChecker, symbols)
+	typeChecker.AddDependencyForCurrentlyVisitedVarDecl(this.Identifier)
+
+	this.Identifier.TypeCheck(typeChecker, symbols)
 }
 
 func (this Expr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 	panic("Expr TypeCheck method not overridden")
 }
 
-func (i IntLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this IntLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 
 }
 
-func (b BoolLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this BoolLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 
 }
 
-func (s StrLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+func (this StrLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 
 }
 

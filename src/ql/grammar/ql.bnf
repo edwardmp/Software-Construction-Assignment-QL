@@ -60,8 +60,8 @@ Type    : "integer" << ast.NewIntType($0) >>
         | "string"  << ast.NewStringType($0) >>
         ;
 
-Term    : Term mulop Factor << ast.NewMul($0, $2, $0.(*token.Token).Pos) >>
-        | Term divop Factor << ast.NewDiv($0, $2, $0.(*token.Token).Pos) >>
+Term    : Term mulop Factor << ast.NewMul($0, $2, $1.(*token.Token).Pos) >>
+        | Term divop Factor << ast.NewDiv($0, $2, $1.(*token.Token).Pos) >>
         | Factor 
         ;
 
@@ -95,6 +95,7 @@ Expr    : addop Expr        << ast.NewPos($1, $0.(*token.Token).Pos) >>
         | lpar Expr rpar    << $1, nil >>
         | Term
         | BoolLiteral
+        | StrLiteral
         ;
 
 IfStmt  : "if" lpar Expr rpar Block                 << ast.NewIf($2, $4, $0.(*token.Token).Pos) >>

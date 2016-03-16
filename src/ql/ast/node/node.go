@@ -1,6 +1,8 @@
 package node
 
-import "ql/token"
+import (
+	"ql/token"
+)
 
 type Node struct {
 	SourceInfo token.Pos
@@ -11,7 +13,8 @@ func NewNode(sourceInfo interface{}) Node {
 		sourceInfo = token.Pos{}
 	}
 
-	return Node{sourceInfo.(token.Pos)}
+	return Node{}
+	//return Node{sourceInfo.(token.Pos)}
 }
 
 func (this Node) GetSourceInfo() token.Pos {

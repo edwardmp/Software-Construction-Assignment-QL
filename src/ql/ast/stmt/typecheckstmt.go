@@ -2,6 +2,7 @@ package stmt
 
 import (
 	"fmt"
+	log "github.com/Sirupsen/logrus"
 	"ql/interfaces"
 )
 
@@ -26,12 +27,21 @@ func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbo
 	typeCheckQuestionForDuplicateLabels(this, typeChecker)
 	typeCheckQuestionForRedeclaration(this, typeChecker)
 
+	typeChecker.SetCurrentVarIdVisited(this.VarDecl)
+
 	this.Computation.TypeCheck(typeChecker, symbols)
+	this.VarDecl.TypeCheck(typeChecker, symbols)
+
+	this.typeCheckForCyclicalDependencies(typeChecker, symbols)
+
+	typeChecker.UnsetCurrentVarIdVisited()
 }
 
 func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
 	typeCheckQuestionForDuplicateLabels(this, typeChecker)
 	typeCheckQuestionForRedeclaration(this, typeChecker)
+
+	this.VarDecl.TypeCheck(typeChecker, symbols)
 }
 
 func (this StmtList) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
@@ -51,6 +61,24 @@ func (this StmtList) TypeCheck(typeChecker interfaces.TypeChecker, symbols inter
 		case ComputedQuestion:
 			question.(ComputedQuestion).TypeCheck(typeChecker, symbols)
 		}
+	}
+}
+
+func (this ComputedQuestion) typeCheckForCyclicalDependencies(typeChecker interfaces.TypeChecker, symbols interfaces.Symbols) {
+	varIdOfCurrentlyVisitingQuestion := this.VarDecl.GetIdent()
+
+	numOfTimesQuestionVarIdFound := 0
+	depencyChainForQuestionVarId := typeChecker.GetDependencyChainForVarId(varIdOfCurrentlyVisitingQuestion)
+	for _, dependingVarId := range depencyChainForQuestionVarId {
+		if dependingVarId == varIdOfCurrentlyVisitingQuestion {
+			numOfTimesQuestionVarIdFound++
+		}
+	}
+
+	// if we find our own var id more than once, the dependencyChain is cyclical
+	if numOfTimesQuestionVarIdFound >= 2 {
+		log.WithFields(log.Fields{"Cyclical": depencyChainForQuestionVarId}).Error("Cyclic dependency found")
+		typeChecker.AddEncounteredErrorForCheckType("CyclicalDependencies", fmt.Errorf("Found cyclical dependency: %s", depencyChainForQuestionVarId))
 	}
 }
 

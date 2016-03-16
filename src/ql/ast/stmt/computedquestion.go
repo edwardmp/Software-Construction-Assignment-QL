@@ -20,22 +20,22 @@ func NewComputedQuestionNoSourceInfo(label interfaces.StrLit, varDecl interfaces
 	return NewComputedQuestion(label, varDecl, computation, nil)
 }
 
-func (c ComputedQuestion) String() string {
-	return fmt.Sprintf("A question with label %s, var decl %s and computation", c.Label, c.VarDecl, c.Computation)
+func (this ComputedQuestion) String() string {
+	return fmt.Sprintf("A question with label %s, var decl %s and computation", this.Label, this.VarDecl, this.Computation)
 }
 
-func (c ComputedQuestion) GetLabel() interfaces.StrLit {
-	return c.Label
+func (this ComputedQuestion) GetLabel() interfaces.StrLit {
+	return this.Label
 }
 
-func (c ComputedQuestion) GetLabelAsString() string {
-	return c.Label.GetValue()
+func (this ComputedQuestion) GetLabelAsString() string {
+	return this.Label.GetValue()
 }
 
-func (c ComputedQuestion) GetComputation() interfaces.Expr {
-	return c.Computation
+func (this ComputedQuestion) GetComputation() interfaces.Expr {
+	return this.Computation
 }
 
-func (c ComputedQuestion) GetVarDecl() interfaces.VarDecl {
-	return c.VarDecl
+func (this ComputedQuestion) GetVarDecl() interfaces.VarDecl {
+	return this.VarDecl
 }
