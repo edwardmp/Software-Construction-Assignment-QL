@@ -16,10 +16,10 @@ func NewVarDeclNoSourceInfo(varIdent interfaces.VarId, varType interfaces.VarTyp
 	return NewVarDecl(varIdent, varType, nil)
 }
 
-func (this VarDecl) GetIdent() interfaces.VarId {
-	return this.Ident
+func (v VarDecl) GetIdent() interfaces.VarId {
+	return v.Ident
 }
 
-func (this VarDecl) GetType() interfaces.VarType {
-	return this.Type
+func (v VarDecl) GetType() interfaces.VarType {
+	return v.Type
 }

@@ -5,148 +5,157 @@ import (
 	"ql/interfaces"
 )
 
-func (this Add) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (a Add) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept Add")
-	v.VisitAdd(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitAdd(a, s)
+	acceptLhsAndRhs(a, v, s)
 
 	return nil
 }
 
-func (this And) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (a And) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept And")
-	v.VisitAnd(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitAnd(a, s)
+	acceptLhsAndRhs(a, v, s)
 
 	return nil
 }
 
-func (this Div) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (d Div) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept Div")
-	v.VisitDiv(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitDiv(d, s)
+	acceptLhsAndRhs(d, v, s)
 
 	return nil
 }
 
-func (this Eq) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (e Eq) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept Eq")
-	v.VisitEq(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitEq(e, s)
+	acceptLhsAndRhs(e, v, s)
 
 	return nil
 }
 
-func (this GEq) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (g GEq) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept GEq")
-	v.VisitEq(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitEq(g, s)
+	acceptLhsAndRhs(g, v, s)
 
 	return nil
 }
 
-func (this GT) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (g GT) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept GT")
-	v.VisitGT(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitGT(g, s)
+	acceptLhsAndRhs(g, v, s)
 
 	return nil
 }
 
-func (this LEq) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (l LEq) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept LEq")
-	v.VisitLEq(this, s)
+	v.VisitLEq(l, s)
 
-	acceptLhsAndRhs(this, v, s)
+	acceptLhsAndRhs(l, v, s)
 
 	return nil
 }
 
-func (this LT) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (l LT) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept LT")
-	v.VisitLT(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitLT(l, s)
+	acceptLhsAndRhs(l, v, s)
 
 	return nil
 }
 
-func (this Mul) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
-	log.Debug("Accept Mul")
-	v.VisitMul(this, s)
-	acceptLhsAndRhs(this, v, s)
+func (m Mul) Accept(v interfaces.Visitor, s interface{}) interface{} {
+	log.Debug("Accept MUl")
+	v.VisitMul(m, s)
+	acceptLhsAndRhs(m, v, s)
 
 	return nil
 }
 
-func (this NEq) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (n NEq) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept NEq")
-	v.VisitNEq(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitNEq(n, s)
+	acceptLhsAndRhs(n, v, s)
 
 	return nil
 }
 
-func (this Or) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (o Or) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept Or")
-	v.VisitOr(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitOr(o, s)
+	acceptLhsAndRhs(o, v, s)
 
 	return nil
 }
 
-func (this Sub) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (s Sub) Accept(v interfaces.Visitor, sym interface{}) interface{} {
 	log.Debug("Accept Sub")
-	v.VisitSub(this, s)
-	acceptLhsAndRhs(this, v, s)
+	v.VisitSub(s, sym)
+	acceptLhsAndRhs(s, v, sym)
 
 	return nil
 }
 
-func (this IntLit) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (b BoolLit) Accept(v interfaces.Visitor, s interface{}) interface{} {
+	log.Debug("Accept BoolLit")
+	v.VisitBoolLit(b, s)
+
+	return nil
+}
+
+func (i IntLit) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept IntLit")
-	v.VisitIntLit(this, s)
+	v.VisitIntLit(i, s)
 
 	return nil
 }
 
-func (this StrLit) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (s StrLit) Accept(v interfaces.Visitor, sy interface{}) interface{} {
 	log.Debug("Accept StrLit")
-	v.VisitStrLit(this, s)
+	v.VisitStrLit(s, sy)
 
 	return nil
 }
 
-func (this Not) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (n Neg) Accept(v interfaces.Visitor, s interface{}) interface{} {
+	log.Debug("Accept Neg")
+	v.VisitNeg(n, s)
+	n.Value.Accept(v, s)
+
+	return nil
+}
+
+func (n Not) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept Not")
-	v.VisitNot(this, s)
-	this.Value.Accept(v, s)
+	v.VisitNot(n, s)
+	n.Value.Accept(v, s)
 
 	return nil
 }
 
-func (this Pos) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (p Pos) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept Pos")
-	v.VisitPos(this, s)
-	this.Value.Accept(v, s)
+	v.VisitPos(p, s)
+	p.Value.Accept(v, s)
 
 	return nil
 }
 
-func (this VarExpr) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
+func (va VarExpr) Accept(v interfaces.Visitor, s interface{}) interface{} {
 	log.Debug("Accept VarExpr")
-	v.VisitVarExpr(this, s)
-	this.Identifier.Accept(v, s)
+	v.VisitVarExpr(va, s)
+	va.Identifier.Accept(v, s)
 
 	return nil
 }
 
-func (this Expr) Accept(v interfaces.Visitor, s interfaces.Symbols) interface{} {
-	panic("Expr Accept method not overridden")
-
-	return nil
-}
-
-func acceptLhsAndRhs(binaryExpr interfaces.BinaryOperatorExpr, v interfaces.Visitor, s interfaces.Symbols) {
+func acceptLhsAndRhs(binaryExpr interfaces.BinaryOperatorExpr, v interfaces.Visitor, s interface{}) {
 	binaryExpr.GetLhs().Accept(v, s)
 	binaryExpr.GetRhs().Accept(v, s)
 }

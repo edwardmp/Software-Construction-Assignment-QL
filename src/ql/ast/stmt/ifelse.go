@@ -20,22 +20,10 @@ func NewIfElseNoSourceInfo(condition interfaces.Expr, ifBody StmtList, thenBody 
 	return NewIfElse(condition, ifBody, thenBody, nil)
 }
 
-func (this IfElse) GetCondition() interfaces.Expr {
-	return this.Cond
+func (i IfElse) String() string {
+	return fmt.Sprintf("An if/else statement with condition %s", i.Cond)
 }
 
-func (this IfElse) GetIfBody() interfaces.StmtList {
-	return this.IfBody
-}
-
-func (this IfElse) GetElseBody() interfaces.StmtList {
-	return this.ElseBody
-}
-
-func (this IfElse) String() string {
-	return fmt.Sprintf("An if/else statement with condition %s", this.Cond)
-}
-
-func (this IfElse) EvalCondition(symbols interfaces.Symbols) bool {
-	return this.Cond.Eval(symbols).(bool)
+func (i IfElse) EvalCondition() bool {
+	return i.Cond.Eval(nil).(bool) // TODO symboltable
 }

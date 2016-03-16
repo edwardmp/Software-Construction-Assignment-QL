@@ -1,6 +1,8 @@
 package expr
 
-import "ql/interfaces"
+import (
+	"ql/interfaces"
+)
 
 type Add struct {
 	BinaryOperator

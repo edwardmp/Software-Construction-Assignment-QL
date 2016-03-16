@@ -4,7 +4,7 @@ package lexer
 import (
 	
 	// "fmt"
-	// "ql/util"
+	// "QL/util"
 	
 	"io/ioutil"
 	"unicode/utf8"

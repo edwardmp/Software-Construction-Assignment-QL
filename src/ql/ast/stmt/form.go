@@ -19,12 +19,8 @@ func NewFormNoSourceInfo(identifier interfaces.VarId, content StmtList) Form {
 	return NewForm(identifier, content, nil)
 }
 
-func (this Form) GetQuestions() []interfaces.Question {
-	return this.Content.Questions
-}
-
-func (this Form) GetIdentifier() interfaces.VarId {
-	return this.Identifier
+func (this Form) GetIdentifierAsString() string {
+	return this.Identifier.GetIdent()
 }
 
 func (f Form) String() string {

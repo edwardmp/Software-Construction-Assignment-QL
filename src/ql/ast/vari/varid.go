@@ -13,10 +13,10 @@ func NewVarIdNoSourceInfo(ident string) VarId {
 	return NewVarId(ident, nil)
 }
 
-func (this VarId) GetIdent() string {
-	return this.Ident
+func (v VarId) GetIdent() string {
+	return v.Ident
 }
 
-func (this VarId) String() string {
-	return this.Ident
+func (va VarId) String() string {
+	return va.Ident
 }
