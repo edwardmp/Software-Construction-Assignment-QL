@@ -24,6 +24,7 @@ TOPLEVEL_PKG := ql
 INT_LIST := interfaces	#<-- Interface directories
 IMPL_LIST := symbols gui ast typechecker ast/expr ast/stmt ast/vari #<-- Implementation directories
 CMD_LIST := 	#<-- Command directories
+MAIN_LIST := main.go
 
 # List building
 ALL_LIST = $(INT_LIST) $(IMPL_LIST) $(CMD_LIST)
@@ -34,9 +35,10 @@ INSTALL_LIST = $(foreach int, $(ALL_LIST), $(int)_install)
 IREF_LIST = $(foreach int, $(ALL_LIST), $(int)_iref)
 TEST_LIST = $(foreach int, $(ALL_LIST), $(int)_test)
 FMT_TEST = $(foreach int, $(ALL_LIST), $(int)_fmt)
+RUN_LIST = $(foreach int, $(MAIN_LIST), $(int)_run)
 
 # All are .PHONY for now because dependencyness is hard
-.PHONY: $(CLEAN_LIST) $(TEST_LIST) $(FMT_LIST) $(INSTALL_LIST) $(BUILD_LIST) $(IREF_LIST)
+.PHONY: $(CLEAN_LIST) $(TEST_LIST) $(FMT_LIST) $(INSTALL_LIST) $(BUILD_LIST) $(IREF_LIST) $(RUN_LIST)
 
 all: build
 build: $(BUILD_LIST)
@@ -45,9 +47,12 @@ install: $(INSTALL_LIST)
 test: $(TEST_LIST)
 iref: $(IREF_LIST)
 fmt: $(FMT_TEST)
+run: $(RUN_LIST)
 
 $(BUILD_LIST): %_build: %_fmt %_iref
 	$(GOBUILD) $(TOPLEVEL_PKG)/$*
+$(RUN_LIST): %_run:
+	$(GOBUILD) main.go && ./main
 $(CLEAN_LIST): %_clean:
 	$(GOCLEAN) $(TOPLEVEL_PKG)/$*
 $(INSTALL_LIST): %_install:
