@@ -7,15 +7,17 @@ import (
 	"ql/interfaces"
 )
 
+type VarIdToExprSymbolTable map[interfaces.VarId]interfaces.Expr
+
 type SymbolCallBackFunction func(interfaces.VarIdValueSymbols)
 
 type VarIdValueSymbols struct {
-	*Symbols
+	Table               VarIdToExprSymbolTable
 	RegisteredCallbacks []func(interfaces.VarIdValueSymbols)
 }
 
 func NewVarIdValueSymbols() *VarIdValueSymbols {
-	return &VarIdValueSymbols{Symbols: newSymbols(), RegisteredCallbacks: make([]func(interfaces.VarIdValueSymbols), 0)}
+	return &VarIdValueSymbols{Table: make(VarIdToExprSymbolTable), RegisteredCallbacks: make([]func(interfaces.VarIdValueSymbols), 0)}
 }
 
 func (this *VarIdValueSymbols) SetExprForVarId(expr interfaces.Expr, varId interfaces.VarId) {
@@ -23,7 +25,8 @@ func (this *VarIdValueSymbols) SetExprForVarId(expr interfaces.Expr, varId inter
 		panic("Trying to set Expr for VarId to nil or varId is nil")
 	}
 
-	this.setNodeForIdentifier(expr, varId)
+	this.Table[varId] = expr
+	log.WithFields(log.Fields{"Identifier": varId, "Expr": expr}).Debug("Set Expr for VarId")
 
 	for _, registeredCallback := range this.RegisteredCallbacks {
 		registeredCallback(this)
@@ -35,7 +38,10 @@ func (this *VarIdValueSymbols) GetExprForVarId(varId interfaces.VarId) interface
 		panic("Trying to get Expr for nil VarId")
 	}
 
-	return this.getNodeForIdentifier(varId).(interfaces.Expr)
+	expr := this.Table[varId]
+	log.WithFields(log.Fields{"Identifier": varId, "Expr": expr}).Debug("Looking up Expr for VarId in SymbolTable")
+
+	return expr
 }
 
 func (this *VarIdValueSymbols) RegisterCallback(callback func(interfaces.VarIdValueSymbols)) {
@@ -57,6 +63,15 @@ func (this *VarIdValueSymbols) SaveToDisk() (interface{}, error) {
 	return formDataAsJSON, nil
 }
 
+func (this *VarIdValueSymbols) convertSymbolTableKeysToStrings() map[string]interface{} {
+	var symbolTableWithStringKeys map[string]interface{} = make(map[string]interface{})
+	for varId, expr := range this.Table {
+		symbolTableWithStringKeys[varId.GetIdent()] = expr.Eval(this)
+	}
+
+	return symbolTableWithStringKeys
+}
+
 func convertSymbolTableToJSON(symbolTableWithStringKeys map[string]interface{}) ([]byte, error) {
 	formDataAsJSON, jsonErr := json.MarshalIndent(symbolTableWithStringKeys, "", "  ")
 
@@ -68,13 +83,4 @@ func convertSymbolTableToJSON(symbolTableWithStringKeys map[string]interface{}) 
 	log.WithFields(log.Fields{"formDataAsJSON": string(formDataAsJSON[:])}).Debug("Successful conversion of symbolTable to JSON")
 
 	return formDataAsJSON, nil
-}
-
-func (this *VarIdValueSymbols) convertSymbolTableKeysToStrings() map[string]interface{} {
-	var symbolTableWithStringKeys map[string]interface{} = make(map[string]interface{})
-	for varId, expr := range this.Table {
-		symbolTableWithStringKeys[varId.GetIdent()] = expr.(interfaces.Expr).Eval(this)
-	}
-
-	return symbolTableWithStringKeys
 }

@@ -6,14 +6,17 @@ import (
 )
 
 func (this VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkUndefinedQuestionReference(this, typeChecker, symbols)
-
 	typeChecker.AddDependencyForCurrentlyVisitedVarDecl(this.Identifier)
 
 	if symbols.IsTypeSetForVarId(this.Identifier) {
 		return symbols.GetTypeForVarId(this.Identifier).(interfaces.ValueType)
 	}
 
+	// We don't already mark it as an error; because there is only one scope, the VarDecl may be simply declared later on
+	// After the whole Form is typechecked, it is checked which VarIds remain unknown (those that were not declared at a later point)
+	typeChecker.MarkVarIdAsUnknown(this.GetIdentifier())
+
+	// no type info in symboltable (reference to undefined question)
 	return nil
 }
 
@@ -136,6 +139,12 @@ func checkForUnequalTypes(binaryExpression interfaces.BinaryOperatorExpr, expect
 	lhsType := binaryExpression.GetLhs().TypeCheck(typeChecker, s)
 	rhsType := binaryExpression.GetRhs().TypeCheck(typeChecker, s)
 
+	// this occurs when we have no type info (e.g. VarExpr with reference to undefined question)
+	// this case is already handled by the undefined question reference checker, so don't continue here
+	if lhsType == nil || rhsType == nil {
+		return
+	}
+
 	if lhsType != rhsType {
 		typeChecker.AddEncounteredError(fmt.Errorf("Encountered BinaryOperator with operands of different types: %s and %s", lhsType, rhsType))
 	}
@@ -144,13 +153,13 @@ func checkForUnequalTypes(binaryExpression interfaces.BinaryOperatorExpr, expect
 func checkForInvalidOperationOperand(expr interfaces.Expr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	actualType := expr.TypeCheck(typeChecker, symbols)
 
+	// this occurs when we have no type info (e.g. VarExpr with reference to undefined question)
+	// this case is already handled by the undefined question reference checker, so don't continue here
+	if actualType == nil {
+		return
+	}
+
 	if actualType != expectedType {
 		typeChecker.AddEncounteredError(fmt.Errorf("Encountered invalid operand type for operator, expected type: %s, actual type: %s", expectedType, actualType))
-	}
-}
-
-func checkUndefinedQuestionReference(varExpr VarExpr, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
-	if !symbols.IsTypeSetForVarId(varExpr.GetIdentifier()) {
-		typeChecker.AddEncounteredError(fmt.Errorf("Reference to unknown question identifier: %s", varExpr.GetIdentifier()))
 	}
 }

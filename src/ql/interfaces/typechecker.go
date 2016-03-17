@@ -8,9 +8,9 @@ type TypeChecker interface {
 	IsLabelUsed(StrLit) bool
 	MarkLabelAsUsed(StrLit, VarDecl)
 	VarIdForLabel(StrLit) VarId
-	VarDeclIsKnown(VarDecl) bool
-	MarkVarDeclAsKnown(varDecl VarDecl)
-	TypeForVarDecl(varDecl VarDecl) ValueType
+	MarkVarIdAsKnown(VarId)
+	MarkVarIdAsUnknown(VarId)
+	GetIdentifiersEncountered() map[VarId]bool
 	SetCurrentVarIdVisited(VarDecl)
 	AddDependencyForCurrentlyVisitedVarDecl(VarId)
 	UnsetCurrentVarIdVisited()

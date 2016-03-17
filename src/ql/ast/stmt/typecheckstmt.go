@@ -8,6 +8,10 @@ import (
 
 func (this Form) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	this.Content.TypeCheck(typeChecker, symbols)
+
+	// if, add the end of the form we still have undefined references, report them
+	// only at the end of the form we truly know the question is not declared anywhere
+	this.checkForUndefinedReferences(typeChecker)
 }
 
 func (this If) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
@@ -35,7 +39,7 @@ func (this IfElse) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfa
 
 func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	typeCheckQuestionForDuplicateLabels(this, typeChecker)
-	typeCheckQuestionForRedeclaration(this, typeChecker)
+	typeCheckQuestionForRedeclaration(this, typeChecker, symbols)
 
 	typeChecker.SetCurrentVarIdVisited(this.VarDecl)
 
@@ -53,7 +57,7 @@ func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbo
 
 func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	typeCheckQuestionForDuplicateLabels(this, typeChecker)
-	typeCheckQuestionForRedeclaration(this, typeChecker)
+	typeCheckQuestionForRedeclaration(this, typeChecker, symbols)
 
 	typeChecker.SetCurrentVarIdVisited(this.VarDecl)
 
@@ -99,8 +103,20 @@ func (this IfElse) typeCheckIfElseForNonBoolConditions(typeChecker interfaces.Ty
 func checkForNonBoolCondition(condition interfaces.Expr, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	typeOfCondition := condition.TypeCheck(typeChecker, symbols)
 
-	if typeOfCondition != expr.NewBoolTypeNoSourceInfo() {
-		typeChecker.AddEncounteredError(fmt.Errorf("Non-boolean type used as condition: %T", typeOfCondition))
+	// if type is nil, the condition is a VarExpr referencing a undefined question
+	// This is already handled by the undefined question reference type checker
+	if typeOfCondition != expr.NewBoolTypeNoSourceInfo() && typeOfCondition != nil {
+		typeChecker.AddEncounteredError(fmt.Errorf("Non-boolean type used as condition: %s", typeOfCondition))
+	}
+}
+
+func (this Form) checkForUndefinedReferences(typeChecker interfaces.TypeChecker) {
+	// if, add the end of the form we still have undefined references, report them
+	// only at the end of the form we truly know the question is not declared anywhere
+	for identifier, identifierKnown := range typeChecker.GetIdentifiersEncountered() {
+		if !identifierKnown {
+			typeChecker.AddEncounteredError(fmt.Errorf("Reference to unknown question identifier: %s", identifier))
+		}
 	}
 }
 
@@ -131,13 +147,10 @@ func typeCheckQuestionForDuplicateLabels(question interfaces.Question, typeCheck
 	}
 }
 
-func typeCheckQuestionForRedeclaration(question interfaces.Question, typeChecker interfaces.TypeChecker) {
+func typeCheckQuestionForRedeclaration(question interfaces.Question, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	varDecl := question.GetVarDecl()
-	labelKnown := typeChecker.VarDeclIsKnown(varDecl)
 
-	if labelKnown && typeChecker.TypeForVarDecl(varDecl) != varDecl.GetType() {
-		typeChecker.AddEncounteredError(fmt.Errorf("Question redeclared with different types: %T and %T", varDecl.GetType(), typeChecker.TypeForVarDecl(varDecl)))
-	} else {
-		typeChecker.MarkVarDeclAsKnown(varDecl)
+	if symbols.IsTypeSetForVarId(varDecl.GetIdent()) && symbols.GetTypeForVarId(varDecl.GetIdent()) != varDecl.GetType() {
+		typeChecker.AddEncounteredError(fmt.Errorf("Question redeclared with different types: %s and %s", varDecl.GetType(), symbols.GetTypeForVarId(varDecl.GetIdent())))
 	}
 }

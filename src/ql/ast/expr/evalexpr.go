@@ -31,36 +31,15 @@ func (this Eq) Eval(s interfaces.VarIdValueSymbols) interface{} {
 }
 
 func (this GEq) Eval(s interfaces.VarIdValueSymbols) interface{} {
-	switch this.Lhs.Eval(s).(type) {
-	case int:
-		return this.Lhs.Eval(s).(int) >= this.Rhs.Eval(s).(int)
-	case string:
-		return this.Lhs.Eval(s).(string) >= this.Rhs.Eval(s).(string)
-	}
-
-	return nil
+	return this.Lhs.Eval(s).(int) >= this.Rhs.Eval(s).(int)
 }
 
 func (this GT) Eval(s interfaces.VarIdValueSymbols) interface{} {
-	switch this.Lhs.Eval(s).(type) {
-	case int:
-		return this.Lhs.Eval(s).(int) > this.Rhs.Eval(s).(int)
-	case string:
-		return this.Lhs.Eval(s).(string) > this.Rhs.Eval(s).(string)
-	}
-
-	return nil
+	return this.Lhs.Eval(s).(int) > this.Rhs.Eval(s).(int)
 }
 
 func (this LEq) Eval(s interfaces.VarIdValueSymbols) interface{} {
-	switch this.Lhs.Eval(s).(type) {
-	case int:
-		return this.Lhs.Eval(s).(int) <= this.Rhs.Eval(s).(int)
-	case string:
-		return this.Lhs.Eval(s).(string) <= this.Rhs.Eval(s).(string)
-	}
-
-	return nil
+	return this.Lhs.Eval(s).(int) <= this.Rhs.Eval(s).(int)
 }
 
 func (this LT) Eval(s interfaces.VarIdValueSymbols) interface{} {

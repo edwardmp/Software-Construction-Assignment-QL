@@ -17,7 +17,7 @@ func TestInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
 	exampleExpr.TypeCheck(typeChecker, nil)
 	errorsReported := typeChecker.ErrorsEncountered
 
-	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered BinaryOperator with operands of different types: Boolean and Integer")) {
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operand type for operator, expected type: Integer, actual type: Boolean")) {
 		t.Errorf("Invalid operands checker did not correctly report operands of different types %v", errorsReported)
 	}
 }
@@ -99,8 +99,8 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) 
 	}
 }
 
-func testUndefinedQuestionReferenceChecker(t *testing.T) {
-	computedQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Value residue:"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("valueResidue"), expr.NewIntTypeNoSourceInfo()), expr.NewSubNoSourceInfo(expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse")), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasMaintLoan"))))
+func TestUndefinedQuestionReferenceChecker(t *testing.T) {
+	computedQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Value residue:"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("valueResidue"), expr.NewIntTypeNoSourceInfo()), expr.NewSubNoSourceInfo(expr.NewIntLitNoSourceInfo(100), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasMaintLoan"))))
 	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{computedQuestion}, []interfaces.Conditional{})
 	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
 
@@ -108,12 +108,12 @@ func testUndefinedQuestionReferenceChecker(t *testing.T) {
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
 	errorsReported := typeChecker.ErrorsEncountered
 
-	if len(errorsReported) != 2 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Reference to unknown question identifier: hasSoldHouse")) || fmt.Sprintf("%v", errorsReported[1]) != fmt.Sprintf("%v", fmt.Errorf("Reference to unknown question identifier: hasMaintLoan")) {
-		t.Errorf("Undefined questions references not reported correctly by type checker")
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Reference to unknown question identifier: hasMaintLoan")) {
+		t.Errorf("Undefined questions references not reported correctly by type checker %v", errorsReported)
 	}
 }
 
-func testNonBoolConditionalChecker(t *testing.T) {
+func TestNonBoolConditionalChecker(t *testing.T) {
 	exampleQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()))
 	exampleIf := stmt.NewIfNoSourceInfo(expr.NewIntLitNoSourceInfo(10), stmt.NewStmtListNoSourceInfo([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{}))
 	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{}, []interfaces.Conditional{exampleIf})
@@ -123,12 +123,12 @@ func testNonBoolConditionalChecker(t *testing.T) {
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
 	errorsReported := typeChecker.ErrorsEncountered
 
-	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Non-boolean type used as condition: int")) {
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Non-boolean type used as condition: Integer")) {
 		t.Errorf("Non bool condition type checker did not correctly report condition of invalid type %v", errorsReported)
 	}
 }
 
-func testDuplicateLabelChecker(t *testing.T) {
+func TestDuplicateLabelChecker(t *testing.T) {
 	firstQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()))
 	secondQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasMaintLoan"), expr.NewBoolTypeNoSourceInfo()))
 	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
@@ -136,14 +136,14 @@ func testDuplicateLabelChecker(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
-	warningsReported := typeChecker.ErrorsEncountered
+	warningsReported := typeChecker.WarningsEncountered
 
 	if len(warningsReported) != 1 || fmt.Sprintf("%v", warningsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Label \"Did you sell a house in 2010?\" already used for question with identifier hasSoldHouse, using again for question with identifier hasMaintLoan")) {
-		t.Errorf("Duplicate label not reported correctly by type checker")
+		t.Errorf("Duplicate label not reported correctly by type checker %v", warningsReported)
 	}
 }
 
-func testDuplicateVarDeclChecker(t *testing.T) {
+func TestDuplicateVarDeclChecker(t *testing.T) {
 	firstQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()))
 	secondQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewIntTypeNoSourceInfo()))
 	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
@@ -153,12 +153,12 @@ func testDuplicateVarDeclChecker(t *testing.T) {
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
 	errorsReported := typeChecker.ErrorsEncountered
 
-	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Question redeclared with different types: vari.IntType and vari.BoolType")) {
-		t.Errorf("Duplicate var decl not reported correctly by type checker")
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Question redeclared with different types: Integer and Boolean")) {
+		t.Errorf("Duplicate var decl not reported correctly by type checker %v", errorsReported)
 	}
 }
 
-func testCyclicReferenceCheckerReferenceToEachOther(t *testing.T) {
+func TestCyclicReferenceCheckerReferenceToEachOther(t *testing.T) {
 	questionPointingToSecondQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasBoughtHouse")))
 	questionPointingToFirstQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you buy a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasBoughtHouse"), expr.NewBoolTypeNoSourceInfo()), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse")))
 	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{questionPointingToFirstQuestion, questionPointingToSecondQuestion}, []interfaces.Conditional{})
@@ -185,6 +185,6 @@ func TestCyclicReferenceCheckerIfConditionRefersToBody(t *testing.T) {
 	errorsReported := typeChecker.ErrorsEncountered
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Found cyclic dependency: [hasSoldHouse hasSoldHouse]")) {
-		t.Errorf("Duplicate var decl not reported correctly by type checker %v", errorsReported)
+		t.Errorf("Cyclic reference not reported correctly by type checker %v", errorsReported)
 	}
 }

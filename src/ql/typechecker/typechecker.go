@@ -7,17 +7,17 @@ import (
 
 type TypeChecker struct {
 	interfaces.TypeChecker
-	ErrorsEncountered     []error
-	WarningsEncountered   []error
-	UsedLabels            map[interfaces.StrLit]interfaces.VarId
-	KnownIdentifiers      map[interfaces.VarId]interfaces.ValueType
-	CurrentVarIdVisited   interfaces.VarId
-	DependenciesPerVarId  map[interfaces.VarId][]interfaces.VarId
-	ConditionsDependentOn []interfaces.Expr
+	ErrorsEncountered      []error
+	WarningsEncountered    []error
+	UsedLabels             map[interfaces.StrLit]interfaces.VarId
+	IdentifiersEncountered map[interfaces.VarId]bool
+	CurrentVarIdVisited    interfaces.VarId
+	DependenciesPerVarId   map[interfaces.VarId][]interfaces.VarId
+	ConditionsDependentOn  []interfaces.Expr
 }
 
 func NewTypeChecker() *TypeChecker {
-	return &TypeChecker{ErrorsEncountered: make([]error, 0), WarningsEncountered: make([]error, 0), UsedLabels: make(map[interfaces.StrLit]interfaces.VarId), KnownIdentifiers: make(map[interfaces.VarId]interfaces.ValueType), DependenciesPerVarId: make(map[interfaces.VarId][]interfaces.VarId)}
+	return &TypeChecker{ErrorsEncountered: make([]error, 0), WarningsEncountered: make([]error, 0), UsedLabels: make(map[interfaces.StrLit]interfaces.VarId), IdentifiersEncountered: make(map[interfaces.VarId]bool), DependenciesPerVarId: make(map[interfaces.VarId][]interfaces.VarId)}
 }
 
 func (this *TypeChecker) AddConditionDependentOn(condition interfaces.Expr) {
@@ -137,6 +137,12 @@ func (this *TypeChecker) AddEncounteredError(encounteredError error) {
 	this.ErrorsEncountered = append(this.ErrorsEncountered, encounteredError)
 }
 
+func (this *TypeChecker) AddEncounteredWarning(encounteredWarning error) {
+	log.WithFields(log.Fields{"warningEncountered": encounteredWarning}).Info("Added encountered type checking warning")
+
+	this.WarningsEncountered = append(this.WarningsEncountered, encounteredWarning)
+}
+
 func (this *TypeChecker) GetEncounteredErrors() []error {
 	return this.ErrorsEncountered
 }
@@ -163,18 +169,23 @@ func (this *TypeChecker) MarkLabelAsUsed(label interfaces.StrLit, varDecl interf
 }
 
 func (this *TypeChecker) VarDeclIsKnown(varDecl interfaces.VarDecl) bool {
-	if _, exists := this.KnownIdentifiers[varDecl.GetIdent()]; exists {
-		return true
+	if isKnown, exists := this.IdentifiersEncountered[varDecl.GetIdent()]; exists {
+		return isKnown
 	}
 
 	return false
 }
 
-func (this *TypeChecker) MarkVarDeclAsKnown(varDecl interfaces.VarDecl) {
-	log.WithFields(log.Fields{"VarDecl": varDecl}).Debug("Marking VarDecl as known")
-	this.KnownIdentifiers[varDecl.GetIdent()] = varDecl.GetType()
+func (this *TypeChecker) MarkVarIdAsKnown(varId interfaces.VarId) {
+	log.WithFields(log.Fields{"VarDecl": varId}).Debug("Marking VarDecl as known")
+	this.IdentifiersEncountered[varId] = true
 }
 
-func (this *TypeChecker) TypeForVarDecl(varDecl interfaces.VarDecl) interfaces.ValueType {
-	return this.KnownIdentifiers[varDecl.GetIdent()]
+func (this *TypeChecker) MarkVarIdAsUnknown(varId interfaces.VarId) {
+	log.WithFields(log.Fields{"VarDecl": varId}).Debug("Marking VarDecl as unknown")
+	this.IdentifiersEncountered[varId] = false
+}
+
+func (this *TypeChecker) GetIdentifiersEncountered() map[interfaces.VarId]bool {
+	return this.IdentifiersEncountered
 }
