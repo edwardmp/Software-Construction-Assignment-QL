@@ -69,7 +69,7 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 
 			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (string field)")
 
-			callback(expr.NewStrLitNoSourceInfo(inputText), nil) // TODO check if really is string
+			callback(expr.NewStrLitNoSourceInfo(inputText), nil)
 		})
 		UIEntity = inputField
 	case expr.IntType:

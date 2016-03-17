@@ -8,6 +8,7 @@ import (
 func (this VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
 	typeChecker.AddDependencyForCurrentlyVisitedVarDecl(this.Identifier)
 
+	// return the true type of the VarExpr; the type of the expr referred to
 	if symbols.IsTypeSetForVarId(this.Identifier) {
 		return symbols.GetTypeForVarId(this.Identifier).(interfaces.ValueType)
 	}
@@ -21,19 +22,19 @@ func (this VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interf
 }
 
 func (this Add) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewIntTypeNoSourceInfo()
 }
 
 func (this And) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewBoolTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
 
 func (this Div) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewIntTypeNoSourceInfo()
 }
@@ -45,37 +46,37 @@ func (this Eq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCh
 }
 
 func (this GEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewBoolTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
 
 func (this GT) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
 
 func (this LEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
 
 func (this LT) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
 
 func (this Mul) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewIntTypeNoSourceInfo()
 }
 
 func (this Neg) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperand(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperand(NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewIntTypeNoSourceInfo()
 }
@@ -87,25 +88,25 @@ func (this NEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeC
 }
 
 func (this Not) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperand(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperand(NewBoolTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
 
 func (this Or) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewBoolTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
 
 func (this Pos) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperand(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperand(NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewIntTypeNoSourceInfo()
 }
 
 func (this Sub) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkOperands(this, NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
 
 	return NewIntTypeNoSourceInfo()
 }
@@ -126,14 +127,25 @@ func (this Expr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interface
 	panic("Expr TypeCheck method not overridden")
 }
 
-func checkOperand(unaryExpr interfaces.UnaryOperatorExpr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
-	checkForInvalidOperationOperand(unaryExpr.GetValue(), expectedType, typeChecker, s)
+// checkOperand checks if the value of a unaryExpr is of the expected type
+func (unaryExpr UnaryOperator) checkOperand(expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+	checkForInvalidOperandForOperator(unaryExpr.GetValue(), expectedType, typeChecker, s)
 }
 
-func checkOperands(binaryExpression interfaces.BinaryOperatorExpr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
-	checkForInvalidOperationOperand(binaryExpression.GetLhs(), expectedType, typeChecker, s)
-	checkForInvalidOperationOperand(binaryExpression.GetRhs(), expectedType, typeChecker, s)
+// checkOperands checks if the left-hand and right-hand sides are of the expected type
+func (binaryExpression BinaryOperator) checkOperands(expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+	checkForInvalidOperandForOperator(binaryExpression.GetLhs(), expectedType, typeChecker, s)
+	checkForInvalidOperandForOperator(binaryExpression.GetRhs(), expectedType, typeChecker, s)
 }
+
+/* TODO, is this a better approach
+func (this Eq) checkForUnequalTypes() expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+
+}
+
+Because
+func (this BinaryOperator) checkForUnequalTypes() will be callable from other operators than Eq & NEq
+*/
 
 func checkForUnequalTypes(binaryExpression interfaces.BinaryOperatorExpr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
 	lhsType := binaryExpression.GetLhs().TypeCheck(typeChecker, s)
@@ -150,7 +162,7 @@ func checkForUnequalTypes(binaryExpression interfaces.BinaryOperatorExpr, expect
 	}
 }
 
-func checkForInvalidOperationOperand(expr interfaces.Expr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+func checkForInvalidOperandForOperator(expr interfaces.Expr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	actualType := expr.TypeCheck(typeChecker, symbols)
 
 	// this occurs when we have no type info (e.g. VarExpr with reference to undefined question)

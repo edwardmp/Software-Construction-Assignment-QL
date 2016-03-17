@@ -5,6 +5,7 @@ import (
 	"ql/interfaces"
 )
 
+// acceptLhsAndRhs provides a convenient way to run Accept on both left-hand and right-hand sides of binary operands
 func acceptLhsAndRhs(binaryExpr interfaces.BinaryOperatorExpr, visitor interfaces.Visitor, context interface{}) {
 	binaryExpr.GetLhs().Accept(visitor, context)
 	binaryExpr.GetRhs().Accept(visitor, context)
@@ -133,6 +134,7 @@ func (this StrLit) Accept(visitor interfaces.Visitor, context interface{}) inter
 }
 
 /* value types */
+
 func (this IntType) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	visitor.VisitIntType(this, context)
 
@@ -177,6 +179,10 @@ func (this VarExpr) Accept(visitor interfaces.Visitor, context interface{}) inte
 	return nil
 }
 
+/* expressions */
+
+// Accept is only called on Expr if the struct embedding it did not implement Accept, which is erroneous.
+// An panic is known to accommodate for this
 func (this Expr) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	panic("Expr Accept method not overridden")
 

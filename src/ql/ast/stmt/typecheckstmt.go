@@ -15,7 +15,7 @@ func (this Form) TypeCheck(typeChecker interfaces.TypeChecker, symbols interface
 }
 
 func (this If) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
-	this.typeCheckIfForNonBoolConditions(typeChecker, symbols)
+	checkForNonBoolCondition(this.GetCondition(), typeChecker, symbols)
 
 	typeChecker.AddConditionDependentOn(this.Cond)
 
@@ -26,7 +26,7 @@ func (this If) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.
 }
 
 func (this IfElse) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
-	this.typeCheckIfElseForNonBoolConditions(typeChecker, symbols)
+	checkForNonBoolCondition(this.GetCondition(), typeChecker, symbols)
 
 	typeChecker.AddConditionDependentOn(this.Cond)
 
@@ -38,8 +38,8 @@ func (this IfElse) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfa
 }
 
 func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
-	typeCheckQuestionForDuplicateLabels(this, typeChecker)
-	typeCheckQuestionForRedeclaration(this, typeChecker, symbols)
+	checkQuestionForDuplicateLabels(this, typeChecker)
+	checkQuestionForRedeclaration(this, typeChecker, symbols)
 
 	typeChecker.SetCurrentVarIdVisited(this.VarDecl)
 
@@ -50,14 +50,14 @@ func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbo
 		conditionDependentOn.TypeCheck(typeChecker, symbols)
 	}
 
-	typeCheckForCyclicDependencies(this, typeChecker, symbols)
+	checkForCyclicDependencies(this, typeChecker, symbols)
 	typeChecker.UnsetCurrentVarIdVisited()
 
 }
 
 func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
-	typeCheckQuestionForDuplicateLabels(this, typeChecker)
-	typeCheckQuestionForRedeclaration(this, typeChecker, symbols)
+	checkQuestionForDuplicateLabels(this, typeChecker)
+	checkQuestionForRedeclaration(this, typeChecker, symbols)
 
 	typeChecker.SetCurrentVarIdVisited(this.VarDecl)
 
@@ -68,7 +68,8 @@ func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols 
 		conditionDependentOn.TypeCheck(typeChecker, symbols)
 	}
 
-	typeCheckForCyclicDependencies(this, typeChecker, symbols)
+	checkForCyclicDependencies(this, typeChecker, symbols)
+
 	typeChecker.UnsetCurrentVarIdVisited()
 }
 
@@ -92,12 +93,8 @@ func (this StmtList) TypeCheck(typeChecker interfaces.TypeChecker, symbols inter
 	}
 }
 
-func (this If) typeCheckIfForNonBoolConditions(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
-	checkForNonBoolCondition(this.GetCondition(), typeChecker, symbols)
-}
-
-func (this IfElse) typeCheckIfElseForNonBoolConditions(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
-	checkForNonBoolCondition(this.GetCondition(), typeChecker, symbols)
+func (this Stmt) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+	panic("Stmt TypeCheck method not overridden")
 }
 
 func checkForNonBoolCondition(condition interfaces.Expr, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
@@ -120,7 +117,7 @@ func (this Form) checkForUndefinedReferences(typeChecker interfaces.TypeChecker)
 	}
 }
 
-func typeCheckForCyclicDependencies(question interfaces.Question, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+func checkForCyclicDependencies(question interfaces.Question, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	varIdOfCurrentlyVisitingQuestion := question.GetVarDecl().GetIdent()
 
 	numOfTimesQuestionIdFound := 0
@@ -137,7 +134,7 @@ func typeCheckForCyclicDependencies(question interfaces.Question, typeChecker in
 	}
 }
 
-func typeCheckQuestionForDuplicateLabels(question interfaces.Question, typeChecker interfaces.TypeChecker) {
+func checkQuestionForDuplicateLabels(question interfaces.Question, typeChecker interfaces.TypeChecker) {
 	labelKnown := typeChecker.IsLabelUsed(question.GetLabel())
 
 	if labelKnown {
@@ -147,7 +144,7 @@ func typeCheckQuestionForDuplicateLabels(question interfaces.Question, typeCheck
 	}
 }
 
-func typeCheckQuestionForRedeclaration(question interfaces.Question, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+func checkQuestionForRedeclaration(question interfaces.Question, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	varDecl := question.GetVarDecl()
 
 	if symbols.IsTypeSetForVarId(varDecl.GetIdent()) && symbols.GetTypeForVarId(varDecl.GetIdent()) != varDecl.GetType() {
