@@ -102,7 +102,11 @@ type VarExpr interface {
 
 type ValueType interface {
 	Expr
-	GetDefaultValue() interface{}
+	GetDefaultValue() LitExpr
+}
+
+type UnknownType interface {
+	ValueType
 }
 
 type IntType interface {

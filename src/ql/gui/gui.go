@@ -188,14 +188,14 @@ func (v *GUI) handleInputQuestion(question interfaces.InputQuestion, symbols int
 		v.updateComputedQuestions(symbols)
 	}
 
-	guiQuestion = CreateGUIInputQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), questionCallback)
+	guiQuestion = CreateGUIInputQuestion(fmt.Sprintf("%s", question.GetLabel()), question.GetVarDecl().GetType(), questionCallback)
 
 	return guiQuestion
 }
 
 func (v *GUI) handleComputedQuestion(question interfaces.ComputedQuestion, symbols interfaces.VarIdValueSymbols) *GUIComputedQuestion {
 	computation := question.GetComputation()
-	guiQuestion := CreateGUIComputedQuestion(question.GetLabelAsString(), question.GetVarDecl().GetType(), computation, question.GetVarDecl().GetIdent())
+	guiQuestion := CreateGUIComputedQuestion(fmt.Sprintf("%s", question.GetLabel()), question.GetVarDecl().GetType(), computation, question.GetVarDecl().GetIdent())
 
 	v.GUIForm.AddComputedQuestion(guiQuestion)
 

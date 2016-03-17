@@ -2,7 +2,6 @@ package interfaces
 
 type Stmt interface {
 	ASTNode
-	String() string
 	TypeCheck(TypeChecker, TypeCheckSymbols)
 }
 
@@ -15,7 +14,6 @@ type Form interface {
 type Question interface {
 	Stmt
 	GetLabel() StrLit
-	GetLabelAsString() string
 	GetVarDecl() VarDecl
 }
 

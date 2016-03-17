@@ -1,9 +1,6 @@
 package stmt
 
-import (
-	"fmt"
-	"ql/interfaces"
-)
+import "ql/interfaces"
 
 type Form struct {
 	Identifier interfaces.VarId
@@ -25,8 +22,4 @@ func (this Form) GetQuestions() []interfaces.Question {
 
 func (this Form) GetIdentifier() interfaces.VarId {
 	return this.Identifier
-}
-
-func (f Form) String() string {
-	return fmt.Sprintf("A form with identifier %s, statement list %v\n", f.Identifier, f.Content)
 }

@@ -38,7 +38,7 @@ func (this StmtList) GetConditionals() []interfaces.Conditional {
 func (this StmtList) AddToCorrectSlice(i interface{}) StmtList {
 	switch t := i.(type) {
 	default:
-		panic(fmt.Sprintf("Unexpected StmtList type passed %T\n", t))
+		panic(fmt.Errorf("Unexpected StmtList type passed %T\n", t))
 	case interfaces.Question:
 		this.Questions = append(this.Questions, i.(interfaces.Question))
 	case If:
@@ -48,8 +48,4 @@ func (this StmtList) AddToCorrectSlice(i interface{}) StmtList {
 	}
 
 	return this
-}
-
-func (this StmtList) String() string {
-	return fmt.Sprintf("A statement list with %d questions and %d conditionals", len(this.Questions), len(this.Conditionals))
 }

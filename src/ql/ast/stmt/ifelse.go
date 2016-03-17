@@ -1,9 +1,6 @@
 package stmt
 
-import (
-	"fmt"
-	"ql/interfaces"
-)
+import "ql/interfaces"
 
 type IfElse struct {
 	Cond     interfaces.Expr
@@ -30,10 +27,6 @@ func (this IfElse) GetIfBody() interfaces.StmtList {
 
 func (this IfElse) GetElseBody() interfaces.StmtList {
 	return this.ElseBody
-}
-
-func (this IfElse) String() string {
-	return fmt.Sprintf("An if/else statement with condition %s", this.Cond)
 }
 
 func (this IfElse) EvalCondition(symbols interfaces.VarIdValueSymbols) bool {

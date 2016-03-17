@@ -97,7 +97,7 @@ func (this Sub) Eval(s interfaces.VarIdValueSymbols) interface{} {
 
 func (this VarExpr) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
 	if symbols == nil {
-		panic("No symbol table passed to Eval VarExpr")
+		panic("No symbols passed to Eval VarExpr")
 	}
 
 	if referencedExpr := symbols.GetExprForVarId(this.Identifier); referencedExpr != nil {
