@@ -181,6 +181,8 @@ func (this *TypeChecker) MarkVarIdAsKnown(varId interfaces.VarId) {
 	this.IdentifiersEncountered[varId] = true
 }
 
+// MarkVarIdAsUnknown stores that the VarId is currently unknown
+// If the VarId is not marked as known later it is a reference to a undefined question
 func (this *TypeChecker) MarkVarIdAsUnknown(varId interfaces.VarId) {
 	log.WithFields(log.Fields{"VarDecl": varId}).Debug("Marking VarDecl as unknown")
 	this.IdentifiersEncountered[varId] = false

@@ -8,7 +8,7 @@ import (
 func (this VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
 	typeChecker.AddDependencyForCurrentlyVisitedVarDecl(this.Identifier)
 
-	// return the true type of the VarExpr; the type of the expr referred to
+	// Return the true type of the VarExpr; the type of the Expr referred to
 	if symbols.IsTypeSetForVarId(this.Identifier) {
 		return symbols.GetTypeForVarId(this.Identifier).(interfaces.ValueType)
 	}
@@ -17,8 +17,8 @@ func (this VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interf
 	// After the whole Form is typechecked, it is checked which VarIds remain unknown (those that were not declared at a later point)
 	typeChecker.MarkVarIdAsUnknown(this.GetIdentifier())
 
-	// no type info in symboltable (reference to undefined question)
-	return nil
+	// No type info in symboltable (reference to undefined question)
+	return NewUnknownType()
 }
 
 func (this Add) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
@@ -40,7 +40,7 @@ func (this Div) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeC
 }
 
 func (this Eq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkForUnequalTypes(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkForEqualTypes(NewBoolTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
@@ -82,7 +82,7 @@ func (this Neg) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeC
 }
 
 func (this NEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	checkForUnequalTypes(this, NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkForEqualTypes(NewBoolTypeNoSourceInfo(), typeChecker, s)
 
 	return NewBoolTypeNoSourceInfo()
 }
@@ -123,6 +123,7 @@ func (this StrLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfa
 	return NewStringTypeNoSourceInfo()
 }
 
+// TypeCheck on Expr is the default implementation, which basically asserts that parent structs have overridden this method
 func (this Expr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
 	panic("Expr TypeCheck method not overridden")
 }
@@ -138,22 +139,14 @@ func (binaryExpression BinaryOperator) checkOperands(expectedType interfaces.Val
 	checkForInvalidOperandForOperator(binaryExpression.GetRhs(), expectedType, typeChecker, s)
 }
 
-/* TODO, is this a better approach
-func (this Eq) checkForUnequalTypes() expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
-
-}
-
-Because
-func (this BinaryOperator) checkForUnequalTypes() will be callable from other operators than Eq & NEq
-*/
-
-func checkForUnequalTypes(binaryExpression interfaces.BinaryOperatorExpr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+// checkForEqualTypes checks if the operands in a BinaryOperator have the same type, and if the types are unequal adds an error to the typechecker
+func (binaryExpression BinaryOperator) checkForEqualTypes(expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
 	lhsType := binaryExpression.GetLhs().TypeCheck(typeChecker, s)
 	rhsType := binaryExpression.GetRhs().TypeCheck(typeChecker, s)
 
 	// this occurs when we have no type info (e.g. VarExpr with reference to undefined question)
 	// this case is already handled by the undefined question reference checker, so don't continue here
-	if lhsType == nil || rhsType == nil {
+	if lhsType == NewUnknownType() || rhsType == NewUnknownType() {
 		return
 	}
 
@@ -167,7 +160,7 @@ func checkForInvalidOperandForOperator(expr interfaces.Expr, expectedType interf
 
 	// this occurs when we have no type info (e.g. VarExpr with reference to undefined question)
 	// this case is already handled by the undefined question reference checker, so don't continue here
-	if actualType == nil {
+	if actualType == NewUnknownType() {
 		return
 	}
 

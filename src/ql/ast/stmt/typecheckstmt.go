@@ -9,8 +9,8 @@ import (
 func (this Form) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	this.Content.TypeCheck(typeChecker, symbols)
 
-	// if, add the end of the form we still have undefined references, report them
-	// only at the end of the form we truly know the question is not declared anywhere
+	// If at the end of the form we still have undefined references, they will be added as errors
+	// Only at the end of the form we truly know the question is not declared anywhere
 	this.checkForUndefinedReferences(typeChecker)
 }
 
@@ -51,8 +51,8 @@ func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbo
 	}
 
 	checkForCyclicDependencies(this, typeChecker, symbols)
-	typeChecker.UnsetCurrentVarIdVisited()
 
+	typeChecker.UnsetCurrentVarIdVisited()
 }
 
 func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
@@ -97,23 +97,21 @@ func (this Stmt) TypeCheck(typeChecker interfaces.TypeChecker, symbols interface
 	panic("Stmt TypeCheck method not overridden")
 }
 
-func checkForNonBoolCondition(condition interfaces.Expr, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
-	typeOfCondition := condition.TypeCheck(typeChecker, symbols)
-
-	// if type is nil, the condition is a VarExpr referencing a undefined question
-	// This is already handled by the undefined question reference type checker
-	if typeOfCondition != expr.NewBoolTypeNoSourceInfo() && typeOfCondition != nil {
-		typeChecker.AddEncounteredError(fmt.Errorf("Non-boolean type used as condition: %s", typeOfCondition))
-	}
-}
-
+// checkForUndefinedReferences looks at all identifiers encountered to see if they have been marked as known
+// It should only run at the end of a form (when all identifiers) are collected, hence it's an instance method on Form
 func (this Form) checkForUndefinedReferences(typeChecker interfaces.TypeChecker) {
-	// if, add the end of the form we still have undefined references, report them
-	// only at the end of the form we truly know the question is not declared anywhere
 	for identifier, identifierKnown := range typeChecker.GetIdentifiersEncountered() {
 		if !identifierKnown {
 			typeChecker.AddEncounteredError(fmt.Errorf("Reference to unknown question identifier: %s", identifier))
 		}
+	}
+}
+
+func checkForNonBoolCondition(condition interfaces.Expr, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+	typeOfCondition := condition.TypeCheck(typeChecker, symbols)
+
+	if typeOfCondition != expr.NewBoolTypeNoSourceInfo() && typeOfCondition != expr.NewUnknownType() {
+		typeChecker.AddEncounteredError(fmt.Errorf("Non-boolean type used as condition: %s", typeOfCondition))
 	}
 }
 

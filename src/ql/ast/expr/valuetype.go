@@ -1,48 +1,69 @@
 package expr
 
+import "ql/interfaces"
+
 type ValueType struct {
 	Expr
-}
-
-func NewValueType(sourceInfo interface{}) ValueType {
-	return ValueType{NewExpr(sourceInfo)}
-}
-
-type IntType struct {
-	ValueType
 	TypeString string
 }
 
+func NewValueType(typeString string, sourceInfo interface{}) ValueType {
+	return ValueType{NewExpr(sourceInfo), typeString}
+}
+
+func (this ValueType) String() string {
+	return this.TypeString
+}
+
+/* UnknownType */
+
+type UnknownType struct {
+	ValueType
+}
+
+func NewUnknownType() UnknownType {
+	return UnknownType{NewValueType("Unknown", nil)}
+}
+
+func (this UnknownType) GetDefaultValue() interfaces.LitExpr {
+	panic("UnknownType has no default value")
+
+	return nil
+}
+
+/* IntType */
+
+type IntType struct {
+	ValueType
+}
+
 func NewIntType(sourceInfo interface{}) IntType {
-	return IntType{NewValueType(sourceInfo), "Integer"}
+	return IntType{NewValueType("Integer", sourceInfo)}
 }
 
 func NewIntTypeNoSourceInfo() IntType {
 	return NewIntType(nil)
 }
 
-func (this IntType) GetDefaultValue() interface{} {
+func (this IntType) GetDefaultValue() interfaces.LitExpr {
 	return NewIntLitNoSourceInfo(0)
 }
 
-func (this IntType) String() string {
-	return this.TypeString
-}
+/* StringType */
 
 type StringType struct {
 	ValueType
-	TypeString string
 }
 
 func NewStringType(sourceInfo interface{}) StringType {
-	return StringType{NewValueType(sourceInfo), "String"}
+	return StringType{NewValueType("String", sourceInfo)}
 }
 
 func NewStringTypeNoSourceInfo() StringType {
 	return NewStringType(nil)
 }
 
-func (this StringType) GetDefaultValue() interface{} {
+func (this StringType) GetDefaultValue() interfaces.LitExpr {
 	return NewStrLitNoSourceInfo("")
 }
 
@@ -50,23 +71,20 @@ func (this StringType) String() string {
 	return this.TypeString
 }
 
+/* BoolType */
+
 type BoolType struct {
 	ValueType
-	TypeString string
 }
 
 func NewBoolType(sourceInfo interface{}) BoolType {
-	return BoolType{NewValueType(sourceInfo), "Boolean"}
+	return BoolType{NewValueType("Boolean", sourceInfo)}
 }
 
 func NewBoolTypeNoSourceInfo() BoolType {
 	return NewBoolType(nil)
 }
 
-func (this BoolType) GetDefaultValue() interface{} {
+func (this BoolType) GetDefaultValue() interfaces.LitExpr {
 	return NewBoolLitNoSourceInfo(false)
-}
-
-func (this BoolType) String() string {
-	return this.TypeString
 }
