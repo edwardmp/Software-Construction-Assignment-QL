@@ -15,54 +15,71 @@ import (
 func main() {
 	initLog()
 
-	log.Info("Initiating parsing of file")
-
-	fileName := "example.ql"
-	qlFile, fileError := ioutil.ReadFile(fileName) // TODO handle error
+	filePath := "example.ql"
+	fileContent, fileError := ioutil.ReadFile(filePath)
 
 	if fileError != nil {
-		log.WithFields(log.Fields{"fileName": fileName}).Panic("Could not open input file")
+		log.WithFields(log.Fields{"filePath": filePath, "fileError": fileError}).Panic("Could not open input file")
 	}
 
-	lex := lexer.NewLexer([]byte(string(qlFile)))
+	log.WithFields(log.Fields{"filePath": filePath}).Info("Loaded file")
 
-	p := parser.NewParser()
-	parseResult, parseErr := p.Parse(lex)
+	parsedForm := lexAndParse(fileContent)
+	typeCheckErrors, typeCheckWarnings := conductTypeChecking(parsedForm)
+
+	varIdDefaultValueVisitor := NewDefaultVarIdSymbolValueVisitor()
+	varIdValueSymbols := symbols.NewVarIdValueSymbols()
+	parsedForm.Accept(varIdDefaultValueVisitor, varIdValueSymbols)
+
+	gui.CreateGUI(parsedForm, varIdValueSymbols, typeCheckErrors, typeCheckWarnings)
+}
+
+func lexAndParse(fileContent []byte) interfaces.Form {
+	lexer := lexer.NewLexer(fileContent)
+
+	log.Info("Initiating parsing of file")
+	parser := parser.NewParser()
+	parseResult, parseErr := parser.Parse(lexer)
 
 	if parseErr != nil {
-		log.WithFields(log.Fields{"err": parseErr}).Panic("Could not parse")
+		log.WithFields(log.Fields{"parseErr": parseErr}).Panic("Could not parse")
 	}
 
-	if parsedForm, ok := parseResult.(interfaces.Form); !ok {
-		log.Panic("Parse result is not form")
-	} else {
-		log.WithFields(log.Fields{"Result": parsedForm}).Info("Form parsed")
+	log.WithFields(log.Fields{"Result": parseResult}).Info("Form parsed")
 
-		// conduct typechecking
-		typeChecker := typechecker.NewTypeChecker()
-		parsedForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
-		warnings := typeChecker.GetEncounteredWarnings()
-		errors := typeChecker.GetEncounteredErrors()
-
-		log.WithFields(log.Fields{"errors": errors, "warnings": warnings}).Error("Type checking finished")
-
-		visitor := SymbolTableFillerVisitor{}
-		varIdValueSymbols := symbols.NewVarIdValueSymbols()
-		parsedForm.Accept(&visitor, varIdValueSymbols)
-
-		gui.CreateGUI(parsedForm, varIdValueSymbols, errors)
+	parsedForm, castAsFormOK := parseResult.(interfaces.Form)
+	if !castAsFormOK {
+		log.Panic("Parse result could not be casted to Form")
 	}
+
+	return parsedForm
+}
+
+func conductTypeChecking(form interfaces.Form) ([]error, []error) {
+	typeChecker := typechecker.NewTypeChecker()
+	form.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
+	warnings := typeChecker.GetEncounteredWarnings()
+	errors := typeChecker.GetEncounteredErrors()
+
+	log.WithFields(log.Fields{"errors": errors, "warnings": warnings}).Error("Type checking finished")
+
+	return errors, warnings
 }
 
 func initLog() {
 	log.SetLevel(log.DebugLevel)
 }
 
-type SymbolTableFillerVisitor struct {
+// FIXME place somewhere else?
+type DefaultVarIdSymbolValueVisitor struct {
 	visitor.BaseVisitor
 }
 
-func (this *SymbolTableFillerVisitor) VisitVarDecl(v interfaces.VarDecl, context interface{}) {
+func NewDefaultVarIdSymbolValueVisitor() *DefaultVarIdSymbolValueVisitor {
+	return &DefaultVarIdSymbolValueVisitor{}
+}
+
+func (this *DefaultVarIdSymbolValueVisitor) VisitVarDecl(varDecl interfaces.VarDecl, context interface{}) {
 	symbols := context.(interfaces.VarIdValueSymbols)
-	symbols.SetExprForVarId(v.GetType().GetDefaultValue().(interfaces.Expr), v.GetIdent())
+	symbols.SetExprForVarId(varDecl.GetType().GetDefaultValue(), varDecl.GetIdent())
 }

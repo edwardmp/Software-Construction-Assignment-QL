@@ -15,15 +15,16 @@ type GUI struct {
 	visitor.BaseVisitor
 	GUIForm                   *GUIForm
 	Symbols                   interfaces.VarIdValueSymbols
-	typeCheckerErrors         []error
+	typeCheckErrors           []error
+	typeCheckWarnings         []error
 	RegisteredOnShowCallbacks []func()
 	SaveDataCallback          func() (interface{}, error)
 	Window                    *ui.Window
 }
 
 // CreateGUI is a constructor method returning a new GUI
-func CreateGUI(form interfaces.Form, symbols interfaces.VarIdValueSymbols, typeCheckerErrors []error) GUI {
-	gui := GUI{GUIForm: NewGUIForm(form), Symbols: symbols, typeCheckerErrors: typeCheckerErrors}
+func CreateGUI(form interfaces.Form, symbols interfaces.VarIdValueSymbols, typeCheckErrors []error, typeCheckWarnings []error) GUI {
+	gui := GUI{GUIForm: NewGUIForm(form), Symbols: symbols, typeCheckErrors: typeCheckErrors, typeCheckWarnings: typeCheckWarnings}
 
 	gui.SaveDataCallback = symbols.SaveToDisk
 
@@ -43,7 +44,7 @@ func (this *GUI) RegisterOnShowCallback(callback func()) {
 func (this *GUI) Show() {
 	log.Info("Showing GUI")
 
-	err := ui.Main(func() {
+	guiErr := ui.Main(func() {
 		box := ui.NewVerticalBox()
 		box.SetPadded(true)
 		this.Window = ui.NewWindow("QL", 800, 600, false)
@@ -61,18 +62,24 @@ func (this *GUI) Show() {
 
 		this.GUIForm.Window = this.Window
 
-		if len(this.typeCheckerErrors) != 0 {
+		if len(this.typeCheckErrors) != 0 {
 			this.showErrorDialog()
-		} else {
-			this.GUIForm.ShowForm()
-			for _, registeredOnShowCallback := range this.RegisteredOnShowCallbacks {
-				registeredOnShowCallback()
-			}
+			return
 		}
+
+		if len(this.typeCheckWarnings) != 0 {
+			this.showWarningDialog()
+		}
+
+		this.GUIForm.ShowForm()
+		for _, registeredOnShowCallback := range this.RegisteredOnShowCallbacks {
+			registeredOnShowCallback()
+		}
+
 	})
 
-	if err != nil {
-		panic(err)
+	if guiErr != nil {
+		panic(guiErr)
 	}
 }
 
@@ -153,14 +160,16 @@ func handleQuestions(this *GUI, q []interfaces.Question, symbols interfaces.VarI
 	guiQuestions := make([]*GUIQuestion, 0)
 
 	for _, question := range q {
+		var guiQuestion *GUIQuestion
+
 		switch question := question.(type) {
 		case interfaces.ComputedQuestion:
-			guiQuestion := this.handleComputedQuestion(question, symbols).GUIQuestion
-			guiQuestions = append(guiQuestions, guiQuestion)
+			guiQuestion = this.handleComputedQuestion(question, symbols).GUIQuestion
 		case interfaces.InputQuestion:
-			guiQuestion := this.handleInputQuestion(question, symbols).GUIQuestion
-			guiQuestions = append(guiQuestions, guiQuestion)
+			guiQuestion = this.handleInputQuestion(question, symbols).GUIQuestion
 		}
+
+		guiQuestions = append(guiQuestions, guiQuestion)
 	}
 
 	return guiQuestions
@@ -214,7 +223,11 @@ func (this *GUI) updateComputedQuestions(symbols interfaces.VarIdValueSymbols) {
 }
 
 func (this *GUI) showErrorDialog() {
-	ui.MsgBoxError(this.Window, "Errors encountered", convertErrorStringListToString(this.typeCheckerErrors))
+	ui.MsgBoxError(this.Window, "Errors encountered", convertErrorStringListToString(this.typeCheckErrors))
+}
+
+func (this *GUI) showWarningDialog() {
+	ui.MsgBoxError(this.Window, "Warnings encountered", convertErrorStringListToString(this.typeCheckWarnings))
 }
 
 // convertErrorStringListToString converts a list of errors to a concatenated error string and returns it.
