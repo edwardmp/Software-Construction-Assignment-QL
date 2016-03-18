@@ -153,12 +153,12 @@ func handleQuestions(this *GUI, q []interfaces.Question, symbols interfaces.VarI
 	guiQuestions := make([]*GUIQuestion, 0)
 
 	for _, question := range q {
-		switch question.(type) {
+		switch question := question.(type) {
 		case interfaces.ComputedQuestion:
-			guiQuestion := this.handleComputedQuestion(question.(interfaces.ComputedQuestion), symbols).GUIQuestion
+			guiQuestion := this.handleComputedQuestion(question, symbols).GUIQuestion
 			guiQuestions = append(guiQuestions, guiQuestion)
 		case interfaces.InputQuestion:
-			guiQuestion := this.handleInputQuestion(question.(interfaces.InputQuestion), symbols).GUIQuestion
+			guiQuestion := this.handleInputQuestion(question, symbols).GUIQuestion
 			guiQuestions = append(guiQuestions, guiQuestion)
 		}
 	}

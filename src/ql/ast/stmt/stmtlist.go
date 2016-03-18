@@ -35,16 +35,14 @@ func (this StmtList) GetConditionals() []interfaces.Conditional {
 	return this.Conditionals
 }
 
-func (this StmtList) AddToCorrectSlice(i interface{}) StmtList {
-	switch t := i.(type) {
+func (this StmtList) AddToCorrectSlice(questionOrConditional interface{}) StmtList {
+	switch assertedStmt := questionOrConditional.(type) {
 	default:
-		panic(fmt.Errorf("Unexpected StmtList type passed %T\n", t))
+		panic(fmt.Errorf("Unexpected StmtList type passed to AddToCorrectSlice %T\n", assertedStmt))
 	case interfaces.Question:
-		this.Questions = append(this.Questions, i.(interfaces.Question))
-	case If:
-		this.Conditionals = append(this.Conditionals, i.(If))
-	case IfElse:
-		this.Conditionals = append(this.Conditionals, i.(IfElse))
+		this.Questions = append(this.Questions, assertedStmt)
+	case interfaces.Conditional:
+		this.Conditionals = append(this.Conditionals, assertedStmt)
 	}
 
 	return this
