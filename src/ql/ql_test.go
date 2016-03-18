@@ -10,33 +10,23 @@ import (
 	"testing"
 )
 
-func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interface{}) stmt.Form {
+func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interfaces.Form) stmt.Form {
 	lex := lexer.NewLexer([]byte(stmtAsString))
 	parser := parser.NewParser()
 	parseResult, err := parser.Parse(lex)
 
 	if err != nil {
-		panic(err)
+		t.Fatalf("Encountered fatal error during parse: %s", err)
 	}
 
 	if f, fOk := parseResult.(stmt.Form); fOk {
 		if e, eOk := expectedOutput.(stmt.Form); eOk {
-			if f.GetIdentifier() != e.GetIdentifier() {
-				t.Errorf("Form identifiers not equal %v %v", f.Identifier, e.Identifier)
+			if firstFormIdentifier, secondFormIdentifier := f.GetIdentifier(), e.GetIdentifier(); firstFormIdentifier != secondFormIdentifier {
+				t.Errorf("Form identifiers not equal: %s and %s", firstFormIdentifier, secondFormIdentifier)
 			}
 
 			if !stmt.SlicesEqual(f.Content, e.Content) {
-				t.Errorf("Form content not equal %v %v", f.Content, e.Content)
-			}
-
-			fCond := f.Content.Conditionals
-			eCond := e.Content.Conditionals
-			if len(fCond) != 0 && len(fCond) == len(eCond) {
-				for i := range fCond {
-					if !stmt.SlicesEqualConditional(fCond[i].(interfaces.Conditional), eCond[i].(interfaces.Conditional)) {
-						t.Errorf("parse test failed conditionals not equal: %v %v", fCond, eCond)
-					}
-				}
+				t.Errorf("Form content not equal: %v and %v", f, e)
 			}
 		}
 	}
