@@ -129,20 +129,20 @@ func (this Expr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interface
 }
 
 // checkOperand checks if the value of a unaryExpr is of the expected type
-func (unaryExpr UnaryOperator) checkOperand(expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
-	checkForInvalidOperandForOperator(unaryExpr.GetValue(), expectedType, typeChecker, s)
+func (unaryExpression UnaryOperator) checkOperand(expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+	checkIfOperandHasExpectedType(unaryExpression.GetValue(), expectedType, typeChecker, s)
 }
 
 // checkOperands checks if the left-hand and right-hand sides are of the expected type
-func (binaryExpression BinaryOperator) checkOperands(expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
-	checkForInvalidOperandForOperator(binaryExpression.GetLhs(), expectedType, typeChecker, s)
-	checkForInvalidOperandForOperator(binaryExpression.GetRhs(), expectedType, typeChecker, s)
+func (binaryExpr BinaryOperator) checkOperands(expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+	checkIfOperandHasExpectedType(binaryExpr.GetLhs(), expectedType, typeChecker, s)
+	checkIfOperandHasExpectedType(binaryExpr.GetRhs(), expectedType, typeChecker, s)
 }
 
 // checkForEqualTypes checks if the operands in a BinaryOperator have the same type, and if the types are unequal adds an error to the typechecker
-func (binaryExpression BinaryOperator) checkForEqualTypes(expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
-	lhsType := binaryExpression.GetLhs().TypeCheck(typeChecker, s)
-	rhsType := binaryExpression.GetRhs().TypeCheck(typeChecker, s)
+func (binaryExpr BinaryOperator) checkForEqualTypes(expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) {
+	lhsType := binaryExpr.GetLhs().TypeCheck(typeChecker, s)
+	rhsType := binaryExpr.GetRhs().TypeCheck(typeChecker, s)
 
 	// this occurs when we have no type info (e.g. VarExpr with reference to undefined question)
 	// this case is already handled by the undefined question reference checker, so don't continue here
@@ -155,7 +155,7 @@ func (binaryExpression BinaryOperator) checkForEqualTypes(expectedType interface
 	}
 }
 
-func checkForInvalidOperandForOperator(expr interfaces.Expr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+func checkIfOperandHasExpectedType(expr interfaces.Expr, expectedType interfaces.ValueType, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	actualType := expr.TypeCheck(typeChecker, symbols)
 
 	// this occurs when we have no type info (e.g. VarExpr with reference to undefined question)
@@ -165,6 +165,6 @@ func checkForInvalidOperandForOperator(expr interfaces.Expr, expectedType interf
 	}
 
 	if actualType != expectedType {
-		typeChecker.AddEncounteredError(fmt.Errorf("Encountered invalid operand type for operator, expected type: %s, actual type: %s", expectedType, actualType))
+		typeChecker.AddEncounteredError(fmt.Errorf("Encountered unexpected operand type, expected type: %s, actual type: %s", expectedType, actualType))
 	}
 }

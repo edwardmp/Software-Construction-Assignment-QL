@@ -40,10 +40,10 @@ func (this IfElse) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfa
 func (this ComputedQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	checkQuestionForDuplicateLabels(this, typeChecker)
 	checkQuestionForRedeclaration(this, typeChecker, symbols)
-
 	typeChecker.SetCurrentVarIdVisited(this.VarDecl)
 
-	this.Computation.TypeCheck(typeChecker, symbols)
+	this.checkIfQuestionTypeMatchesComputationType(typeChecker, symbols)
+
 	this.VarDecl.TypeCheck(typeChecker, symbols)
 
 	for _, conditionDependentOn := range typeChecker.GetConditionsDependentOn() {
@@ -75,21 +75,11 @@ func (this InputQuestion) TypeCheck(typeChecker interfaces.TypeChecker, symbols 
 
 func (this StmtList) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	for _, question := range this.Questions {
-		switch question.(type) {
-		case InputQuestion:
-			question.(InputQuestion).TypeCheck(typeChecker, symbols)
-		case ComputedQuestion:
-			question.(ComputedQuestion).TypeCheck(typeChecker, symbols)
-		}
+		question.TypeCheck(typeChecker, symbols)
 	}
 
 	for _, conditional := range this.Conditionals {
-		switch conditional.(type) {
-		case If:
-			conditional.(If).TypeCheck(typeChecker, symbols)
-		case IfElse:
-			conditional.(IfElse).TypeCheck(typeChecker, symbols)
-		}
+		conditional.TypeCheck(typeChecker, symbols)
 	}
 }
 
@@ -147,5 +137,15 @@ func checkQuestionForRedeclaration(question interfaces.Question, typeChecker int
 
 	if symbols.IsTypeSetForVarId(varDecl.GetIdent()) && symbols.GetTypeForVarId(varDecl.GetIdent()) != varDecl.GetType() {
 		typeChecker.AddEncounteredError(fmt.Errorf("Question redeclared with different types: %s and %s", varDecl.GetType(), symbols.GetTypeForVarId(varDecl.GetIdent())))
+	}
+}
+
+func (this ComputedQuestion) checkIfQuestionTypeMatchesComputationType(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
+	actualType := this.Computation.TypeCheck(typeChecker, symbols)
+	expectedType := this.GetVarDecl().GetType()
+
+	// check if question declaration type matches the type of the computation
+	if actualType != expr.NewUnknownType() && actualType != expectedType {
+		typeChecker.AddEncounteredError(fmt.Errorf("Encountered computed question with mismatch between declared type (%s) and actual computation type (%s)", expectedType, actualType))
 	}
 }

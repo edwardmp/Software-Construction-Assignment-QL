@@ -17,7 +17,7 @@ func TestInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
 	exampleExpr.TypeCheck(typeChecker, nil)
 	errorsReported := typeChecker.ErrorsEncountered
 
-	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operand type for operator, expected type: Integer, actual type: Boolean")) {
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Integer, actual type: Boolean")) {
 		t.Errorf("Invalid operands checker did not correctly report operands of different types %v", errorsReported)
 	}
 }
@@ -29,7 +29,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) 
 	exampleExpr.TypeCheck(typeChecker, nil)
 	errorsReported := typeChecker.ErrorsEncountered
 
-	expectedError := fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operand type for operator, expected type: Integer, actual type: Boolean"))
+	expectedError := fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Integer, actual type: Boolean"))
 	if len(errorsReported) != 2 || fmt.Sprintf("%v", errorsReported[0]) != expectedError || fmt.Sprintf("%v", errorsReported[1]) != expectedError {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid binary operation on bool types %v", errorsReported)
 	}
@@ -42,7 +42,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.
 	exampleExpr.TypeCheck(typeChecker, nil)
 	errorsReported := typeChecker.ErrorsEncountered
 
-	expectedError := fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operand type for operator, expected type: Boolean, actual type: Integer"))
+	expectedError := fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Boolean, actual type: Integer"))
 
 	if len(errorsReported) != 2 || fmt.Sprintf("%v", errorsReported[0]) != expectedError || fmt.Sprintf("%v", errorsReported[1]) != expectedError {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid binary operation on int types")
@@ -56,7 +56,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T
 	exampleExpr.TypeCheck(typeChecker, nil)
 	errorsReported := typeChecker.ErrorsEncountered
 
-	expectedError := fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operand type for operator, expected type: Boolean, actual type: String"))
+	expectedError := fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Boolean, actual type: String"))
 
 	if len(errorsReported) != 2 || fmt.Sprintf("%v", errorsReported[0]) != expectedError || fmt.Sprintf("%v", errorsReported[1]) != expectedError {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid binary operation on string types")
@@ -70,7 +70,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
 	exampleExpr.TypeCheck(typeChecker, nil)
 	errorsReported := typeChecker.ErrorsEncountered
 
-	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operand type for operator, expected type: Integer, actual type: Boolean")) {
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Integer, actual type: Boolean")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on bool type %v", errorsReported)
 	}
 }
@@ -82,7 +82,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
 	exampleExpr.TypeCheck(typeChecker, nil)
 	errorsReported := typeChecker.ErrorsEncountered
 
-	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operand type for operator, expected type: Boolean, actual type: Integer")) {
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Boolean, actual type: Integer")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on int type %v", errorsReported)
 	}
 }
@@ -94,7 +94,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) 
 	exampleExpr.TypeCheck(typeChecker, nil)
 	errorsReported := typeChecker.ErrorsEncountered
 
-	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered invalid operand type for operator, expected type: Boolean, actual type: String")) {
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Boolean, actual type: String")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on string type")
 	}
 }
@@ -169,7 +169,7 @@ func TestCyclicReferenceCheckerReferenceToEachOther(t *testing.T) {
 	errorsReported := typeChecker.ErrorsEncountered
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Found cyclic dependency: [hasSoldHouse hasBoughtHouse hasSoldHouse]")) {
-		t.Errorf("Cyclic reference to self not reported correctly by type checker")
+		t.Errorf("Cyclic reference to self not reported correctly by type checker %v", errorsReported)
 	}
 }
 
@@ -186,5 +186,19 @@ func TestCyclicReferenceCheckerIfConditionRefersToBody(t *testing.T) {
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Found cyclic dependency: [hasSoldHouse hasSoldHouse]")) {
 		t.Errorf("Cyclic reference not reported correctly by type checker %v", errorsReported)
+	}
+}
+
+func TestQuestionTypeAndComputationTypeMismatch(t *testing.T) {
+	exampleQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()), expr.NewIntLitNoSourceInfo(10))
+	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{})
+	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
+
+	typeChecker := NewTypeChecker()
+	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
+	errorsReported := typeChecker.ErrorsEncountered
+
+	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered computed question with mismatch between declared type (Boolean) and actual computation type (Integer)")) {
+		t.Errorf("Non bool condition type checker did not correctly report condition of invalid type %v", errorsReported)
 	}
 }
