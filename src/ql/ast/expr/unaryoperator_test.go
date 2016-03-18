@@ -7,13 +7,13 @@ import (
 	"testing"
 )
 
-func unaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput interfaces.Expr, symbols interfaces.VarIdValueSymbols) {
-	if eval, expectedOutputEval := exampleInput.Eval(symbols), expectedOutput.(interfaces.Expr).Eval(symbols); eval != expectedOutputEval {
-		t.Errorf("UnaryOperator test error: should be %v (%T) for %v but is %v (%T)", expectedOutputEval, expectedOutputEval, eval, eval)
+func unaryExprEval(t *testing.T, testExpr interfaces.Expr, expectedExpr interfaces.Expr, symbols interfaces.VarIdValueSymbols) {
+	if actualEvalValue, expectedEvalValue := testExpr.Eval(symbols), expectedExpr.Eval(symbols); actualEvalValue != expectedEvalValue {
+		t.Errorf("UnaryOperator test error: should be %v (%T) for %v but is %v (%T)", expectedEvalValue, expectedEvalValue, actualEvalValue, actualEvalValue)
 	}
 }
 
-/* Test for unary expressions */
+/* Tests for unary expressions */
 
 func TestNot(t *testing.T) {
 	unaryExprEval(t, NewNotNoSourceInfo(NewBoolLitNoSourceInfo(true)), NewBoolLitNoSourceInfo(false), nil)
