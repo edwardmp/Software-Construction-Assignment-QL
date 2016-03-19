@@ -15,44 +15,68 @@ import (
 func main() {
 	initLog()
 
+	gui := gui.NewGUI()
+
+	errors := []error{}
+
 	filePath := "example.ql"
 	fileContent, fileError := ioutil.ReadFile(filePath)
 
 	if fileError != nil {
-		log.WithFields(log.Fields{"filePath": filePath, "fileError": fileError}).Panic("Could not open input file")
+		log.WithFields(log.Fields{"filePath": filePath, "fileError": fileError}).Error("Could not open input file")
+		errors = append(errors, fileError)
+
+		// only show the error dialog
+		gui.ShowWindow(errors, nil)
 	}
 
 	log.WithFields(log.Fields{"filePath": filePath}).Info("Loaded file")
 
-	parsedForm := lexAndParse(fileContent)
+	parsedForm, parseError := lexAndParse(fileContent)
+
+	if parseError != nil {
+		errors = append(errors, parseError)
+		log.WithFields(log.Fields{"parseError": parseError}).Info("Adding parse error to errors list displayed in GUI")
+
+		// only show the error dialog
+		gui.ShowWindow(errors, nil)
+		return
+	}
+
 	typeCheckErrors, typeCheckWarnings := conductTypeChecking(parsedForm)
+	errors = append(errors, typeCheckErrors...)
 
 	varIdDefaultValueVisitor := NewDefaultVarIdSymbolValueVisitor()
 	varIdValueSymbols := symbols.NewVarIdValueSymbols()
 	parsedForm.Accept(varIdDefaultValueVisitor, varIdValueSymbols)
 
-	gui.CreateGUI(parsedForm, varIdValueSymbols, typeCheckErrors, typeCheckWarnings)
+	gui.InitializeGUIForm(parsedForm, varIdValueSymbols)
+	gui.ShowWindow(errors, typeCheckWarnings)
 }
 
-func lexAndParse(fileContent []byte) interfaces.Form {
+func initLog() {
+	log.SetLevel(log.DebugLevel)
+}
+
+func lexAndParse(fileContent []byte) (interfaces.Form, error) {
 	lexer := lexer.NewLexer(fileContent)
 
-	log.Info("Initiating parsing of file")
 	parser := parser.NewParser()
+	log.Info("Initiating parsing of file")
 	parseResult, parseErr := parser.Parse(lexer)
 
 	if parseErr != nil {
-		log.WithFields(log.Fields{"parseErr": parseErr}).Panic("Could not parse")
+		log.WithFields(log.Fields{"parseErr": parseErr}).Error("Could not parse")
 	}
 
 	log.WithFields(log.Fields{"Result": parseResult}).Info("Form parsed")
 
-	parsedForm, castAsFormOK := parseResult.(interfaces.Form)
-	if !castAsFormOK {
+	parsedForm, parseResultIsForm := parseResult.(interfaces.Form)
+	if parseErr == nil && !parseResultIsForm {
 		log.Panic("Parse result could not be casted to Form")
 	}
 
-	return parsedForm
+	return parsedForm, parseErr
 }
 
 func conductTypeChecking(form interfaces.Form) ([]error, []error) {
@@ -64,10 +88,6 @@ func conductTypeChecking(form interfaces.Form) ([]error, []error) {
 	log.WithFields(log.Fields{"errors": errors, "warnings": warnings}).Error("Type checking finished")
 
 	return errors, warnings
-}
-
-func initLog() {
-	log.SetLevel(log.DebugLevel)
 }
 
 // FIXME place somewhere else?

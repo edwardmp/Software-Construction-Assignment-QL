@@ -2,6 +2,7 @@ package gui
 
 import (
 	"github.com/andlabs/ui"
+	"strings"
 )
 
 // CreateInputTextField returns a new generic input text field.
@@ -32,4 +33,19 @@ func CreateButton(buttonText string, onClick func(*ui.Button)) *ui.Button {
 // CreateCheckboxConditional returns a new text label.
 func CreateLabel(text string) *ui.Label {
 	return ui.NewLabel(text)
+}
+
+func ShowMessageBoxForErrors(title string, errors []error, window *ui.Window) {
+	ui.MsgBoxError(window, title, convertErrorStringListToString(errors))
+}
+
+// convertErrorStringListToString converts a list of errors to a concatenated error string and returns it.
+func convertErrorStringListToString(errorStringList []error) string {
+	errorStrings := []string{}
+
+	for _, singleError := range errorStringList {
+		errorStrings = append(errorStrings, singleError.Error())
+	}
+
+	return strings.Join(errorStrings, "\n")
 }

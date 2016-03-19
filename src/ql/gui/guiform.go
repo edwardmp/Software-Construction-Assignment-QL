@@ -10,37 +10,44 @@ type GUIForm struct {
 	Form               interfaces.Form
 	QuestionContainers []*ui.Box
 	ComputedQuestions  []*GUIComputedQuestion
-	Window             *ui.Window
-	Container          *ui.Box
+	FormContainer      *ui.Box
 }
 
 // NewGUIForm is a constructor method returning a new GUIForm with initialized embedded Form
-func NewGUIForm(form interfaces.Form) *GUIForm {
-	return &GUIForm{Form: form}
+func newGUIForm(form interfaces.Form) *GUIForm {
+	if form == nil {
+		panic("Passing nil form to GUI NewGUIForm")
+	}
+
+	return &GUIForm{Form: form, ComputedQuestions: make([]*GUIComputedQuestion, 0)}
 }
 
 // AddQuestionContainer appends the question container box to the form container
-func (this *GUIForm) AddQuestionContainer(questionContainer *ui.Box) {
-	this.Container.Append(questionContainer, false)
+func (this *GUIForm) addQuestionContainer(questionContainer *ui.Box) {
+	this.FormContainer.Append(questionContainer, false)
 	log.Info("Adding question container to form")
 	this.QuestionContainers = append(this.QuestionContainers, questionContainer)
 }
 
-func (this *GUIForm) AddComputedQuestion(question *GUIComputedQuestion) {
+func (this *GUIForm) addComputedQuestion(question *GUIComputedQuestion) {
+	if question == nil {
+		panic("Passing nil question to GUI AddComputedQuestion")
+	}
+
 	log.Info("Adding computed question to form")
 	this.ComputedQuestions = append(this.ComputedQuestions, question)
 }
 
 // ShowForm displays the form box. It should only be called if no semantic errors are present.
-func (this *GUIForm) ShowForm() {
+func (this *GUIForm) show(window *ui.Window) {
 	log.WithFields(log.Fields{"identifier": this.Form.GetIdentifier()}).Info("Showing form")
 
-	box := ui.NewVerticalBox()
-	this.Container = box
+	this.FormContainer = ui.NewVerticalBox()
+	window.SetChild(this.FormContainer)
+}
 
+func (this *GUIForm) contentCreationFinished() {
 	this.addSubmitButton()
-	this.Container.Append(ui.NewHorizontalSeparator(), false)
-	this.Window.SetChild(this.Container)
 }
 
 func extractEmbeddedGUIQuestions(inputQuestions []*GUIInputQuestion, computedQuestions []*GUIComputedQuestion) []*GUIQuestion {
@@ -58,7 +65,7 @@ func extractEmbeddedGUIQuestions(inputQuestions []*GUIInputQuestion, computedQue
 }
 
 // CreateQuestionTableWithRows creates a table box containing the passed GUIQuestions.
-func (this *GUIForm) CreateQuestionTableWithRows(questions []*GUIQuestion) *ui.Box {
+func (this *GUIForm) createQuestionTable(questions []*GUIQuestion) *ui.Box {
 	table := ui.NewVerticalBox()
 
 	for _, question := range questions {
@@ -86,7 +93,7 @@ func (this *GUIForm) addSubmitButton() {
 		// this.SaveDataCallback() FIXME place in Gui.go?
 	})
 
-	this.Container.Append(button, false)
+	this.FormContainer.Append(button, false)
 
 	/*
 		display messagedialog that submit is OK

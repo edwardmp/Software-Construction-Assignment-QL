@@ -13,11 +13,11 @@ type SymbolCallBackFunction func(interfaces.VarIdValueSymbols)
 
 type VarIdValueSymbols struct {
 	Table               VarIdToExprSymbolTable
-	RegisteredCallbacks []func(interfaces.VarIdValueSymbols)
+	RegisteredCallbacks []func()
 }
 
 func NewVarIdValueSymbols() *VarIdValueSymbols {
-	return &VarIdValueSymbols{Table: make(VarIdToExprSymbolTable), RegisteredCallbacks: make([]func(interfaces.VarIdValueSymbols), 0)}
+	return &VarIdValueSymbols{Table: make(VarIdToExprSymbolTable), RegisteredCallbacks: make([]func(), 0)}
 }
 
 func (this *VarIdValueSymbols) SetExprForVarId(expr interfaces.Expr, varId interfaces.VarId) {
@@ -29,7 +29,7 @@ func (this *VarIdValueSymbols) SetExprForVarId(expr interfaces.Expr, varId inter
 	log.WithFields(log.Fields{"Identifier": varId, "Expr": expr}).Debug("Set Expr for VarId")
 
 	for _, registeredCallback := range this.RegisteredCallbacks {
-		registeredCallback(this)
+		registeredCallback()
 	}
 }
 
@@ -44,7 +44,7 @@ func (this *VarIdValueSymbols) GetExprForVarId(varId interfaces.VarId) interface
 	return expr
 }
 
-func (this *VarIdValueSymbols) RegisterCallback(callback func(interfaces.VarIdValueSymbols)) {
+func (this *VarIdValueSymbols) RegisterCallback(callback func()) {
 	this.RegisteredCallbacks = append(this.RegisteredCallbacks, callback)
 }
 

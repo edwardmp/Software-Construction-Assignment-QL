@@ -9,6 +9,6 @@ type TypeCheckSymbols interface {
 type VarIdValueSymbols interface {
 	SetExprForVarId(Expr, VarId)
 	GetExprForVarId(VarId) Expr
-	RegisterCallback(callback func(VarIdValueSymbols))
+	RegisterCallback(callback func())
 	SaveToDisk() (interface{}, error)
 }
