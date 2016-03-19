@@ -3,3 +3,4 @@ import:
 - package: github.com/Sirupsen/logrus
 - package: github.com/andlabs/ui
 - package: github.com/goccmack/gocc
+- package: github.com/codegangsta/cli

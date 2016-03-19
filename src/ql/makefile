@@ -15,14 +15,14 @@ GOCMD=go
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOINSTALL=$(GOCMD) install
-GOTEST=$(GOCMD) test
+GOTEST=$(GOCMD) test -o ql.test
 GODEP=$(GOTEST) -i
 GOFMT=gofmt -w
 
 # Package lists
 TOPLEVEL_PKG := ql
 INT_LIST := interfaces	#<-- Interface directories
-IMPL_LIST := symbols gui ast typechecker ast/expr ast/stmt ast/vari #<-- Implementation directories
+IMPL_LIST := . symbols gui ast typechecker ast/expr ast/stmt ast/vari #<-- Implementation directories
 CMD_LIST := 	#<-- Command directories
 MAIN_LIST := main.go
 

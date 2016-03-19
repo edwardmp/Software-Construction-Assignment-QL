@@ -25,11 +25,7 @@ To run all tests, execute:
 ```
 make test
 ```
-This will run all tests, except the one in the top level dir. Due to the aforementioned dylib issue, first compile the test and then execute it. E.g.:
-```
-go test -c
-./QL.test
-```
+This will run all tests.
 
 ## Build
 To build the program, execute:
@@ -53,10 +49,35 @@ go build main.go
 ./main
 ```
 
+As a shortcut, you also simply run this to achieve the same:
+
+```
+make run
+```
+
 ## Viewing documentation
 All documentation can be viewed in your browser by visiting the url [`http://localhost:6060`](http://localhost:6060) after you've executed:
 
 ```
 godoc -http=:6060
+```
+
+## Update/install dependencies
+Install the glide packanagement system:
+
+```
+brew install glide
+```
+
+Install dependencies:
+
+```
+glide install
+```
+
+Update dependencies:
+
+```
+glide update
 ```
 

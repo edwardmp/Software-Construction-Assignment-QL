@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	log "github.com/Sirupsen/logrus"
+	"github.com/codegangsta/cli"
 	"io/ioutil"
+	"os"
 	"ql/ast/visitor"
 	"ql/gui"
 	"ql/interfaces"
@@ -13,29 +16,80 @@ import (
 )
 
 func main() {
-	initLog()
+	app := cli.NewApp()
+	app.Name = "QL"
+	app.Usage = "generate a questionnaire form from a DSL"
+	app.Version = "1.0.0"
 
+	var filePathPassed string
+	var debugModeEnabled bool
+
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:        "filepath",
+			Value:       "form.ql",
+			Usage:       "path to a .ql file",
+			Destination: &filePathPassed,
+		},
+		cli.BoolFlag{
+			Name:        "debugmode",
+			Usage:       "if passed, the minimum log level displayed is set to debug",
+			Destination: &debugModeEnabled,
+		},
+	}
+
+	app.Action = func(c *cli.Context) {
+		filePath := filePathPassed
+		if c.NArg() > 0 {
+			filePath = c.Args()[0]
+		}
+
+		if debugModeEnabled {
+			enableDebugLevelLogs()
+		} else {
+			enableFatalLevelLogs()
+		}
+
+		log.WithFields(log.Fields{"filePath": filePath}).Info("Passed file path as CLI argument/flag")
+
+		// no file at path exists
+		if src, err := os.Stat(filePath); os.IsNotExist(err) {
+			fmt.Printf("Could not continue: no file exists at path: %s \n", filePath)
+			return
+		} else if src.IsDir() {
+			fmt.Printf("Could not continue: path to directory instead of file passed: %s\n", filePath)
+			return
+		}
+
+		initQL(filePath)
+	}
+
+	app.Run(os.Args)
+}
+
+// enableDebugLevelLogs sets the minimum level of logs displayed to debug
+func enableDebugLevelLogs() {
+	log.SetLevel(log.DebugLevel)
+	log.Info("Enabled debug level logging")
+}
+
+// enableDebugLevelLogs sets the minimum level of logs displayed to fatal
+func enableFatalLevelLogs() {
+	log.SetLevel(log.FatalLevel)
+}
+
+// initQL loads the contents of the file at the passed file path, starts lexer/parser and type checking and presents the GUI
+func initQL(filePath string) {
 	gui := gui.NewGUI()
 
-	errors := []error{}
-
-	filePath := "example.ql"
-	fileContent, fileError := ioutil.ReadFile(filePath)
-
-	if fileError != nil {
-		log.WithFields(log.Fields{"filePath": filePath, "fileError": fileError}).Error("Could not open input file")
-		errors = append(errors, fileError)
-
-		// only show the error dialog
-		gui.ShowWindow(errors, nil)
-	}
+	fileContent, _ := ioutil.ReadFile(filePath)
 
 	log.WithFields(log.Fields{"filePath": filePath}).Info("Loaded file")
 
 	parsedForm, parseError := lexAndParse(fileContent)
 
 	if parseError != nil {
-		errors = append(errors, parseError)
+		errors := []error{parseError}
 		log.WithFields(log.Fields{"parseError": parseError}).Info("Adding parse error to errors list displayed in GUI")
 
 		// only show the error dialog
@@ -44,20 +98,16 @@ func main() {
 	}
 
 	typeCheckErrors, typeCheckWarnings := conductTypeChecking(parsedForm)
-	errors = append(errors, typeCheckErrors...)
 
 	varIdDefaultValueVisitor := NewDefaultVarIdSymbolValueVisitor()
 	varIdValueSymbols := symbols.NewVarIdValueSymbols()
 	parsedForm.Accept(varIdDefaultValueVisitor, varIdValueSymbols)
 
 	gui.InitializeGUIForm(parsedForm, varIdValueSymbols)
-	gui.ShowWindow(errors, typeCheckWarnings)
+	gui.ShowWindow(typeCheckErrors, typeCheckWarnings)
 }
 
-func initLog() {
-	log.SetLevel(log.DebugLevel)
-}
-
+// lexAndParse conducts lexical analysis and parses the past file content, returns a parsed form and a potential error
 func lexAndParse(fileContent []byte) (interfaces.Form, error) {
 	lexer := lexer.NewLexer(fileContent)
 
@@ -79,6 +129,7 @@ func lexAndParse(fileContent []byte) (interfaces.Form, error) {
 	return parsedForm, parseErr
 }
 
+// conductTypeChecking starts type checking the passed form for errors and warnings
 func conductTypeChecking(form interfaces.Form) ([]error, []error) {
 	typeChecker := typechecker.NewTypeChecker()
 	form.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())

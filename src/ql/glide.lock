@@ -1,8 +1,10 @@
-hash: 2224a718ebbd112ad5f8eccf7672e9701e9409feec58c181e9280a4ecdee56c9
-updated: 2016-03-13T18:46:15.340145877+01:00
+hash: 567df4d7ccd1b5607b2a468d91e22409f9a5699bf6f76b158a402c19af5b08ff
+updated: 2016-03-19T17:58:04.187705945+01:00
 imports:
 - name: github.com/andlabs/ui
   version: 8dc672361ebc481cbe9418f7dd4d307095ee9f98
+- name: github.com/codegangsta/cli
+  version: aca5b047ed14d17224157c3434ea93bf6cdaadee
 - name: github.com/goccmack/gocc
   version: a150a4adbf3b19fe88efc310766ed3d643201560
 - name: github.com/Sirupsen/logrus
