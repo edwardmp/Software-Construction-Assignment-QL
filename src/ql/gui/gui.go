@@ -91,7 +91,7 @@ func (this *GUI) ShowForm() {
 		registeredOnShowCallback()
 	}
 
-	this.GUIForm.contentCreationFinished()
+	this.addSubmitButton()
 }
 
 // VisitForm creates the top level questions
@@ -229,6 +229,19 @@ func (this *GUI) updateComputedQuestions() {
 		this.Symbols.SetExprForVarId(computedQuestion.Expr, computedQuestion.VarId)
 		log.WithFields(log.Fields{"evaluatesTo": computedQuestionEval}).Info("Computed question value changed")
 	}
+}
+
+// addSubmitButton adds a submit button to the form.
+func (this *GUI) addSubmitButton() {
+	log.Info("Adding submit button to GUI")
+
+	button := CreateButton("Submit", func(b *ui.Button) {
+		log.Debug("Submit button clicked, saving data initiated")
+		this.SaveDataCallback()
+		ShowMessageBoxForErrors("Data saved to file", nil, this.Window)
+	})
+
+	this.GUIForm.FormContainer.Append(button, false)
 }
 
 func (this *GUI) showErrorDialogIfNecessary(errorsToDisplay []error) bool {

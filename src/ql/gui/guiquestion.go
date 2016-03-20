@@ -59,7 +59,7 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 		checkbox.OnToggled(func(*ui.Checkbox) {
 			log.WithFields(log.Fields{"value": checkbox.Checked()}).Debug("Checkbox value changed")
 
-			callback(expr.NewBoolLitNoSourceInfo(checkbox.Checked()), nil)
+			callback(expr.NewBoolLit(checkbox.Checked()), nil)
 		})
 		UIEntity = checkbox
 	case expr.StringType:
@@ -69,7 +69,7 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 
 			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (string field)")
 
-			callback(expr.NewStrLitNoSourceInfo(inputText), nil)
+			callback(expr.NewStrLit(inputText), nil)
 		})
 		UIEntity = inputField
 	case expr.IntType:
@@ -82,7 +82,7 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 			inputTextAsInt, err := strconv.Atoi(inputText)
 			if inputText == "" {
 				if callback != nil {
-					callback(expr.NewIntLitNoSourceInfo(inputTextAsInt), nil)
+					callback(expr.NewIntLit(inputTextAsInt), nil)
 				}
 				return
 			} else if err != nil {
@@ -96,7 +96,7 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 			}
 
 			if callback != nil {
-				callback(expr.NewIntLitNoSourceInfo(inputTextAsInt), nil)
+				callback(expr.NewIntLit(inputTextAsInt), nil)
 			}
 		})
 		UIEntity = inputField

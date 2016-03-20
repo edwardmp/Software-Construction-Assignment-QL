@@ -52,19 +52,26 @@ func main() {
 
 		log.WithFields(log.Fields{"filePath": filePath}).Info("Passed file path as CLI argument/flag")
 
-		// no file at path exists
-		if src, err := os.Stat(filePath); os.IsNotExist(err) {
-			fmt.Printf("Could not continue: no file exists at path: %s \n", filePath)
-			return
-		} else if src.IsDir() {
-			fmt.Printf("Could not continue: path to directory instead of file passed: %s\n", filePath)
-			return
-		}
+		// if no file at path exists, exit program
+		exitIfFilePathIsInvalid(filePath)
 
 		initQL(filePath)
 	}
 
 	app.Run(os.Args)
+}
+
+func exitIfFilePathIsInvalid(filePath string) {
+	// no file at path exists
+	if src, err := os.Stat(filePath); os.IsNotExist(err) {
+		fmt.Printf("Could not continue: no file exists at path: %s \n", filePath)
+		os.Exit(1)
+	} else if src.IsDir() {
+		fmt.Printf("Could not continue: path to directory instead of file passed: %s\n", filePath)
+		os.Exit(2)
+	}
+
+    log.WithFields(log.Fields{"filePath": filePath}).Info("Confirmed that file path")
 }
 
 // enableDebugLevelLogs sets the minimum level of logs displayed to debug

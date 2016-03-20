@@ -46,10 +46,6 @@ func (this *GUIForm) show(window *ui.Window) {
 	window.SetChild(this.FormContainer)
 }
 
-func (this *GUIForm) contentCreationFinished() {
-	this.addSubmitButton()
-}
-
 func extractEmbeddedGUIQuestions(inputQuestions []*GUIInputQuestion, computedQuestions []*GUIComputedQuestion) []*GUIQuestion {
 	guiQuestions := make([]*GUIQuestion, 0)
 
@@ -82,21 +78,4 @@ func attachQuestionToTable(table *ui.Box, question *GUIQuestion) {
 	table.Append(question.Label, false)
 	table.Append(question.Element, false)
 	table.Append(question.ErrorLabel, false)
-}
-
-// addSubmitButton adds a submit button to the form.
-func (this *GUIForm) addSubmitButton() {
-	log.Info("Adding submit button to form")
-
-	button := CreateButton("Submit", func(b *ui.Button) {
-		log.Debug("Submit button clicked")
-		// this.SaveDataCallback() FIXME place in Gui.go?
-	})
-
-	this.FormContainer.Append(button, false)
-
-	/*
-		display messagedialog that submit is OK
-		log.Info("Submit dialog displayed")
-	*/
 }
