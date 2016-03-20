@@ -8,12 +8,8 @@ type If struct {
 	Stmt
 }
 
-func NewIf(condition interfaces.Expr, body StmtList, sourceInfo interface{}) If {
-	return If{condition, body, NewStmt(sourceInfo)}
-}
-
-func NewIfNoSourceInfo(condition interfaces.Expr, body StmtList) If {
-	return NewIf(condition, body, nil)
+func NewIf(condition interfaces.Expr, body StmtList) If {
+	return If{condition, body, NewStmt()}
 }
 
 func (this If) GetBody() interfaces.StmtList {

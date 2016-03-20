@@ -7,12 +7,8 @@ type VarExpr struct {
 	Expr
 }
 
-func NewVarExpr(identifier interfaces.VarId, sourceInfo interface{}) VarExpr {
-	return VarExpr{identifier, NewExpr(sourceInfo)}
-}
-
-func NewVarExprNoSourceInfo(identifier interfaces.VarId) VarExpr {
-	return NewVarExpr(identifier, nil)
+func NewVarExpr(identifier interfaces.VarId) VarExpr {
+	return VarExpr{identifier, NewExpr()}
 }
 
 func (this VarExpr) GetIdentifier() interfaces.VarId {

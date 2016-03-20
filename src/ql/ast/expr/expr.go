@@ -8,10 +8,6 @@ type Expr struct {
 	node.Node
 }
 
-func NewExpr(sourceInfo interface{}) Expr {
-	return Expr{node.NewNode(sourceInfo)}
-}
-
-func NewExprNoSourceInfo() Expr {
-	return NewExpr(nil)
+func NewExpr() Expr {
+	return Expr{node.NewNode()}
 }

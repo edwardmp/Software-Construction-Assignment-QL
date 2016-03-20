@@ -22,105 +22,105 @@ func (this VarExpr) TypeCheck(typeChecker interfaces.TypeChecker, symbols interf
 }
 
 func (this Add) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntType(), typeChecker, s)
 
-	return NewIntTypeNoSourceInfo()
+	return NewIntType()
 }
 
 func (this And) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewBoolType(), typeChecker, s)
 
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this Div) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntType(), typeChecker, s)
 
-	return NewIntTypeNoSourceInfo()
+	return NewIntType()
 }
 
 func (this Eq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkForEqualTypes(NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkForEqualTypes(NewBoolType(), typeChecker, s)
 
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this GEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewBoolType(), typeChecker, s)
 
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this GT) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntType(), typeChecker, s)
 
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this LEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntType(), typeChecker, s)
 
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this LT) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntType(), typeChecker, s)
 
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this Mul) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntType(), typeChecker, s)
 
-	return NewIntTypeNoSourceInfo()
+	return NewIntType()
 }
 
 func (this Neg) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperand(NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperand(NewIntType(), typeChecker, s)
 
-	return NewIntTypeNoSourceInfo()
+	return NewIntType()
 }
 
 func (this NEq) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkForEqualTypes(NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkForEqualTypes(NewBoolType(), typeChecker, s)
 
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this Not) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperand(NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperand(NewBoolType(), typeChecker, s)
 
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this Or) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewBoolTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewBoolType(), typeChecker, s)
 
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this Pos) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperand(NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperand(NewIntType(), typeChecker, s)
 
-	return NewIntTypeNoSourceInfo()
+	return NewIntType()
 }
 
 func (this Sub) TypeCheck(typeChecker interfaces.TypeChecker, s interfaces.TypeCheckSymbols) interfaces.ValueType {
-	this.checkOperands(NewIntTypeNoSourceInfo(), typeChecker, s)
+	this.checkOperands(NewIntType(), typeChecker, s)
 
-	return NewIntTypeNoSourceInfo()
+	return NewIntType()
 }
 
 func (this IntLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
-	return NewIntTypeNoSourceInfo()
+	return NewIntType()
 }
 
 func (this BoolLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
-	return NewBoolTypeNoSourceInfo()
+	return NewBoolType()
 }
 
 func (this StrLit) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interfaces.ValueType {
-	return NewStringTypeNoSourceInfo()
+	return NewStringType()
 }
 
 // TypeCheck on Expr is the default implementation, which basically asserts that parent structs have overridden this method

@@ -7,12 +7,8 @@ type IntLit struct {
 	Expr
 }
 
-func NewIntLit(value int, sourceInfo interface{}) IntLit {
-	return IntLit{Value: value, Expr: NewExpr(sourceInfo)}
-}
-
-func NewIntLitNoSourceInfo(value int) IntLit {
-	return NewIntLit(value, nil)
+func NewIntLit(value int) IntLit {
+	return IntLit{Value: value, Expr: NewExpr()}
 }
 
 func (this IntLit) GetValue() int {

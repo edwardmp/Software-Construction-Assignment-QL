@@ -7,8 +7,8 @@ type ValueType struct {
 	TypeString string
 }
 
-func NewValueType(typeString string, sourceInfo interface{}) ValueType {
-	return ValueType{NewExpr(sourceInfo), typeString}
+func NewValueType(typeString string) ValueType {
+	return ValueType{NewExpr(), typeString}
 }
 
 func (this ValueType) String() string {
@@ -22,7 +22,7 @@ type UnknownType struct {
 }
 
 func NewUnknownType() UnknownType {
-	return UnknownType{NewValueType("Unknown", nil)}
+	return UnknownType{NewValueType("Unknown")}
 }
 
 func (this UnknownType) GetDefaultValue() interfaces.LitExpr {
@@ -37,16 +37,12 @@ type IntType struct {
 	ValueType
 }
 
-func NewIntType(sourceInfo interface{}) IntType {
-	return IntType{NewValueType("Integer", sourceInfo)}
-}
-
-func NewIntTypeNoSourceInfo() IntType {
-	return NewIntType(nil)
+func NewIntType() IntType {
+	return IntType{NewValueType("Integer")}
 }
 
 func (this IntType) GetDefaultValue() interfaces.LitExpr {
-	return NewIntLitNoSourceInfo(0)
+	return NewIntLit(0)
 }
 
 /* StringType */
@@ -55,16 +51,12 @@ type StringType struct {
 	ValueType
 }
 
-func NewStringType(sourceInfo interface{}) StringType {
-	return StringType{NewValueType("String", sourceInfo)}
-}
-
-func NewStringTypeNoSourceInfo() StringType {
-	return NewStringType(nil)
+func NewStringType() StringType {
+	return StringType{NewValueType("String")}
 }
 
 func (this StringType) GetDefaultValue() interfaces.LitExpr {
-	return NewStrLitNoSourceInfo("")
+	return NewStrLit("")
 }
 
 func (this StringType) String() string {
@@ -77,14 +69,10 @@ type BoolType struct {
 	ValueType
 }
 
-func NewBoolType(sourceInfo interface{}) BoolType {
-	return BoolType{NewValueType("Boolean", sourceInfo)}
-}
-
-func NewBoolTypeNoSourceInfo() BoolType {
-	return NewBoolType(nil)
+func NewBoolType() BoolType {
+	return BoolType{NewValueType("Boolean")}
 }
 
 func (this BoolType) GetDefaultValue() interfaces.LitExpr {
-	return NewBoolLitNoSourceInfo(false)
+	return NewBoolLit(false)
 }

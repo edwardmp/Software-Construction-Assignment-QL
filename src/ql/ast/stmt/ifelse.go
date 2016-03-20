@@ -9,12 +9,8 @@ type IfElse struct {
 	Stmt
 }
 
-func NewIfElse(condition interfaces.Expr, ifBody StmtList, thenBody StmtList, sourceInfo interface{}) IfElse {
-	return IfElse{condition, ifBody, thenBody, NewStmt(sourceInfo)}
-}
-
-func NewIfElseNoSourceInfo(condition interfaces.Expr, ifBody StmtList, thenBody StmtList) IfElse {
-	return NewIfElse(condition, ifBody, thenBody, nil)
+func NewIfElse(condition interfaces.Expr, ifBody StmtList, thenBody StmtList) IfElse {
+	return IfElse{condition, ifBody, thenBody, NewStmt()}
 }
 
 func (this IfElse) GetCondition() interfaces.Expr {

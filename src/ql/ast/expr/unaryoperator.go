@@ -7,8 +7,8 @@ type UnaryOperator struct {
 	Expr
 }
 
-func NewUnaryOperator(value interfaces.Expr, sourceInfo interface{}) UnaryOperator {
-	return UnaryOperator{value, NewExpr(sourceInfo)}
+func NewUnaryOperator(value interfaces.Expr) UnaryOperator {
+	return UnaryOperator{value, NewExpr()}
 }
 
 func (this UnaryOperator) GetValue() interfaces.Expr {

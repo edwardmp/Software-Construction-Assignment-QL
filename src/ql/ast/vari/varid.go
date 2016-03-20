@@ -5,12 +5,8 @@ type VarId struct {
 	Var
 }
 
-func NewVarId(ident string, sourceInfo interface{}) VarId {
-	return VarId{ident, NewVar(sourceInfo)}
-}
-
-func NewVarIdNoSourceInfo(ident string) VarId {
-	return NewVarId(ident, nil)
+func NewVarId(ident string) VarId {
+	return VarId{ident, NewVar()}
 }
 
 func (this VarId) GetIdent() string {

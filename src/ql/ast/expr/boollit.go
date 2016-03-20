@@ -7,12 +7,8 @@ type BoolLit struct {
 	Expr
 }
 
-func NewBoolLit(value bool, sourceInfo interface{}) BoolLit {
-	return BoolLit{Value: value, Expr: NewExpr(sourceInfo)}
-}
-
-func NewBoolLitNoSourceInfo(value bool) BoolLit {
-	return NewBoolLit(value, nil)
+func NewBoolLit(value bool) BoolLit {
+	return BoolLit{Value: value, Expr: NewExpr()}
 }
 
 func (this BoolLit) GetValue() bool {
@@ -21,5 +17,5 @@ func (this BoolLit) GetValue() bool {
 
 // FIXME needed for test comparison due to strange behavior. Find better solution.
 func (this BoolLit) String() string {
-	return fmt.Sprintf("%t", this.Value)
+	return fmt.Sprintf("%T", this.Value)
 }

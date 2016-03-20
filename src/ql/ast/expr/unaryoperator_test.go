@@ -16,30 +16,30 @@ func unaryExprEval(t *testing.T, testExpr interfaces.Expr, expectedExpr interfac
 /* Tests for unary expressions */
 
 func TestNot(t *testing.T) {
-	unaryExprEval(t, NewNotNoSourceInfo(NewBoolLitNoSourceInfo(true)), NewBoolLitNoSourceInfo(false), nil)
+	unaryExprEval(t, NewNot(NewBoolLit(true)), NewBoolLit(false), nil)
 }
 
 func TestPos(t *testing.T) {
-	unaryExprEval(t, NewPosNoSourceInfo(NewIntLitNoSourceInfo(-10)), NewIntLitNoSourceInfo(10), nil)
+	unaryExprEval(t, NewPos(NewIntLit(-10)), NewIntLit(10), nil)
 }
 
 func TestNeg(t *testing.T) {
-	unaryExprEval(t, NewNegNoSourceInfo(NewIntLitNoSourceInfo(10)), NewIntLitNoSourceInfo(-10), nil)
+	unaryExprEval(t, NewNeg(NewIntLit(10)), NewIntLit(-10), nil)
 }
 
 func TestPosNeg(t *testing.T) {
-	unaryExprEval(t, NewPosNoSourceInfo(NewNegNoSourceInfo(NewIntLitNoSourceInfo(-10))), NewIntLitNoSourceInfo(10), nil)
+	unaryExprEval(t, NewPos(NewNeg(NewIntLit(-10))), NewIntLit(10), nil)
 }
 
 func TestNegPos(t *testing.T) {
-	unaryExprEval(t, NewNegNoSourceInfo(NewPosNoSourceInfo(NewIntLitNoSourceInfo(10))), NewIntLitNoSourceInfo(-10), nil)
+	unaryExprEval(t, NewNeg(NewPos(NewIntLit(10))), NewIntLit(-10), nil)
 }
 
 func TestVarExpr(t *testing.T) {
-	exampleVarId := vari.NewVarIdNoSourceInfo("TestIdentifier")
+	exampleVarId := vari.NewVarId("TestIdentifier")
 
 	symbols := symbols.NewVarIdValueSymbols()
-	symbols.SetExprForVarId(NewIntLitNoSourceInfo(2), exampleVarId)
+	symbols.SetExprForVarId(NewIntLit(2), exampleVarId)
 
-	unaryExprEval(t, NewVarExprNoSourceInfo(exampleVarId), NewIntLitNoSourceInfo(2), symbols)
+	unaryExprEval(t, NewVarExpr(exampleVarId), NewIntLit(2), symbols)
 }

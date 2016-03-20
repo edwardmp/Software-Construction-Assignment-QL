@@ -6,6 +6,6 @@ type Var struct {
 	node.Node
 }
 
-func NewVar(sourceInfo interface{}) Var {
-	return Var{node.NewNode(sourceInfo)}
+func NewVar() Var {
+	return Var{node.NewNode()}
 }

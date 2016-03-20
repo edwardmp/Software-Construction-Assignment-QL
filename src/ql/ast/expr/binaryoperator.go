@@ -9,8 +9,8 @@ type BinaryOperator struct {
 	Expr
 }
 
-func NewBinaryOperator(lhs interfaces.Expr, rhs interfaces.Expr, sourceInfo interface{}) BinaryOperator {
-	return BinaryOperator{Lhs: lhs, Rhs: rhs, Expr: NewExpr(sourceInfo)}
+func NewBinaryOperator(lhs interfaces.Expr, rhs interfaces.Expr) BinaryOperator {
+	return BinaryOperator{Lhs: lhs, Rhs: rhs, Expr: NewExpr()}
 }
 
 func (this BinaryOperator) GetLhs() interfaces.Expr {

@@ -16,160 +16,217 @@ const (
 	FALSE = false
 )
 
-var SourcePosInformation map[interfaces.Node]token.Pos = make(map[interfaces.Node]token.Pos)
-
 /** Expressions **/
 
 /* unary operator expressions */
 func NewPos(value interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	pos := expr.NewPos(value.(interfaces.Expr), sourcePosInfo)
-	SourcePosInformation[pos] = sourcePosInfo.(token.Pos)
-	return pos, nil
+	expr := expr.NewPos(value.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewNeg(value interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewNeg(value.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewNeg(value.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewNot(value interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewNot(value.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewNot(value.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewVarExpr(identifier interface{}) (interfaces.Expr, error) {
 	varId := identifier.(vari.VarId)
-	return expr.NewVarExpr(varId, varId.GetSourceInfo()), nil
+	expr := expr.NewVarExpr(varId)
+	expr.SetSourceInfo(varId.GetSourceInfo())
+	return expr, nil
 }
 
 /* binary operator expressins */
 func NewMul(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewMul(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewMul(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewDiv(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewDiv(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewDiv(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewAdd(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewAdd(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewAdd(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewSub(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	pos := expr.NewSub(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo)
-	SourcePosInformation[pos] = sourcePosInfo.(token.Pos)
-	return pos, nil
+	expr := expr.NewSub(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewEq(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewNEq(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewNEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewNEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewGT(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewGT(lhs.(interfaces.Expr).(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewGT(lhs.(interfaces.Expr).(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewLT(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewLT(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewLT(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewGEq(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewGEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewGEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewLEq(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewLEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewLEq(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewAnd(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewAnd(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewAnd(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewOr(lhs interface{}, rhs interface{}, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewOr(lhs.(interfaces.Expr), rhs.(interfaces.Expr), sourcePosInfo), nil
+	expr := expr.NewOr(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 /* literals */
 func NewIntLit(litValueToken interface{}) (interfaces.Expr, error) {
 	sourcePosInfo := litValueToken.(*token.Token).Pos
 	value, err := util.IntValue(litValueToken.(*token.Token).Lit)
-	return expr.NewIntLit(int(value), sourcePosInfo), err
+	expr := expr.NewIntLit(int(value))
+	expr.SetSourceInfo(sourcePosInfo)
+	return expr, err
 }
 
 func NewBoolLit(value bool, sourcePosInfo interface{}) (interfaces.Expr, error) {
-	return expr.NewBoolLit(value, sourcePosInfo), nil
+	expr := expr.NewBoolLit(value)
+	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return expr, nil
 }
 
 func NewStrLit(valueToken interface{}) (interfaces.Expr, error) {
 	sourcePosInfo := valueToken.(*token.Token).Pos
 	literalString := stringLiteralTokensToString(valueToken.(*token.Token))
-	return expr.NewStrLit(literalString, sourcePosInfo), nil
+	expr := expr.NewStrLit(literalString)
+	expr.SetSourceInfo(sourcePosInfo)
+	return expr, nil
 }
 
 /** Vari **/
 
 func NewVarDecl(ident interface{}, typeIdent interface{}, sourcePosInfo interface{}) (interfaces.VarDecl, error) {
-	return vari.NewVarDecl(ident.(interfaces.VarId), typeIdent.(interfaces.ValueType), sourcePosInfo), nil
+	vari := vari.NewVarDecl(ident.(interfaces.VarId), typeIdent.(interfaces.ValueType))
+	vari.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return vari, nil
 }
 
 func NewVarId(identToken interface{}) (vari.VarId, error) {
 	sourcePosInfo := identToken.(*token.Token).Pos
 	identifierString := string(identToken.(*token.Token).Lit)
-	return vari.NewVarId(identifierString, sourcePosInfo), nil
+	vari := vari.NewVarId(identifierString)
+	vari.SetSourceInfo(sourcePosInfo)
+	return vari, nil
 }
 
 func NewIntType(typeTokenLit interface{}) (interfaces.IntType, error) {
 	token := typeTokenLit.(*token.Token)
-	return expr.NewIntType(token.Pos), nil
+	expr := expr.NewIntType()
+	expr.SetSourceInfo(token.Pos)
+
+	return expr, nil
 }
 
 func NewBoolType(typeTokenLit interface{}) (interfaces.BoolType, error) {
 	token := typeTokenLit.(*token.Token)
-	return expr.NewBoolType(token.Pos), nil
+	expr := expr.NewBoolType()
+	expr.SetSourceInfo(token.Pos)
+	return expr, nil
 }
 
 func NewStringType(typeTokenLit interface{}) (interfaces.StringType, error) {
 	token := typeTokenLit.(*token.Token)
-	return expr.NewStringType(token.Pos), nil
+	expr := expr.NewStringType()
+	expr.SetSourceInfo(token.Pos)
+	return expr, nil
 }
 
 /** Statements **/
 
 func NewForm(identifier interface{}, body interface{}, sourcePosInfo interface{}) (interfaces.Form, error) {
-	return stmt.NewForm(identifier.(vari.VarId), body.(stmt.StmtList), sourcePosInfo), nil
+	stmt := stmt.NewForm(identifier.(vari.VarId), body.(stmt.StmtList))
+	stmt.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return stmt, nil
 }
 
 func NewInputQuestion(label interface{}, varDecl interface{}) (interfaces.InputQuestion, error) {
 	labelStrLit := label.(expr.StrLit)
-	return stmt.NewInputQuestion(labelStrLit, varDecl.(vari.VarDecl), labelStrLit.GetSourceInfo()), nil
+	stmt := stmt.NewInputQuestion(labelStrLit, varDecl.(vari.VarDecl))
+	stmt.SetSourceInfo(labelStrLit.GetSourceInfo())
+	return stmt, nil
 }
 
 func NewComputedQuestion(label interface{}, varDecl interface{}, computation interface{}, sourcePosInfo interface{}) (interfaces.ComputedQuestion, error) {
-	return stmt.NewComputedQuestion(label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(interfaces.Expr), sourcePosInfo), nil
+	stmt := stmt.NewComputedQuestion(label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(interfaces.Expr))
+	stmt.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return stmt, nil
 }
 
 func NewStmtList(stmtElt interface{}) (interfaces.StmtList, error) {
 	stmtEltTypeAsserted := stmtElt.(interfaces.Stmt)
-	s := stmt.NewEmptyStmtList(stmtEltTypeAsserted.GetSourceInfo())
-	return s.AddToCorrectSlice(stmtElt), nil
+	stmt := stmt.NewEmptyStmtList()
+	stmt.SetSourceInfo(stmtEltTypeAsserted.GetSourceInfo())
+	return stmt.AddToCorrectSlice(stmtElt), nil
 }
 
 func NewEmptyStmtList(sourcePosInfo interface{}) (interfaces.StmtList, error) {
-	return stmt.NewEmptyStmtList(sourcePosInfo), nil
+	stmt := stmt.NewEmptyStmtList()
+	stmt.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return stmt, nil
 }
 
 func AppendStmt(stmtList, stmtElt interface{}) (interfaces.StmtList, error) {
-	return stmtList.(stmt.StmtList).AddToCorrectSlice(stmtElt), nil
+	stmt := stmtList.(stmt.StmtList).AddToCorrectSlice(stmtElt)
+	return stmt, nil
 }
 
 func NewIf(cond interface{}, body interface{}, sourcePosInfo interface{}) (interfaces.If, error) {
-	return stmt.NewIf(cond.(interfaces.Expr), body.(stmt.StmtList), sourcePosInfo), nil
+	stmt := stmt.NewIf(cond.(interfaces.Expr), body.(stmt.StmtList))
+	stmt.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return stmt, nil
 }
 
 func NewIfElse(cond interface{}, ifBody interface{}, elseBody interface{}, sourcePosInfo interface{}) (interfaces.IfElse, error) {
-	return stmt.NewIfElse(cond.(interfaces.Expr), ifBody.(stmt.StmtList), elseBody.(stmt.StmtList), sourcePosInfo), nil
+	stmt := stmt.NewIfElse(cond.(interfaces.Expr), ifBody.(stmt.StmtList), elseBody.(stmt.StmtList))
+	stmt.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return stmt, nil
 }
 
 // TODO place in util?

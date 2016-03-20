@@ -100,7 +100,7 @@ func (this Form) checkForUndefinedReferences(typeChecker interfaces.TypeChecker)
 func checkForNonBoolCondition(condition interfaces.Expr, typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) {
 	typeOfCondition := condition.TypeCheck(typeChecker, symbols)
 
-	if typeOfCondition != expr.NewBoolTypeNoSourceInfo() && typeOfCondition != expr.NewUnknownType() {
+	if typeOfCondition != expr.NewBoolType() && typeOfCondition != expr.NewUnknownType() {
 		typeChecker.AddEncounteredError(fmt.Errorf("Non-boolean type used as condition: %s", typeOfCondition))
 	}
 }

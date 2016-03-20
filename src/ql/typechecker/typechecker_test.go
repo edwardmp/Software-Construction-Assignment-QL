@@ -11,7 +11,7 @@ import (
 )
 
 func TestInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
-	exampleExpr := expr.NewSubNoSourceInfo(expr.NewBoolLitNoSourceInfo(true), expr.NewIntLitNoSourceInfo(10))
+	exampleExpr := expr.NewSub(expr.NewBoolLit(true), expr.NewIntLit(10))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(typeChecker, nil)
@@ -23,7 +23,7 @@ func TestInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
 }
 
 func TestInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) {
-	exampleExpr := expr.NewSubNoSourceInfo(expr.NewBoolLitNoSourceInfo(true), expr.NewBoolLitNoSourceInfo(false))
+	exampleExpr := expr.NewSub(expr.NewBoolLit(true), expr.NewBoolLit(false))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(typeChecker, nil)
@@ -36,7 +36,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) 
 }
 
 func TestInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.T) {
-	exampleExpr := expr.NewAndNoSourceInfo(expr.NewIntLitNoSourceInfo(10), expr.NewIntLitNoSourceInfo(8))
+	exampleExpr := expr.NewAnd(expr.NewIntLit(10), expr.NewIntLit(8))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(typeChecker, nil)
@@ -50,7 +50,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.
 }
 
 func TestInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T) {
-	exampleExpr := expr.NewAndNoSourceInfo(expr.NewStrLitNoSourceInfo("Test A"), expr.NewStrLitNoSourceInfo("Test B"))
+	exampleExpr := expr.NewAnd(expr.NewStrLit("Test A"), expr.NewStrLit("Test B"))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(typeChecker, nil)
@@ -64,7 +64,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T
 }
 
 func TestInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
-	exampleExpr := expr.NewNegNoSourceInfo(expr.NewBoolLitNoSourceInfo(true))
+	exampleExpr := expr.NewNeg(expr.NewBoolLit(true))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(typeChecker, nil)
@@ -76,7 +76,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
 }
 
 func TestInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
-	exampleExpr := expr.NewNotNoSourceInfo(expr.NewIntLitNoSourceInfo(3))
+	exampleExpr := expr.NewNot(expr.NewIntLit(3))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(typeChecker, nil)
@@ -88,7 +88,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
 }
 
 func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) {
-	exampleExpr := expr.NewNotNoSourceInfo(expr.NewStrLitNoSourceInfo("Test"))
+	exampleExpr := expr.NewNot(expr.NewStrLit("Test"))
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(typeChecker, nil)
@@ -100,9 +100,9 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) 
 }
 
 func TestUndefinedQuestionReferenceChecker(t *testing.T) {
-	computedQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Value residue:"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("valueResidue"), expr.NewIntTypeNoSourceInfo()), expr.NewSubNoSourceInfo(expr.NewIntLitNoSourceInfo(100), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasMaintLoan"))))
-	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{computedQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
+	computedQuestion := stmt.NewComputedQuestion(expr.NewStrLit("Value residue:"), vari.NewVarDecl(vari.NewVarId("valueResidue"), expr.NewIntType()), expr.NewSub(expr.NewIntLit(100), expr.NewVarExpr(vari.NewVarId("hasMaintLoan"))))
+	exampleBody := stmt.NewStmtList([]interfaces.Question{computedQuestion}, []interfaces.Conditional{})
+	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
@@ -114,10 +114,10 @@ func TestUndefinedQuestionReferenceChecker(t *testing.T) {
 }
 
 func TestNonBoolConditionalChecker(t *testing.T) {
-	exampleQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()))
-	exampleIf := stmt.NewIfNoSourceInfo(expr.NewIntLitNoSourceInfo(10), stmt.NewStmtListNoSourceInfo([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{}))
-	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{}, []interfaces.Conditional{exampleIf})
-	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
+	exampleQuestion := stmt.NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
+	exampleIf := stmt.NewIf(expr.NewIntLit(10), stmt.NewStmtList([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{}))
+	exampleBody := stmt.NewStmtList([]interfaces.Question{}, []interfaces.Conditional{exampleIf})
+	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
@@ -129,10 +129,10 @@ func TestNonBoolConditionalChecker(t *testing.T) {
 }
 
 func TestDuplicateLabelChecker(t *testing.T) {
-	firstQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()))
-	secondQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasMaintLoan"), expr.NewBoolTypeNoSourceInfo()))
-	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
+	firstQuestion := stmt.NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
+	secondQuestion := stmt.NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasMaintLoan"), expr.NewBoolType()))
+	exampleBody := stmt.NewStmtList([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
+	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
@@ -144,10 +144,10 @@ func TestDuplicateLabelChecker(t *testing.T) {
 }
 
 func TestDuplicateVarDeclChecker(t *testing.T) {
-	firstQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()))
-	secondQuestion := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewIntTypeNoSourceInfo()))
-	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
+	firstQuestion := stmt.NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
+	secondQuestion := stmt.NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewIntType()))
+	exampleBody := stmt.NewStmtList([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
+	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
@@ -159,10 +159,10 @@ func TestDuplicateVarDeclChecker(t *testing.T) {
 }
 
 func TestCyclicReferenceCheckerReferenceToEachOther(t *testing.T) {
-	questionPointingToSecondQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasBoughtHouse")))
-	questionPointingToFirstQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you buy a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasBoughtHouse"), expr.NewBoolTypeNoSourceInfo()), expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse")))
-	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{questionPointingToFirstQuestion, questionPointingToSecondQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
+	questionPointingToSecondQuestion := stmt.NewComputedQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()), expr.NewVarExpr(vari.NewVarId("hasBoughtHouse")))
+	questionPointingToFirstQuestion := stmt.NewComputedQuestion(expr.NewStrLit("Did you buy a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasBoughtHouse"), expr.NewBoolType()), expr.NewVarExpr(vari.NewVarId("hasSoldHouse")))
+	exampleBody := stmt.NewStmtList([]interfaces.Question{questionPointingToFirstQuestion, questionPointingToSecondQuestion}, []interfaces.Conditional{})
+	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
@@ -174,11 +174,11 @@ func TestCyclicReferenceCheckerReferenceToEachOther(t *testing.T) {
 }
 
 func TestCyclicReferenceCheckerIfConditionRefersToBody(t *testing.T) {
-	questionExample := stmt.NewInputQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()))
-	ifBodyExample := stmt.NewStmtListNoSourceInfo([]interfaces.Question{questionExample}, []interfaces.Conditional{})
-	ifExample := stmt.NewIfNoSourceInfo(expr.NewVarExprNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse")), ifBodyExample)
-	exampleFormBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{}, []interfaces.Conditional{ifExample})
-	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleFormBody)
+	questionExample := stmt.NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
+	ifBodyExample := stmt.NewStmtList([]interfaces.Question{questionExample}, []interfaces.Conditional{})
+	ifExample := stmt.NewIf(expr.NewVarExpr(vari.NewVarId("hasSoldHouse")), ifBodyExample)
+	exampleFormBody := stmt.NewStmtList([]interfaces.Question{}, []interfaces.Conditional{ifExample})
+	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleFormBody)
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
@@ -190,9 +190,9 @@ func TestCyclicReferenceCheckerIfConditionRefersToBody(t *testing.T) {
 }
 
 func TestQuestionTypeAndComputationTypeMismatch(t *testing.T) {
-	exampleQuestion := stmt.NewComputedQuestionNoSourceInfo(expr.NewStrLitNoSourceInfo("Did you sell a house in 2010?"), vari.NewVarDeclNoSourceInfo(vari.NewVarIdNoSourceInfo("hasSoldHouse"), expr.NewBoolTypeNoSourceInfo()), expr.NewIntLitNoSourceInfo(10))
-	exampleBody := stmt.NewStmtListNoSourceInfo([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewFormNoSourceInfo(vari.NewVarIdNoSourceInfo("TestForm"), exampleBody)
+	exampleQuestion := stmt.NewComputedQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()), expr.NewIntLit(10))
+	exampleBody := stmt.NewStmtList([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{})
+	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())

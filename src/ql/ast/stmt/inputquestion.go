@@ -8,12 +8,8 @@ type InputQuestion struct {
 	Stmt
 }
 
-func NewInputQuestion(label interfaces.StrLit, varDecl interfaces.VarDecl, sourceInfo interface{}) InputQuestion {
-	return InputQuestion{label, varDecl, NewStmt(sourceInfo)}
-}
-
-func NewInputQuestionNoSourceInfo(label interfaces.StrLit, varDecl interfaces.VarDecl) InputQuestion {
-	return NewInputQuestion(label, varDecl, nil)
+func NewInputQuestion(label interfaces.StrLit, varDecl interfaces.VarDecl) InputQuestion {
+	return InputQuestion{label, varDecl, NewStmt()}
 }
 
 func (this InputQuestion) GetLabel() interfaces.StrLit {

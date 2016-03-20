@@ -8,12 +8,8 @@ type Form struct {
 	Stmt
 }
 
-func NewForm(identifier interfaces.VarId, content StmtList, sourceInfo interface{}) Form {
-	return Form{identifier, content, NewStmt(sourceInfo)}
-}
-
-func NewFormNoSourceInfo(identifier interfaces.VarId, content StmtList) Form {
-	return NewForm(identifier, content, nil)
+func NewForm(identifier interfaces.VarId, content StmtList) Form {
+	return Form{identifier, content, NewStmt()}
 }
 
 func (this Form) GetQuestions() []interfaces.Question {

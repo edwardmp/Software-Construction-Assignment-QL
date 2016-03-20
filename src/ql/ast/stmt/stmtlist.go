@@ -11,20 +11,12 @@ type StmtList struct {
 	Stmt
 }
 
-func NewStmtList(questions []interfaces.Question, conditionals []interfaces.Conditional, sourceInfo interface{}) StmtList {
-	return StmtList{questions, conditionals, NewStmt(sourceInfo)}
+func NewStmtList(questions []interfaces.Question, conditionals []interfaces.Conditional) StmtList {
+	return StmtList{questions, conditionals, NewStmt()}
 }
 
-func NewStmtListNoSourceInfo(questions []interfaces.Question, conditionals []interfaces.Conditional) StmtList {
-	return NewStmtList(questions, conditionals, nil)
-}
-
-func NewEmptyStmtList(sourceInfo interface{}) StmtList {
-	return StmtList{Stmt: NewStmt(sourceInfo)}
-}
-
-func NewEmptyStmtListNoSourceInfo() StmtList {
-	return NewEmptyStmtList(nil)
+func NewEmptyStmtList() StmtList {
+	return NewStmtList(nil, nil)
 }
 
 func (this StmtList) GetQuestions() []interfaces.Question {
