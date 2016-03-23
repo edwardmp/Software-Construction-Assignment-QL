@@ -6,12 +6,12 @@ type Var interface {
 
 type VarDecl interface {
 	Var
-	GetIdent() VarId
-	GetType() ValueType
+	Identifier() VarId
+	Type() ValueType
 	TypeCheck(TypeCheckArgs) interface{}
 }
 
 type VarId interface {
 	Var
-	GetIdent() string
+	Identifier() string
 }

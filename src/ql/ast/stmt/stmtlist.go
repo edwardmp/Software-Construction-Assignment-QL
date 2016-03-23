@@ -6,8 +6,8 @@ import (
 )
 
 type StmtList struct {
-	Questions    []interfaces.Question
-	Conditionals []interfaces.Conditional
+	questions    []interfaces.Question
+	conditionals []interfaces.Conditional
 	Stmt
 }
 
@@ -19,22 +19,22 @@ func NewEmptyStmtList() StmtList {
 	return NewStmtList(nil, nil)
 }
 
-func (this StmtList) GetQuestions() []interfaces.Question {
-	return this.Questions
+func (this StmtList) Questions() []interfaces.Question {
+	return this.questions
 }
 
-func (this StmtList) GetConditionals() []interfaces.Conditional {
-	return this.Conditionals
+func (this StmtList) Conditionals() []interfaces.Conditional {
+	return this.conditionals
 }
 
-func (this StmtList) AddToCorrectSlice(questionOrConditional interface{}) StmtList {
+func (this StmtList) AddToCorrectSlice(questionOrConditional interfaces.Stmt) StmtList {
 	switch assertedStmt := questionOrConditional.(type) {
 	default:
 		panic(fmt.Errorf("Unexpected StmtList type passed to AddToCorrectSlice %T\n", assertedStmt))
 	case interfaces.Question:
-		this.Questions = append(this.Questions, assertedStmt)
+		this.questions = append(this.questions, assertedStmt)
 	case interfaces.Conditional:
-		this.Conditionals = append(this.Conditionals, assertedStmt)
+		this.conditionals = append(this.conditionals, assertedStmt)
 	}
 
 	return this

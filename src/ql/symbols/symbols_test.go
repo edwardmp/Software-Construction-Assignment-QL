@@ -15,7 +15,7 @@ func TestTypeCheckSymbolsAdd(t *testing.T) {
 	symbols.SetTypeForVarId(expr.NewBoolType(), exampleVarId)
 	valueTypeExample := expr.NewBoolType()
 
-	if lookupValue := symbols.GetTypeForVarId(exampleVarId); lookupValue != valueTypeExample {
+	if lookupValue := symbols.TypeForVarId(exampleVarId); lookupValue != valueTypeExample {
 		t.Errorf("TypeCheckSymbols not updated correctly, expected value %s for key %s, is %s", valueTypeExample, exampleVarId, lookupValue)
 	}
 }
@@ -26,7 +26,7 @@ func TestVarIdValueSymbolsAdd(t *testing.T) {
 	exprExample := expr.NewSub(expr.NewIntLit(1), expr.NewIntLit(2))
 	symbols.SetExprForVarId(exprExample, exampleVarId)
 
-	if lookupExprValue := symbols.GetExprForVarId(exampleVarId); lookupExprValue != exprExample {
+	if lookupExprValue := symbols.ExprForVarId(exampleVarId); lookupExprValue != exprExample {
 		t.Errorf("VarIdValueSymbols not updated correctly, expected value %s for key %s, is %s", exprExample, exampleVarId, lookupExprValue)
 	}
 }

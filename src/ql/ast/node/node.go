@@ -5,17 +5,17 @@ import (
 )
 
 type Node struct {
-	SourceInfo token.Pos
+	SrcInfo token.Pos
 }
 
 func NewNode() Node {
-	return Node{SourceInfo: token.Pos{}}
+	return Node{SrcInfo: token.Pos{}}
 }
 
 func (this Node) SetSourceInfo(sourceInfo token.Pos) {
-	this.SourceInfo = token.Pos{}
+	this.SrcInfo = token.Pos{}
 }
 
-func (this Node) GetSourceInfo() token.Pos {
-	return this.SourceInfo
+func (this Node) SourceInfo() token.Pos {
+	return this.SrcInfo
 }

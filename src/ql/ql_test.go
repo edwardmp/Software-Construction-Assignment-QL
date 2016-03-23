@@ -21,11 +21,11 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interfaces.
 
 	if f, fOk := parseResult.(stmt.Form); fOk {
 		if e, eOk := expectedOutput.(stmt.Form); eOk {
-			if firstFormIdentifier, secondFormIdentifier := f.GetIdentifier(), e.GetIdentifier(); firstFormIdentifier != secondFormIdentifier {
+			if firstFormIdentifier, secondFormIdentifier := f.Identifier(), e.Identifier(); firstFormIdentifier != secondFormIdentifier {
 				t.Errorf("Form identifiers not equal: %s and %s", firstFormIdentifier, secondFormIdentifier)
 			}
 
-			if !stmt.SlicesEqual(f.Content, e.Content) {
+			if !stmt.SlicesEqual(f.Content(), e.Content()) {
 				t.Errorf("Form content not equal: %v and %v", f, e)
 			}
 		}

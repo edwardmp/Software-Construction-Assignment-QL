@@ -3,6 +3,7 @@ package stmt
 import (
 	"fmt"
 	"ql/ast/node"
+    "ql/interfaces"
 )
 
 type Stmt struct {
@@ -14,7 +15,7 @@ func NewStmt() Stmt {
 }
 
 // slices don't support equality checking, so have to do it like this, by printing its value
-func SlicesEqual(a, b StmtList) bool {
+func SlicesEqual(a, b interfaces.StmtList) bool {
 	if fmt.Sprintf("%v", a) != fmt.Sprintf("%v", b) {
 		return false
 	}

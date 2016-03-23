@@ -15,7 +15,7 @@ func TestInvalidOperandsCheckerForDifferentOperandEvalTypes(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(NewTypeCheckArgs(typeChecker, nil))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Integer, actual type: Boolean")) {
 		t.Errorf("Invalid operands checker did not correctly report operands of different types %v", errorsReported)
@@ -27,7 +27,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithBools(t *testing.T) 
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(NewTypeCheckArgs(typeChecker, nil))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	expectedError := fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Integer, actual type: Boolean"))
 	if len(errorsReported) != 2 || fmt.Sprintf("%v", errorsReported[0]) != expectedError || fmt.Sprintf("%v", errorsReported[1]) != expectedError {
@@ -40,7 +40,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithIntegers(t *testing.
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(NewTypeCheckArgs(typeChecker, nil))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	expectedError := fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Boolean, actual type: Integer"))
 
@@ -54,7 +54,7 @@ func TestInvalidOperandsCheckerForInvalidBinaryOperationWithStrings(t *testing.T
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(NewTypeCheckArgs(typeChecker, nil))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	expectedError := fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Boolean, actual type: String"))
 
@@ -68,7 +68,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithBool(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(NewTypeCheckArgs(typeChecker, nil))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Integer, actual type: Boolean")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on bool type %v", errorsReported)
@@ -80,7 +80,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithInt(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(NewTypeCheckArgs(typeChecker, nil))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Boolean, actual type: Integer")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on int type %v", errorsReported)
@@ -92,7 +92,7 @@ func TestInvalidOperandsCheckerForInvalidUnaryOperationWithString(t *testing.T) 
 
 	typeChecker := NewTypeChecker()
 	exampleExpr.TypeCheck(NewTypeCheckArgs(typeChecker, nil))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered unexpected operand type, expected type: Boolean, actual type: String")) {
 		t.Errorf("Invalid operand operation checker did not correctly report invalid unary operation on string type")
@@ -106,7 +106,7 @@ func TestUndefinedQuestionReferenceChecker(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Reference to unknown question identifier: hasMaintLoan")) {
 		t.Errorf("Undefined questions references not reported correctly by type checker %v", errorsReported)
@@ -121,7 +121,7 @@ func TestNonBoolConditionalChecker(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Non-boolean type used as condition: Integer")) {
 		t.Errorf("Non bool condition type checker did not correctly report condition of invalid type %v", errorsReported)
@@ -136,7 +136,7 @@ func TestDuplicateLabelChecker(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
-	warningsReported := typeChecker.WarningsEncountered
+	warningsReported := typeChecker.EncounteredWarnings()
 
 	if len(warningsReported) != 1 || fmt.Sprintf("%v", warningsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Label \"Did you sell a house in 2010?\" already used for question with identifier hasSoldHouse, using again for question with identifier hasMaintLoan")) {
 		t.Errorf("Duplicate label not reported correctly by type checker %v", warningsReported)
@@ -151,7 +151,7 @@ func TestDuplicateVarDeclChecker(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Question redeclared with different types: Integer and Boolean")) {
 		t.Errorf("Duplicate var decl not reported correctly by type checker %v", errorsReported)
@@ -166,7 +166,7 @@ func TestCyclicReferenceCheckerReferenceToEachOther(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Found cyclic dependency")) {
 		t.Errorf("Cyclic reference to self not reported correctly by type checker %v", errorsReported)
@@ -182,7 +182,7 @@ func TestCyclicReferenceCheckerIfConditionRefersToBody(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Found cyclic dependency")) {
 		t.Errorf("Cyclic reference not reported correctly by type checker %v", errorsReported)
@@ -196,7 +196,7 @@ func TestQuestionTypeAndComputationTypeMismatch(t *testing.T) {
 
 	typeChecker := NewTypeChecker()
 	exampleForm.TypeCheck(NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
-	errorsReported := typeChecker.GetEncounteredErrors()
+	errorsReported := typeChecker.EncounteredErrors()
 
 	if len(errorsReported) != 1 || fmt.Sprintf("%v", errorsReported[0]) != fmt.Sprintf("%v", fmt.Errorf("Encountered computed question with mismatch between declared type (Boolean) and actual computation type (Integer)")) {
 		t.Errorf("Non bool condition type checker did not correctly report condition of invalid type %v", errorsReported)

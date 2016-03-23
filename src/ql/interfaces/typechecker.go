@@ -3,17 +3,17 @@ package interfaces
 type TypeChecker interface {
 	AddEncounteredError(error)
 	AddEncounteredWarning(error)
-	GetEncountedWarnings() []error
-	GetEncountedErrors() []error
+	EncountedWarnings() []error
+	EncountedErrors() []error
 	IsLabelUsed(StrLit) bool
 	MarkLabelAsUsed(StrLit, VarDecl)
 	VarIdForLabel(StrLit) VarId
 	MarkVarIdAsKnown(VarId)
 	MarkVarIdAsUnknown(VarId)
-	GetIdentifiersEncountered() map[VarId]bool
+	IdentifiersEncountered() map[VarId]bool
 	AddDependencyForVarDecl(VarId, VarDecl)
 	DependencyListForVarDeclContainsReferenceToSelf(VarDecl) bool
-	GetConditionsDependentOnForVarDecl(VarDecl) []Expr
+	ConditionsDependentOnForVarDecl(VarDecl) []Expr
 }
 
 type TypeCheckArgs interface {

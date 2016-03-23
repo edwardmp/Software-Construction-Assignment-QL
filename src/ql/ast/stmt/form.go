@@ -3,8 +3,8 @@ package stmt
 import "ql/interfaces"
 
 type Form struct {
-	Identifier interfaces.VarId
-	Content    StmtList
+	identifier interfaces.VarId
+	content    StmtList
 	Stmt
 }
 
@@ -12,10 +12,14 @@ func NewForm(identifier interfaces.VarId, content StmtList) Form {
 	return Form{identifier, content, NewStmt()}
 }
 
-func (this Form) GetQuestions() []interfaces.Question {
-	return this.Content.Questions
+func (this Form) Content() interfaces.StmtList {
+    return this.content
 }
 
-func (this Form) GetIdentifier() interfaces.VarId {
-	return this.Identifier
+func (this Form) Questions() []interfaces.Question {
+	return this.content.Questions()
+}
+
+func (this Form) Identifier() interfaces.VarId {
+	return this.identifier
 }

@@ -7,19 +7,19 @@ import (
 
 type TypeChecker struct {
 	interfaces.TypeChecker
-	ErrorsEncountered      []error
-	WarningsEncountered    []error
-	UsedLabels             map[interfaces.StrLit]interfaces.VarId
-	IdentifiersEncountered map[interfaces.VarId]bool
-	DependenciesPerVarId   map[interfaces.VarId][]interfaces.VarId
+	errorsEncountered      []error
+	warningsEncountered    []error
+	usedLabels             map[interfaces.StrLit]interfaces.VarId
+	identifiersEncountered map[interfaces.VarId]bool
+	dependenciesForVarId   map[interfaces.VarId][]interfaces.VarId
 }
 
 func NewTypeChecker() *TypeChecker {
-	return &TypeChecker{ErrorsEncountered: make([]error, 0), WarningsEncountered: make([]error, 0), UsedLabels: make(map[interfaces.StrLit]interfaces.VarId), IdentifiersEncountered: make(map[interfaces.VarId]bool), DependenciesPerVarId: make(map[interfaces.VarId][]interfaces.VarId)}
+	return &TypeChecker{errorsEncountered: make([]error, 0), warningsEncountered: make([]error, 0), usedLabels: make(map[interfaces.StrLit]interfaces.VarId), identifiersEncountered: make(map[interfaces.VarId]bool), dependenciesForVarId: make(map[interfaces.VarId][]interfaces.VarId)}
 }
 
 func (this *TypeChecker) dependencyListForVarDecl(varDecl interfaces.VarDecl) []interfaces.VarId {
-    varId := varDecl.GetIdent()
+    varId := varDecl.Identifier()
 
 	if varId == nil {
 		panic("Attempting to get dependencies of nil varId")
@@ -27,7 +27,7 @@ func (this *TypeChecker) dependencyListForVarDecl(varDecl interfaces.VarDecl) []
 
     dependencies := make([]interfaces.VarId, 0)
 
-    for _, directDependentVarId := range this.DependenciesPerVarId[varId] {
+    for _, directDependentVarId := range this.dependenciesForVarId[varId] {
         // first add the direct dependencies as dependencies
         dependencies = append(dependencies, directDependentVarId)
 
@@ -51,7 +51,7 @@ func (this *TypeChecker) recursivelyObtainDependenciesForVarId(varIdToObtainDepe
 	}  
 
 	dependencies := make([]interfaces.VarId, 0)
-	for _, dependentVarId := range this.DependenciesPerVarId[varIdToObtainDependenciesFor] {
+	for _, dependentVarId := range this.dependenciesForVarId[varIdToObtainDependenciesFor] {
 		// if we encounter ourselves, we found a cyclic dependency
 		if dependentVarId == varIdToObtainDependenciesFor {
 			return nil
@@ -68,7 +68,7 @@ func (this *TypeChecker) DependencyListForVarDeclContainsReferenceToSelf(varDecl
     depencyListForQuestionId := this.dependencyListForVarDecl(varDecl)
 
     for _, dependentVarId := range depencyListForQuestionId {
-        if dependentVarId == varDecl.GetIdent() {
+        if dependentVarId == varDecl.Identifier() {
             return true
         }
     }
@@ -87,40 +87,40 @@ func (this *TypeChecker) AddDependencyForVarDecl(varIdDependentOn interfaces.Var
 		panic("Attempting to add VarId dependency but passed dependency is nil")
 	}
 
-	for _, dependingVarIdAlreadyKnown := range this.DependenciesPerVarId[varDecl.GetIdent()] {
+	for _, dependingVarIdAlreadyKnown := range this.dependenciesForVarId[varDecl.Identifier()] {
 		// don't add it again if its already known to be a dependency
 		if dependingVarIdAlreadyKnown == varIdDependentOn {
 			return
 		}
 	}
 
-	this.DependenciesPerVarId[varDecl.GetIdent()] = append(this.DependenciesPerVarId[varDecl.GetIdent()], varIdDependentOn)
+	this.dependenciesForVarId[varDecl.Identifier()] = append(this.dependenciesForVarId[varDecl.Identifier()], varIdDependentOn)
 
-	log.WithFields(log.Fields{"visitedVarId": varDecl.GetIdent(), "varIdDependentOn": varIdDependentOn, "resultingMap": this.DependenciesPerVarId}).Debug("Added dependency for currently visited VarId for type checking")
+	log.WithFields(log.Fields{"visitedVarId": varDecl.Identifier(), "varIdDependentOn": varIdDependentOn, "resultingMap": this.dependenciesForVarId}).Debug("Added dependency for currently visited VarId for type checking")
 }
 
 func (this *TypeChecker) AddEncounteredError(encounteredError error) {
 	log.WithFields(log.Fields{"errorEncountered": encounteredError}).Info("Added encountered type checking error")
 
-	this.ErrorsEncountered = append(this.ErrorsEncountered, encounteredError)
+	this.errorsEncountered = append(this.errorsEncountered, encounteredError)
 }
 
 func (this *TypeChecker) AddEncounteredWarning(encounteredWarning error) {
 	log.WithFields(log.Fields{"warningEncountered": encounteredWarning}).Info("Added encountered type checking warning")
 
-	this.WarningsEncountered = append(this.WarningsEncountered, encounteredWarning)
+	this.warningsEncountered = append(this.warningsEncountered, encounteredWarning)
 }
 
-func (this *TypeChecker) GetEncounteredErrors() []error {
-	return this.ErrorsEncountered
+func (this *TypeChecker) EncounteredErrors() []error {
+	return this.errorsEncountered
 }
 
-func (this *TypeChecker) GetEncounteredWarnings() []error {
-	return this.WarningsEncountered
+func (this *TypeChecker) EncounteredWarnings() []error {
+	return this.warningsEncountered
 }
 
 func (this *TypeChecker) IsLabelUsed(label interfaces.StrLit) bool {
-	if _, exists := this.UsedLabels[label]; exists {
+	if _, exists := this.usedLabels[label]; exists {
 		return true
 	}
 
@@ -128,16 +128,16 @@ func (this *TypeChecker) IsLabelUsed(label interfaces.StrLit) bool {
 }
 
 func (this *TypeChecker) VarIdForLabel(label interfaces.StrLit) interfaces.VarId {
-	return this.UsedLabels[label]
+	return this.usedLabels[label]
 }
 
 func (this *TypeChecker) MarkLabelAsUsed(label interfaces.StrLit, varDecl interfaces.VarDecl) {
 	log.WithFields(log.Fields{"label": label}).Debug("Marking label as used")
-	this.UsedLabels[label] = varDecl.GetIdent()
+	this.usedLabels[label] = varDecl.Identifier()
 }
 
 func (this *TypeChecker) VarDeclIsKnown(varDecl interfaces.VarDecl) bool {
-	if isKnown, exists := this.IdentifiersEncountered[varDecl.GetIdent()]; exists {
+	if isKnown, exists := this.identifiersEncountered[varDecl.Identifier()]; exists {
 		return isKnown
 	}
 
@@ -146,15 +146,15 @@ func (this *TypeChecker) VarDeclIsKnown(varDecl interfaces.VarDecl) bool {
 
 func (this *TypeChecker) MarkVarIdAsKnown(varId interfaces.VarId) {
 	log.WithFields(log.Fields{"VarDecl": varId}).Debug("Marking VarDecl as known")
-	this.IdentifiersEncountered[varId] = true
+	this.identifiersEncountered[varId] = true
 }
 
 // MarkVarIdAsUnknown stores that the VarId is currently unknown, if VarId remains unmarked it is a reference to a undefined question
 func (this *TypeChecker) MarkVarIdAsUnknown(varId interfaces.VarId) {
 	log.WithFields(log.Fields{"VarDecl": varId}).Debug("Marking VarDecl as unknown")
-	this.IdentifiersEncountered[varId] = false
+	this.identifiersEncountered[varId] = false
 }
 
-func (this *TypeChecker) GetIdentifiersEncountered() map[interfaces.VarId]bool {
-	return this.IdentifiersEncountered
+func (this *TypeChecker) IdentifiersEncountered() map[interfaces.VarId]bool {
+	return this.identifiersEncountered
 }

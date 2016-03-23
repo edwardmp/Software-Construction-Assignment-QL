@@ -3,8 +3,8 @@ package stmt
 import "ql/interfaces"
 
 type InputQuestion struct {
-	Label   interfaces.StrLit
-	VarDecl interfaces.VarDecl
+	label   interfaces.StrLit
+	varDecl interfaces.VarDecl
 	Stmt
 }
 
@@ -12,14 +12,10 @@ func NewInputQuestion(label interfaces.StrLit, varDecl interfaces.VarDecl) Input
 	return InputQuestion{label, varDecl, NewStmt()}
 }
 
-func (this InputQuestion) GetLabel() interfaces.StrLit {
-	return this.Label
+func (this InputQuestion) Label() interfaces.StrLit {
+	return this.label
 }
 
-func (this InputQuestion) GetLabelAsString() string {
-	return this.Label.GetValue()
-}
-
-func (this InputQuestion) GetVarDecl() interfaces.VarDecl {
-	return this.VarDecl
+func (this InputQuestion) VarDecl() interfaces.VarDecl {
+	return this.varDecl
 }

@@ -140,8 +140,8 @@ func lexAndParse(fileContent []byte) (interfaces.Form, error) {
 func conductTypeChecking(form interfaces.Form) ([]error, []error) {
 	typeChecker := typechecker.NewTypeChecker()
 	form.TypeCheck(typechecker.NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
-	warnings := typeChecker.GetEncounteredWarnings()
-	errors := typeChecker.GetEncounteredErrors()
+	warnings := typeChecker.EncounteredWarnings()
+	errors := typeChecker.EncounteredErrors()
 
 	log.WithFields(log.Fields{"errors": errors, "warnings": warnings}).Error("Type checking finished")
 
@@ -159,5 +159,5 @@ func NewDefaultVarIdSymbolValueVisitor() *DefaultVarIdSymbolValueVisitor {
 
 func (this *DefaultVarIdSymbolValueVisitor) VisitVarDecl(varDecl interfaces.VarDecl, context interface{}) {
 	symbols := context.(interfaces.VarIdValueSymbols)
-	symbols.SetExprForVarId(varDecl.GetType().GetDefaultValue(), varDecl.GetIdent())
+	symbols.SetExprForVarId(varDecl.Type().DefaultValue(), varDecl.Identifier())
 }

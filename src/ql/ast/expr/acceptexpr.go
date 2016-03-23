@@ -7,8 +7,8 @@ import (
 
 // acceptLhsAndRhs provides a convenient way to run Accept on both left-hand and right-hand sides of binary operands
 func acceptLhsAndRhs(binaryExpr interfaces.BinaryOperatorExpr, visitor interfaces.Visitor, context interface{}) {
-	binaryExpr.GetLhs().Accept(visitor, context)
-	binaryExpr.GetRhs().Accept(visitor, context)
+	binaryExpr.Lhs().Accept(visitor, context)
+	binaryExpr.Rhs().Accept(visitor, context)
 }
 
 /* binary expressions */
@@ -158,7 +158,7 @@ func (this StringType) Accept(visitor interfaces.Visitor, context interface{}) i
 func (this Not) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	log.Debug("Accept Not")
 	visitor.VisitNot(this, context)
-	this.Value.Accept(visitor, context)
+	this.Value().Accept(visitor, context)
 
 	return nil
 }
@@ -166,7 +166,7 @@ func (this Not) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this Pos) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	log.Debug("Accept Pos")
 	visitor.VisitPos(this, context)
-	this.Value.Accept(visitor, context)
+	this.Value().Accept(visitor, context)
 
 	return nil
 }
@@ -174,7 +174,7 @@ func (this Pos) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this VarExpr) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	log.Debug("Accept VarExpr")
 	visitor.VisitVarExpr(this, context)
-	this.Identifier.Accept(visitor, context)
+	this.Identifier().Accept(visitor, context)
 
 	return nil
 }

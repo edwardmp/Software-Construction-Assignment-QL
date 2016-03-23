@@ -3,9 +3,9 @@ package stmt
 import "ql/interfaces"
 
 type ComputedQuestion struct {
-	Label       interfaces.StrLit
-	VarDecl     interfaces.VarDecl
-	Computation interfaces.Expr
+    label       interfaces.StrLit
+	varDecl     interfaces.VarDecl
+	computation interfaces.Expr
 	Stmt
 }
 
@@ -13,14 +13,14 @@ func NewComputedQuestion(label interfaces.StrLit, varDecl interfaces.VarDecl, co
 	return ComputedQuestion{label, varDecl, computation, NewStmt()}
 }
 
-func (this ComputedQuestion) GetLabel() interfaces.StrLit {
-	return this.Label
+func (this ComputedQuestion) Label() interfaces.StrLit {
+	return this.label
 }
 
-func (this ComputedQuestion) GetComputation() interfaces.Expr {
-	return this.Computation
+func (this ComputedQuestion) Computation() interfaces.Expr {
+	return this.computation
 }
 
-func (this ComputedQuestion) GetVarDecl() interfaces.VarDecl {
-	return this.VarDecl
+func (this ComputedQuestion) VarDecl() interfaces.VarDecl {
+	return this.varDecl
 }

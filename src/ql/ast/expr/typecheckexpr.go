@@ -6,16 +6,16 @@ import (
 )
 
 func (this VarExpr) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	typeCheckArgs.TypeChecker().AddDependencyForVarDecl(this.Identifier, typeCheckArgs.CurrentVarDeclVisited())
+	typeCheckArgs.TypeChecker().AddDependencyForVarDecl(this.Identifier(), typeCheckArgs.CurrentVarDeclVisited())
 
 	// Return the true type of the VarExpr; the type of the Expr referred to
-	if typeCheckArgs.Symbols().IsTypeSetForVarId(this.Identifier) {
-		return typeCheckArgs.Symbols().GetTypeForVarId(this.Identifier).(interfaces.ValueType)
+	if typeCheckArgs.Symbols().IsTypeSetForVarId(this.Identifier()) {
+		return typeCheckArgs.Symbols().TypeForVarId(this.Identifier()).(interfaces.ValueType)
 	}
 
 	// We don't already mark it as an error; because there is only one scope, the VarDecl may be simply declared later on
 	// After the whole Form is typechecked, it is checked which VarIds remain unknown (those that were not declared at a later point)
-	typeCheckArgs.TypeChecker().MarkVarIdAsUnknown(this.GetIdentifier())
+	typeCheckArgs.TypeChecker().MarkVarIdAsUnknown(this.Identifier())
 
 	// No type info in symboltable (reference to undefined question)
 	return NewUnknownType()
@@ -130,19 +130,19 @@ func (this Expr) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.Va
 
 // checkOperand checks if the value of a unaryExpr is of the expected type
 func (unaryExpression UnaryOperator) checkOperand(expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
-	checkIfOperandHasExpectedType(unaryExpression.GetValue(), expectedType, typeCheckArgs)
+	checkIfOperandHasExpectedType(unaryExpression.Value(), expectedType, typeCheckArgs)
 }
 
 // checkOperands checks if the left-hand and right-hand sides are of the expected type
 func (binaryExpr BinaryOperator) checkOperands(expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
-	checkIfOperandHasExpectedType(binaryExpr.GetLhs(), expectedType, typeCheckArgs)
-	checkIfOperandHasExpectedType(binaryExpr.GetRhs(), expectedType, typeCheckArgs)
+	checkIfOperandHasExpectedType(binaryExpr.Lhs(), expectedType, typeCheckArgs)
+	checkIfOperandHasExpectedType(binaryExpr.Rhs(), expectedType, typeCheckArgs)
 }
 
 // checkForEqualTypes checks if the operands in a BinaryOperator have the same type, and if the types are unequal adds an error to the typechecker
 func (binaryExpr BinaryOperator) checkForEqualTypes(expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
-	lhsType := binaryExpr.GetLhs().TypeCheck(typeCheckArgs)
-	rhsType := binaryExpr.GetRhs().TypeCheck(typeCheckArgs)
+	lhsType := binaryExpr.Lhs().TypeCheck(typeCheckArgs)
+	rhsType := binaryExpr.Rhs().TypeCheck(typeCheckArgs)
 
 	if lhsType == NewUnknownType() || rhsType == NewUnknownType() {
 		return

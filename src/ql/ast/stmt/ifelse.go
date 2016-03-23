@@ -3,9 +3,9 @@ package stmt
 import "ql/interfaces"
 
 type IfElse struct {
-	Cond     interfaces.Expr
-	IfBody   StmtList
-	ElseBody StmtList
+	condition     interfaces.Expr
+	ifBody   StmtList
+	elseBody StmtList
 	Stmt
 }
 
@@ -13,18 +13,18 @@ func NewIfElse(condition interfaces.Expr, ifBody StmtList, thenBody StmtList) If
 	return IfElse{condition, ifBody, thenBody, NewStmt()}
 }
 
-func (this IfElse) GetCondition() interfaces.Expr {
-	return this.Cond
+func (this IfElse) Condition() interfaces.Expr {
+	return this.condition
 }
 
-func (this IfElse) GetIfBody() interfaces.StmtList {
-	return this.IfBody
+func (this IfElse) IfBody() interfaces.StmtList {
+	return this.ifBody
 }
 
-func (this IfElse) GetElseBody() interfaces.StmtList {
-	return this.ElseBody
+func (this IfElse) ElseBody() interfaces.StmtList {
+	return this.elseBody
 }
 
 func (this IfElse) EvalCondition(symbols interfaces.VarIdValueSymbols) bool {
-	return this.Cond.Eval(symbols).(bool)
+	return this.condition.Eval(symbols).(bool)
 }

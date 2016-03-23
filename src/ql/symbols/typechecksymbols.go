@@ -25,7 +25,7 @@ func (this *TypeCheckSymbols) SetTypeForVarId(valueType interfaces.ValueType, va
 	log.WithFields(log.Fields{"Identifier": varId, "valueType": valueType}).Debug("Set ValueType for VarId")
 }
 
-func (this *TypeCheckSymbols) GetTypeForVarId(varId interfaces.VarId) interfaces.ValueType {
+func (this *TypeCheckSymbols) TypeForVarId(varId interfaces.VarId) interfaces.ValueType {
 	if varId == nil {
 		panic("Trying to get type for nil VarId")
 	}
@@ -37,7 +37,7 @@ func (this *TypeCheckSymbols) GetTypeForVarId(varId interfaces.VarId) interfaces
 }
 
 func (this *TypeCheckSymbols) IsTypeSetForVarId(varId interfaces.VarId) bool {
-	if this.GetTypeForVarId(varId) == nil {
+	if this.TypeForVarId(varId) == nil {
 		return false
 	}
 

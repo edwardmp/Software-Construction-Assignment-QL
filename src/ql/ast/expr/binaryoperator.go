@@ -5,18 +5,18 @@ import (
 )
 
 type BinaryOperator struct {
-	Lhs, Rhs interfaces.Expr
+	lhs, rhs interfaces.Expr
 	Expr
 }
 
 func NewBinaryOperator(lhs interfaces.Expr, rhs interfaces.Expr) BinaryOperator {
-	return BinaryOperator{Lhs: lhs, Rhs: rhs, Expr: NewExpr()}
+	return BinaryOperator{lhs: lhs, rhs: rhs, Expr: NewExpr()}
 }
 
-func (this BinaryOperator) GetLhs() interfaces.Expr {
-	return this.Lhs
+func (this BinaryOperator) Lhs() interfaces.Expr {
+	return this.lhs
 }
 
-func (this BinaryOperator) GetRhs() interfaces.Expr {
-	return this.Rhs
+func (this BinaryOperator) Rhs() interfaces.Expr {
+	return this.rhs
 }

@@ -11,7 +11,7 @@ func TestIntLit(t *testing.T) {
 }
 
 func TestIntLitGetValue(t *testing.T) {
-	if NewIntLit(10).GetValue() != 10 {
+	if NewIntLit(10).Value() != 10 {
 		t.Errorf("IntLit value retrieval test did not succeed")
 	}
 }
@@ -25,7 +25,7 @@ func TestBoolLit(t *testing.T) {
 }
 
 func TestBoolLitGetValue(t *testing.T) {
-	if NewBoolLit(true).GetValue() != true {
+	if NewBoolLit(true).Value() != true {
 		t.Errorf("BoolLit value retrieval test did not succeed")
 	}
 }
@@ -39,7 +39,7 @@ func TestStrLit(t *testing.T) {
 }
 
 func TestStrLitGetValue(t *testing.T) {
-	if NewStrLit("Test").GetValue() != "Test" {
+	if NewStrLit("Test").Value() != "Test" {
 		t.Errorf("StrLit value retrieval test did not succeed")
 	}
 }

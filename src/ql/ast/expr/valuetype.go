@@ -25,7 +25,7 @@ func NewUnknownType() UnknownType {
 	return UnknownType{NewValueType("Unknown")}
 }
 
-func (this UnknownType) GetDefaultValue() interfaces.LitExpr {
+func (this UnknownType) DefaultValue() interfaces.LitExpr {
 	panic("UnknownType has no default value")
 
 	return nil
@@ -41,7 +41,7 @@ func NewIntType() IntType {
 	return IntType{NewValueType("Integer")}
 }
 
-func (this IntType) GetDefaultValue() interfaces.LitExpr {
+func (this IntType) DefaultValue() interfaces.LitExpr {
 	return NewIntLit(0)
 }
 
@@ -55,7 +55,7 @@ func NewStringType() StringType {
 	return StringType{NewValueType("String")}
 }
 
-func (this StringType) GetDefaultValue() interfaces.LitExpr {
+func (this StringType) DefaultValue() interfaces.LitExpr {
 	return NewStrLit("")
 }
 
@@ -73,6 +73,6 @@ func NewBoolType() BoolType {
 	return BoolType{NewValueType("Boolean")}
 }
 
-func (this BoolType) GetDefaultValue() interfaces.LitExpr {
+func (this BoolType) DefaultValue() interfaces.LitExpr {
 	return NewBoolLit(false)
 }

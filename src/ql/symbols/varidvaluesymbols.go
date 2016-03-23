@@ -33,7 +33,7 @@ func (this *VarIdValueSymbols) SetExprForVarId(expr interfaces.Expr, varId inter
 	}
 }
 
-func (this *VarIdValueSymbols) GetExprForVarId(varId interfaces.VarId) interfaces.Expr {
+func (this *VarIdValueSymbols) ExprForVarId(varId interfaces.VarId) interfaces.Expr {
 	if varId == nil {
 		panic("Trying to get Expr for nil VarId")
 	}
@@ -66,7 +66,7 @@ func (this *VarIdValueSymbols) SaveToDisk() (interface{}, error) {
 func (this *VarIdValueSymbols) convertSymbolTableKeysToStrings() map[string]interface{} {
 	var symbolTableWithStringKeys map[string]interface{} = make(map[string]interface{})
 	for varId, expr := range this.Table {
-		symbolTableWithStringKeys[varId.GetIdent()] = expr.Eval(this)
+		symbolTableWithStringKeys[varId.Identifier()] = expr.Eval(this)
 	}
 
 	return symbolTableWithStringKeys

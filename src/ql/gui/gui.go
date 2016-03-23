@@ -96,7 +96,7 @@ func (this *GUI) ShowForm() {
 
 // VisitForm creates the top level questions
 func (this *GUI) VisitForm(f interfaces.Form, context interface{}) {
-	guiQuestions := handleQuestions(this, f.GetQuestions())
+	guiQuestions := handleQuestions(this, f.Questions())
 
 	this.RegisterOnShowCallback(func() {
 		this.GUIForm.addQuestionContainer(this.GUIForm.createQuestionTable(guiQuestions))
@@ -104,7 +104,7 @@ func (this *GUI) VisitForm(f interfaces.Form, context interface{}) {
 }
 
 func (this *GUI) VisitIf(ifStmt interfaces.If, context interface{}) {
-	guiQuestions := handleQuestions(this, ifStmt.GetBody().GetQuestions())
+	guiQuestions := handleQuestions(this, ifStmt.Body().Questions())
 	questionsEncompassingContainer := this.GUIForm.createQuestionTable(guiQuestions)
 
 	this.RegisterOnShowCallback(func() {
@@ -119,8 +119,8 @@ func (this *GUI) VisitIf(ifStmt interfaces.If, context interface{}) {
 }
 
 func (this *GUI) VisitIfElse(ifElse interfaces.IfElse, context interface{}) {
-	guiQuestionsIfBody := handleQuestions(this, ifElse.GetIfBody().GetQuestions())
-	guiQuestionsElseBody := handleQuestions(this, ifElse.GetElseBody().GetQuestions())
+	guiQuestionsIfBody := handleQuestions(this, ifElse.IfBody().Questions())
+	guiQuestionsElseBody := handleQuestions(this, ifElse.ElseBody().Questions())
 
 	ifQuestionsEncompassingContainer := this.GUIForm.createQuestionTable(guiQuestionsIfBody)
 	elseQuestionsEncompassingContainer := this.GUIForm.createQuestionTable(guiQuestionsElseBody)
@@ -189,31 +189,31 @@ func handleQuestions(this *GUI, q []interfaces.Question) []*GUIQuestion {
 func (this *GUI) handleInputQuestion(question interfaces.InputQuestion) *GUIInputQuestion {
 	var guiQuestion *GUIInputQuestion
 	questionCallback := func(inputExpr interfaces.Expr, err error) {
-		guiQuestion.ChangeErrorLabelText("")
+		guiQuestion.changeErrorLabelText("")
 		if err != nil {
 			if numError, isNumError := err.(*strconv.NumError); isNumError && numError.Err.Error() == "invalid syntax" {
-				guiQuestion.ChangeErrorLabelText("Not a valid number!")
+				guiQuestion.changeErrorLabelText("Not a valid number!")
 				log.Debug("Presenting invalid number error to user")
 			}
 
 			return
 		}
 
-		questionIdentifier := question.GetVarDecl().GetIdent()
+		questionIdentifier := question.VarDecl().Identifier()
 		log.WithFields(log.Fields{"input": inputExpr, "identifier": questionIdentifier}).Debug("Question input received")
 		this.Symbols.SetExprForVarId(inputExpr, questionIdentifier)
 
 		this.updateComputedQuestions()
 	}
 
-	guiQuestion = CreateGUIInputQuestion(fmt.Sprintf("%s", question.GetLabel()), question.GetVarDecl().GetType(), questionCallback)
+	guiQuestion = createGUIInputQuestion(fmt.Sprintf("%s", question.Label()), question.VarDecl().Type(), questionCallback)
 
 	return guiQuestion
 }
 
 func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *GUIComputedQuestion {
-	computation := question.GetComputation()
-	guiQuestion := CreateGUIComputedQuestion(fmt.Sprintf("%s", question.GetLabel()), question.GetVarDecl().GetType(), computation, question.GetVarDecl().GetIdent())
+	computation := question.Computation()
+	guiQuestion := createGUIComputedQuestion(fmt.Sprintf("%s", question.Label()), question.VarDecl().Type(), computation, question.VarDecl().Identifier())
 
 	this.GUIForm.addComputedQuestion(guiQuestion)
 
@@ -223,7 +223,7 @@ func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *G
 func (this *GUI) updateComputedQuestions() {
 	for _, computedQuestion := range this.GUIForm.ComputedQuestions {
 		computedQuestionEval := computedQuestion.Expr.Eval(this.Symbols)
-		computedQuestion.ChangeFieldValueText(fmt.Sprintf("%v", computedQuestionEval))
+		computedQuestion.changeFieldValueText(fmt.Sprintf("%v", computedQuestionEval))
 
 		// save the computed value to the symbol table
 		this.Symbols.SetExprForVarId(computedQuestion.Expr, computedQuestion.VarId)
@@ -235,10 +235,10 @@ func (this *GUI) updateComputedQuestions() {
 func (this *GUI) addSubmitButton() {
 	log.Info("Adding submit button to GUI")
 
-	button := CreateButton("Submit", func(b *ui.Button) {
+	button := createButton("Submit", func(b *ui.Button) {
 		log.Debug("Submit button clicked, saving data initiated")
 		this.SaveDataCallback()
-		ShowMessageBoxForErrors("Data saved to file", nil, this.Window)
+		showMessageBoxForErrors("Data saved to file", nil, this.Window)
 	})
 
 	this.GUIForm.FormContainer.Append(button, false)
@@ -249,7 +249,7 @@ func (this *GUI) showErrorDialogIfNecessary(errorsToDisplay []error) bool {
 		return false
 	}
 
-	ShowMessageBoxForErrors("Errors encountered", errorsToDisplay, this.Window)
+	showMessageBoxForErrors("Errors encountered", errorsToDisplay, this.Window)
 
 	return true
 }
@@ -259,7 +259,7 @@ func (this *GUI) showWarningDialogIfNecessary(warningsToDisplay []error) bool {
 		return false
 	}
 
-	ShowMessageBoxForErrors("Warnings encountered", warningsToDisplay, this.Window)
+	showMessageBoxForErrors("Warnings encountered", warningsToDisplay, this.Window)
 
 	return true
 }
