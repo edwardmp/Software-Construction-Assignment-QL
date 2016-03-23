@@ -1,9 +1,6 @@
 package expr
 
-import (
-	log "github.com/Sirupsen/logrus"
-	"ql/interfaces"
-)
+import "ql/interfaces"
 
 // acceptLhsAndRhs provides a convenient way to run Accept on both left-hand and right-hand sides of binary operands
 func acceptLhsAndRhs(binaryExpr interfaces.BinaryOperatorExpr, visitor interfaces.Visitor, context interface{}) {
@@ -14,7 +11,7 @@ func acceptLhsAndRhs(binaryExpr interfaces.BinaryOperatorExpr, visitor interface
 /* binary expressions */
 
 func (this Add) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept Add")
+
 	visitor.VisitAdd(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -22,7 +19,7 @@ func (this Add) Accept(visitor interfaces.Visitor, context interface{}) interfac
 }
 
 func (this And) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept And")
+
 	visitor.VisitAnd(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -30,7 +27,7 @@ func (this And) Accept(visitor interfaces.Visitor, context interface{}) interfac
 }
 
 func (this Div) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept Div")
+
 	visitor.VisitDiv(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -38,7 +35,7 @@ func (this Div) Accept(visitor interfaces.Visitor, context interface{}) interfac
 }
 
 func (this Eq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept Eq")
+
 	visitor.VisitEq(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -46,7 +43,7 @@ func (this Eq) Accept(visitor interfaces.Visitor, context interface{}) interface
 }
 
 func (this GEq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept GEq")
+
 	visitor.VisitEq(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -54,7 +51,7 @@ func (this GEq) Accept(visitor interfaces.Visitor, context interface{}) interfac
 }
 
 func (this GT) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept GT")
+
 	visitor.VisitGT(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -62,7 +59,7 @@ func (this GT) Accept(visitor interfaces.Visitor, context interface{}) interface
 }
 
 func (this LEq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept LEq")
+
 	visitor.VisitLEq(this, context)
 
 	acceptLhsAndRhs(this, visitor, context)
@@ -71,7 +68,7 @@ func (this LEq) Accept(visitor interfaces.Visitor, context interface{}) interfac
 }
 
 func (this LT) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept LT")
+
 	visitor.VisitLT(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -79,7 +76,7 @@ func (this LT) Accept(visitor interfaces.Visitor, context interface{}) interface
 }
 
 func (this Mul) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept Mul")
+
 	visitor.VisitMul(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -87,7 +84,7 @@ func (this Mul) Accept(visitor interfaces.Visitor, context interface{}) interfac
 }
 
 func (this NEq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept NEq")
+
 	visitor.VisitNEq(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -95,7 +92,7 @@ func (this NEq) Accept(visitor interfaces.Visitor, context interface{}) interfac
 }
 
 func (this Or) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept Or")
+
 	visitor.VisitOr(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -103,7 +100,7 @@ func (this Or) Accept(visitor interfaces.Visitor, context interface{}) interface
 }
 
 func (this Sub) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept Sub")
+
 	visitor.VisitSub(this, context)
 	acceptLhsAndRhs(this, visitor, context)
 
@@ -113,21 +110,21 @@ func (this Sub) Accept(visitor interfaces.Visitor, context interface{}) interfac
 /* literals */
 
 func (this BoolLit) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept BoolLit")
+
 	visitor.VisitBoolLit(this, context)
 
 	return nil
 }
 
 func (this IntLit) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept IntLit")
+
 	visitor.VisitIntLit(this, context)
 
 	return nil
 }
 
 func (this StrLit) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept StrLit")
+
 	visitor.VisitStrLit(this, context)
 
 	return nil
@@ -156,7 +153,7 @@ func (this StringType) Accept(visitor interfaces.Visitor, context interface{}) i
 /* unary expressions */
 
 func (this Not) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept Not")
+
 	visitor.VisitNot(this, context)
 	this.Value().Accept(visitor, context)
 
@@ -164,7 +161,7 @@ func (this Not) Accept(visitor interfaces.Visitor, context interface{}) interfac
 }
 
 func (this Pos) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept Pos")
+
 	visitor.VisitPos(this, context)
 	this.Value().Accept(visitor, context)
 
@@ -172,7 +169,7 @@ func (this Pos) Accept(visitor interfaces.Visitor, context interface{}) interfac
 }
 
 func (this VarExpr) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	log.Debug("Accept VarExpr")
+
 	visitor.VisitVarExpr(this, context)
 	this.Identifier().Accept(visitor, context)
 

@@ -3,9 +3,9 @@ package stmt
 import "ql/interfaces"
 
 type IfElse struct {
-	condition     interfaces.Expr
-	ifBody   StmtList
-	elseBody StmtList
+	condition interfaces.Expr
+	ifBody    StmtList
+	elseBody  StmtList
 	Stmt
 }
 

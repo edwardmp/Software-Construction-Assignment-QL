@@ -3,8 +3,8 @@ package vari
 import "ql/interfaces"
 
 type VarDecl struct {
-	ident interfaces.VarId
-	valueType  interfaces.ValueType
+	ident     interfaces.VarId
+	valueType interfaces.ValueType
 	Var
 }
 

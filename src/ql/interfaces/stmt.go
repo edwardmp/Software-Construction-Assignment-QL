@@ -3,14 +3,13 @@ package interfaces
 type Stmt interface {
 	ASTNode
 	TypeCheck(TypeCheckArgs)
-
 }
 
 type Form interface {
 	Stmt
-    Content() StmtList
+	Content() StmtList
 	Identifier() VarId
-    Questions() []Question
+	Questions() []Question
 }
 
 type Question interface {

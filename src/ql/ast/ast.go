@@ -16,7 +16,6 @@ const (
 )
 
 type attrib interface {
-
 }
 
 /** Expressions **/

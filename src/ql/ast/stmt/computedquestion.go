@@ -3,7 +3,7 @@ package stmt
 import "ql/interfaces"
 
 type ComputedQuestion struct {
-    label       interfaces.StrLit
+	label       interfaces.StrLit
 	varDecl     interfaces.VarDecl
 	computation interfaces.Expr
 	Stmt

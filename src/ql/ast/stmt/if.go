@@ -4,7 +4,7 @@ import "ql/interfaces"
 
 type If struct {
 	condition interfaces.Expr
-	body StmtList
+	body      StmtList
 	Stmt
 }
 

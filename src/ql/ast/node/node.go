@@ -19,3 +19,7 @@ func (this Node) SetSourceInfo(sourceInfo token.Pos) {
 func (this Node) SourceInfo() token.Pos {
 	return this.SrcInfo
 }
+
+func (this Node) String() string {
+	return ""
+}

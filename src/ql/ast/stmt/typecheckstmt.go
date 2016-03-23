@@ -16,8 +16,8 @@ func (this Form) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 func (this If) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 	checkForNonBoolCondition(this.Condition(), typeCheckArgs)
 
-    this.Condition().TypeCheck(typeCheckArgs)
-    typeCheckArgs = typeCheckArgs.AddConditionDependentOn(this.Condition())
+	this.Condition().TypeCheck(typeCheckArgs)
+	typeCheckArgs = typeCheckArgs.AddConditionDependentOn(this.Condition())
 
 	this.Body().TypeCheck(typeCheckArgs)
 }
@@ -25,8 +25,8 @@ func (this If) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 func (this IfElse) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 	checkForNonBoolCondition(this.Condition(), typeCheckArgs)
 
-    this.Condition().TypeCheck(typeCheckArgs)
-    typeCheckArgs = typeCheckArgs.AddConditionDependentOn(this.Condition())
+	this.Condition().TypeCheck(typeCheckArgs)
+	typeCheckArgs = typeCheckArgs.AddConditionDependentOn(this.Condition())
 
 	this.IfBody().TypeCheck(typeCheckArgs)
 	this.ElseBody().TypeCheck(typeCheckArgs)
@@ -42,7 +42,7 @@ func (this ComputedQuestion) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 
 	this.VarDecl().TypeCheck(typeCheckArgs)
 
-    collectVarIdsInExpressions(typeCheckArgs)
+	collectVarIdsInExpressions(typeCheckArgs)
 
 	checkForCyclicDependencies(this, typeCheckArgs.TypeChecker())
 }
@@ -51,11 +51,11 @@ func (this InputQuestion) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 	checkQuestionForDuplicateLabels(this, typeCheckArgs.TypeChecker())
 	checkQuestionForRedeclarationWithDifferentTypes(this, typeCheckArgs)
 
-    typeCheckArgs = typeCheckArgs.SetCurrentVarDeclVisited(this.VarDecl())
+	typeCheckArgs = typeCheckArgs.SetCurrentVarDeclVisited(this.VarDecl())
 
 	this.VarDecl().TypeCheck(typeCheckArgs)
 
-    collectVarIdsInExpressions(typeCheckArgs)
+	collectVarIdsInExpressions(typeCheckArgs)
 
 	checkForCyclicDependencies(this, typeCheckArgs.TypeChecker())
 }
@@ -76,13 +76,13 @@ func (this Stmt) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 
 // checkIfQuestionTypeMatchesComputationType checks if the declared computed question type and its actual type match, and if not, adds an error to the typechecker
 func (this ComputedQuestion) checkIfQuestionTypeMatchesComputationType(typeCheckArgs interfaces.TypeCheckArgs) {
-    actualType := this.Computation().TypeCheck(typeCheckArgs)
-    expectedType := this.VarDecl().Type()
+	actualType := this.Computation().TypeCheck(typeCheckArgs)
+	expectedType := this.VarDecl().Type()
 
-    // check if question declaration type matches the type of the computation
-    if actualType != expr.NewUnknownType() && actualType != expectedType {
-        typeCheckArgs.TypeChecker().AddEncounteredError(fmt.Errorf("Encountered computed question with mismatch between declared type (%s) and actual computation type (%s)", expectedType, actualType))
-    }
+	// check if question declaration type matches the type of the computation
+	if actualType != expr.NewUnknownType() && actualType != expectedType {
+		typeCheckArgs.TypeChecker().AddEncounteredError(fmt.Errorf("Encountered computed question with mismatch between declared type (%s) and actual computation type (%s)", expectedType, actualType))
+	}
 }
 
 // checkForUndefinedReferences seeks to confirm that all identifiers encountered have been marked as known (being declared)
@@ -96,10 +96,10 @@ func (this Form) checkForUndefinedReferences(typeChecker interfaces.TypeChecker)
 
 // FIXME side-effect
 func collectVarIdsInExpressions(typeCheckArgs interfaces.TypeCheckArgs) {
-    // for these condition expressions, running TypeCheck will collect VarIds in them and add them as dependencies
-    for _, conditionDependentOn := range typeCheckArgs.ConditionsDependentOn() {
-        conditionDependentOn.TypeCheck(typeCheckArgs)
-    }
+	// for these condition expressions, running TypeCheck will collect VarIds in them and add them as dependencies
+	for _, conditionDependentOn := range typeCheckArgs.ConditionsDependentOn() {
+		conditionDependentOn.TypeCheck(typeCheckArgs)
+	}
 }
 
 // checkForNonBoolCondition checks if the condition is of a boolean type, and if not, adds an error to the typechecker

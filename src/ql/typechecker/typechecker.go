@@ -19,36 +19,36 @@ func NewTypeChecker() *TypeChecker {
 }
 
 func (this *TypeChecker) dependencyListForVarDecl(varDecl interfaces.VarDecl) []interfaces.VarId {
-    varId := varDecl.Identifier()
+	varId := varDecl.Identifier()
 
 	if varId == nil {
 		panic("Attempting to get dependencies of nil varId")
 	}
 
-    dependencies := make([]interfaces.VarId, 0)
+	dependencies := make([]interfaces.VarId, 0)
 
-    for _, directDependentVarId := range this.dependenciesForVarId[varId] {
-        // first add the direct dependencies as dependencies
-        dependencies = append(dependencies, directDependentVarId)
+	for _, directDependentVarId := range this.dependenciesForVarId[varId] {
+		// first add the direct dependencies as dependencies
+		dependencies = append(dependencies, directDependentVarId)
 
-        // then add as dependencies: the dependencies of the directDependency (i.e. the indirect dependencies of the VarId passed)
-        dependencies = append(dependencies, this.recursivelyObtainDependenciesForVarId(directDependentVarId, varId)...)
-    }
+		// then add as dependencies: the dependencies of the directDependency (i.e. the indirect dependencies of the VarId passed)
+		dependencies = append(dependencies, this.recursivelyObtainDependenciesForVarId(directDependentVarId, varId)...)
+	}
 
-    return dependencies
+	return dependencies
 }
 
 func (this *TypeChecker) recursivelyObtainDependenciesForVarId(varIdToObtainDependenciesFor, varIdNeededToCompleteCycle interfaces.VarId) []interfaces.VarId {
-    if varIdToObtainDependenciesFor == nil {
+	if varIdToObtainDependenciesFor == nil {
 		panic("Attempting to recursively obtain dependencies for nil varIdDependentOn")
 	} else if varIdNeededToCompleteCycle == nil {
-        panic("Can't recursively obtain dependencies when varIdNeededToCompleteCycle is nil (no stop condition)")
-    }
+		panic("Can't recursively obtain dependencies when varIdNeededToCompleteCycle is nil (no stop condition)")
+	}
 
 	// if we try to get dependencies of the currently visited VarId we've found a cycle, thus return to prevent infinite loop :)
 	if varIdToObtainDependenciesFor == varIdNeededToCompleteCycle {
 		return nil
-	}  
+	}
 
 	dependencies := make([]interfaces.VarId, 0)
 	for _, dependentVarId := range this.dependenciesForVarId[varIdToObtainDependenciesFor] {
@@ -65,17 +65,16 @@ func (this *TypeChecker) recursivelyObtainDependenciesForVarId(varIdToObtainDepe
 }
 
 func (this *TypeChecker) DependencyListForVarDeclContainsReferenceToSelf(varDecl interfaces.VarDecl) bool {
-    depencyListForQuestionId := this.dependencyListForVarDecl(varDecl)
+	depencyListForQuestionId := this.dependencyListForVarDecl(varDecl)
 
-    for _, dependentVarId := range depencyListForQuestionId {
-        if dependentVarId == varDecl.Identifier() {
-            return true
-        }
-    }
+	for _, dependentVarId := range depencyListForQuestionId {
+		if dependentVarId == varDecl.Identifier() {
+			return true
+		}
+	}
 
-    return false
+	return false
 }
-
 
 func (this *TypeChecker) AddDependencyForVarDecl(varIdDependentOn interfaces.VarId, varDecl interfaces.VarDecl) {
 	// if we are not in a ComputedQuestion context, don't add any dependencies

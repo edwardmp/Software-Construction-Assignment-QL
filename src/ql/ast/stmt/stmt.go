@@ -3,7 +3,7 @@ package stmt
 import (
 	"fmt"
 	"ql/ast/node"
-    "ql/interfaces"
+	"ql/interfaces"
 )
 
 type Stmt struct {

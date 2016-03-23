@@ -17,10 +17,10 @@ type TypeChecker interface {
 }
 
 type TypeCheckArgs interface {
-    TypeChecker() TypeChecker 
-    Symbols() TypeCheckSymbols 
-    CurrentVarDeclVisited() VarDecl 
-    SetCurrentVarDeclVisited(VarDecl) TypeCheckArgs
-    ConditionsDependentOn() []Expr 
-    AddConditionDependentOn(Expr) TypeCheckArgs
+	TypeChecker() TypeChecker
+	Symbols() TypeCheckSymbols
+	CurrentVarDeclVisited() VarDecl
+	SetCurrentVarDeclVisited(VarDecl) TypeCheckArgs
+	ConditionsDependentOn() []Expr
+	AddConditionDependentOn(Expr) TypeCheckArgs
 }

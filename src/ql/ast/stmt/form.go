@@ -13,7 +13,7 @@ func NewForm(identifier interfaces.VarId, content StmtList) Form {
 }
 
 func (this Form) Content() interfaces.StmtList {
-    return this.content
+	return this.content
 }
 
 func (this Form) Questions() []interfaces.Question {
