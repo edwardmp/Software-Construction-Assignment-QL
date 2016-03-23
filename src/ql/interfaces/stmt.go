@@ -2,7 +2,8 @@ package interfaces
 
 type Stmt interface {
 	ASTNode
-	TypeCheck(TypeChecker, TypeCheckSymbols)
+	TypeCheck(TypeCheckArgs)
+
 }
 
 type Form interface {

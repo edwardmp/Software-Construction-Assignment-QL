@@ -3,7 +3,7 @@ package interfaces
 type Expr interface {
 	ASTNode
 	Eval(s VarIdValueSymbols) interface{}
-	TypeCheck(TypeChecker, TypeCheckSymbols) ValueType
+	TypeCheck(TypeCheckArgs) ValueType
 }
 
 type BinaryOperatorExpr interface {

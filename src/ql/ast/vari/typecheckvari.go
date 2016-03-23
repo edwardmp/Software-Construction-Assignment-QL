@@ -2,12 +2,12 @@ package vari
 
 import "ql/interfaces"
 
-func (this VarDecl) TypeCheck(typeChecker interfaces.TypeChecker, symbols interfaces.TypeCheckSymbols) interface{} {
+func (this VarDecl) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interface{} {
 	// store type for identifier so when we find VarExpr with this VarId we know its real type (used during typechecking)
-	symbols.SetTypeForVarId(this.GetType(), this.GetIdent())
+	typeCheckArgs.Symbols().SetTypeForVarId(this.GetType(), this.GetIdent())
 
 	// we mark it as known to indicate that earlier references to this VarId are valid
-	typeChecker.MarkVarIdAsKnown(this.GetIdent())
+	typeCheckArgs.TypeChecker().MarkVarIdAsKnown(this.GetIdent())
 
 	return nil
 }

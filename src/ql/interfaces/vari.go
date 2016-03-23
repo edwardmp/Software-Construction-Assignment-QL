@@ -8,7 +8,7 @@ type VarDecl interface {
 	Var
 	GetIdent() VarId
 	GetType() ValueType
-	TypeCheck(TypeChecker, TypeCheckSymbols) interface{}
+	TypeCheck(TypeCheckArgs) interface{}
 }
 
 type VarId interface {

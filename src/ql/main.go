@@ -71,7 +71,7 @@ func exitIfFilePathIsInvalid(filePath string) {
 		os.Exit(2)
 	}
 
-    log.WithFields(log.Fields{"filePath": filePath}).Info("Confirmed that file path")
+	log.WithFields(log.Fields{"filePath": filePath}).Info("Confirmed that path to file is valid")
 }
 
 // enableDebugLevelLogs sets the minimum level of logs displayed to debug
@@ -139,7 +139,7 @@ func lexAndParse(fileContent []byte) (interfaces.Form, error) {
 // conductTypeChecking starts type checking the passed form for errors and warnings
 func conductTypeChecking(form interfaces.Form) ([]error, []error) {
 	typeChecker := typechecker.NewTypeChecker()
-	form.TypeCheck(typeChecker, symbols.NewTypeCheckSymbols())
+	form.TypeCheck(typechecker.NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
 	warnings := typeChecker.GetEncounteredWarnings()
 	errors := typeChecker.GetEncounteredErrors()
 

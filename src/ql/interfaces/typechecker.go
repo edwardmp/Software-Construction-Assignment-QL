@@ -11,11 +11,16 @@ type TypeChecker interface {
 	MarkVarIdAsKnown(VarId)
 	MarkVarIdAsUnknown(VarId)
 	GetIdentifiersEncountered() map[VarId]bool
-	SetCurrentVarIdVisited(VarDecl)
-	AddDependencyForCurrentlyVisitedVarDecl(VarId)
-	UnsetCurrentVarIdVisited()
-	GetDependencyChainForVarId(VarId) []VarId
-	AddConditionDependentOn(Expr)
-	PopLastConditionDependentOn()
-	GetConditionsDependentOn() []Expr
+	AddDependencyForVarDecl(VarId, VarDecl)
+	DependencyListForVarDeclContainsReferenceToSelf(VarDecl) bool
+	GetConditionsDependentOnForVarDecl(VarDecl) []Expr
+}
+
+type TypeCheckArgs interface {
+    TypeChecker() TypeChecker 
+    Symbols() TypeCheckSymbols 
+    CurrentVarDeclVisited() VarDecl 
+    SetCurrentVarDeclVisited(VarDecl) TypeCheckArgs
+    ConditionsDependentOn() []Expr 
+    AddConditionDependentOn(Expr) TypeCheckArgs
 }
