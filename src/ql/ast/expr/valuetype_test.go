@@ -1,27 +1,24 @@
 package expr
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
 func TestVarTypeDefaultValueForIntType(t *testing.T) {
 	varTypeExample := NewIntType()
 	correctDefaultValue := NewIntLit(0)
-	if varTypeExample.DefaultValue() != correctDefaultValue {
-		t.Errorf("Int Type default value invalid")
-	}
+	assert.Equal(t, varTypeExample.DefaultValue(), correctDefaultValue)
 }
 
 func TestVarTypeDefaultValueForBoolType(t *testing.T) {
 	varTypeExample := NewBoolType()
 	correctDefaultValue := NewBoolLit(false)
-	if varTypeExample.DefaultValue() != correctDefaultValue {
-		t.Errorf("Bool Type default value invalid")
-	}
+	assert.Equal(t, varTypeExample.DefaultValue(), correctDefaultValue)
 }
 
 func TestVarTypeDefaultValueForStringType(t *testing.T) {
 	varTypeExample := NewStringType()
 	correctDefaultValue := NewStrLit("")
-	if varTypeExample.DefaultValue() != correctDefaultValue {
-		t.Errorf("String Type default value invalid")
-	}
+	assert.Equal(t, varTypeExample.DefaultValue(), correctDefaultValue)
 }

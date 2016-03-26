@@ -1,38 +1,32 @@
 package expr
 
 import (
+	"github.com/stretchr/testify/assert"
 	"ql/ast/vari"
-	"ql/interfaces"
 	"ql/symbols"
 	"testing"
 )
 
-func unaryExprEval(t *testing.T, testExpr interfaces.Expr, expectedExpr interfaces.Expr, symbols interfaces.VarIdValueSymbols) {
-	if actualEvalValue, expectedEvalValue := testExpr.Eval(symbols), expectedExpr.Eval(symbols); actualEvalValue != expectedEvalValue {
-		t.Errorf("UnaryOperator test error: should be %v (%T) for %v but is %v (%T)", expectedEvalValue, expectedEvalValue, actualEvalValue, actualEvalValue)
-	}
-}
-
 /* Tests for unary expressions */
 
 func TestNot(t *testing.T) {
-	unaryExprEval(t, NewNot(NewBoolLit(true)), NewBoolLit(false), nil)
+	assert.Equal(t, NewNot(NewBoolLit(true)).Eval(nil), false)
 }
 
 func TestPos(t *testing.T) {
-	unaryExprEval(t, NewPos(NewIntLit(-10)), NewIntLit(10), nil)
+	assert.Equal(t, NewPos(NewIntLit(-10)).Eval(nil), 10)
 }
 
 func TestNeg(t *testing.T) {
-	unaryExprEval(t, NewNeg(NewIntLit(10)), NewIntLit(-10), nil)
+	assert.Equal(t, NewNeg(NewIntLit(10)).Eval(nil), -10)
 }
 
 func TestPosNeg(t *testing.T) {
-	unaryExprEval(t, NewPos(NewNeg(NewIntLit(-10))), NewIntLit(10), nil)
+	assert.Equal(t, NewPos(NewNeg(NewIntLit(-10))).Eval(nil), 10)
 }
 
 func TestNegPos(t *testing.T) {
-	unaryExprEval(t, NewNeg(NewPos(NewIntLit(10))), NewIntLit(-10), nil)
+	assert.Equal(t, NewNeg(NewPos(NewIntLit(10))).Eval(nil), -10)
 }
 
 func TestVarExpr(t *testing.T) {
@@ -41,5 +35,5 @@ func TestVarExpr(t *testing.T) {
 	symbols := symbols.NewVarIdValueSymbols()
 	symbols.SetExprForVarId(NewIntLit(2), exampleVarId)
 
-	unaryExprEval(t, NewVarExpr(exampleVarId), NewIntLit(2), symbols)
+	assert.Equal(t, NewVarExpr(exampleVarId).Eval(symbols), 2)
 }
