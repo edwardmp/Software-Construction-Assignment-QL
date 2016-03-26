@@ -154,3 +154,15 @@ func (suite *TypeCheckerTestSuite) TestQuestionTypeAndComputationTypeMismatch() 
 
 	suite.testThatNumberOfErrorsOfPassedTypeArePresentForForm(exampleForm, errors.DeclaratedTypeAndActualTypeDeviateError{}, 1)
 }
+
+func (suite *TypeCheckerTestSuite) TestThatCorrectFormYieldsNoErrorsOrWarnings() {
+	firstQuestion := stmt.NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
+	firstQuestionBody := stmt.NewInputQuestion(expr.NewStrLit("What was the selling price?"), vari.NewVarDecl(vari.NewVarId("sellingPrice"), expr.NewIntType()))
+	ifBody := stmt.NewStmtList([]interfaces.Question{firstQuestionBody}, []interfaces.Conditional{})
+	elseBody := stmt.NewStmtList([]interfaces.Question{firstQuestionBody}, []interfaces.Conditional{})
+	ifExample := stmt.NewIfElse(expr.NewBoolLit(true), ifBody, elseBody)
+	exampleBody := stmt.NewStmtList([]interfaces.Question{firstQuestion}, []interfaces.Conditional{ifExample})
+	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
+
+	suite.testThatNumberOfErrorsOfPassedTypeArePresentForForm(exampleForm, errors.TypeCheckError{}, 0)
+}
