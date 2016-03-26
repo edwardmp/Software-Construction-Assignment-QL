@@ -5,11 +5,11 @@ import "ql/interfaces"
 type VarDecl struct {
 	ident     interfaces.VarId
 	valueType interfaces.ValueType
-	Var
+	Vari
 }
 
 func NewVarDecl(varIdent interfaces.VarId, varType interfaces.ValueType) VarDecl {
-	return VarDecl{varIdent, varType, NewVar()}
+	return VarDecl{varIdent, varType, NewVari()}
 }
 
 func (this VarDecl) Identifier() interfaces.VarId {

@@ -2,11 +2,11 @@ package vari
 
 type VarId struct {
 	identifier string
-	Var
+	Vari
 }
 
 func NewVarId(ident string) VarId {
-	return VarId{ident, NewVar()}
+	return VarId{ident, NewVari()}
 }
 
 func (this VarId) Identifier() string {
