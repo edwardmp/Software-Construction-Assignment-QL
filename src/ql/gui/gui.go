@@ -35,7 +35,6 @@ func (this *GUI) setSymbols(symbols interfaces.VarIdValueSymbols) {
 	}
 
 	this.Symbols = symbols
-	this.SaveDataCallback = symbols.SaveToDisk
 }
 
 func (this *GUI) createAndSetGUIFormFromForm(form interfaces.Form) {
@@ -63,7 +62,7 @@ func (this *GUI) ShowWindow(errorsToDisplay, warningsToDisplay []error) {
 
 		this.Window.OnClosing(func(w *ui.Window) bool {
 			log.Info("Destroy of window initiated")
-			this.SaveDataCallback()
+			this.Symbols.SaveToDisk()
 			ui.Quit()
 			return true
 		})
@@ -193,13 +192,13 @@ func (this *GUI) handleInputQuestion(question interfaces.InputQuestion) *GUIInpu
 		if err != nil {
 			if numError, isNumError := err.(*strconv.NumError); isNumError && numError.Err.Error() == "invalid syntax" {
 				guiQuestion.changeErrorLabelText("Not a valid number!")
-				log.Debug("Presenting invalid number error to user")
+				log.Error("Presenting invalid number error to user")
 			}
 
 			return
 		}
 
-		questionIdentifier := question.VarDecl().Identifier()
+		questionIdentifier := question.VarDecl().VariableIdentifier()
 		log.WithFields(log.Fields{"input": inputExpr, "identifier": questionIdentifier}).Debug("Question input received")
 		this.Symbols.SetExprForVarId(inputExpr, questionIdentifier)
 
@@ -213,7 +212,7 @@ func (this *GUI) handleInputQuestion(question interfaces.InputQuestion) *GUIInpu
 
 func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *GUIComputedQuestion {
 	computation := question.Computation()
-	guiQuestion := createGUIComputedQuestion(fmt.Sprintf("%s", question.Label()), question.VarDecl().Type(), computation, question.VarDecl().Identifier())
+	guiQuestion := createGUIComputedQuestion(fmt.Sprintf("%s", question.Label()), question.VarDecl().Type(), computation, question.VarDecl().VariableIdentifier())
 
 	this.GUIForm.addComputedQuestion(guiQuestion)
 
@@ -237,7 +236,7 @@ func (this *GUI) addSubmitButton() {
 
 	button := createButton("Submit", func(b *ui.Button) {
 		log.Debug("Submit button clicked, saving data initiated")
-		this.SaveDataCallback()
+		this.Symbols.SaveToDisk()
 		showMessageBoxForErrors("Data saved to file", nil, this.Window)
 	})
 

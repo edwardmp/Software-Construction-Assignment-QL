@@ -57,7 +57,7 @@ func NewCyclicDependencyError(varDeclWithCyclicDependency interfaces.VarDecl) Cy
 }
 
 func (this CyclicDependencyError) Error() string {
-	return fmt.Sprintf("%s: %s eventually refers to self", this.TypeCheckError.Error(), this.VarDeclWithCyclicDependency.Identifier())
+	return fmt.Sprintf("%s: %s eventually refers to self", this.TypeCheckError.Error(), this.VarDeclWithCyclicDependency.VariableIdentifier())
 }
 
 type DuplicateLabelWarning struct {
@@ -71,7 +71,7 @@ func NewDuplicateLabelWarning(originalQuestion interfaces.Question, conflictingQ
 }
 
 func (this DuplicateLabelWarning) Error() string {
-	return fmt.Sprintf("%s: label %s already used for question with identifier %s, using again for question with identifier %s", this.TypeCheckError.Error(), this.OriginalQuestion.Label(), this.ConflictingQuestionVarId, this.OriginalQuestion.VarDecl().Identifier())
+	return fmt.Sprintf("%s: label %s already used for question with identifier %s, using again for question with identifier %s", this.TypeCheckError.Error(), this.OriginalQuestion.Label(), this.ConflictingQuestionVarId, this.OriginalQuestion.VarDecl().VariableIdentifier())
 }
 
 type QuestionRedeclaredWithDifferentTypesError struct {

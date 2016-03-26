@@ -133,8 +133,9 @@ func checkQuestionForDuplicateLabels(question interfaces.Question, typeChecker i
 // checkQuestionForRedeclarationWithDifferentTypes checks if the passed question has been declared before with a different type, and if so, adds an error to the typechecker
 func checkQuestionForRedeclarationWithDifferentTypes(question interfaces.Question, typeCheckArgs interfaces.TypeCheckArgs) {
 	varDecl := question.VarDecl()
+	varId := varDecl.VariableIdentifier()
 
-	if typeCheckArgs.Symbols().IsTypeSetForVarId(varDecl.Identifier()) && typeCheckArgs.Symbols().TypeForVarId(varDecl.Identifier()) != varDecl.Type() {
-		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewQuestionRedeclaredWithDifferentTypesError(varDecl.Type(), typeCheckArgs.Symbols().TypeForVarId(varDecl.Identifier())))
+	if typeCheckArgs.Symbols().IsTypeSetForVarId(varId) && typeCheckArgs.Symbols().TypeForVarId(varId) != varDecl.Type() {
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewQuestionRedeclaredWithDifferentTypesError(varDecl.Type(), typeCheckArgs.Symbols().TypeForVarId(varId)))
 	}
 }

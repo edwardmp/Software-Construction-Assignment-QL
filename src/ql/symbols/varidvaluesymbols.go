@@ -7,17 +7,17 @@ import (
 	"ql/interfaces"
 )
 
-type VarIdToExprSymbolTable map[interfaces.VarId]interfaces.Expr
+type varIdToExprSymbolTable map[interfaces.VarId]interfaces.Expr
 
-type SymbolCallBackFunction func(interfaces.VarIdValueSymbols)
+type symbolCallBackFunction func(interfaces.VarIdValueSymbols)
 
 type VarIdValueSymbols struct {
-	Table               VarIdToExprSymbolTable
+	Table               varIdToExprSymbolTable
 	RegisteredCallbacks []func()
 }
 
 func NewVarIdValueSymbols() *VarIdValueSymbols {
-	return &VarIdValueSymbols{Table: make(VarIdToExprSymbolTable), RegisteredCallbacks: make([]func(), 0)}
+	return &VarIdValueSymbols{Table: make(varIdToExprSymbolTable), RegisteredCallbacks: make([]func(), 0)}
 }
 
 func (this *VarIdValueSymbols) SetExprForVarId(expr interfaces.Expr, varId interfaces.VarId) {
@@ -48,8 +48,12 @@ func (this *VarIdValueSymbols) RegisterCallback(callback func()) {
 	this.RegisteredCallbacks = append(this.RegisteredCallbacks, callback)
 }
 
+/* methods related to export of symboltable to file */
+
+type VarIdStringExprEvalSymbolTable map[string]interface{}
+
 func (this *VarIdValueSymbols) SaveToDisk() (interface{}, error) {
-	formDataAsJSON, _ := convertSymbolTableToJSON(this.convertSymbolTableKeysToStrings())
+	formDataAsJSON, _ := convertSymbolTableToJSON(this.convertSymbolTableKeysToStringsAndEvalValues())
 
 	writeErr := ioutil.WriteFile("savedForm.json", formDataAsJSON, 0644)
 
@@ -63,8 +67,8 @@ func (this *VarIdValueSymbols) SaveToDisk() (interface{}, error) {
 	return formDataAsJSON, nil
 }
 
-func (this *VarIdValueSymbols) convertSymbolTableKeysToStrings() map[string]interface{} {
-	var symbolTableWithStringKeys map[string]interface{} = make(map[string]interface{})
+func (this *VarIdValueSymbols) convertSymbolTableKeysToStringsAndEvalValues() VarIdStringExprEvalSymbolTable {
+	symbolTableWithStringKeys := make(VarIdStringExprEvalSymbolTable)
 	for varId, expr := range this.Table {
 		symbolTableWithStringKeys[varId.Identifier()] = expr.Eval(this)
 	}
@@ -72,7 +76,7 @@ func (this *VarIdValueSymbols) convertSymbolTableKeysToStrings() map[string]inte
 	return symbolTableWithStringKeys
 }
 
-func convertSymbolTableToJSON(symbolTableWithStringKeys map[string]interface{}) ([]byte, error) {
+func convertSymbolTableToJSON(symbolTableWithStringKeys VarIdStringExprEvalSymbolTable) ([]byte, error) {
 	formDataAsJSON, jsonErr := json.MarshalIndent(symbolTableWithStringKeys, "", "  ")
 
 	if jsonErr != nil {

@@ -22,5 +22,5 @@ func (this *DefaultVarIdValueVisitor) StartSettingDefaultValuesForVarIds(form in
 
 func (this *DefaultVarIdValueVisitor) VisitVarDecl(varDecl interfaces.VarDecl, context interface{}) {
 	symbols := context.(interfaces.VarIdValueSymbols)
-	symbols.SetExprForVarId(varDecl.Type().DefaultValue(), varDecl.Identifier())
+	symbols.SetExprForVarId(varDecl.Type().DefaultValue(), varDecl.VariableIdentifier())
 }

@@ -5,15 +5,15 @@ import (
 	"ql/interfaces"
 )
 
-type VarIdTovalueTypeSymbolTable map[interfaces.VarId]interfaces.ValueType
+type varIdTovalueTypeSymbolTable map[interfaces.VarId]interfaces.ValueType
 
 type TypeCheckSymbols struct {
-	Table VarIdTovalueTypeSymbolTable
+	Table varIdTovalueTypeSymbolTable
 }
 
 func NewTypeCheckSymbols() *TypeCheckSymbols {
 	log.Debug("Creating new TypeCheckSymbols")
-	return &TypeCheckSymbols{Table: make(VarIdTovalueTypeSymbolTable)}
+	return &TypeCheckSymbols{Table: make(varIdTovalueTypeSymbolTable)}
 }
 
 func (this *TypeCheckSymbols) SetTypeForVarId(valueType interfaces.ValueType, varId interfaces.VarId) {

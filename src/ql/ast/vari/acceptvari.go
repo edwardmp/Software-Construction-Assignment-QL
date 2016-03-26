@@ -5,7 +5,7 @@ import "ql/interfaces"
 func (this VarDecl) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 	visitor.VisitVarDecl(this, context)
 
-	this.Identifier().Accept(visitor, context)
+	this.VariableIdentifier().Accept(visitor, context)
 
 	return nil
 }
