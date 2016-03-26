@@ -1,7 +1,7 @@
 package expr
 
 import (
-	"fmt"
+	"ql/errors"
 	"ql/interfaces"
 )
 
@@ -149,10 +149,11 @@ func (binaryExpr BinaryOperator) checkForEqualTypes(expectedType interfaces.Valu
 	}
 
 	if lhsType != rhsType {
-		typeCheckArgs.TypeChecker().AddEncounteredError(fmt.Errorf("Encountered BinaryOperator with operands of different types: %s and %s", lhsType, rhsType))
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewOperandsOfDifferentTypesError(lhsType, rhsType))
 	}
 }
 
+// checkIfOperandHasExpectedType checks that an operand's actual type matches it expected type, and if not adds an error to the typechecker
 func checkIfOperandHasExpectedType(expr interfaces.Expr, expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
 	actualType := expr.TypeCheck(typeCheckArgs)
 
@@ -161,6 +162,6 @@ func checkIfOperandHasExpectedType(expr interfaces.Expr, expectedType interfaces
 	}
 
 	if actualType != expectedType {
-		typeCheckArgs.TypeChecker().AddEncounteredError(fmt.Errorf("Encountered unexpected operand type, expected type: %s, actual type: %s", expectedType, actualType))
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewOperandWithUnexpectedTypeError(expectedType, actualType))
 	}
 }

@@ -4,3 +4,4 @@ import:
 - package: github.com/andlabs/ui
 - package: github.com/goccmack/gocc
 - package: github.com/codegangsta/cli
+- package: github.com/stretchr/testify

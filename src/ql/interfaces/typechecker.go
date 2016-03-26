@@ -3,8 +3,8 @@ package interfaces
 type TypeChecker interface {
 	AddEncounteredError(error)
 	AddEncounteredWarning(error)
-	EncountedWarnings() []error
-	EncountedErrors() []error
+	EncounteredWarnings() []error
+	EncounteredErrors() []error
 	IsLabelUsed(StrLit) bool
 	MarkLabelAsUsed(StrLit, VarDecl)
 	VarIdForLabel(StrLit) VarId

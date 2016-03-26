@@ -1,8 +1,8 @@
 package stmt
 
 import (
-	"fmt"
 	"ql/ast/expr"
+	"ql/errors"
 	"ql/interfaces"
 )
 
@@ -81,7 +81,7 @@ func (this ComputedQuestion) checkIfQuestionTypeMatchesComputationType(typeCheck
 
 	// check if question declaration type matches the type of the computation
 	if actualType != expr.NewUnknownType() && actualType != expectedType {
-		typeCheckArgs.TypeChecker().AddEncounteredError(fmt.Errorf("Encountered computed question with mismatch between declared type (%s) and actual computation type (%s)", expectedType, actualType))
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewDeclaratedTypeAndActualTypeDeviateError(expectedType, actualType))
 	}
 }
 
@@ -89,7 +89,7 @@ func (this ComputedQuestion) checkIfQuestionTypeMatchesComputationType(typeCheck
 func (this Form) checkForUndefinedReferences(typeChecker interfaces.TypeChecker) {
 	for identifier, identifierKnown := range typeChecker.IdentifiersEncountered() {
 		if !identifierKnown {
-			typeChecker.AddEncounteredError(fmt.Errorf("Reference to unknown question identifier: %s", identifier))
+			typeChecker.AddEncounteredError(errors.NewUndefinedQuestionReferenceError(identifier))
 		}
 	}
 }
@@ -107,7 +107,7 @@ func checkForNonBoolCondition(condition interfaces.Expr, typeCheckArgs interface
 	typeOfCondition := condition.TypeCheck(typeCheckArgs)
 
 	if typeOfCondition != expr.NewBoolType() && typeOfCondition != expr.NewUnknownType() {
-		typeCheckArgs.TypeChecker().AddEncounteredError(fmt.Errorf("Non-boolean type used as condition: %s", typeOfCondition))
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewNonBooleanConditionError(condition, typeOfCondition))
 	}
 }
 
@@ -115,7 +115,7 @@ func checkForNonBoolCondition(condition interfaces.Expr, typeCheckArgs interface
 func checkForCyclicDependencies(question interfaces.Question, typeChecker interfaces.TypeChecker) {
 	// if we find our own VarId as a dependency at least once, the dependencyChain is cyclic
 	if typeChecker.DependencyListForVarDeclContainsReferenceToSelf(question.VarDecl()) {
-		typeChecker.AddEncounteredError(fmt.Errorf("Found cyclic dependency"))
+		typeChecker.AddEncounteredError(errors.NewCyclicDependencyError(question.VarDecl()))
 	}
 }
 
@@ -124,17 +124,17 @@ func checkQuestionForDuplicateLabels(question interfaces.Question, typeChecker i
 	labelKnown := typeChecker.IsLabelUsed(question.Label())
 
 	if labelKnown {
-		typeChecker.AddEncounteredWarning(fmt.Errorf("Label \"%s\" already used for question with identifier %s, using again for question with identifier %s", question.Label(), typeChecker.VarIdForLabel(question.Label()), question.VarDecl().Identifier()))
+		typeChecker.AddEncounteredWarning(errors.NewDuplicateLabelWarning(question, typeChecker.VarIdForLabel(question.Label())))
 	} else {
 		typeChecker.MarkLabelAsUsed(question.Label(), question.VarDecl())
 	}
 }
 
-// checkQuestionForRedeclaration checks if the passed question has been declared before with a different type, and if so, adds an error to the typechecker
+// checkQuestionForRedeclarationWithDifferentTypes checks if the passed question has been declared before with a different type, and if so, adds an error to the typechecker
 func checkQuestionForRedeclarationWithDifferentTypes(question interfaces.Question, typeCheckArgs interfaces.TypeCheckArgs) {
 	varDecl := question.VarDecl()
 
 	if typeCheckArgs.Symbols().IsTypeSetForVarId(varDecl.Identifier()) && typeCheckArgs.Symbols().TypeForVarId(varDecl.Identifier()) != varDecl.Type() {
-		typeCheckArgs.TypeChecker().AddEncounteredError(fmt.Errorf("Question redeclared with different types: %s and %s", varDecl.Type(), typeCheckArgs.Symbols().TypeForVarId(varDecl.Identifier())))
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewQuestionRedeclaredWithDifferentTypesError(varDecl.Type(), typeCheckArgs.Symbols().TypeForVarId(varDecl.Identifier())))
 	}
 }
