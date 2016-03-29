@@ -12,8 +12,3 @@ func NewStrLit(value string) StrLit {
 func (this StrLit) Value() string {
 	return this.value
 }
-
-// FIXME needed for test comparison due to strange behavior. Find better solution.
-func (this StrLit) String() string {
-	return this.value
-}

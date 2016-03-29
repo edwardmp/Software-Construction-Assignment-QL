@@ -78,7 +78,7 @@ func TestIf(t *testing.T) {
 	}
 
 	if ifExample.Condition() != ifCondExample {
-		t.Errorf("If cond is not set correctly")
+		t.Errorf("If condition is not set correctly")
 	}
 }
 
@@ -101,7 +101,7 @@ func TestIfElse(t *testing.T) {
 	}
 
 	if ifElseExample.Condition() != ifCondExample {
-		t.Errorf("If cond is not set correctly")
+		t.Errorf("If condition is not set correctly")
 	}
 }
 

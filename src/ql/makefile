@@ -17,7 +17,7 @@ GOCLEAN=$(GOCMD) clean
 GOINSTALL=$(GOCMD) install
 GOTEST=$(GOCMD) test -o ql.test
 GODEP=$(GOTEST) -i
-GOFMT=gofmt -w
+GOFMT=gofmt -s -w $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 # Package lists
 TOPLEVEL_PKG := ql
@@ -62,4 +62,4 @@ $(IREF_LIST): %_iref:
 $(TEST_LIST): %_test:
 	$(GOTEST) $(TOPLEVEL_PKG)/$*
 $(FMT_TEST): %_fmt:
-	$(GOFMT) ./$*
+	$(GOFMT)

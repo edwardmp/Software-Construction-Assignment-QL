@@ -1,70 +1,64 @@
 package expr
 
 import (
-	"ql/interfaces"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
-
-func binaryExprEval(t *testing.T, exampleInput interfaces.Expr, expectedOutput interfaces.Expr) {
-	if eval, expectedOutputEval := exampleInput.Eval(nil), expectedOutput.(interfaces.Expr).Eval(nil); eval != expectedOutputEval {
-		t.Errorf("BinaryOperator test error: should be %v (%T) for %v but is %v (%T)", expectedOutputEval, expectedOutputEval, eval, eval)
-	}
-}
 
 /* Tests for binary expression evaluation */
 
 func TestAdd(t *testing.T) {
-	binaryExprEval(t, NewAdd(NewIntLit(1), NewIntLit(2)), NewIntLit(3))
+	assert.Equal(t, NewAdd(NewIntLit(1), NewIntLit(2)).Eval(nil), 3)
 }
 
 func TestMul(t *testing.T) {
-	binaryExprEval(t, NewMul(NewIntLit(3), NewIntLit(2)), NewIntLit(6))
+	assert.Equal(t, NewMul(NewIntLit(3), NewIntLit(2)).Eval(nil), 6)
 }
 
 func TestMulAddPrecedence(t *testing.T) {
-	binaryExprEval(t, NewAdd(NewMul(NewIntLit(3), NewIntLit(2)), NewIntLit(1)), NewIntLit(7))
+	assert.Equal(t, NewAdd(NewMul(NewIntLit(3), NewIntLit(2)), NewIntLit(1)).Eval(nil), 7)
 }
 
 func TestSub(t *testing.T) {
-	binaryExprEval(t, NewSub(NewIntLit(1), NewIntLit(2)), NewIntLit(-1))
+	assert.Equal(t, NewSub(NewIntLit(1), NewIntLit(2)).Eval(nil), -1)
 }
 
 func TestDiv(t *testing.T) {
-	binaryExprEval(t, NewDiv(NewIntLit(9), NewIntLit(3)), NewIntLit(3))
+	assert.Equal(t, NewDiv(NewIntLit(9), NewIntLit(3)).Eval(nil), 3)
 }
 
 func TestGT(t *testing.T) {
-	binaryExprEval(t, NewGT(NewIntLit(3), NewIntLit(2)), NewBoolLit(true))
+	assert.Equal(t, NewGT(NewIntLit(3), NewIntLit(2)).Eval(nil), true)
 }
 
 func TestLT(t *testing.T) {
-	binaryExprEval(t, NewLT(NewIntLit(3), NewIntLit(2)), NewBoolLit(false))
+	assert.Equal(t, NewLT(NewIntLit(3), NewIntLit(2)).Eval(nil), false)
 }
 
 func TestGEq(t *testing.T) {
-	binaryExprEval(t, NewGEq(NewIntLit(3), NewIntLit(3)), NewBoolLit(true))
+	assert.Equal(t, NewGEq(NewIntLit(3), NewIntLit(3)).Eval(nil), true)
 }
 
 func TestLEq(t *testing.T) {
-	binaryExprEval(t, NewLEq(NewIntLit(3), NewIntLit(3)), NewBoolLit(true))
+	assert.Equal(t, NewLEq(NewIntLit(3), NewIntLit(3)).Eval(nil), true)
 }
 
 func TestAnd(t *testing.T) {
-	binaryExprEval(t, NewAnd(NewBoolLit(true), NewBoolLit(false)), NewBoolLit(false))
+	assert.Equal(t, NewAnd(NewBoolLit(true), NewBoolLit(false)).Eval(nil), false)
 }
 
 func TestOr(t *testing.T) {
-	binaryExprEval(t, NewOr(NewBoolLit(true), NewBoolLit(false)), NewBoolLit(true))
+	assert.Equal(t, NewOr(NewBoolLit(true), NewBoolLit(false)).Eval(nil), true)
 }
 
 func TestAndOr(t *testing.T) {
-	binaryExprEval(t, NewAnd(NewOr(NewBoolLit(true), NewBoolLit(false)), NewAnd(NewBoolLit(true), NewBoolLit(false))), NewBoolLit(false))
+	assert.Equal(t, NewAnd(NewOr(NewBoolLit(true), NewBoolLit(false)), NewBoolLit(false)).Eval(nil), false)
 }
 
 func TestEq(t *testing.T) {
-	binaryExprEval(t, NewEq(NewBoolLit(true), NewBoolLit(false)), NewBoolLit(false))
+	assert.Equal(t, NewEq(NewBoolLit(true), NewBoolLit(false)).Eval(nil), false)
 }
 
 func TestNEq(t *testing.T) {
-	binaryExprEval(t, NewNEq(NewBoolLit(true), NewBoolLit(false)), NewBoolLit(true))
+	assert.Equal(t, NewNEq(NewBoolLit(true), NewBoolLit(false)).Eval(nil), true)
 }

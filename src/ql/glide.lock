@@ -1,14 +1,16 @@
-hash: 567df4d7ccd1b5607b2a468d91e22409f9a5699bf6f76b158a402c19af5b08ff
-updated: 2016-03-19T17:58:04.187705945+01:00
+hash: 59916ff6ce906a3307fe72ad33765c6efed36e8274e95a1a5c67879a1e792914
+updated: 2016-03-26T21:11:16.234899339+01:00
 imports:
 - name: github.com/andlabs/ui
   version: 8dc672361ebc481cbe9418f7dd4d307095ee9f98
 - name: github.com/codegangsta/cli
-  version: aca5b047ed14d17224157c3434ea93bf6cdaadee
+  version: 9fec0fad02befc9209347cc6d620e68e1b45f74d
 - name: github.com/goccmack/gocc
   version: a150a4adbf3b19fe88efc310766ed3d643201560
 - name: github.com/Sirupsen/logrus
   version: a26f43589d737684363ff856c5a0f9f24b946510
+- name: github.com/stretchr/testify
+  version: 6fe211e493929a8aac0469b93f28b1d0688a9a3a
 - name: golang.org/x/sys
   version: 7a56174f0086b32866ebd746a794417edbc678a1
   subpackages:
