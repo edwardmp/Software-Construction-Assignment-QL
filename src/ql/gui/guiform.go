@@ -22,6 +22,14 @@ func newGUIForm(form interfaces.Form) *GUIForm {
 	return &GUIForm{Form: form, ComputedQuestions: make([]*GUIComputedQuestion, 0)}
 }
 
+// show displays the form box. It should only be called if no semantic errors are present
+func (this *GUIForm) show(window *ui.Window) {
+	log.WithFields(log.Fields{"identifier": this.Form.Identifier()}).Info("Showing form")
+
+	this.FormContainer = ui.NewVerticalBox()
+	window.SetChild(this.FormContainer)
+}
+
 // addQuestionContainer appends the question container box to the form container
 func (this *GUIForm) addQuestionContainer(questionContainer *ui.Box) {
 	this.FormContainer.Append(questionContainer, false)
@@ -37,14 +45,6 @@ func (this *GUIForm) addComputedQuestion(question *GUIComputedQuestion) {
 
 	log.Info("Adding computed question to form")
 	this.ComputedQuestions = append(this.ComputedQuestions, question)
-}
-
-// show displays the form box. It should only be called if no semantic errors are present
-func (this *GUIForm) show(window *ui.Window) {
-	log.WithFields(log.Fields{"identifier": this.Form.Identifier()}).Info("Showing form")
-
-	this.FormContainer = ui.NewVerticalBox()
-	window.SetChild(this.FormContainer)
 }
 
 // createQuestionTable creates a table box containing the passed GUIQuestions

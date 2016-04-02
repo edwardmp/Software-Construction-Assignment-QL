@@ -205,14 +205,14 @@ func (this *GUI) handleInputQuestion(question interfaces.InputQuestion) *GUIInpu
 		this.updateComputedQuestions()
 	}
 
-	guiQuestion = createGUIInputQuestion(fmt.Sprintf("%s", question.Label()), question.VarDecl().Type(), questionCallback)
+	guiQuestion = createGUIInputQuestion(question.Label().Value(), question.VarDecl().Type(), questionCallback)
 
 	return guiQuestion
 }
 
 func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *GUIComputedQuestion {
 	computation := question.Computation()
-	guiQuestion := createGUIComputedQuestion(fmt.Sprintf("%s", question.Label()), question.VarDecl().Type(), computation, question.VarDecl().VariableIdentifier())
+	guiQuestion := createGUIComputedQuestion(question.Label().Value(), question.VarDecl().Type(), computation, question.VarDecl().VariableIdentifier())
 
 	this.GUIForm.addComputedQuestion(guiQuestion)
 

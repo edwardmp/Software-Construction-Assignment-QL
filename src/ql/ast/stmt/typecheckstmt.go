@@ -125,9 +125,10 @@ func checkQuestionForDuplicateLabels(question interfaces.Question, typeChecker i
 
 	if labelKnown {
 		typeChecker.AddEncounteredWarning(errors.NewDuplicateLabelWarning(question, typeChecker.VarIdForLabel(question.Label())))
-	} else {
-		typeChecker.MarkLabelAsUsed(question.Label(), question.VarDecl())
+		return
 	}
+
+	typeChecker.MarkLabelAsUsed(question.Label(), question.VarDecl())
 }
 
 // checkQuestionForRedeclarationWithDifferentTypes checks if the passed question has been declared before with a different type, and if so, adds an error to the typechecker

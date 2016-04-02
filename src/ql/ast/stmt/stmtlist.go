@@ -29,12 +29,12 @@ func (this StmtList) Conditionals() []interfaces.Conditional {
 
 func (this StmtList) AddToCorrectSlice(questionOrConditional interfaces.Stmt) StmtList {
 	switch assertedStmt := questionOrConditional.(type) {
-	default:
-		panic(fmt.Errorf("Unexpected StmtList type passed to AddToCorrectSlice %T\n", assertedStmt))
 	case interfaces.Question:
 		this.questions = append(this.questions, assertedStmt)
 	case interfaces.Conditional:
 		this.conditionals = append(this.conditionals, assertedStmt)
+	default:
+		panic(fmt.Errorf("Unexpected StmtList type passed to AddToCorrectSlice %T\n", assertedStmt))
 	}
 
 	return this
