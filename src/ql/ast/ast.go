@@ -7,6 +7,7 @@ import (
 	"ql/interfaces"
 	"ql/token"
 	"ql/util"
+	"strconv"
 )
 
 const (
@@ -135,7 +136,7 @@ func NewBoolLitNode(value bool, sourcePosInfo attrib) (interfaces.Expr, error) {
 
 func NewStrLitNode(valueToken attrib) (interfaces.Expr, error) {
 	sourcePosInfo := valueToken.(*token.Token).Pos
-	literalString := util.StringLiteralTokensToString(valueToken.(*token.Token))
+	literalString := stringLiteralTokensToString(valueToken.(*token.Token))
 	expr := expr.NewStrLit(literalString)
 	expr.SetSourceInfo(sourcePosInfo)
 	return expr, nil
@@ -228,4 +229,14 @@ func NewIfElseNode(cond attrib, ifBody attrib, elseBody attrib, sourcePosInfo at
 	stmt := stmt.NewIfElse(cond.(interfaces.Expr), ifBody.(stmt.StmtList), elseBody.(stmt.StmtList))
 	stmt.SetSourceInfo(sourcePosInfo.(token.Pos))
 	return stmt, nil
+}
+
+// TODO place in util?
+func stringLiteralTokensToString(token *token.Token) (str string) {
+	astr, err := strconv.Unquote(string(token.Lit))
+	if err != nil {
+		return ""
+	}
+
+	return astr
 }

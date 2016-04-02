@@ -16,7 +16,7 @@ func (this And) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
 func (this Div) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
 	denominator := this.Rhs().Eval(symbols).(int)
 
-	// since default value of int question will be set to zero, handle it here to preclude division by zero panic
+	// since default value of int question will be set to zero, handle it here to prevent division by zero panic
 	if denominator == 0 {
 		return 0
 	}

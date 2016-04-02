@@ -35,6 +35,7 @@ func (this *GUI) setSymbols(symbols interfaces.VarIdValueSymbols) {
 	}
 
 	this.Symbols = symbols
+	this.SaveDataCallback = symbols.SaveToDisk
 }
 
 func (this *GUI) createAndSetGUIFormFromForm(form interfaces.Form) {
@@ -62,7 +63,7 @@ func (this *GUI) ShowWindow(errorsToDisplay, warningsToDisplay []error) {
 
 		this.Window.OnClosing(func(w *ui.Window) bool {
 			log.Info("Destroy of window initiated")
-			this.Symbols.SaveToDisk()
+			this.SaveDataCallback()
 			ui.Quit()
 			return true
 		})
@@ -192,27 +193,27 @@ func (this *GUI) handleInputQuestion(question interfaces.InputQuestion) *GUIInpu
 		if err != nil {
 			if numError, isNumError := err.(*strconv.NumError); isNumError && numError.Err.Error() == "invalid syntax" {
 				guiQuestion.changeErrorLabelText("Not a valid number!")
-				log.Error("Presenting invalid number error to user")
+				log.Debug("Presenting invalid number error to user")
 			}
 
 			return
 		}
 
-		questionIdentifier := question.VarDecl().VariableIdentifier()
+		questionIdentifier := question.VarDecl().Identifier()
 		log.WithFields(log.Fields{"input": inputExpr, "identifier": questionIdentifier}).Debug("Question input received")
 		this.Symbols.SetExprForVarId(inputExpr, questionIdentifier)
 
 		this.updateComputedQuestions()
 	}
 
-	guiQuestion = createGUIInputQuestion(question.Label().Value(), question.VarDecl().Type(), questionCallback)
+	guiQuestion = createGUIInputQuestion(fmt.Sprintf("%s", question.Label()), question.VarDecl().Type(), questionCallback)
 
 	return guiQuestion
 }
 
 func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *GUIComputedQuestion {
 	computation := question.Computation()
-	guiQuestion := createGUIComputedQuestion(question.Label().Value(), question.VarDecl().Type(), computation, question.VarDecl().VariableIdentifier())
+	guiQuestion := createGUIComputedQuestion(fmt.Sprintf("%s", question.Label()), question.VarDecl().Type(), computation, question.VarDecl().Identifier())
 
 	this.GUIForm.addComputedQuestion(guiQuestion)
 
@@ -236,7 +237,7 @@ func (this *GUI) addSubmitButton() {
 
 	button := createButton("Submit", func(b *ui.Button) {
 		log.Debug("Submit button clicked, saving data initiated")
-		this.Symbols.SaveToDisk()
+		this.SaveDataCallback()
 		showMessageBoxForErrors("Data saved to file", nil, this.Window)
 	})
 

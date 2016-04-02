@@ -47,5 +47,5 @@ func convertErrorStringListToString(errorStringList []error) string {
 		errorStrings = append(errorStrings, singleError.Error())
 	}
 
-	return strings.Join(errorStrings, "\n\n")
+	return strings.Join(errorStrings, "\n")
 }

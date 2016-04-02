@@ -3,17 +3,17 @@ package vari
 import "ql/interfaces"
 
 type VarDecl struct {
-	variableIdentifier interfaces.VarId
-	valueType          interfaces.ValueType
-	Vari
+	ident     interfaces.VarId
+	valueType interfaces.ValueType
+	Var
 }
 
 func NewVarDecl(varIdent interfaces.VarId, varType interfaces.ValueType) VarDecl {
-	return VarDecl{varIdent, varType, NewVari()}
+	return VarDecl{varIdent, varType, NewVar()}
 }
 
-func (this VarDecl) VariableIdentifier() interfaces.VarId {
-	return this.variableIdentifier
+func (this VarDecl) Identifier() interfaces.VarId {
+	return this.ident
 }
 
 func (this VarDecl) Type() interfaces.ValueType {
