@@ -87,14 +87,13 @@ func (this ComputedQuestion) checkIfQuestionTypeMatchesComputationType(typeCheck
 
 // checkForUndefinedReferences seeks to confirm that all identifiers encountered have been marked as known (being declared)
 func (this Form) checkForUndefinedReferences(typeChecker interfaces.TypeChecker) {
-	for identifier, identifierKnown := range typeChecker.IdentifiersEncountered() {
+	for identifier, identifierKnown := range typeChecker.KnownIdentifiers() {
 		if !identifierKnown {
 			typeChecker.AddEncounteredError(errors.NewUndefinedQuestionReferenceError(identifier))
 		}
 	}
 }
 
-// FIXME side-effect
 func collectVarIdsInExpressions(typeCheckArgs interfaces.TypeCheckArgs) {
 	// for these condition expressions, running TypeCheck will collect VarIds in them and add them as dependencies
 	for _, conditionDependentOn := range typeCheckArgs.ConditionsDependentOn() {

@@ -10,7 +10,7 @@ type TypeChecker interface {
 	VarIdForLabel(StrLit) VarId
 	MarkVarIdAsKnown(VarId)
 	MarkVarIdAsUnknown(VarId)
-	IdentifiersEncountered() map[VarId]bool
+	KnownIdentifiers() map[VarId]bool
 	AddDependencyForVarDecl(VarId, VarDecl)
 	DependencyListForVarDeclContainsReferenceToSelf(VarDecl) bool
 	ConditionsDependentOnForVarDecl(VarDecl) []Expr
