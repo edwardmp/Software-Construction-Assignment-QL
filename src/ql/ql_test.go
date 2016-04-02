@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interfaces.Form) stmt.Form {
+func testStmtParse(t *testing.T, stmtAsString string, formFixture interfaces.Form) stmt.Form {
 	lex := lexer.NewLexer([]byte(stmtAsString))
 	parser := parser.NewParser()
 	parseResult, err := parser.Parse(lex)
@@ -19,16 +19,16 @@ func testStmtParse(t *testing.T, stmtAsString string, expectedOutput interfaces.
 		t.Fatalf("Encountered fatal error during parse: %s", err)
 	}
 
-	if f, fOk := parseResult.(stmt.Form); fOk {
-		if e, eOk := expectedOutput.(stmt.Form); eOk {
-			if firstFormIdentifier, secondFormIdentifier := f.Identifier(), e.Identifier(); firstFormIdentifier != secondFormIdentifier {
-				t.Errorf("Form identifiers not equal: %s and %s", firstFormIdentifier, secondFormIdentifier)
-			}
-
-			if !stmt.SlicesEqual(f.Content(), e.Content()) {
-				t.Errorf("Form content not equal: %v and %v", f, e)
-			}
+	if parsedForn, parseResultIsForm := parseResult.(stmt.Form); parseResultIsForm {
+		if firstFormIdentifier, secondFormIdentifier := parsedForn.Identifier(), formFixture.Identifier(); firstFormIdentifier != secondFormIdentifier {
+			t.Errorf("Form identifiers not equal: %s and %s", firstFormIdentifier, secondFormIdentifier)
 		}
+
+		if !stmt.SlicesEqual(parsedForn.Content(), formFixture.Content()) {
+			t.Errorf("Form content not equal: %v and %v", parsedForn, formFixture)
+		}
+	} else {
+		t.Fatalf("Parse result is not form")
 	}
 
 	return parseResult.(stmt.Form)
@@ -81,7 +81,6 @@ func TestFormIf(t *testing.T) {
 
 func TestFormIfElse(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean if (true) { \"What was the selling price?\" sellingPrice: integer } else { \"What was the selling price?\" sellingPrice: integer } }"
-
 	firstQuestionOutput := stmt.NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
 	firstQuestionBodyInput := stmt.NewInputQuestion(expr.NewStrLit("What was the selling price?"), vari.NewVarDecl(vari.NewVarId("sellingPrice"), expr.NewIntType()))
 	ifBodyOutput := stmt.NewStmtList([]interfaces.Question{firstQuestionBodyInput}, []interfaces.Conditional{})

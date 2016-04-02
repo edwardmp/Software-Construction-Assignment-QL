@@ -6,7 +6,6 @@ import (
 	"github.com/codegangsta/cli"
 	"io/ioutil"
 	"os"
-	"ql/ast/visitor"
 	"ql/gui"
 	"ql/interfaces"
 	"ql/lexer"
@@ -15,6 +14,7 @@ import (
 	"ql/typechecker"
 )
 
+// main sets up the CLI command, defaults to trying to load, parse and present form.ql file in current working directory
 func main() {
 	app := cli.NewApp()
 	app.Name = "QL"
@@ -61,6 +61,7 @@ func main() {
 	app.Run(os.Args)
 }
 
+// exitIfFilePathIsInvalid exits program if no file exists at filePath or filePath refers to dir
 func exitIfFilePathIsInvalid(filePath string) {
 	// no file at path exists
 	if src, err := os.Stat(filePath); os.IsNotExist(err) {
@@ -106,9 +107,7 @@ func initQL(filePath string) {
 
 	typeCheckErrors, typeCheckWarnings := conductTypeChecking(parsedForm)
 
-	varIdDefaultValueVisitor := NewDefaultVarIdSymbolValueVisitor()
-	varIdValueSymbols := symbols.NewVarIdValueSymbols()
-	parsedForm.Accept(varIdDefaultValueVisitor, varIdValueSymbols)
+	varIdValueSymbols := symbolsWithDefaultValuesForVarIds(parsedForm)
 
 	gui.InitializeGUIForm(parsedForm, varIdValueSymbols)
 	gui.ShowWindow(typeCheckErrors, typeCheckWarnings)
@@ -139,7 +138,8 @@ func lexAndParse(fileContent []byte) (interfaces.Form, error) {
 // conductTypeChecking starts type checking the passed form for errors and warnings
 func conductTypeChecking(form interfaces.Form) ([]error, []error) {
 	typeChecker := typechecker.NewTypeChecker()
-	form.TypeCheck(typechecker.NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols()))
+	typeCheckerArgs := typechecker.NewTypeCheckArgs(typeChecker, symbols.NewTypeCheckSymbols())
+	form.TypeCheck(&typeCheckerArgs)
 	warnings := typeChecker.EncounteredWarnings()
 	errors := typeChecker.EncounteredErrors()
 
@@ -148,16 +148,8 @@ func conductTypeChecking(form interfaces.Form) ([]error, []error) {
 	return errors, warnings
 }
 
-// FIXME place somewhere else?
-type DefaultVarIdSymbolValueVisitor struct {
-	visitor.BaseVisitor
-}
-
-func NewDefaultVarIdSymbolValueVisitor() *DefaultVarIdSymbolValueVisitor {
-	return &DefaultVarIdSymbolValueVisitor{}
-}
-
-func (this *DefaultVarIdSymbolValueVisitor) VisitVarDecl(varDecl interfaces.VarDecl, context interface{}) {
-	symbols := context.(interfaces.VarIdValueSymbols)
-	symbols.SetExprForVarId(varDecl.Type().DefaultValue(), varDecl.Identifier())
+// symbolsWithDefaultValuesForVarIds creates new symbols and starts process that sets default values for all VarIds
+func symbolsWithDefaultValuesForVarIds(form interfaces.Form) interfaces.VarIdValueSymbols {
+	varIdDefaultValueVisitor := symbols.NewDefaultVarIdValueVisitor()
+	return varIdDefaultValueVisitor.StartSettingDefaultValuesForVarIds(form)
 }
