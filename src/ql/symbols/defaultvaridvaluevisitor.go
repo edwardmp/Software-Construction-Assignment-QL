@@ -6,11 +6,11 @@ import (
 )
 
 type DefaultVarIdValueVisitor struct {
-	visitor.BaseVisitor
+	*visitor.BaseVisitor
 }
 
 func NewDefaultVarIdValueVisitor() *DefaultVarIdValueVisitor {
-	return &DefaultVarIdValueVisitor{visitor.BaseVisitor{}}
+	return &DefaultVarIdValueVisitor{visitor.NewBaseVisitor()}
 }
 
 func (this *DefaultVarIdValueVisitor) StartSettingDefaultValuesForVarIds(form interfaces.Form) *VarIdValueSymbols {

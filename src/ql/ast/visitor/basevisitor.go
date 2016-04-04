@@ -5,6 +5,10 @@ import "ql/interfaces"
 type BaseVisitor struct {
 }
 
+func NewBaseVisitor() *BaseVisitor {
+	return &BaseVisitor{}
+}
+
 func (b *BaseVisitor) VisitAdd(a interfaces.Add, context interface{}) {
 
 }

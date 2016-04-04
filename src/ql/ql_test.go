@@ -7,6 +7,7 @@ import (
 	"ql/interfaces"
 	"ql/lexer"
 	"ql/parser"
+	"ql/util"
 	"testing"
 )
 
@@ -24,7 +25,7 @@ func testStmtParse(t *testing.T, stmtAsString string, formFixture interfaces.For
 			t.Errorf("Form identifiers not equal: %s and %s", firstFormIdentifier, secondFormIdentifier)
 		}
 
-		if !stmt.SlicesEqual(parsedForn.Content(), formFixture.Content()) {
+		if !util.AreStmtListsEqual(parsedForn.Content(), formFixture.Content()) {
 			t.Errorf("Form content not equal: %v and %v", parsedForn, formFixture)
 		}
 	} else {
