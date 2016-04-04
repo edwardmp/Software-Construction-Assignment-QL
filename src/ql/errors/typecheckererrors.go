@@ -104,28 +104,30 @@ func (this DeclaratedTypeAndActualTypeDeviateError) Error() string {
 
 type OperandsOfDifferentTypesError struct {
 	TypeCheckError
-	FirstOperandType  interfaces.ValueType
-	SecondOperandType interfaces.ValueType
+	FirstOperandType   interfaces.ValueType
+	SecondOperandType  interfaces.ValueType
+	AffectedExpression interfaces.Expr
 }
 
-func NewOperandsOfDifferentTypesError(firstOperandType interfaces.ValueType, secondOperandType interfaces.ValueType) OperandsOfDifferentTypesError {
-	return OperandsOfDifferentTypesError{FirstOperandType: firstOperandType, SecondOperandType: secondOperandType, TypeCheckError: TypeCheckError{fmt.Errorf(operandsOfDifferentTypesErrorString)}}
+func NewOperandsOfDifferentTypesError(affectedExpression interfaces.Expr, firstOperandType interfaces.ValueType, secondOperandType interfaces.ValueType) OperandsOfDifferentTypesError {
+	return OperandsOfDifferentTypesError{AffectedExpression: affectedExpression, FirstOperandType: firstOperandType, SecondOperandType: secondOperandType, TypeCheckError: TypeCheckError{fmt.Errorf(operandsOfDifferentTypesErrorString)}}
 }
 
 func (this OperandsOfDifferentTypesError) Error() string {
-	return fmt.Sprintf("%s: type of first operand is %s but type of second operand is %s", this.TypeCheckError.Error(), this.FirstOperandType, this.SecondOperandType)
+	return fmt.Sprintf("%s: type of first operand is %s but type of second operand is %s in expression %s", this.TypeCheckError.Error(), this.FirstOperandType, this.SecondOperandType, this.AffectedExpression)
 }
 
 type OperandWithUnexpectedTypeError struct {
 	TypeCheckError
-	ExpectedType interfaces.ValueType
-	ActualType   interfaces.ValueType
+	ExpectedType       interfaces.ValueType
+	ActualType         interfaces.ValueType
+	AffectedExpression interfaces.Expr
 }
 
-func NewOperandWithUnexpectedTypeError(expectedType interfaces.ValueType, actualType interfaces.ValueType) OperandWithUnexpectedTypeError {
-	return OperandWithUnexpectedTypeError{ExpectedType: expectedType, ActualType: actualType, TypeCheckError: TypeCheckError{fmt.Errorf(operandWithUnexpectedTypeErrorString)}}
+func NewOperandWithUnexpectedTypeError(affectedExpression interfaces.Expr, expectedType interfaces.ValueType, actualType interfaces.ValueType) OperandWithUnexpectedTypeError {
+	return OperandWithUnexpectedTypeError{AffectedExpression: affectedExpression, ExpectedType: expectedType, ActualType: actualType, TypeCheckError: TypeCheckError{fmt.Errorf(operandWithUnexpectedTypeErrorString)}}
 }
 
 func (this OperandWithUnexpectedTypeError) Error() string {
-	return fmt.Sprintf("%s: expected type of operand was %s but actual type is %s", this.TypeCheckError.Error(), this.ExpectedType, this.ActualType)
+	return fmt.Sprintf("%s: expected type of operand was %s but actual type is %s in expression %s", this.TypeCheckError.Error(), this.ExpectedType, this.ActualType, this.AffectedExpression)
 }

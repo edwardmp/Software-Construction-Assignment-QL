@@ -1,8 +1,6 @@
 package node
 
-import (
-	"ql/token"
-)
+import "ql/token"
 
 type Node struct {
 	SrcInfo token.Pos

@@ -9,7 +9,7 @@ type Form struct {
 }
 
 func NewForm(identifier interfaces.VarId, content StmtList) Form {
-	return Form{identifier, content, NewStmt()}
+	return Form{identifier: identifier, content: content, Stmt: NewStmt()}
 }
 
 func (this Form) Content() interfaces.StmtList {

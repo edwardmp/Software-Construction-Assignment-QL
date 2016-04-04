@@ -141,22 +141,7 @@ func NewStrLitNode(valueToken attrib) (interfaces.Expr, error) {
 	return expr, nil
 }
 
-/** Vari **/
-
-func NewVarDeclNode(ident attrib, typeIdent attrib, sourcePosInfo attrib) (interfaces.VarDecl, error) {
-	vari := vari.NewVarDecl(ident.(interfaces.VarId), typeIdent.(interfaces.ValueType))
-	vari.SetSourceInfo(sourcePosInfo.(token.Pos))
-	return vari, nil
-}
-
-func NewVarIdNode(identToken attrib) (vari.VarId, error) {
-	sourcePosInfo := identToken.(*token.Token).Pos
-	identifierString := string(identToken.(*token.Token).Lit)
-	vari := vari.NewVarId(identifierString)
-	vari.SetSourceInfo(sourcePosInfo)
-	return vari, nil
-}
-
+/* value types */
 func NewIntTypeNode(typeTokenLit attrib) (interfaces.IntType, error) {
 	token := typeTokenLit.(*token.Token)
 	expr := expr.NewIntType()
@@ -177,6 +162,22 @@ func NewStringTypeNode(typeTokenLit attrib) (interfaces.StringType, error) {
 	expr := expr.NewStringType()
 	expr.SetSourceInfo(token.Pos)
 	return expr, nil
+}
+
+/** Vari **/
+
+func NewVarDeclNode(ident attrib, typeIdent attrib, sourcePosInfo attrib) (interfaces.VarDecl, error) {
+	vari := vari.NewVarDecl(ident.(interfaces.VarId), typeIdent.(interfaces.ValueType))
+	vari.SetSourceInfo(sourcePosInfo.(token.Pos))
+	return vari, nil
+}
+
+func NewVarIdNode(identToken attrib) (vari.VarId, error) {
+	sourcePosInfo := identToken.(*token.Token).Pos
+	identifierString := string(identToken.(*token.Token).Lit)
+	vari := vari.NewVarId(identifierString)
+	vari.SetSourceInfo(sourcePosInfo)
+	return vari, nil
 }
 
 /** Statements **/

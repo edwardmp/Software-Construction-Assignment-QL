@@ -1,8 +1,6 @@
 package expr
 
-import (
-	"ql/ast/node"
-)
+import "ql/ast/node"
 
 type Expr struct {
 	node.Node

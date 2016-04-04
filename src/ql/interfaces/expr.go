@@ -4,6 +4,7 @@ type Expr interface {
 	ASTNode
 	Eval(s VarIdValueSymbols) interface{}
 	TypeCheck(TypeCheckArgs) ValueType
+	String() string
 }
 
 type BinaryOperatorExpr interface {

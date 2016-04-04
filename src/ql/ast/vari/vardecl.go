@@ -8,8 +8,8 @@ type VarDecl struct {
 	Vari
 }
 
-func NewVarDecl(varIdent interfaces.VarId, varType interfaces.ValueType) VarDecl {
-	return VarDecl{varIdent, varType, NewVari()}
+func NewVarDecl(variableIdentifier interfaces.VarId, valueType interfaces.ValueType) VarDecl {
+	return VarDecl{variableIdentifier: variableIdentifier, valueType: valueType, Vari: NewVari()}
 }
 
 func (this VarDecl) VariableIdentifier() interfaces.VarId {

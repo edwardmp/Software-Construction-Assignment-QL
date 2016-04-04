@@ -140,11 +140,8 @@ func (this *TypeChecker) EncounteredWarnings() []error {
 }
 
 func (this *TypeChecker) IsLabelUsed(label interfaces.StrLit) bool {
-	if _, exists := this.usedLabels[label]; exists {
-		return true
-	}
-
-	return false
+	_, exists := this.usedLabels[label]
+	return exists
 }
 
 func (this *TypeChecker) VarIdForLabel(label interfaces.StrLit) interfaces.VarId {
@@ -175,6 +172,7 @@ func (this *TypeChecker) MarkVarIdAsUnknown(varId interfaces.VarId) {
 	this.knownIdentifiers[varId] = false
 }
 
+// KnownIdentifiers returns a map where the keys are identifiers that are currently known
 func (this *TypeChecker) KnownIdentifiers() map[interfaces.VarId]bool {
 	return this.knownIdentifiers
 }

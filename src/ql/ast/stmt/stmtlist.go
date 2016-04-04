@@ -12,7 +12,7 @@ type StmtList struct {
 }
 
 func NewStmtList(questions []interfaces.Question, conditionals []interfaces.Conditional) StmtList {
-	return StmtList{questions, conditionals, NewStmt()}
+	return StmtList{questions: questions, conditionals: conditionals, Stmt: NewStmt()}
 }
 
 func NewEmptyStmtList() StmtList {

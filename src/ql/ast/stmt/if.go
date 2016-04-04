@@ -9,7 +9,7 @@ type If struct {
 }
 
 func NewIf(condition interfaces.Expr, body StmtList) If {
-	return If{condition, body, NewStmt()}
+	return If{condition: condition, body: body, Stmt: NewStmt()}
 }
 
 func (this If) Body() interfaces.StmtList {

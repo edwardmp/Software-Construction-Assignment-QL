@@ -13,7 +13,3 @@ func NewStringType() StringType {
 func (this StringType) DefaultValue() interfaces.LitExpr {
 	return NewStrLit("")
 }
-
-func (this StringType) String() string {
-	return this.TypeString
-}

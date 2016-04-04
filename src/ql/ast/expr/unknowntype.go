@@ -11,7 +11,7 @@ func NewUnknownType() UnknownType {
 }
 
 func (this UnknownType) DefaultValue() interfaces.LitExpr {
-	panic("UnknownType has no default value")
+	panic("UnknownType has no default value but DefaultValue method is called")
 
 	return nil
 }

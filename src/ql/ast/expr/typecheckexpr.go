@@ -14,10 +14,9 @@ func (this VarExpr) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces
 	}
 
 	// We don't already mark it as an error; because there is only one scope, the VarDecl may be simply declared later on
-	// After the whole Form is typechecked, it is checked which VarIds remain unknown (those that were not declared at a later point)
 	typeCheckArgs.TypeChecker().MarkVarIdAsUnknown(this.Identifier())
 
-	// No type info in symboltable (reference to undefined question)
+	// No type info in symbol table (reference to undefined question)
 	return NewUnknownType()
 }
 
@@ -149,7 +148,7 @@ func (binaryExpr BinaryOperator) checkForEqualTypes(expectedType interfaces.Valu
 	}
 
 	if lhsType != rhsType {
-		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewOperandsOfDifferentTypesError(lhsType, rhsType))
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewOperandsOfDifferentTypesError(binaryExpr, lhsType, rhsType))
 	}
 }
 
@@ -162,6 +161,6 @@ func checkIfOperandHasExpectedType(expr interfaces.Expr, expectedType interfaces
 	}
 
 	if actualType != expectedType {
-		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewOperandWithUnexpectedTypeError(expectedType, actualType))
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewOperandWithUnexpectedTypeError(expr, expectedType, actualType))
 	}
 }

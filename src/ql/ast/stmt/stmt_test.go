@@ -4,6 +4,7 @@ import (
 	"ql/ast/expr"
 	"ql/ast/vari"
 	"ql/interfaces"
+	"ql/util"
 	"testing"
 )
 
@@ -35,7 +36,7 @@ func TestFormWithNonEmptyContent(t *testing.T) {
 		t.Errorf("Form content questions does not have 1 question while it should")
 	}
 
-	if !SlicesEqual(exampleForm.Content(), stmtListExample) {
+	if !util.AreStmtListsEqual(exampleForm.Content(), stmtListExample) {
 		t.Errorf("Form content not set correctly")
 	}
 }
@@ -73,7 +74,7 @@ func TestIf(t *testing.T) {
 	ifCondExample := expr.NewBoolLit(true)
 	ifExample := NewIf(ifCondExample, ifBodyExample)
 
-	if !SlicesEqual(ifExample.Body(), ifBodyExample) {
+	if !util.AreStmtListsEqual(ifExample.Body(), ifBodyExample) {
 		t.Errorf("If body is not set correctly")
 	}
 
@@ -92,11 +93,11 @@ func TestIfElse(t *testing.T) {
 
 	ifElseExample := NewIfElse(ifCondExample, ifBodyExample, elseBodyExample)
 
-	if !SlicesEqual(ifElseExample.IfBody(), ifBodyExample) {
+	if !util.AreStmtListsEqual(ifElseExample.IfBody(), ifBodyExample) {
 		t.Errorf("IfElse else body is not set correctly")
 	}
 
-	if !SlicesEqual(ifElseExample.ElseBody(), elseBodyExample) {
+	if !util.AreStmtListsEqual(ifElseExample.ElseBody(), elseBodyExample) {
 		t.Errorf("IfElse if body is not set correctly")
 	}
 
