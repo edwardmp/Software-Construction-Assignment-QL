@@ -3,6 +3,7 @@ package vari
 import (
 	"github.com/stretchr/testify/assert"
 	"ql/ast/expr"
+	"testing"
 )
 
 func TestNewVarId(t *testing.T) {
@@ -18,5 +19,5 @@ func TestNewVarDecl(t *testing.T) {
 	varDecl := NewVarDecl(varId, valueType)
 
 	assert.Equal(t, varDecl.VariableIdentifier(), varId)
-	assert.Equal(t, VarDecl.Type(), valueType)
+	assert.Equal(t, varDecl.Type(), valueType)
 }
