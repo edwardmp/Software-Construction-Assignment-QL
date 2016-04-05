@@ -25,6 +25,6 @@ func (this IfElse) Condition() interfaces.Expr {
 	return this.condition
 }
 
-func (this IfElse) EvalCondition(symbols interfaces.VarIdValueSymbols) bool {
-	return this.condition.Eval(symbols).(bool)
+func (this IfElse) EvalCondition(symbols interfaces.VarIdValueSymbols) interfaces.BoolValue {
+	return this.condition.Eval(symbols).(interfaces.BoolValue)
 }

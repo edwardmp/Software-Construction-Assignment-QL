@@ -1,14 +1,16 @@
 package expr
 
+import "ql/interfaces"
+
 type IntLit struct {
-	value int
+	intValue IntValue
 	Expr
 }
 
 func NewIntLit(value int) IntLit {
-	return IntLit{value: value, Expr: NewExpr()}
+	return IntLit{intValue: NewIntValue(value), Expr: NewExpr()}
 }
 
-func (this IntLit) Value() int {
-	return this.value
+func (this IntLit) Value() interfaces.Value {
+	return this.intValue
 }

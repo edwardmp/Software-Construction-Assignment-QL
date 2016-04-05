@@ -5,29 +5,14 @@ import (
 	"testing"
 )
 
-func TestIntLit(t *testing.T) {
-	exampleIntLit := NewIntLit(10)
-	assert.Equal(t, NewIntLit(10), exampleIntLit)
-}
-
 func TestIntLitGetValue(t *testing.T) {
-	assert.Equal(t, NewIntLit(10).Value(), 10)
-}
-
-func TestBoolLit(t *testing.T) {
-	exampleBoolLit := NewBoolLit(true)
-	assert.Equal(t, NewBoolLit(true), exampleBoolLit)
+	assert.Equal(t, NewIntLit(10).Value(), NewIntValue(10))
 }
 
 func TestBoolLitGetValue(t *testing.T) {
-	assert.True(t, NewBoolLit(true).Value())
-}
-
-func TestStrLit(t *testing.T) {
-	exampleStrLit := NewStrLit("Test")
-	assert.Equal(t, NewStrLit("Test"), exampleStrLit)
+	assert.Equal(t, NewBoolLit(true).Value(), NewBoolValue(true))
 }
 
 func TestStrLitGetValue(t *testing.T) {
-	assert.Equal(t, NewStrLit("Test").Value(), "Test")
+	assert.Equal(t, NewStrLit("Test").Value(), NewStringValue("Test"))
 }

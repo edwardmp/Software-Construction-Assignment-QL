@@ -1,6 +1,9 @@
 package expr
 
-import "fmt"
+import (
+	"fmt"
+	"ql/interfaces"
+)
 
 /* binary expressions */
 
@@ -63,7 +66,7 @@ func (this IntLit) String() string {
 }
 
 func (this StrLit) String() string {
-	return this.Value()
+	return this.Value().(interfaces.StringValue).PrimitiveValueString()
 }
 
 /* unary expressions */

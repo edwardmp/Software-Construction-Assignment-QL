@@ -2,15 +2,42 @@ package interfaces
 
 type Expr interface {
 	ASTNode
-	Eval(s VarIdValueSymbols) interface{}
 	TypeCheck(TypeCheckArgs) ValueType
 	String() string
+	Eval(VarIdValueSymbols) Value
 }
 
 type BinaryOperatorExpr interface {
 	Expr
 	Lhs() Expr
 	Rhs() Expr
+}
+
+type Value interface {
+	PrimitiveValue() interface{}
+	Eq(value Value) Value
+	NEq(value Value) Value
+	GEq(value Value) Value
+	LEq(value Value) Value
+	GT(value Value) Value
+	LT(value Value) Value
+	Div(value Value) Value
+	Mul(value Value) Value
+	Add(value Value) Value
+	Sub(value Value) Value
+	Neg() Value
+	Pos() Value
+	And(value Value) Value
+	Or(value Value) Value
+	Not() Value
+}
+
+type BoolValue interface {
+	PrimitiveValueBool() bool
+}
+
+type StringValue interface {
+	PrimitiveValueString() string
 }
 
 type Add interface {
@@ -67,17 +94,17 @@ type LitExpr interface {
 
 type StrLit interface {
 	LitExpr
-	Value() string
+	Value() Value
 }
 
 type BoolLit interface {
 	LitExpr
-	Value() bool
+	Value() Value
 }
 
 type IntLit interface {
 	LitExpr
-	Value() int
+	Value() Value
 }
 
 type UnaryOperatorExpr interface {

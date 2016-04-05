@@ -29,7 +29,7 @@ type ComputedQuestion interface {
 
 type Conditional interface {
 	Stmt
-	EvalCondition(VarIdValueSymbols) bool
+	EvalCondition(VarIdValueSymbols) BoolValue
 	Condition() Expr
 }
 

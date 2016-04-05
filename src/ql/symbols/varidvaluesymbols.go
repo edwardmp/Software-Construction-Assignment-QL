@@ -70,7 +70,7 @@ func (this *VarIdValueSymbols) SaveToDisk() (interface{}, error) {
 func (this *VarIdValueSymbols) convertSymbolTableKeysToStringsAndEvalValues() VarIdStringExprEvalSymbolTable {
 	symbolTableWithStringKeys := make(VarIdStringExprEvalSymbolTable)
 	for varId, expr := range this.Table {
-		symbolTableWithStringKeys[varId.Identifier()] = expr.Eval(this)
+		symbolTableWithStringKeys[varId.Identifier()] = expr.Eval(this).PrimitiveValue()
 	}
 
 	return symbolTableWithStringKeys

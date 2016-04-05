@@ -2,7 +2,6 @@ package gui
 
 import (
 	"fmt"
-	//"io/ioutil"
 	log "github.com/Sirupsen/logrus"
 	"github.com/andlabs/ui"
 	"ql/ast/visitor"
@@ -139,7 +138,7 @@ func (this *GUI) VisitIfElse(ifElse interfaces.IfElse, context interface{}) {
 }
 
 func (this *GUI) showOrHideContainerDependingOnIfEval(ifStmt interfaces.If, conditionalContainer *ui.Box) {
-	conditionValue := ifStmt.EvalCondition(this.Symbols)
+	conditionValue := ifStmt.EvalCondition(this.Symbols).PrimitiveValueBool()
 
 	// if condition evals to true
 	if conditionValue {
@@ -152,7 +151,7 @@ func (this *GUI) showOrHideContainerDependingOnIfEval(ifStmt interfaces.If, cond
 }
 
 func (this *GUI) showOrHideContainerDependingOnIfElseEval(ifElseStmt interfaces.IfElse, conditionalContainerIfBody, conditionalContainerElseBody *ui.Box) {
-	conditionValue := ifElseStmt.EvalCondition(this.Symbols)
+	conditionValue := ifElseStmt.EvalCondition(this.Symbols).PrimitiveValueBool()
 
 	// ifElse condition evals to true
 	if conditionValue {
@@ -205,14 +204,14 @@ func (this *GUI) handleInputQuestion(question interfaces.InputQuestion) *GUIInpu
 		this.updateComputedQuestions()
 	}
 
-	guiQuestion = createGUIInputQuestion(question.Label().Value(), question.VarDecl().Type(), questionCallback)
+	guiQuestion = createGUIInputQuestion(question.Label().Value().(interfaces.StringValue).PrimitiveValueString(), question.VarDecl().Type(), questionCallback)
 
 	return guiQuestion
 }
 
 func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *GUIComputedQuestion {
 	computation := question.Computation()
-	guiQuestion := createGUIComputedQuestion(question.Label().Value(), question.VarDecl().Type(), computation, question.VarDecl().VariableIdentifier())
+	guiQuestion := createGUIComputedQuestion(question.Label().Value().(interfaces.StringValue).PrimitiveValueString(), question.VarDecl().Type(), computation, question.VarDecl().VariableIdentifier())
 
 	this.GUIForm.addComputedQuestion(guiQuestion)
 
@@ -221,7 +220,7 @@ func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *G
 
 func (this *GUI) updateComputedQuestions() {
 	for _, computedQuestion := range this.GUIForm.ComputedQuestions {
-		computedQuestionEval := computedQuestion.Expr.Eval(this.Symbols)
+		computedQuestionEval := computedQuestion.Expr.Eval(this.Symbols).PrimitiveValue()
 		computedQuestion.changeFieldValueText(fmt.Sprintf("%v", computedQuestionEval))
 
 		// save the computed value to the symbol table

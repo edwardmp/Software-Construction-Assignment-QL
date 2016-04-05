@@ -1,14 +1,16 @@
 package expr
 
+import "ql/interfaces"
+
 type BoolLit struct {
-	value bool
+	boolValue BoolValue
 	Expr
 }
 
 func NewBoolLit(value bool) BoolLit {
-	return BoolLit{value: value, Expr: NewExpr()}
+	return BoolLit{boolValue: NewBoolValue(value), Expr: NewExpr()}
 }
 
-func (this BoolLit) Value() bool {
-	return this.value
+func (this BoolLit) Value() interfaces.Value {
+	return this.boolValue
 }

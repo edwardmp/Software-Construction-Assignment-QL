@@ -1,14 +1,16 @@
 package expr
 
+import "ql/interfaces"
+
 type StrLit struct {
-	value string
+	stringValue StringValue
 	Expr
 }
 
 func NewStrLit(value string) StrLit {
-	return StrLit{value: value, Expr: NewExpr()}
+	return StrLit{stringValue: NewStringValue(value), Expr: NewExpr()}
 }
 
-func (this StrLit) Value() string {
-	return this.value
+func (this StrLit) Value() interfaces.Value {
+	return this.stringValue
 }

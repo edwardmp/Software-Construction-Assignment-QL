@@ -1,118 +1,80 @@
 package expr
 
-import (
-	"math"
-	"ql/interfaces"
-)
+import "ql/interfaces"
 
-func (this Add) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return this.Lhs().Eval(symbols).(int) + this.Rhs().Eval(symbols).(int)
+func (this Add) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).Add(this.Rhs().Eval(symbols))
 }
 
-func (this And) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return this.Lhs().Eval(symbols).(bool) && this.Rhs().Eval(symbols).(bool)
+func (this And) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).And(this.Rhs().Eval(symbols))
 }
 
-func (this Div) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	denominator := this.Rhs().Eval(symbols).(int)
-
-	// since default value of int question will be set to zero, handle it here to preclude division by zero panic
-	if denominator == 0 {
-		return 0
-	}
-
-	return this.Lhs().Eval(symbols).(int) / denominator
+func (this Div) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).Div(this.Rhs().Eval(symbols))
 }
 
-func (this Eq) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	var returnValue bool
-
-	// we assume both sides are of equal types as this should have been caught during type checking
-	switch lhsEvalValue := this.Lhs().Eval(symbols).(type) {
-	case int:
-		returnValue = lhsEvalValue == this.Rhs().Eval(symbols).(int)
-	case bool:
-		returnValue = lhsEvalValue == this.Rhs().Eval(symbols).(bool)
-	case string:
-		returnValue = lhsEvalValue == this.Rhs().Eval(symbols).(string)
-	default:
-		panic("Eval result is of unknown type")
-	}
-
-	return returnValue
+func (this Eq) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).Eq(this.Rhs().Eval(symbols))
 }
 
-func (this GEq) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return this.Lhs().Eval(symbols).(int) >= this.Rhs().Eval(symbols).(int)
+func (this GEq) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).GEq(this.Rhs().Eval(symbols))
 }
 
-func (this GT) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return this.Lhs().Eval(symbols).(int) > this.Rhs().Eval(symbols).(int)
+func (this GT) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).GT(this.Rhs().Eval(symbols))
 }
 
-func (this LEq) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return this.Lhs().Eval(symbols).(int) <= this.Rhs().Eval(symbols).(int)
+func (this LEq) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).LEq(this.Rhs().Eval(symbols))
 }
 
-func (this LT) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return this.Lhs().Eval(symbols).(int) < this.Rhs().Eval(symbols).(int)
+func (this LT) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).LT(this.Rhs().Eval(symbols))
 }
 
-func (this Mul) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return this.Lhs().Eval(symbols).(int) * this.Rhs().Eval(symbols).(int)
+func (this Mul) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).Mul(this.Rhs().Eval(symbols))
 }
 
-func (this Neg) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return int(math.Abs(float64(this.Value().Eval(symbols).(int))) * -1)
+func (this Neg) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Value().Eval(symbols).Neg()
 }
 
-func (this NEq) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	var returnValue bool
-
-	// we assume both sides are of equal types as this should have been caught during type checking
-	switch lhsEvalValue := this.Lhs().Eval(symbols).(type) {
-	case int:
-		returnValue = lhsEvalValue != this.Rhs().Eval(symbols).(int)
-	case bool:
-		returnValue = lhsEvalValue != this.Rhs().Eval(symbols).(bool)
-	case string:
-		returnValue = lhsEvalValue != this.Rhs().Eval(symbols).(string)
-	default:
-		panic("Eval result is of unknown type")
-	}
-
-	return returnValue
+func (this NEq) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).NEq(this.Rhs().Eval(symbols))
 }
 
-func (this Not) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return !this.Value().Eval(symbols).(bool)
+func (this Not) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Value().Eval(symbols).Not()
 }
 
-func (this Or) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return this.Lhs().Eval(symbols).(bool) || this.Rhs().Eval(symbols).(bool)
+func (this Or) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).Or(this.Rhs().Eval(symbols))
 }
 
-func (this Pos) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return int(math.Abs(float64(this.Value().Eval(symbols).(int))))
+func (this Pos) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Value().Eval(symbols).Pos()
 }
 
-func (this IntLit) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
+func (this IntLit) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
 	return this.Value()
 }
 
-func (this StrLit) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
+func (this StrLit) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
 	return this.Value()
 }
 
-func (this BoolLit) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
+func (this BoolLit) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
 	return this.Value()
 }
 
-func (this Sub) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
-	return this.Lhs().Eval(symbols).(int) - this.Rhs().Eval(symbols).(int)
+func (this Sub) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+	return this.Lhs().Eval(symbols).Sub(this.Rhs().Eval(symbols))
 }
 
-func (this VarExpr) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
+func (this VarExpr) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
 	if symbols == nil {
 		panic("No symbols passed to Eval VarExpr")
 	}
@@ -125,7 +87,7 @@ func (this VarExpr) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
 	return referencedExpr.Eval(symbols)
 }
 
-func (this Expr) Eval(symbols interfaces.VarIdValueSymbols) interface{} {
+func (this Expr) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
 	panic("Expr Eval method not overridden")
 
 	return nil
