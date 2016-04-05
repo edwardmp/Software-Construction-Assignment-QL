@@ -119,24 +119,24 @@ func NewOrNode(lhs attrib, rhs attrib, sourcePosInfo attrib) (interfaces.Expr, e
 }
 
 /* literals */
-func NewIntLitNode(litValueToken attrib) (interfaces.Expr, error) {
+func NewIntegerLiteralNode(litValueToken attrib) (interfaces.Expr, error) {
 	sourcePosInfo := litValueToken.(*token.Token).Pos
 	value, err := util.IntValue(litValueToken.(*token.Token).Lit)
-	expr := expr.NewIntLit(int(value))
+	expr := expr.NewIntegerLiteral(int(value))
 	expr.SetSourceInfo(sourcePosInfo)
 	return expr, err
 }
 
-func NewBoolLitNode(value bool, sourcePosInfo attrib) (interfaces.Expr, error) {
-	expr := expr.NewBoolLit(value)
+func NewBoolLiteralNode(value bool, sourcePosInfo attrib) (interfaces.Expr, error) {
+	expr := expr.NewBoolLiteral(value)
 	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
 	return expr, nil
 }
 
-func NewStrLitNode(valueToken attrib) (interfaces.Expr, error) {
+func NewStringLiteralNode(valueToken attrib) (interfaces.Expr, error) {
 	sourcePosInfo := valueToken.(*token.Token).Pos
 	literalString := util.StringLiteralTokensToString(valueToken.(*token.Token))
-	expr := expr.NewStrLit(literalString)
+	expr := expr.NewStringLiteral(literalString)
 	expr.SetSourceInfo(sourcePosInfo)
 	return expr, nil
 }
@@ -189,14 +189,14 @@ func NewFormNode(identifier attrib, body attrib, sourcePosInfo attrib) (interfac
 }
 
 func NewInputQuestionNode(label attrib, varDecl attrib) (interfaces.InputQuestion, error) {
-	labelStrLit := label.(expr.StrLit)
-	stmt := stmt.NewInputQuestion(labelStrLit, varDecl.(vari.VarDecl))
-	stmt.SetSourceInfo(labelStrLit.SourceInfo())
+	labelStringLiteral := label.(expr.StringLiteral)
+	stmt := stmt.NewInputQuestion(labelStringLiteral, varDecl.(vari.VarDecl))
+	stmt.SetSourceInfo(labelStringLiteral.SourceInfo())
 	return stmt, nil
 }
 
 func NewComputedQuestionNode(label attrib, varDecl attrib, computation attrib, sourcePosInfo attrib) (interfaces.ComputedQuestion, error) {
-	stmt := stmt.NewComputedQuestion(label.(expr.StrLit), varDecl.(vari.VarDecl), computation.(interfaces.Expr))
+	stmt := stmt.NewComputedQuestion(label.(expr.StringLiteral), varDecl.(vari.VarDecl), computation.(interfaces.Expr))
 	stmt.SetSourceInfo(sourcePosInfo.(token.Pos))
 	return stmt, nil
 }

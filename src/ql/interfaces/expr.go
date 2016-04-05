@@ -92,17 +92,17 @@ type LitExpr interface {
 	Expr
 }
 
-type StrLit interface {
+type StringLiteral interface {
 	LitExpr
 	Value() Value
 }
 
-type BoolLit interface {
+type BoolLiteral interface {
 	LitExpr
 	Value() Value
 }
 
-type IntLit interface {
+type IntegerLiteral interface {
 	LitExpr
 	Value() Value
 }

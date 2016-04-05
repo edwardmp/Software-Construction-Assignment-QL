@@ -5,9 +5,9 @@ type TypeChecker interface {
 	AddEncounteredWarning(error)
 	EncounteredWarnings() []error
 	EncounteredErrors() []error
-	IsLabelUsed(StrLit) bool
-	MarkLabelAsUsed(StrLit, VarDecl)
-	VarIdForLabel(StrLit) VarId
+	IsLabelUsed(StringLiteral) bool
+	MarkLabelAsUsed(StringLiteral, VarDecl)
+	VarIdForLabel(StringLiteral) VarId
 	MarkVarIdAsKnown(VarId)
 	MarkVarIdAsUnknown(VarId)
 	KnownIdentifiers() map[VarId]bool

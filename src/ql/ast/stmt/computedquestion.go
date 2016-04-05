@@ -7,7 +7,7 @@ type ComputedQuestion struct {
 	Question
 }
 
-func NewComputedQuestion(label interfaces.StrLit, varDecl interfaces.VarDecl, computation interfaces.Expr) ComputedQuestion {
+func NewComputedQuestion(label interfaces.StringLiteral, varDecl interfaces.VarDecl, computation interfaces.Expr) ComputedQuestion {
 	return ComputedQuestion{computation: computation, Question: NewQuestion(label, varDecl)}
 }
 

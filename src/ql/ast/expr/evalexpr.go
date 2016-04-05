@@ -58,15 +58,15 @@ func (this Pos) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
 	return this.Value().Eval(symbols).Pos()
 }
 
-func (this IntLit) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+func (this IntegerLiteral) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
 	return this.Value()
 }
 
-func (this StrLit) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+func (this StringLiteral) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
 	return this.Value()
 }
 
-func (this BoolLit) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
+func (this BoolLiteral) Eval(symbols interfaces.VarIdValueSymbols) interfaces.Value {
 	return this.Value()
 }
 

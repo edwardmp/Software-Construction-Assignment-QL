@@ -23,7 +23,7 @@ func TestTypeCheckSymbolsAdd(t *testing.T) {
 func TestVarIdValueSymbolsAdd(t *testing.T) {
 	symbols := NewVarIdValueSymbols()
 	exampleVarId := vari.NewVarId("testIdentifier")
-	exprExample := expr.NewSub(expr.NewIntLit(1), expr.NewIntLit(2))
+	exprExample := expr.NewSub(expr.NewIntegerLiteral(1), expr.NewIntegerLiteral(2))
 	symbols.SetExprForVarId(exprExample, exampleVarId)
 
 	if lookupExprValue := symbols.ExprForVarId(exampleVarId); lookupExprValue != exprExample {
@@ -34,7 +34,7 @@ func TestVarIdValueSymbolsAdd(t *testing.T) {
 func TestVarIdValueSymbolsSaveToDisk(t *testing.T) {
 	symbols := NewVarIdValueSymbols()
 	exampleVarId := vari.NewVarId("testIdentifier")
-	symbols.SetExprForVarId(expr.NewStrLit("testValue"), exampleVarId)
+	symbols.SetExprForVarId(expr.NewStringLiteral("testValue"), exampleVarId)
 
 	symbols.SaveToDisk()
 

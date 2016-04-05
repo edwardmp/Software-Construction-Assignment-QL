@@ -7,18 +7,18 @@ import (
 
 func TestVarTypeDefaultValueForIntType(t *testing.T) {
 	varTypeExample := NewIntType()
-	correctDefaultValue := NewIntLit(0)
+	correctDefaultValue := NewIntegerLiteral(0)
 	assert.Equal(t, varTypeExample.DefaultValue(), correctDefaultValue)
 }
 
 func TestVarTypeDefaultValueForBoolType(t *testing.T) {
 	varTypeExample := NewBoolType()
-	correctDefaultValue := NewBoolLit(false)
+	correctDefaultValue := NewBoolLiteral(false)
 	assert.Equal(t, varTypeExample.DefaultValue(), correctDefaultValue)
 }
 
 func TestVarTypeDefaultValueForStringType(t *testing.T) {
 	varTypeExample := NewStringType()
-	correctDefaultValue := NewStrLit("")
+	correctDefaultValue := NewStringLiteral("")
 	assert.Equal(t, varTypeExample.DefaultValue(), correctDefaultValue)
 }

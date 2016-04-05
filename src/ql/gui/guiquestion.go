@@ -34,7 +34,7 @@ func createDisabledGUIQuestion(label string, questionType interfaces.ValueType, 
 	return createGUIQuestion(label, questionType, callback, true)
 }
 
-//
+// changeFieldValueText changes the displayed value of an input field
 func (this *GUIQuestion) changeFieldValueText(newText string) {
 	log.WithFields(log.Fields{"newLabelText": newText}).Debug("Changing text of element")
 	this.Element.(*ui.Entry).SetText(newText)
@@ -60,7 +60,7 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 		checkbox.OnToggled(func(*ui.Checkbox) {
 			log.WithFields(log.Fields{"value": checkbox.Checked()}).Debug("Checkbox value changed")
 
-			callback(expr.NewBoolLit(checkbox.Checked()), nil)
+			callback(expr.NewBoolLiteral(checkbox.Checked()), nil)
 		})
 		UIEntity = checkbox
 	case expr.StringType:
@@ -70,7 +70,7 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 
 			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (string field)")
 
-			callback(expr.NewStrLit(inputText), nil)
+			callback(expr.NewStringLiteral(inputText), nil)
 		})
 		UIEntity = inputField
 	case expr.IntType:
@@ -83,7 +83,7 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 			inputTextAsInt, err := strconv.Atoi(inputText)
 			if inputText == "" {
 				if callback != nil {
-					callback(expr.NewIntLit(inputTextAsInt), nil)
+					callback(expr.NewIntegerLiteral(inputTextAsInt), nil)
 				}
 				return
 			} else if err != nil {
@@ -97,12 +97,12 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 			}
 
 			if callback != nil {
-				callback(expr.NewIntLit(inputTextAsInt), nil)
+				callback(expr.NewIntegerLiteral(inputTextAsInt), nil)
 			}
 		})
 		UIEntity = inputField
 	default:
-		errors.New("Unknown question type, can not create correct GTK object")
+		errors.New("Unknown question type, can not create correct GUI object")
 	}
 
 	return UIEntity

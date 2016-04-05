@@ -11,5 +11,5 @@ func NewBoolType() BoolType {
 }
 
 func (this BoolType) DefaultValue() interfaces.LitExpr {
-	return NewBoolLit(false)
+	return NewBoolLiteral(false)
 }

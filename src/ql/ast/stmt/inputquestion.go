@@ -6,6 +6,6 @@ type InputQuestion struct {
 	Question
 }
 
-func NewInputQuestion(label interfaces.StrLit, varDecl interfaces.VarDecl) InputQuestion {
+func NewInputQuestion(label interfaces.StringLiteral, varDecl interfaces.VarDecl) InputQuestion {
 	return InputQuestion{Question: NewQuestion(label, varDecl)}
 }

@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-func TestIntLitGetValue(t *testing.T) {
-	assert.Equal(t, NewIntLit(10).Value(), NewIntValue(10))
+func TestIntegerLiteralGetValue(t *testing.T) {
+	assert.Equal(t, NewIntegerLiteral(10).Value(), NewIntValue(10))
 }
 
-func TestBoolLitGetValue(t *testing.T) {
-	assert.Equal(t, NewBoolLit(true).Value(), NewBoolValue(true))
+func TestBoolLiteralGetValue(t *testing.T) {
+	assert.Equal(t, NewBoolLiteral(true).Value(), NewBoolValue(true))
 }
 
-func TestStrLitGetValue(t *testing.T) {
-	assert.Equal(t, NewStrLit("Test").Value(), NewStringValue("Test"))
+func TestStringLiteralGetValue(t *testing.T) {
+	assert.Equal(t, NewStringLiteral("Test").Value(), NewStringValue("Test"))
 }

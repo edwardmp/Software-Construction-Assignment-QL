@@ -110,15 +110,15 @@ func (this Sub) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.Val
 	return NewIntType()
 }
 
-func (this IntLit) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
+func (this IntegerLiteral) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
 	return NewIntType()
 }
 
-func (this BoolLit) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
+func (this BoolLiteral) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
 	return NewBoolType()
 }
 
-func (this StrLit) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
+func (this StringLiteral) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
 	return NewStringType()
 }
 

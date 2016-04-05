@@ -14,7 +14,7 @@ type Form interface {
 
 type Question interface {
 	Stmt
-	Label() StrLit
+	Label() StringLiteral
 	VarDecl() VarDecl
 }
 

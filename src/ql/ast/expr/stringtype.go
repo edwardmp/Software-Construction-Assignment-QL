@@ -11,5 +11,5 @@ func NewStringType() StringType {
 }
 
 func (this StringType) DefaultValue() interfaces.LitExpr {
-	return NewStrLit("")
+	return NewStringLiteral("")
 }

@@ -57,15 +57,15 @@ func (this Sub) String() string {
 
 /* literals */
 
-func (this BoolLit) String() string {
+func (this BoolLiteral) String() string {
 	return fmt.Sprintf("%t", this.Value())
 }
 
-func (this IntLit) String() string {
+func (this IntegerLiteral) String() string {
 	return fmt.Sprintf("%d", this.Value())
 }
 
-func (this StrLit) String() string {
+func (this StringLiteral) String() string {
 	return this.Value().(interfaces.StringValue).PrimitiveValueString()
 }
 

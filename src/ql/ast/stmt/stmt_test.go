@@ -20,7 +20,7 @@ func TestFormWithEmptyContent(t *testing.T) {
 
 func TestFormWithNonEmptyContent(t *testing.T) {
 	identifier := vari.NewVarId("TestForm")
-	questionExample := NewInputQuestion(expr.NewStrLit("What was the selling price?"), vari.NewVarDecl(vari.NewVarId("sellingPrice"), expr.NewIntType()))
+	questionExample := NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarId("sellingPrice"), expr.NewIntType()))
 	questionsListExample := []interfaces.Question{questionExample}
 	stmtListExample := NewStmtList(questionsListExample, []interfaces.Conditional{})
 	exampleForm := NewForm(identifier, stmtListExample)
@@ -30,7 +30,7 @@ func TestFormWithNonEmptyContent(t *testing.T) {
 }
 
 func TestInputQuestion(t *testing.T) {
-	exampleLabel := expr.NewStrLit("Did you sell a house in 2010?")
+	exampleLabel := expr.NewStringLiteral("Did you sell a house in 2010?")
 	exampleVarDecl := vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType())
 
 	exampleQuestion := NewInputQuestion(exampleLabel, exampleVarDecl)
@@ -39,9 +39,9 @@ func TestInputQuestion(t *testing.T) {
 }
 
 func TestComputedQuestion(t *testing.T) {
-	exampleLabel := expr.NewStrLit("Value residue")
+	exampleLabel := expr.NewStringLiteral("Value residue")
 	exampleVarDecl := vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewIntType())
-	exampleComputation := expr.NewSub(expr.NewIntLit(10), expr.NewIntLit(5))
+	exampleComputation := expr.NewSub(expr.NewIntegerLiteral(10), expr.NewIntegerLiteral(5))
 
 	exampleQuestion := NewComputedQuestion(exampleLabel, exampleVarDecl, exampleComputation)
 
@@ -50,9 +50,9 @@ func TestComputedQuestion(t *testing.T) {
 }
 
 func TestIf(t *testing.T) {
-	questionExample := NewInputQuestion(expr.NewStrLit("What was the selling price?"), vari.NewVarDecl(vari.NewVarId("sellingPrice"), expr.NewIntType()))
+	questionExample := NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarId("sellingPrice"), expr.NewIntType()))
 	ifBodyExample := NewStmtList([]interfaces.Question{questionExample}, []interfaces.Conditional{})
-	ifCondExample := expr.NewBoolLit(true)
+	ifCondExample := expr.NewBoolLiteral(true)
 	ifExample := NewIf(ifCondExample, ifBodyExample)
 
 	assert.True(t, util.AreStmtListsEqual(ifExample.Body(), ifBodyExample))
@@ -61,11 +61,11 @@ func TestIf(t *testing.T) {
 }
 
 func TestIfElse(t *testing.T) {
-	ifQuestionExample := NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
+	ifQuestionExample := NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
 	ifBodyExample := NewStmtList([]interfaces.Question{ifQuestionExample}, []interfaces.Conditional{})
-	ifCondExample := expr.NewBoolLit(true)
+	ifCondExample := expr.NewBoolLiteral(true)
 
-	elseQuestionExample := NewInputQuestion(expr.NewStrLit("What was the selling price?"), vari.NewVarDecl(vari.NewVarId("sellingPrice"), expr.NewIntType()))
+	elseQuestionExample := NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarId("sellingPrice"), expr.NewIntType()))
 	elseBodyExample := NewStmtList([]interfaces.Question{elseQuestionExample}, []interfaces.Conditional{})
 
 	ifElseExample := NewIfElse(ifCondExample, ifBodyExample, elseBodyExample)
@@ -77,10 +77,10 @@ func TestIfElse(t *testing.T) {
 }
 
 func TestStmtList(t *testing.T) {
-	questionExample := NewInputQuestion(expr.NewStrLit("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
+	questionExample := NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
 	questionListExample := []interfaces.Question{questionExample}
 
-	ifExample := NewIf(expr.NewBoolLit(true), NewEmptyStmtList())
+	ifExample := NewIf(expr.NewBoolLiteral(true), NewEmptyStmtList())
 	conditionalListExample := []interfaces.Conditional{ifExample}
 
 	stmtListExample := NewStmtList(questionListExample, conditionalListExample)

@@ -3,16 +3,16 @@ package stmt
 import "ql/interfaces"
 
 type Question struct {
-	label   interfaces.StrLit
+	label   interfaces.StringLiteral
 	varDecl interfaces.VarDecl
 	Stmt
 }
 
-func NewQuestion(label interfaces.StrLit, varDecl interfaces.VarDecl) Question {
+func NewQuestion(label interfaces.StringLiteral, varDecl interfaces.VarDecl) Question {
 	return Question{label: label, varDecl: varDecl, Stmt: NewStmt()}
 }
 
-func (this Question) Label() interfaces.StrLit {
+func (this Question) Label() interfaces.StringLiteral {
 	return this.label
 }
 

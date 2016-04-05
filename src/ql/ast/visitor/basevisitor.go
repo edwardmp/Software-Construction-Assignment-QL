@@ -57,15 +57,15 @@ func (b *BaseVisitor) VisitSub(su interfaces.Sub, context interface{}) {
 
 }
 
-func (b *BaseVisitor) VisitBoolLit(bo interfaces.BoolLit, context interface{}) {
+func (b *BaseVisitor) VisitBoolLiteral(bo interfaces.BoolLiteral, context interface{}) {
 
 }
 
-func (b *BaseVisitor) VisitIntLit(i interfaces.IntLit, context interface{}) {
+func (b *BaseVisitor) VisitIntegerLiteral(i interfaces.IntegerLiteral, context interface{}) {
 
 }
 
-func (b *BaseVisitor) VisitStrLit(st interfaces.StrLit, context interface{}) {
+func (b *BaseVisitor) VisitStringLiteral(st interfaces.StringLiteral, context interface{}) {
 
 }
 

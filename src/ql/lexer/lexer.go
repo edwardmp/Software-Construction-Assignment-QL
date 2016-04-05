@@ -3,7 +3,7 @@ package lexer
 import (
 
 	// "fmt"
-	// "ql/util"
+	// ql/util"
 
 	"io/ioutil"
 	"ql/token"

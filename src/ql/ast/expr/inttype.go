@@ -11,5 +11,5 @@ func NewIntType() IntType {
 }
 
 func (this IntType) DefaultValue() interfaces.LitExpr {
-	return NewIntLit(0)
+	return NewIntegerLiteral(0)
 }
