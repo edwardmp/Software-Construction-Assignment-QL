@@ -1,6 +1,7 @@
 package stmt
 
 import (
+	"github.com/stretchr/testify/assert"
 	"ql/ast/expr"
 	"ql/ast/vari"
 	"ql/interfaces"
@@ -12,17 +13,9 @@ func TestFormWithEmptyContent(t *testing.T) {
 	identifier := vari.NewVarId("TestForm")
 	exampleForm := NewForm(identifier, NewEmptyStmtList())
 
-	if exampleForm.Identifier() != identifier {
-		t.Errorf("Form identifier is not set correctly")
-	}
-
-	if len(exampleForm.Content().Questions()) != 0 {
-		t.Errorf("Form content questions are not set correctly")
-	}
-
-	if len(exampleForm.Content().Conditionals()) != 0 {
-		t.Errorf("Form content conditionals are not set correctly")
-	}
+	assert.Equal(t, exampleForm.Identifier(), identifier)
+	assert.Zero(t, len(exampleForm.Content().Questions()))
+	assert.Zero(t, len(exampleForm.Content().Conditionals()))
 }
 
 func TestFormWithNonEmptyContent(t *testing.T) {
@@ -32,13 +25,8 @@ func TestFormWithNonEmptyContent(t *testing.T) {
 	stmtListExample := NewStmtList(questionsListExample, []interfaces.Conditional{})
 	exampleForm := NewForm(identifier, stmtListExample)
 
-	if len(exampleForm.Content().Questions()) != 1 {
-		t.Errorf("Form content questions does not have 1 question while it should")
-	}
-
-	if !util.AreStmtListsEqual(exampleForm.Content(), stmtListExample) {
-		t.Errorf("Form content not set correctly")
-	}
+	assert.Equal(t, len(exampleForm.Content().Questions()), 1)
+	assert.True(t, util.AreStmtListsEqual(exampleForm.Content(), stmtListExample))
 }
 
 func TestInputQuestion(t *testing.T) {
@@ -47,9 +35,7 @@ func TestInputQuestion(t *testing.T) {
 
 	exampleQuestion := NewInputQuestion(exampleLabel, exampleVarDecl)
 
-	if exampleQuestion.Label() != exampleLabel {
-		t.Errorf("Question label is not set correctly")
-	}
+	assert.Equal(t, exampleQuestion.Label(), exampleLabel)
 }
 
 func TestComputedQuestion(t *testing.T) {
@@ -59,13 +45,8 @@ func TestComputedQuestion(t *testing.T) {
 
 	exampleQuestion := NewComputedQuestion(exampleLabel, exampleVarDecl, exampleComputation)
 
-	if exampleQuestion.Label() != exampleLabel {
-		t.Errorf("Computed question label is not set correctly")
-	}
-
-	if exampleQuestion.Computation() != exampleComputation {
-		t.Errorf("Computed question computation is not set correctly")
-	}
+	assert.Equal(t, exampleQuestion.Label(), exampleLabel)
+	assert.Equal(t, exampleQuestion.Computation(), exampleComputation)
 }
 
 func TestIf(t *testing.T) {
@@ -74,13 +55,9 @@ func TestIf(t *testing.T) {
 	ifCondExample := expr.NewBoolLit(true)
 	ifExample := NewIf(ifCondExample, ifBodyExample)
 
-	if !util.AreStmtListsEqual(ifExample.Body(), ifBodyExample) {
-		t.Errorf("If body is not set correctly")
-	}
-
-	if ifExample.Condition() != ifCondExample {
-		t.Errorf("If condition is not set correctly")
-	}
+	assert.True(t, util.AreStmtListsEqual(ifExample.Body(), ifBodyExample))
+	assert.Equal(t, ifExample.Condition(), ifCondExample)
+	assert.Equal(t, expr.NewBoolValue(true), ifExample.EvalCondition(nil))
 }
 
 func TestIfElse(t *testing.T) {
@@ -93,17 +70,10 @@ func TestIfElse(t *testing.T) {
 
 	ifElseExample := NewIfElse(ifCondExample, ifBodyExample, elseBodyExample)
 
-	if !util.AreStmtListsEqual(ifElseExample.IfBody(), ifBodyExample) {
-		t.Errorf("IfElse else body is not set correctly")
-	}
-
-	if !util.AreStmtListsEqual(ifElseExample.ElseBody(), elseBodyExample) {
-		t.Errorf("IfElse if body is not set correctly")
-	}
-
-	if ifElseExample.Condition() != ifCondExample {
-		t.Errorf("If condition is not set correctly")
-	}
+	assert.True(t, util.AreStmtListsEqual(ifElseExample.IfBody(), ifBodyExample))
+	assert.True(t, util.AreStmtListsEqual(ifElseExample.ElseBody(), elseBodyExample))
+	assert.Equal(t, ifElseExample.Condition(), ifCondExample)
+	assert.Equal(t, expr.NewBoolValue(true), ifElseExample.EvalCondition(nil))
 }
 
 func TestStmtList(t *testing.T) {
@@ -115,11 +85,6 @@ func TestStmtList(t *testing.T) {
 
 	stmtListExample := NewStmtList(questionListExample, conditionalListExample)
 
-	if len(stmtListExample.Questions()) != len(questionListExample) {
-		t.Errorf("Stmtlist questions list is not set correctly")
-	}
-
-	if len(stmtListExample.Conditionals()) != len(conditionalListExample) {
-		t.Errorf("Stmtlist conditionals list is not set correctly")
-	}
+	assert.Equal(t, len(stmtListExample.Questions()), len(questionListExample))
+	assert.Equal(t, len(stmtListExample.Conditionals()), len(conditionalListExample))
 }
