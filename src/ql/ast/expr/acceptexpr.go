@@ -165,7 +165,7 @@ func (this Pos) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this VarExpr) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitVarExpr(this, context)
-	this.Identifier().Accept(visitor, context)
+	this.VarIdentifier().Accept(visitor, context)
 
 	return nil
 }

@@ -80,7 +80,7 @@ func (this Pos) String() string {
 }
 
 func (this VarExpr) String() string {
-	return fmt.Sprintf("%s", this.Identifier())
+	return fmt.Sprintf("%s", this.VarIdentifier())
 }
 
 /* value types */

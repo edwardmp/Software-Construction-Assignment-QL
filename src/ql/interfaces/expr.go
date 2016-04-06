@@ -7,12 +7,7 @@ type Expr interface {
 	Eval(VarIDValueSymbols) Value
 }
 
-type BinaryOperatorExpr interface {
-	Expr
-	Lhs() Expr
-	Rhs() Expr
-}
-
+/** expression value */
 type Value interface {
 	PrimitiveValue() interface{}
 	Eq(value Value) Value
@@ -38,6 +33,14 @@ type BoolValue interface {
 
 type StringValue interface {
 	PrimitiveValueString() string
+}
+
+/** binary operator expressions */
+
+type BinaryOperatorExpr interface {
+	Expr
+	Lhs() Expr
+	Rhs() Expr
 }
 
 type Add interface {
@@ -88,24 +91,7 @@ type Sub interface {
 	BinaryOperatorExpr
 }
 
-type LitExpr interface {
-	Expr
-}
-
-type StringLiteral interface {
-	LitExpr
-	Value() Value
-}
-
-type BoolLiteral interface {
-	LitExpr
-	Value() Value
-}
-
-type IntegerLiteral interface {
-	LitExpr
-	Value() Value
-}
+/** unary operator expressions **/
 
 type UnaryOperatorExpr interface {
 	Expr
@@ -125,8 +111,10 @@ type Pos interface {
 }
 
 type VarExpr interface {
-	// TODO body?
+	VarIdentifier() VarID
 }
+
+/** value types **/
 
 type ValueType interface {
 	Expr
@@ -147,4 +135,25 @@ type BoolType interface {
 
 type StringType interface {
 	ValueType
+}
+
+/** literals **/
+
+type LitExpr interface {
+	Expr
+}
+
+type StringLiteral interface {
+	LitExpr
+	Value() Value
+}
+
+type BoolLiteral interface {
+	LitExpr
+	Value() Value
+}
+
+type IntegerLiteral interface {
+	LitExpr
+	Value() Value
 }

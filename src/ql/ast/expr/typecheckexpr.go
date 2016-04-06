@@ -6,15 +6,15 @@ import (
 )
 
 func (this VarExpr) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	typeCheckArgs.TypeChecker().AddDependencyForVarDecl(this.Identifier(), typeCheckArgs.CurrentVarDeclVisited())
+	typeCheckArgs.TypeChecker().AddDependencyForVarDecl(this.VarIdentifier(), typeCheckArgs.CurrentVarDeclVisited())
 
 	// Return the true type of the VarExpr; the type of the Expr referred to
-	if typeCheckArgs.Symbols().IsTypeSetForVarID(this.Identifier()) {
-		return typeCheckArgs.Symbols().TypeForVarID(this.Identifier()).(interfaces.ValueType)
+	if typeCheckArgs.Symbols().IsTypeSetForVarID(this.VarIdentifier()) {
+		return typeCheckArgs.Symbols().TypeForVarID(this.VarIdentifier()).(interfaces.ValueType)
 	}
 
 	// We don't already mark it as an error; because there is only one scope, the VarDecl may be simply declared later on
-	typeCheckArgs.TypeChecker().MarkVarIDAsUnknown(this.Identifier())
+	typeCheckArgs.TypeChecker().MarkVarIDAsUnknown(this.VarIdentifier())
 
 	// No type info in symbol table (reference to undefined question)
 	return NewUnknownType()

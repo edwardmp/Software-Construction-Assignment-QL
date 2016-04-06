@@ -79,7 +79,7 @@ func (this VarExpr) Eval(symbols interfaces.VarIDValueSymbols) interfaces.Value 
 		panic("No symbols passed to Eval VarExpr")
 	}
 
-	referencedExpr := symbols.ExprForVarID(this.Identifier())
+	referencedExpr := symbols.ExprForVarID(this.VarIdentifier())
 	if referencedExpr == nil {
 		panic("VarExpr refers to nil expression")
 	}

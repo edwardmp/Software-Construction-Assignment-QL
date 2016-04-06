@@ -11,6 +11,6 @@ func NewVarExpr(identifier interfaces.VarID) VarExpr {
 	return VarExpr{identifier: identifier, Expr: NewExpr()}
 }
 
-func (this VarExpr) Identifier() interfaces.VarID {
+func (this VarExpr) VarIdentifier() interfaces.VarID {
 	return this.identifier
 }
