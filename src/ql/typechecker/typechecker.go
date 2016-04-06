@@ -26,7 +26,7 @@ func (this *TypeChecker) dependencyListForVarDecl(varDecl interfaces.VarDecl) []
 		panic("Attempting to get dependencies of nil varId")
 	}
 
-	dependencies := make([]interfaces.VarId, 0)
+	var dependencies []interfaces.VarId
 
 	for _, directDependentVarId := range this.dependenciesForVarId[varId] {
 		// first add the direct dependencies as dependencies
@@ -51,7 +51,7 @@ func (this *TypeChecker) recursivelyObtainDependenciesForVarId(varIdToObtainDepe
 		return nil
 	}
 
-	dependencies := make([]interfaces.VarId, 0)
+	var dependencies []interfaces.VarId
 	for _, dependentVarId := range this.dependenciesForVarId[varIdToObtainDependenciesFor] {
 		// if we encounter ourselves, we found a cyclic dependency
 		if dependentVarId == varIdToObtainDependenciesFor {

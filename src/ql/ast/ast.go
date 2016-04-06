@@ -20,6 +20,7 @@ type attrib interface {
 /** Expressions **/
 
 /* unary operator expressions */
+
 func NewPosNode(value attrib, sourcePosInfo attrib) (interfaces.Expr, error) {
 	expr := expr.NewPos(value.(interfaces.Expr))
 	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
@@ -46,6 +47,7 @@ func NewVarExprNode(identifier attrib) (interfaces.Expr, error) {
 }
 
 /* binary operator expressions */
+
 func NewMulNode(lhs attrib, rhs attrib, sourcePosInfo attrib) (interfaces.Expr, error) {
 	expr := expr.NewMul(lhs.(interfaces.Expr), rhs.(interfaces.Expr))
 	expr.SetSourceInfo(sourcePosInfo.(token.Pos))
@@ -118,7 +120,8 @@ func NewOrNode(lhs attrib, rhs attrib, sourcePosInfo attrib) (interfaces.Expr, e
 	return expr, nil
 }
 
-/* literals */
+/* Literals */
+
 func NewIntegerLiteralNode(litValueToken attrib) (interfaces.Expr, error) {
 	sourcePosInfo := litValueToken.(*token.Token).Pos
 	value, err := util.IntValue(litValueToken.(*token.Token).Lit)
@@ -141,7 +144,8 @@ func NewStringLiteralNode(valueToken attrib) (interfaces.Expr, error) {
 	return expr, nil
 }
 
-/* value types */
+/* Value types */
+
 func NewIntTypeNode(typeTokenLit attrib) (interfaces.IntType, error) {
 	token := typeTokenLit.(*token.Token)
 	expr := expr.NewIntType()

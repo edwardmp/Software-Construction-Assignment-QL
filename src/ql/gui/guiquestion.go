@@ -46,7 +46,7 @@ func (this *GUIQuestion) changeErrorLabelText(newText string) {
 }
 
 // ResetErrorLabelText removes the error text presented to the user
-func (this *GUIQuestion) resetErrorLabelText(newText string) {
+func (this *GUIQuestion) resetErrorLabelText() {
 	this.changeErrorLabelText("")
 }
 

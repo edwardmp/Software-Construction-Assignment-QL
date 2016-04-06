@@ -17,6 +17,7 @@ type VarIdValueSymbols struct {
 }
 
 func NewVarIdValueSymbols() *VarIdValueSymbols {
+	log.Info("Creating new VarIdValueSymbols")
 	return &VarIdValueSymbols{Table: make(varIdToExprSymbolTable), RegisteredCallbacks: make([]func(), 0)}
 }
 
