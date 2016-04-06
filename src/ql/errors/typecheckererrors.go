@@ -71,7 +71,7 @@ func NewDuplicateLabelWarning(originalQuestion interfaces.Question, conflictingQ
 }
 
 func (this DuplicateLabelWarning) Error() string {
-	return fmt.Sprintf("%s: label %s already used for question with identifier %s, using again for question with identifier %s", this.TypeCheckError.Error(), this.OriginalQuestion.Label(), this.ConflictingQuestionVarID, this.OriginalQuestion.VarDecl().VariableIdentifier())
+	return fmt.Sprintf("%s: label %s already used for question with identifier %s, using again for question with identifier %s", this.TypeCheckError.Error(), this.OriginalQuestion.Label(), this.ConflictingQuestionVarID, this.OriginalQuestion.VarDeclVariableIdentifier())
 }
 
 type QuestionRedeclaredWithDifferentTypesError struct {

@@ -16,6 +16,18 @@ func (this Question) Label() interfaces.StringLiteral {
 	return this.label
 }
 
+func (this Question) LabelAsString() string {
+	return this.label.String()
+}
+
 func (this Question) VarDecl() interfaces.VarDecl {
 	return this.varDecl
+}
+
+func (this Question) VarDeclVariableIdentifier() interfaces.VarID {
+	return this.varDecl.VariableIdentifier()
+}
+
+func (this Question) VarDeclType() interfaces.ValueType {
+	return this.varDecl.Type()
 }

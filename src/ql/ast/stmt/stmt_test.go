@@ -57,7 +57,7 @@ func TestIf(t *testing.T) {
 
 	assert.True(t, util.AreStmtListsEqual(ifExample.Body(), ifBodyExample))
 	assert.Equal(t, ifExample.Condition(), ifCondExample)
-	assert.Equal(t, expr.NewBoolValue(true), ifExample.EvalCondition(nil))
+	assert.Equal(t, true, ifExample.EvalConditionAsBool(nil))
 }
 
 func TestIfElse(t *testing.T) {
@@ -73,7 +73,7 @@ func TestIfElse(t *testing.T) {
 	assert.True(t, util.AreStmtListsEqual(ifElseExample.IfBody(), ifBodyExample))
 	assert.True(t, util.AreStmtListsEqual(ifElseExample.ElseBody(), elseBodyExample))
 	assert.Equal(t, ifElseExample.Condition(), ifCondExample)
-	assert.Equal(t, expr.NewBoolValue(true), ifElseExample.EvalCondition(nil))
+	assert.Equal(t, true, ifElseExample.EvalConditionAsBool(nil))
 }
 
 func TestStmtList(t *testing.T) {

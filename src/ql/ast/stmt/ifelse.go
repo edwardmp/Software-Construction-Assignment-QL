@@ -17,14 +17,22 @@ func (this IfElse) IfBody() interfaces.StmtList {
 	return this.ifBody
 }
 
+func (this IfElse) IfBodyQuestions() []interfaces.Question {
+	return this.ifBody.Questions()
+}
+
 func (this IfElse) ElseBody() interfaces.StmtList {
 	return this.elseBody
+}
+
+func (this IfElse) ElseBodyQuestions() []interfaces.Question {
+	return this.elseBody.Questions()
 }
 
 func (this IfElse) Condition() interfaces.Expr {
 	return this.condition
 }
 
-func (this IfElse) EvalCondition(symbols interfaces.VarIDValueSymbols) interfaces.BoolValue {
-	return this.condition.Eval(symbols).(interfaces.BoolValue)
+func (this IfElse) EvalConditionAsBool(symbols interfaces.VarIDValueSymbols) bool {
+	return this.condition.Eval(symbols).(interfaces.BoolValue).PrimitiveValueBool()
 }

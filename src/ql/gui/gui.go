@@ -106,7 +106,7 @@ func (this *GUI) VisitForm(f interfaces.Form, context interface{}) {
 
 // VisitIf creates questions embedded in an its body and registers show/hide callbacks
 func (this *GUI) VisitIf(ifStmt interfaces.If, context interface{}) {
-	guiQuestions := handleQuestions(this, ifStmt.Body().Questions())
+	guiQuestions := handleQuestions(this, ifStmt.Questions())
 	questionsEncompassingContainer := this.GUIForm.createQuestionTable(guiQuestions)
 
 	this.registerOnShowCallback(func() {
@@ -122,8 +122,8 @@ func (this *GUI) VisitIf(ifStmt interfaces.If, context interface{}) {
 
 // VisitIfElse creates questions embedded in an its bodies and registers show/hide callbacks
 func (this *GUI) VisitIfElse(ifElse interfaces.IfElse, context interface{}) {
-	guiQuestionsIfBody := handleQuestions(this, ifElse.IfBody().Questions())
-	guiQuestionsElseBody := handleQuestions(this, ifElse.ElseBody().Questions())
+	guiQuestionsIfBody := handleQuestions(this, ifElse.IfBodyQuestions())
+	guiQuestionsElseBody := handleQuestions(this, ifElse.ElseBodyQuestions())
 
 	ifQuestionsEncompassingContainer := this.GUIForm.createQuestionTable(guiQuestionsIfBody)
 	elseQuestionsEncompassingContainer := this.GUIForm.createQuestionTable(guiQuestionsElseBody)
@@ -142,7 +142,7 @@ func (this *GUI) VisitIfElse(ifElse interfaces.IfElse, context interface{}) {
 }
 
 func (this *GUI) showOrHideContainerDependingOnIfEval(ifStmt interfaces.If, conditionalContainer *ui.Box) {
-	conditionValue := ifStmt.EvalCondition(this.Symbols).PrimitiveValueBool()
+	conditionValue := ifStmt.EvalConditionAsBool(this.Symbols)
 
 	// if condition evals to true
 	if conditionValue {
@@ -155,7 +155,7 @@ func (this *GUI) showOrHideContainerDependingOnIfEval(ifStmt interfaces.If, cond
 }
 
 func (this *GUI) showOrHideContainerDependingOnIfElseEval(ifElseStmt interfaces.IfElse, conditionalContainerIfBody, conditionalContainerElseBody *ui.Box) {
-	conditionValue := ifElseStmt.EvalCondition(this.Symbols).PrimitiveValueBool()
+	conditionValue := ifElseStmt.EvalConditionAsBool(this.Symbols)
 
 	// ifElse if block condition evals to true
 	if conditionValue {
@@ -169,10 +169,10 @@ func (this *GUI) showOrHideContainerDependingOnIfElseEval(ifElseStmt interfaces.
 	conditionalContainerElseBody.Show()
 }
 
-func handleQuestions(this *GUI, q []interfaces.Question) []*GUIQuestion {
+func handleQuestions(this *GUI, questions []interfaces.Question) []*GUIQuestion {
 	var guiQuestions []*GUIQuestion
 
-	for _, question := range q {
+	for _, question := range questions {
 		var guiQuestion *GUIQuestion
 
 		switch question := question.(type) {
@@ -202,21 +202,21 @@ func (this *GUI) handleInputQuestion(question interfaces.InputQuestion) *GUIInpu
 			return
 		}
 
-		questionIdentifier := question.VarDecl().VariableIdentifier()
+		questionIdentifier := question.VarDeclVariableIdentifier()
 		log.WithFields(log.Fields{"input": inputExpr, "identifier": questionIdentifier}).Debug("Question input received")
 		this.Symbols.SetExprForVarID(inputExpr, questionIdentifier)
 
 		this.updateComputedQuestions()
 	}
 
-	guiQuestion = newGUIInputQuestion(question.Label().Value().(interfaces.StringValue).PrimitiveValueString(), question.VarDecl().Type(), questionCallback)
+	guiQuestion = newGUIInputQuestion(question.LabelAsString(), question.VarDeclType(), questionCallback)
 
 	return guiQuestion
 }
 
 func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *GUIComputedQuestion {
 	computation := question.Computation()
-	guiQuestion := newGUIComputedQuestion(question.Label().Value().(interfaces.StringValue).PrimitiveValueString(), question.VarDecl().Type(), computation, question.VarDecl().VariableIdentifier())
+	guiQuestion := newGUIComputedQuestion(question.LabelAsString(), question.VarDeclType(), computation, question.VarDeclVariableIdentifier())
 
 	this.GUIForm.addComputedQuestion(guiQuestion)
 

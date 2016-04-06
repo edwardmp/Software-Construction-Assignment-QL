@@ -7,7 +7,8 @@ type Expr interface {
 	Eval(VarIDValueSymbols) Value
 }
 
-/** expression value */
+/** value */
+
 type Value interface {
 	PrimitiveValue() interface{}
 	Eq(value Value) Value

@@ -16,10 +16,14 @@ func (this If) Body() interfaces.StmtList {
 	return this.body
 }
 
+func (this If) Questions() []interfaces.Question {
+	return this.body.Questions()
+}
+
 func (this If) Condition() interfaces.Expr {
 	return this.condition
 }
 
-func (this If) EvalCondition(symbolTable interfaces.VarIDValueSymbols) interfaces.BoolValue {
-	return this.condition.Eval(symbolTable).(interfaces.BoolValue)
+func (this If) EvalConditionAsBool(symbolTable interfaces.VarIDValueSymbols) bool {
+	return this.condition.Eval(symbolTable).(interfaces.BoolValue).PrimitiveValueBool()
 }
