@@ -40,7 +40,7 @@ func (this LT) String() string {
 }
 
 func (this Mul) String() string {
-	return fmt.Sprintf("%s () %s", this.LHS().String(), this.RHS().String())
+	return fmt.Sprintf("%s * %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this NEq) String() string {
@@ -72,11 +72,15 @@ func (this StringLiteral) String() string {
 /* unary expressions */
 
 func (this Not) String() string {
-	return fmt.Sprintf("%s", this.Value())
+	return fmt.Sprintf("!%s", this.Value())
 }
 
 func (this Pos) String() string {
 	return fmt.Sprintf("%s", this.Value())
+}
+
+func (this Neg) String() string {
+	return fmt.Sprintf("-%s", this.Value())
 }
 
 func (this VarExpr) String() string {
