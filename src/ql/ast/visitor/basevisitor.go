@@ -89,7 +89,7 @@ func (this *BaseVisitor) VisitVarDecl(va interfaces.VarDecl, context interface{}
 
 }
 
-func (this *BaseVisitor) VisitVarId(va interfaces.VarId, context interface{}) {
+func (this *BaseVisitor) VisitVarID(va interfaces.VarID, context interface{}) {
 
 }
 

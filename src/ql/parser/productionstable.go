@@ -33,7 +33,7 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Form : "form" VarId Block	<< ast.NewFormNode(X[1], X[2], X[0].(*token.Token).Pos) >>`,
+		String: `Form : "form" VarID Block	<< ast.NewFormNode(X[1], X[2], X[0].(*token.Token).Pos) >>`,
 		Id: "Form",
 		NTType: 1,
 		Index: 1,
@@ -123,7 +123,7 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `VarDecl : VarId col Type	<< ast.NewVarDeclNode(X[0], X[2], X[1].(*token.Token).Pos) >>`,
+		String: `VarDecl : VarID col Type	<< ast.NewVarDeclNode(X[0], X[2], X[1].(*token.Token).Pos) >>`,
 		Id: "VarDecl",
 		NTType: 5,
 		Index: 10,
@@ -133,13 +133,13 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `VarId : ident	<< ast.NewVarIdNode(X[0]) >>`,
-		Id: "VarId",
+		String: `VarID : ident	<< ast.NewVarIDNode(X[0]) >>`,
+		Id: "VarID",
 		NTType: 6,
 		Index: 11,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewVarIdNode(X[0])
+			return ast.NewVarIDNode(X[0])
 		},
 	},
 	ProdTabEntry{
@@ -303,7 +303,7 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Expr : VarId	<< ast.NewVarExprNode(X[0]) >>`,
+		String: `Expr : VarID	<< ast.NewVarExprNode(X[0]) >>`,
 		Id: "Expr",
 		NTType: 7,
 		Index: 28,

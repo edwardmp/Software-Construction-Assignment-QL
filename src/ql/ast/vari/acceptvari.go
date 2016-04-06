@@ -10,8 +10,8 @@ func (this VarDecl) Accept(visitor interfaces.Visitor, context interface{}) inte
 	return nil
 }
 
-func (this VarId) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitVarId(this, context)
+func (this VarID) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
+	visitor.VisitVarID(this, context)
 
 	return nil
 }

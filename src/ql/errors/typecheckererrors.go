@@ -22,15 +22,15 @@ type TypeCheckError struct {
 
 type UndefinedQuestionReferenceError struct {
 	TypeCheckError
-	UndefinedVarId interfaces.VarId
+	UndefinedVarID interfaces.VarID
 }
 
-func NewUndefinedQuestionReferenceError(undefinedVarId interfaces.VarId) UndefinedQuestionReferenceError {
-	return UndefinedQuestionReferenceError{UndefinedVarId: undefinedVarId, TypeCheckError: TypeCheckError{fmt.Errorf(undefinedQuestionReferenceErrorString)}}
+func NewUndefinedQuestionReferenceError(undefinedVarID interfaces.VarID) UndefinedQuestionReferenceError {
+	return UndefinedQuestionReferenceError{UndefinedVarID: undefinedVarID, TypeCheckError: TypeCheckError{fmt.Errorf(undefinedQuestionReferenceErrorString)}}
 }
 
 func (this UndefinedQuestionReferenceError) Error() string {
-	return fmt.Sprintf("%s: %s", this.TypeCheckError.Error(), this.UndefinedVarId)
+	return fmt.Sprintf("%s: %s", this.TypeCheckError.Error(), this.UndefinedVarID)
 }
 
 type NonBooleanConditionError struct {
@@ -63,15 +63,15 @@ func (this CyclicDependencyError) Error() string {
 type DuplicateLabelWarning struct {
 	TypeCheckError
 	OriginalQuestion         interfaces.Question
-	ConflictingQuestionVarId interfaces.VarId
+	ConflictingQuestionVarID interfaces.VarID
 }
 
-func NewDuplicateLabelWarning(originalQuestion interfaces.Question, conflictingQuestionVarId interfaces.VarId) DuplicateLabelWarning {
-	return DuplicateLabelWarning{OriginalQuestion: originalQuestion, ConflictingQuestionVarId: conflictingQuestionVarId, TypeCheckError: TypeCheckError{fmt.Errorf(duplicateLabelWarningString)}}
+func NewDuplicateLabelWarning(originalQuestion interfaces.Question, conflictingQuestionVarID interfaces.VarID) DuplicateLabelWarning {
+	return DuplicateLabelWarning{OriginalQuestion: originalQuestion, ConflictingQuestionVarID: conflictingQuestionVarID, TypeCheckError: TypeCheckError{fmt.Errorf(duplicateLabelWarningString)}}
 }
 
 func (this DuplicateLabelWarning) Error() string {
-	return fmt.Sprintf("%s: label %s already used for question with identifier %s, using again for question with identifier %s", this.TypeCheckError.Error(), this.OriginalQuestion.Label(), this.ConflictingQuestionVarId, this.OriginalQuestion.VarDecl().VariableIdentifier())
+	return fmt.Sprintf("%s: label %s already used for question with identifier %s, using again for question with identifier %s", this.TypeCheckError.Error(), this.OriginalQuestion.Label(), this.ConflictingQuestionVarID, this.OriginalQuestion.VarDecl().VariableIdentifier())
 }
 
 type QuestionRedeclaredWithDifferentTypesError struct {

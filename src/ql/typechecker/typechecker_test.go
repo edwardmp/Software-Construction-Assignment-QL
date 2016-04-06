@@ -94,75 +94,75 @@ func (suite *TypeCheckerTestSuite) TestInvalidOperandsCheckerForInvalidUnaryOper
 }
 
 func (suite *TypeCheckerTestSuite) TestUndefinedQuestionReferenceChecker() {
-	computedQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Value residue:"), vari.NewVarDecl(vari.NewVarId("valueResidue"), expr.NewIntType()), expr.NewSub(expr.NewIntegerLiteral(100), expr.NewVarExpr(vari.NewVarId("hasMaintLoan"))))
+	computedQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Value residue:"), vari.NewVarDecl(vari.NewVarID("valueResidue"), expr.NewIntType()), expr.NewSub(expr.NewIntegerLiteral(100), expr.NewVarExpr(vari.NewVarID("hasMaintLoan"))))
 	exampleBody := stmt.NewStmtList([]interfaces.Question{computedQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
+	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBody)
 
 	suite.testThatNumberOfErrorsOfPassedTypeArePresentForForm(exampleForm, errors.UndefinedQuestionReferenceError{}, 1)
 }
 
 func (suite *TypeCheckerTestSuite) TestNonBoolConditionalChecker() {
-	exampleQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
+	exampleQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
 	exampleIf := stmt.NewIf(expr.NewIntegerLiteral(10), stmt.NewStmtList([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{}))
 	exampleBody := stmt.NewStmtList([]interfaces.Question{}, []interfaces.Conditional{exampleIf})
-	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
+	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBody)
 
 	suite.testThatNumberOfErrorsOfPassedTypeArePresentForForm(exampleForm, errors.NonBooleanConditionError{}, 1)
 }
 
 func (suite *TypeCheckerTestSuite) TestDuplicateLabelChecker() {
-	firstQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
-	secondQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasMaintLoan"), expr.NewBoolType()))
+	firstQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
+	secondQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasMaintLoan"), expr.NewBoolType()))
 	exampleBody := stmt.NewStmtList([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
+	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBody)
 
 	suite.testThatNumberOfWarningsOfPassedTypeArePresentForForm(exampleForm, errors.DuplicateLabelWarning{}, 1)
 }
 
 func (suite *TypeCheckerTestSuite) TestDuplicateVarDeclChecker() {
-	firstQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
-	secondQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewIntType()))
+	firstQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
+	secondQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewIntType()))
 	exampleBody := stmt.NewStmtList([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
+	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBody)
 
 	suite.testThatNumberOfErrorsOfPassedTypeArePresentForForm(exampleForm, errors.QuestionRedeclaredWithDifferentTypesError{}, 1)
 }
 
 func (suite *TypeCheckerTestSuite) TestCyclicReferenceCheckerReferenceToEachOther() {
-	questionPointingToSecondQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()), expr.NewVarExpr(vari.NewVarId("hasBoughtHouse")))
-	questionPointingToFirstQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Did you buy a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasBoughtHouse"), expr.NewBoolType()), expr.NewVarExpr(vari.NewVarId("hasSoldHouse")))
+	questionPointingToSecondQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()), expr.NewVarExpr(vari.NewVarID("hasBoughtHouse")))
+	questionPointingToFirstQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Did you buy a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasBoughtHouse"), expr.NewBoolType()), expr.NewVarExpr(vari.NewVarID("hasSoldHouse")))
 	exampleBody := stmt.NewStmtList([]interfaces.Question{questionPointingToFirstQuestion, questionPointingToSecondQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
+	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBody)
 
 	suite.testThatNumberOfErrorsOfPassedTypeArePresentForForm(exampleForm, errors.CyclicDependencyError{}, 1)
 }
 
 func (suite *TypeCheckerTestSuite) TestCyclicReferenceCheckerIfConditionRefersToBody() {
-	questionExample := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
+	questionExample := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
 	ifBodyExample := stmt.NewStmtList([]interfaces.Question{questionExample}, []interfaces.Conditional{})
-	ifExample := stmt.NewIf(expr.NewVarExpr(vari.NewVarId("hasSoldHouse")), ifBodyExample)
+	ifExample := stmt.NewIf(expr.NewVarExpr(vari.NewVarID("hasSoldHouse")), ifBodyExample)
 	exampleFormBody := stmt.NewStmtList([]interfaces.Question{}, []interfaces.Conditional{ifExample})
-	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleFormBody)
+	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleFormBody)
 
 	suite.testThatNumberOfErrorsOfPassedTypeArePresentForForm(exampleForm, errors.CyclicDependencyError{}, 1)
 }
 
 func (suite *TypeCheckerTestSuite) TestQuestionTypeAndComputationTypeMismatch() {
-	exampleQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()), expr.NewIntegerLiteral(11))
+	exampleQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()), expr.NewIntegerLiteral(11))
 	exampleBody := stmt.NewStmtList([]interfaces.Question{exampleQuestion}, []interfaces.Conditional{})
-	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
+	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBody)
 
 	suite.testThatNumberOfErrorsOfPassedTypeArePresentForForm(exampleForm, errors.DeclaratedTypeAndActualTypeDeviateError{}, 1)
 }
 
 func (suite *TypeCheckerTestSuite) TestThatCorrectFormYieldsNoErrorsOrWarnings() {
-	firstQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarId("hasSoldHouse"), expr.NewBoolType()))
-	firstQuestionBody := stmt.NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarId("sellingPrice"), expr.NewIntType()))
+	firstQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
+	firstQuestionBody := stmt.NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntType()))
 	ifBody := stmt.NewStmtList([]interfaces.Question{firstQuestionBody}, []interfaces.Conditional{})
 	elseBody := stmt.NewStmtList([]interfaces.Question{firstQuestionBody}, []interfaces.Conditional{})
 	ifExample := stmt.NewIfElse(expr.NewBoolLiteral(true), ifBody, elseBody)
 	exampleBody := stmt.NewStmtList([]interfaces.Question{firstQuestion}, []interfaces.Conditional{ifExample})
-	exampleForm := stmt.NewForm(vari.NewVarId("TestForm"), exampleBody)
+	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBody)
 
 	suite.testThatNumberOfErrorsOfPassedTypeArePresentForForm(exampleForm, errors.TypeCheckError{}, 0)
 }

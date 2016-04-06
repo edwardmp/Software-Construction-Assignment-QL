@@ -38,10 +38,10 @@ func TestNegPos(t *testing.T) {
 }
 
 func TestVarExpr(t *testing.T) {
-	exampleVarId := vari.NewVarId("TestIdentifier")
+	exampleVarID := vari.NewVarID("TestIdentifier")
 
-	symbols := symbols.NewVarIdValueSymbols()
-	symbols.SetExprForVarId(NewIntegerLiteral(2), exampleVarId)
+	symbols := symbols.NewVarIDValueSymbols()
+	symbols.SetExprForVarID(NewIntegerLiteral(2), exampleVarID)
 
-	assert.Equal(t, NewVarExpr(exampleVarId).Eval(symbols), NewIntValue(2))
+	assert.Equal(t, NewVarExpr(exampleVarID).Eval(symbols), NewIntValue(2))
 }

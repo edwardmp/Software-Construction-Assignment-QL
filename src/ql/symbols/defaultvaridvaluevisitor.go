@@ -5,22 +5,22 @@ import (
 	"ql/interfaces"
 )
 
-type DefaultVarIdValueVisitor struct {
+type DefaultVarIDValueVisitor struct {
 	*visitor.BaseVisitor
 }
 
-func NewDefaultVarIdValueVisitor() *DefaultVarIdValueVisitor {
-	return &DefaultVarIdValueVisitor{visitor.NewBaseVisitor()}
+func NewDefaultVarIDValueVisitor() *DefaultVarIDValueVisitor {
+	return &DefaultVarIDValueVisitor{visitor.NewBaseVisitor()}
 }
 
-func (this *DefaultVarIdValueVisitor) StartSettingDefaultValuesForVarIds(form interfaces.Form) *VarIdValueSymbols {
-	varIdValueSymbols := NewVarIdValueSymbols()
-	form.Accept(this, varIdValueSymbols)
+func (this *DefaultVarIDValueVisitor) StartSettingDefaultValuesForVarIDs(form interfaces.Form) *VarIDValueSymbols {
+	varIDValueSymbols := NewVarIDValueSymbols()
+	form.Accept(this, varIDValueSymbols)
 
-	return varIdValueSymbols
+	return varIDValueSymbols
 }
 
-func (this *DefaultVarIdValueVisitor) VisitVarDecl(varDecl interfaces.VarDecl, context interface{}) {
-	symbols := context.(interfaces.VarIdValueSymbols)
-	symbols.SetExprForVarId(varDecl.Type().DefaultValue(), varDecl.VariableIdentifier())
+func (this *DefaultVarIDValueVisitor) VisitVarDecl(varDecl interfaces.VarDecl, context interface{}) {
+	symbols := context.(interfaces.VarIDValueSymbols)
+	symbols.SetExprForVarID(varDecl.Type().DefaultValue(), varDecl.VariableIdentifier())
 }

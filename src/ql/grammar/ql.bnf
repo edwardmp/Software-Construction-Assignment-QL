@@ -48,7 +48,7 @@ ident           : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 ) >>
 
 /* form, start symbol */
-Form        : "form" VarId Block                        << ast.NewFormNode($1, $2, $0.(*token.Token).Pos) >> ;
+Form        : "form" VarID Block                        << ast.NewFormNode($1, $2, $0.(*token.Token).Pos) >> ;
 
 /* types */
 Type        : "integer"                                 << ast.NewIntTypeNode($0) >>
@@ -67,8 +67,8 @@ StringLiteraleral  : str_lit                            << ast.NewStringLiteralN
 
 
 /* variables */
-VarDecl     : VarId col Type                            << ast.NewVarDeclNode($0, $2, $1.(*token.Token).Pos) >> ;
-VarId       : ident                                     << ast.NewVarIdNode($0) >> ;
+VarDecl     : VarID col Type                            << ast.NewVarDeclNode($0, $2, $1.(*token.Token).Pos) >> ;
+VarID       : ident                                     << ast.NewVarIDNode($0) >> ;
 
 /* expressions */
 Expr        : addop Expr                                << ast.NewPosNode($1, $0.(*token.Token).Pos) >>
@@ -87,7 +87,7 @@ Expr        : addop Expr                                << ast.NewPosNode($1, $0
             | Expr andop Expr                           << ast.NewAndNode($0, $2, $1.(*token.Token).Pos) >>
             | Expr orop Expr                            << ast.NewOrNode($0, $2, $1.(*token.Token).Pos) >>
             | lpar Expr rpar                            << $1, nil >>
-            | VarId                                     << ast.NewVarExprNode($0) >>
+            | VarID                                     << ast.NewVarExprNode($0) >>
             | Literal
             ;
 

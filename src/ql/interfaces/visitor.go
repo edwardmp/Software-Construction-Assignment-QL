@@ -23,7 +23,7 @@ type Visitor interface {
 	VisitVarExpr(VarExpr, interface{})
 	/* Vari */
 	VisitVarDecl(VarDecl, interface{})
-	VisitVarId(VarId, interface{})
+	VisitVarID(VarID, interface{})
 	VisitIntType(IntType, interface{})
 	VisitBoolType(BoolType, interface{})
 	VisitStringType(StringType, interface{})

@@ -107,9 +107,9 @@ func initQL(filePath string) {
 
 	typeCheckErrors, typeCheckWarnings := conductTypeChecking(parsedForm)
 
-	varIdValueSymbols := symbolsWithDefaultValuesForVarIds(parsedForm)
+	varIDValueSymbols := symbolsWithDefaultValuesForVarIDs(parsedForm)
 
-	gui.InitializeGUIForm(parsedForm, varIdValueSymbols)
+	gui.InitializeGUIForm(parsedForm, varIDValueSymbols)
 	gui.ShowWindow(typeCheckErrors, typeCheckWarnings)
 }
 
@@ -148,8 +148,8 @@ func conductTypeChecking(form interfaces.Form) ([]error, []error) {
 	return errors, warnings
 }
 
-// symbolsWithDefaultValuesForVarIds creates new symbols and starts process that sets default values for all VarIds
-func symbolsWithDefaultValuesForVarIds(form interfaces.Form) interfaces.VarIdValueSymbols {
-	varIdDefaultValueVisitor := symbols.NewDefaultVarIdValueVisitor()
-	return varIdDefaultValueVisitor.StartSettingDefaultValuesForVarIds(form)
+// symbolsWithDefaultValuesForVarIDs creates new symbols and starts process that sets default values for all VarIDs
+func symbolsWithDefaultValuesForVarIDs(form interfaces.Form) interfaces.VarIDValueSymbols {
+	varIDDefaultValueVisitor := symbols.NewDefaultVarIDValueVisitor()
+	return varIDDefaultValueVisitor.StartSettingDefaultValuesForVarIDs(form)
 }

@@ -12,7 +12,7 @@ import (
 type GUI struct {
 	visitor.BaseVisitor
 	GUIForm                   *GUIForm
-	Symbols                   interfaces.VarIdValueSymbols
+	Symbols                   interfaces.VarIDValueSymbols
 	RegisteredOnShowCallbacks []func()
 	SaveDataCallback          func() (interface{}, error)
 	Window                    *ui.Window
@@ -23,14 +23,14 @@ func NewGUI() *GUI {
 	return new(GUI)
 }
 
-func (this *GUI) InitializeGUIForm(form interfaces.Form, symbols interfaces.VarIdValueSymbols) {
+func (this *GUI) InitializeGUIForm(form interfaces.Form, symbols interfaces.VarIDValueSymbols) {
 	this.setSymbols(symbols)
 	this.createAndSetGUIFormFromForm(form)
 
 	form.Accept(this, this.Symbols)
 }
 
-func (this *GUI) setSymbols(symbols interfaces.VarIdValueSymbols) {
+func (this *GUI) setSymbols(symbols interfaces.VarIDValueSymbols) {
 	if symbols == nil {
 		panic("Passing nil symbols to GUI setSymbols")
 	}
@@ -204,7 +204,7 @@ func (this *GUI) handleInputQuestion(question interfaces.InputQuestion) *GUIInpu
 
 		questionIdentifier := question.VarDecl().VariableIdentifier()
 		log.WithFields(log.Fields{"input": inputExpr, "identifier": questionIdentifier}).Debug("Question input received")
-		this.Symbols.SetExprForVarId(inputExpr, questionIdentifier)
+		this.Symbols.SetExprForVarID(inputExpr, questionIdentifier)
 
 		this.updateComputedQuestions()
 	}
@@ -229,7 +229,7 @@ func (this *GUI) updateComputedQuestions() {
 		computedQuestion.changeFieldValueText(fmt.Sprintf("%v", computedQuestionEvalValue))
 
 		// save the computed value to the symbol table
-		this.Symbols.SetExprForVarId(computedQuestion.Expr, computedQuestion.VarId)
+		this.Symbols.SetExprForVarID(computedQuestion.Expr, computedQuestion.VarID)
 
 		log.WithFields(log.Fields{"evaluatesTo": computedQuestionEvalValue}).Info("Computed question value changed")
 	}

@@ -5,39 +5,39 @@ import (
 	"ql/interfaces"
 )
 
-type varIdTovalueTypeSymbolTable map[interfaces.VarId]interfaces.ValueType
+type varIDTovalueTypeSymbolTable map[interfaces.VarID]interfaces.ValueType
 
 type TypeCheckSymbols struct {
-	Table varIdTovalueTypeSymbolTable
+	Table varIDTovalueTypeSymbolTable
 }
 
 func NewTypeCheckSymbols() *TypeCheckSymbols {
 	log.Debug("Creating new TypeCheckSymbols")
-	return &TypeCheckSymbols{Table: make(varIdTovalueTypeSymbolTable)}
+	return &TypeCheckSymbols{Table: make(varIDTovalueTypeSymbolTable)}
 }
 
-func (this *TypeCheckSymbols) SetTypeForVarId(valueType interfaces.ValueType, varId interfaces.VarId) {
-	if valueType == nil || varId == nil {
-		panic("Trying to set value type for VarId to nil or varId is nil")
+func (this *TypeCheckSymbols) SetTypeForVarID(valueType interfaces.ValueType, varID interfaces.VarID) {
+	if valueType == nil || varID == nil {
+		panic("Trying to set value type for VarID to nil or varID is nil")
 	}
 
-	this.Table[varId] = valueType
-	log.WithFields(log.Fields{"Identifier": varId, "valueType": valueType}).Debug("Set ValueType for VarId")
+	this.Table[varID] = valueType
+	log.WithFields(log.Fields{"Identifier": varID, "valueType": valueType}).Debug("Set ValueType for VarID")
 }
 
-func (this *TypeCheckSymbols) TypeForVarId(varId interfaces.VarId) interfaces.ValueType {
-	if varId == nil {
-		panic("Trying to get type for nil VarId")
+func (this *TypeCheckSymbols) TypeForVarID(varID interfaces.VarID) interfaces.ValueType {
+	if varID == nil {
+		panic("Trying to get type for nil VarID")
 	}
 
-	valueType := this.Table[varId]
-	log.WithFields(log.Fields{"Identifier": varId, "Value": valueType}).Debug("Looking up valueType for VarId in SymbolTable")
+	valueType := this.Table[varID]
+	log.WithFields(log.Fields{"Identifier": varID, "Value": valueType}).Debug("Looking up valueType for VarID in SymbolTable")
 
 	return valueType
 }
 
-func (this *TypeCheckSymbols) IsTypeSetForVarId(varId interfaces.VarId) bool {
-	if this.TypeForVarId(varId) == nil {
+func (this *TypeCheckSymbols) IsTypeSetForVarID(varID interfaces.VarID) bool {
+	if this.TypeForVarID(varID) == nil {
 		return false
 	}
 

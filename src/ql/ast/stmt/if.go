@@ -20,6 +20,6 @@ func (this If) Condition() interfaces.Expr {
 	return this.condition
 }
 
-func (this If) EvalCondition(symbolTable interfaces.VarIdValueSymbols) interfaces.BoolValue {
+func (this If) EvalCondition(symbolTable interfaces.VarIDValueSymbols) interfaces.BoolValue {
 	return this.condition.Eval(symbolTable).(interfaces.BoolValue)
 }

@@ -4,7 +4,7 @@ type Expr interface {
 	ASTNode
 	TypeCheck(TypeCheckArgs) ValueType
 	String() string
-	Eval(VarIdValueSymbols) Value
+	Eval(VarIDValueSymbols) Value
 }
 
 type BinaryOperatorExpr interface {

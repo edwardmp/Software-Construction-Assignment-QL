@@ -7,11 +7,11 @@ type TypeChecker interface {
 	EncounteredErrors() []error
 	IsLabelUsed(StringLiteral) bool
 	MarkLabelAsUsed(StringLiteral, VarDecl)
-	VarIdForLabel(StringLiteral) VarId
-	MarkVarIdAsKnown(VarId)
-	MarkVarIdAsUnknown(VarId)
-	KnownIdentifiers() map[VarId]bool
-	AddDependencyForVarDecl(VarId, VarDecl)
+	VarIDForLabel(StringLiteral) VarID
+	MarkVarIDAsKnown(VarID)
+	MarkVarIDAsUnknown(VarID)
+	KnownIdentifiers() map[VarID]bool
+	AddDependencyForVarDecl(VarID, VarDecl)
 	DependencyListForVarDeclContainsReferenceToSelf(VarDecl) bool
 	ConditionsDependentOnForVarDecl(VarDecl) []Expr
 }

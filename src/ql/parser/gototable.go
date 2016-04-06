@@ -18,7 +18,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -36,7 +36,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -54,7 +54,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		3, // VarId
+		3, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -72,7 +72,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -90,7 +90,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -108,7 +108,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -126,7 +126,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		7, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		9, // IfStmt
 		11, // Question
@@ -144,7 +144,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		16, // VarDecl
-		15, // VarId
+		15, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -162,7 +162,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -180,7 +180,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -198,7 +198,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -216,7 +216,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -234,7 +234,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -252,7 +252,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		7, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		9, // IfStmt
 		11, // Question
@@ -270,7 +270,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -288,7 +288,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -306,7 +306,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -324,7 +324,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -342,7 +342,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		31, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -360,7 +360,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -378,7 +378,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -396,7 +396,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -414,7 +414,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		48, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -432,7 +432,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -450,7 +450,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -468,7 +468,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -486,7 +486,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -504,7 +504,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -522,7 +522,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -540,7 +540,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -558,7 +558,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -576,7 +576,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -594,7 +594,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		66, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -612,7 +612,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		67, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -630,7 +630,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		68, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -648,7 +648,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		69, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -666,7 +666,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -684,7 +684,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -702,7 +702,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -720,7 +720,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -738,7 +738,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -756,7 +756,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -774,7 +774,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -792,7 +792,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -810,7 +810,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -828,7 +828,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -846,7 +846,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -864,7 +864,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -882,7 +882,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -900,7 +900,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		82, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -918,7 +918,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		83, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -936,7 +936,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		84, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -954,7 +954,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		85, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -972,7 +972,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		86, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -990,7 +990,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		87, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1008,7 +1008,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		88, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1026,7 +1026,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		89, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1044,7 +1044,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		90, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1062,7 +1062,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		91, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1080,7 +1080,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		92, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1098,7 +1098,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		93, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1116,7 +1116,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		94, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1134,7 +1134,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		95, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1152,7 +1152,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		96, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1170,7 +1170,7 @@ var gotoTab = gotoTable{
 		24, // Literal
 		26, // StringLiteraleral
 		-1, // VarDecl
-		23, // VarId
+		23, // VarID
 		97, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1188,7 +1188,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1206,7 +1206,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1224,7 +1224,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1242,7 +1242,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1260,7 +1260,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1278,7 +1278,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		101, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1296,7 +1296,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		102, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1314,7 +1314,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		103, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1332,7 +1332,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		104, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1350,7 +1350,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		105, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1368,7 +1368,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		106, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1386,7 +1386,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		107, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1404,7 +1404,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		108, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1422,7 +1422,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		109, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1440,7 +1440,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		110, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1458,7 +1458,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		111, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1476,7 +1476,7 @@ var gotoTab = gotoTable{
 		41, // Literal
 		43, // StringLiteraleral
 		-1, // VarDecl
-		40, // VarId
+		40, // VarID
 		112, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1494,7 +1494,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1512,7 +1512,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1530,7 +1530,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1548,7 +1548,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1566,7 +1566,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1584,7 +1584,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1602,7 +1602,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1620,7 +1620,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1638,7 +1638,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1656,7 +1656,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1674,7 +1674,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1692,7 +1692,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1710,7 +1710,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1728,7 +1728,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1746,7 +1746,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1764,7 +1764,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1782,7 +1782,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1800,7 +1800,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		7, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		9, // IfStmt
 		11, // Question
@@ -1818,7 +1818,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1836,7 +1836,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1854,7 +1854,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1872,7 +1872,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1890,7 +1890,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1908,7 +1908,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1926,7 +1926,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1944,7 +1944,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1962,7 +1962,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1980,7 +1980,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -1998,7 +1998,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -2016,7 +2016,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -2034,7 +2034,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -2052,7 +2052,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -2070,7 +2070,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -2088,7 +2088,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		7, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		9, // IfStmt
 		11, // Question
@@ -2106,7 +2106,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -2124,7 +2124,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -2142,7 +2142,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		7, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		9, // IfStmt
 		11, // Question
@@ -2160,7 +2160,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -2178,7 +2178,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		7, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		9, // IfStmt
 		11, // Question
@@ -2196,7 +2196,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question
@@ -2214,7 +2214,7 @@ var gotoTab = gotoTable{
 		-1, // Literal
 		-1, // StringLiteraleral
 		-1, // VarDecl
-		-1, // VarId
+		-1, // VarID
 		-1, // Expr
 		-1, // IfStmt
 		-1, // Question

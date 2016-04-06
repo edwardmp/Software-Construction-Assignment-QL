@@ -7,53 +7,53 @@ import (
 	"ql/interfaces"
 )
 
-type varIdToExprSymbolTable map[interfaces.VarId]interfaces.Expr
+type varIDToExprSymbolTable map[interfaces.VarID]interfaces.Expr
 
-type symbolCallBackFunction func(interfaces.VarIdValueSymbols)
+type symbolCallBackFunction func(interfaces.VarIDValueSymbols)
 
-type VarIdValueSymbols struct {
-	Table               varIdToExprSymbolTable
+type VarIDValueSymbols struct {
+	Table               varIDToExprSymbolTable
 	RegisteredCallbacks []func()
 }
 
-func NewVarIdValueSymbols() *VarIdValueSymbols {
-	log.Info("Creating new VarIdValueSymbols")
-	return &VarIdValueSymbols{Table: make(varIdToExprSymbolTable), RegisteredCallbacks: make([]func(), 0)}
+func NewVarIDValueSymbols() *VarIDValueSymbols {
+	log.Info("Creating new VarIDValueSymbols")
+	return &VarIDValueSymbols{Table: make(varIDToExprSymbolTable), RegisteredCallbacks: make([]func(), 0)}
 }
 
-func (this *VarIdValueSymbols) SetExprForVarId(expr interfaces.Expr, varId interfaces.VarId) {
-	if expr == nil || varId == nil {
-		panic("Trying to set Expr for VarId to nil or varId is nil")
+func (this *VarIDValueSymbols) SetExprForVarID(expr interfaces.Expr, varID interfaces.VarID) {
+	if expr == nil || varID == nil {
+		panic("Trying to set Expr for VarID to nil or varID is nil")
 	}
 
-	this.Table[varId] = expr
-	log.WithFields(log.Fields{"Identifier": varId, "Expr": expr}).Debug("Set Expr for VarId")
+	this.Table[varID] = expr
+	log.WithFields(log.Fields{"Identifier": varID, "Expr": expr}).Debug("Set Expr for VarID")
 
 	for _, registeredCallback := range this.RegisteredCallbacks {
 		registeredCallback()
 	}
 }
 
-func (this *VarIdValueSymbols) ExprForVarId(varId interfaces.VarId) interfaces.Expr {
-	if varId == nil {
-		panic("Trying to get Expr for nil VarId")
+func (this *VarIDValueSymbols) ExprForVarID(varID interfaces.VarID) interfaces.Expr {
+	if varID == nil {
+		panic("Trying to get Expr for nil VarID")
 	}
 
-	expr := this.Table[varId]
-	log.WithFields(log.Fields{"Identifier": varId, "Expr": expr}).Debug("Looking up Expr for VarId in SymbolTable")
+	expr := this.Table[varID]
+	log.WithFields(log.Fields{"Identifier": varID, "Expr": expr}).Debug("Looking up Expr for VarID in SymbolTable")
 
 	return expr
 }
 
-func (this *VarIdValueSymbols) RegisterCallback(callback func()) {
+func (this *VarIDValueSymbols) RegisterCallback(callback func()) {
 	this.RegisteredCallbacks = append(this.RegisteredCallbacks, callback)
 }
 
 /* methods related to export of symboltable to file */
 
-type VarIdStringExprEvalSymbolTable map[string]interface{}
+type VarIDStringExprEvalSymbolTable map[string]interface{}
 
-func (this *VarIdValueSymbols) SaveToDisk() (interface{}, error) {
+func (this *VarIDValueSymbols) SaveToDisk() (interface{}, error) {
 	formDataAsJSON, _ := convertSymbolTableToJSON(this.convertSymbolTableKeysToStringsAndEvalValues())
 
 	writeErr := ioutil.WriteFile("savedForm.json", formDataAsJSON, 0644)
@@ -68,16 +68,16 @@ func (this *VarIdValueSymbols) SaveToDisk() (interface{}, error) {
 	return formDataAsJSON, nil
 }
 
-func (this *VarIdValueSymbols) convertSymbolTableKeysToStringsAndEvalValues() VarIdStringExprEvalSymbolTable {
-	symbolTableWithStringKeys := make(VarIdStringExprEvalSymbolTable)
-	for varId, expr := range this.Table {
-		symbolTableWithStringKeys[varId.Identifier()] = expr.Eval(this).PrimitiveValue()
+func (this *VarIDValueSymbols) convertSymbolTableKeysToStringsAndEvalValues() VarIDStringExprEvalSymbolTable {
+	symbolTableWithStringKeys := make(VarIDStringExprEvalSymbolTable)
+	for varID, expr := range this.Table {
+		symbolTableWithStringKeys[varID.Identifier()] = expr.Eval(this).PrimitiveValue()
 	}
 
 	return symbolTableWithStringKeys
 }
 
-func convertSymbolTableToJSON(symbolTableWithStringKeys VarIdStringExprEvalSymbolTable) ([]byte, error) {
+func convertSymbolTableToJSON(symbolTableWithStringKeys VarIDStringExprEvalSymbolTable) ([]byte, error) {
 	formDataAsJSON, jsonErr := json.MarshalIndent(symbolTableWithStringKeys, "", "  ")
 
 	if jsonErr != nil {

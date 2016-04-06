@@ -6,12 +6,12 @@ type Vari interface {
 
 type VarDecl interface {
 	Vari
-	VariableIdentifier() VarId
+	VariableIdentifier() VarID
 	Type() ValueType
 	TypeCheck(TypeCheckArgs)
 }
 
-type VarId interface {
+type VarID interface {
 	Vari
 	Identifier() string
 }

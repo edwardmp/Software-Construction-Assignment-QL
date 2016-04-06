@@ -6,18 +6,18 @@ import (
 	"testing"
 )
 
-func TestNewVarId(t *testing.T) {
-	varId := NewVarId("testIdentifier")
+func TestNewVarID(t *testing.T) {
+	varID := NewVarID("testIdentifier")
 
-	assert.Equal(t, varId.Identifier(), "testIdentifier")
-	assert.Equal(t, varId.String(), "testIdentifier")
+	assert.Equal(t, varID.Identifier(), "testIdentifier")
+	assert.Equal(t, varID.String(), "testIdentifier")
 }
 
 func TestNewVarDecl(t *testing.T) {
-	varId := NewVarId("testVarId")
+	varID := NewVarID("testVarID")
 	valueType := expr.NewIntType()
-	varDecl := NewVarDecl(varId, valueType)
+	varDecl := NewVarDecl(varID, valueType)
 
-	assert.Equal(t, varDecl.VariableIdentifier(), varId)
+	assert.Equal(t, varDecl.VariableIdentifier(), varID)
 	assert.Equal(t, varDecl.Type(), valueType)
 }

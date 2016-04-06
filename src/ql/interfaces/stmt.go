@@ -8,7 +8,7 @@ type Stmt interface {
 type Form interface {
 	Stmt
 	Content() StmtList
-	Identifier() VarId
+	Identifier() VarID
 	Questions() []Question
 }
 
@@ -29,7 +29,7 @@ type ComputedQuestion interface {
 
 type Conditional interface {
 	Stmt
-	EvalCondition(VarIdValueSymbols) BoolValue
+	EvalCondition(VarIDValueSymbols) BoolValue
 	Condition() Expr
 }
 

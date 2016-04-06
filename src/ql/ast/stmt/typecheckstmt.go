@@ -42,7 +42,7 @@ func (this ComputedQuestion) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 
 	this.VarDecl().TypeCheck(typeCheckArgs)
 
-	collectVarIdsInExpressions(typeCheckArgs)
+	collectVarIDsInExpressions(typeCheckArgs)
 
 	checkForCyclicDependencies(this, typeCheckArgs.TypeChecker())
 }
@@ -55,7 +55,7 @@ func (this InputQuestion) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 
 	this.VarDecl().TypeCheck(typeCheckArgs)
 
-	collectVarIdsInExpressions(typeCheckArgs)
+	collectVarIDsInExpressions(typeCheckArgs)
 
 	checkForCyclicDependencies(this, typeCheckArgs.TypeChecker())
 }
@@ -94,8 +94,8 @@ func (this Form) checkForUndefinedReferences(typeChecker interfaces.TypeChecker)
 	}
 }
 
-func collectVarIdsInExpressions(typeCheckArgs interfaces.TypeCheckArgs) {
-	// for these condition expressions, running TypeCheck will collect VarIds in them and add them as dependencies
+func collectVarIDsInExpressions(typeCheckArgs interfaces.TypeCheckArgs) {
+	// for these condition expressions, running TypeCheck will collect VarIDs in them and add them as dependencies
 	for _, conditionDependentOn := range typeCheckArgs.ConditionsDependentOn() {
 		conditionDependentOn.TypeCheck(typeCheckArgs)
 	}
@@ -112,7 +112,7 @@ func checkForNonBoolCondition(condition interfaces.Expr, typeCheckArgs interface
 
 // checkForCyclicDependencies checks if the this question depends on itself, and if so, adds an error to the typechecker
 func checkForCyclicDependencies(question interfaces.Question, typeChecker interfaces.TypeChecker) {
-	// if we find our own VarId as a dependency at least once, the dependencyChain is cyclic
+	// if we find our own VarID as a dependency at least once, the dependencyChain is cyclic
 	if typeChecker.DependencyListForVarDeclContainsReferenceToSelf(question.VarDecl()) {
 		typeChecker.AddEncounteredError(errors.NewCyclicDependencyError(question.VarDecl()))
 	}
@@ -123,7 +123,7 @@ func checkQuestionForDuplicateLabels(question interfaces.Question, typeChecker i
 	labelKnown := typeChecker.IsLabelUsed(question.Label())
 
 	if labelKnown {
-		typeChecker.AddEncounteredWarning(errors.NewDuplicateLabelWarning(question, typeChecker.VarIdForLabel(question.Label())))
+		typeChecker.AddEncounteredWarning(errors.NewDuplicateLabelWarning(question, typeChecker.VarIDForLabel(question.Label())))
 		return
 	}
 
@@ -133,9 +133,9 @@ func checkQuestionForDuplicateLabels(question interfaces.Question, typeChecker i
 // checkQuestionForRedeclarationWithDifferentTypes checks if the passed question has been declared before with a different type, and if so, adds an error to the typechecker
 func checkQuestionForRedeclarationWithDifferentTypes(question interfaces.Question, typeCheckArgs interfaces.TypeCheckArgs) {
 	varDecl := question.VarDecl()
-	varId := varDecl.VariableIdentifier()
+	varID := varDecl.VariableIdentifier()
 
-	if typeCheckArgs.Symbols().IsTypeSetForVarId(varId) && typeCheckArgs.Symbols().TypeForVarId(varId) != varDecl.Type() {
-		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewQuestionRedeclaredWithDifferentTypesError(varDecl.Type(), typeCheckArgs.Symbols().TypeForVarId(varId)))
+	if typeCheckArgs.Symbols().IsTypeSetForVarID(varID) && typeCheckArgs.Symbols().TypeForVarID(varID) != varDecl.Type() {
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewQuestionRedeclaredWithDifferentTypesError(varDecl.Type(), typeCheckArgs.Symbols().TypeForVarID(varID)))
 	}
 }

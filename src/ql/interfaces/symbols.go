@@ -1,14 +1,14 @@
 package interfaces
 
 type TypeCheckSymbols interface {
-	SetTypeForVarId(ValueType, VarId)
-	TypeForVarId(VarId) ValueType
-	IsTypeSetForVarId(VarId) bool
+	SetTypeForVarID(ValueType, VarID)
+	TypeForVarID(VarID) ValueType
+	IsTypeSetForVarID(VarID) bool
 }
 
-type VarIdValueSymbols interface {
-	SetExprForVarId(Expr, VarId)
-	ExprForVarId(VarId) Expr
+type VarIDValueSymbols interface {
+	SetExprForVarID(Expr, VarID)
+	ExprForVarID(VarID) Expr
 	RegisterCallback(callback func())
 	SaveToDisk() (interface{}, error)
 }

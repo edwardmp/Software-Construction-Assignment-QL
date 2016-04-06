@@ -3,14 +3,14 @@ package expr
 import "ql/interfaces"
 
 type VarExpr struct {
-	identifier interfaces.VarId
+	identifier interfaces.VarID
 	Expr
 }
 
-func NewVarExpr(identifier interfaces.VarId) VarExpr {
+func NewVarExpr(identifier interfaces.VarID) VarExpr {
 	return VarExpr{identifier: identifier, Expr: NewExpr()}
 }
 
-func (this VarExpr) Identifier() interfaces.VarId {
+func (this VarExpr) Identifier() interfaces.VarID {
 	return this.identifier
 }

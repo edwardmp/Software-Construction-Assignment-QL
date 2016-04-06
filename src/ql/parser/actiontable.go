@@ -199,7 +199,7 @@ var actionTab = actionTable{
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
-			reduce(11),		/* lbrace, reduce: VarId */
+			reduce(11),		/* lbrace, reduce: VarID */
 			nil,		/* rbrace */
 			
 		},
@@ -686,7 +686,7 @@ var actionTab = actionTable{
 			nil,		/* true */
 			nil,		/* false */
 			nil,		/* str_lit */
-			reduce(11),		/* col, reduce: VarId */
+			reduce(11),		/* col, reduce: VarID */
 			nil,		/* ident */
 			nil,		/* addop */
 			nil,		/* subop */
@@ -1195,21 +1195,21 @@ var actionTab = actionTable{
 			nil,		/* str_lit */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(11),		/* addop, reduce: VarId */
-			reduce(11),		/* subop, reduce: VarId */
+			reduce(11),		/* addop, reduce: VarID */
+			reduce(11),		/* subop, reduce: VarID */
 			nil,		/* notop */
-			reduce(11),		/* mulop, reduce: VarId */
-			reduce(11),		/* divop, reduce: VarId */
-			reduce(11),		/* eqop, reduce: VarId */
-			reduce(11),		/* neqop, reduce: VarId */
-			reduce(11),		/* gtop, reduce: VarId */
-			reduce(11),		/* ltop, reduce: VarId */
-			reduce(11),		/* geqop, reduce: VarId */
-			reduce(11),		/* leqop, reduce: VarId */
-			reduce(11),		/* andop, reduce: VarId */
-			reduce(11),		/* orop, reduce: VarId */
+			reduce(11),		/* mulop, reduce: VarID */
+			reduce(11),		/* divop, reduce: VarID */
+			reduce(11),		/* eqop, reduce: VarID */
+			reduce(11),		/* neqop, reduce: VarID */
+			reduce(11),		/* gtop, reduce: VarID */
+			reduce(11),		/* ltop, reduce: VarID */
+			reduce(11),		/* geqop, reduce: VarID */
+			reduce(11),		/* leqop, reduce: VarID */
+			reduce(11),		/* andop, reduce: VarID */
+			reduce(11),		/* orop, reduce: VarID */
 			nil,		/* lpar */
-			reduce(11),		/* rpar, reduce: VarId */
+			reduce(11),		/* rpar, reduce: VarID */
 			nil,		/* if */
 			nil,		/* else */
 			nil,		/* assign */
@@ -1855,29 +1855,29 @@ var actionTab = actionTable{
 			nil,		/* integer_lit */
 			nil,		/* true */
 			nil,		/* false */
-			reduce(11),		/* str_lit, reduce: VarId */
+			reduce(11),		/* str_lit, reduce: VarID */
 			nil,		/* col */
 			nil,		/* ident */
-			reduce(11),		/* addop, reduce: VarId */
-			reduce(11),		/* subop, reduce: VarId */
+			reduce(11),		/* addop, reduce: VarID */
+			reduce(11),		/* subop, reduce: VarID */
 			nil,		/* notop */
-			reduce(11),		/* mulop, reduce: VarId */
-			reduce(11),		/* divop, reduce: VarId */
-			reduce(11),		/* eqop, reduce: VarId */
-			reduce(11),		/* neqop, reduce: VarId */
-			reduce(11),		/* gtop, reduce: VarId */
-			reduce(11),		/* ltop, reduce: VarId */
-			reduce(11),		/* geqop, reduce: VarId */
-			reduce(11),		/* leqop, reduce: VarId */
-			reduce(11),		/* andop, reduce: VarId */
-			reduce(11),		/* orop, reduce: VarId */
+			reduce(11),		/* mulop, reduce: VarID */
+			reduce(11),		/* divop, reduce: VarID */
+			reduce(11),		/* eqop, reduce: VarID */
+			reduce(11),		/* neqop, reduce: VarID */
+			reduce(11),		/* gtop, reduce: VarID */
+			reduce(11),		/* ltop, reduce: VarID */
+			reduce(11),		/* geqop, reduce: VarID */
+			reduce(11),		/* leqop, reduce: VarID */
+			reduce(11),		/* andop, reduce: VarID */
+			reduce(11),		/* orop, reduce: VarID */
 			nil,		/* lpar */
 			nil,		/* rpar */
-			reduce(11),		/* if, reduce: VarId */
+			reduce(11),		/* if, reduce: VarID */
 			nil,		/* else */
 			nil,		/* assign */
 			nil,		/* lbrace */
-			reduce(11),		/* rbrace, reduce: VarId */
+			reduce(11),		/* rbrace, reduce: VarID */
 			
 		},
 

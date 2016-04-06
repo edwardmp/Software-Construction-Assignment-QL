@@ -1,18 +1,18 @@
 package vari
 
-type VarId struct {
+type VarID struct {
 	identifier string
 	Vari
 }
 
-func NewVarId(ident string) VarId {
-	return VarId{ident, NewVari()}
+func NewVarID(ident string) VarID {
+	return VarID{ident, NewVari()}
 }
 
-func (this VarId) Identifier() string {
+func (this VarID) Identifier() string {
 	return this.identifier
 }
 
-func (this VarId) String() string {
+func (this VarID) String() string {
 	return this.identifier
 }
