@@ -7,7 +7,7 @@ import "ql/interfaces"
 func (this Add) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitAdd(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -15,7 +15,7 @@ func (this Add) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this And) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitAnd(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -23,7 +23,7 @@ func (this And) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this Div) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitDiv(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -31,7 +31,7 @@ func (this Div) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this Eq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitEq(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -39,7 +39,7 @@ func (this Eq) Accept(visitor interfaces.Visitor, context interface{}) interface
 func (this GEq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitEq(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -47,7 +47,7 @@ func (this GEq) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this GT) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitGT(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -56,7 +56,7 @@ func (this LEq) Accept(visitor interfaces.Visitor, context interface{}) interfac
 
 	visitor.VisitLEq(this, context)
 
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -64,7 +64,7 @@ func (this LEq) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this LT) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitLT(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -72,7 +72,7 @@ func (this LT) Accept(visitor interfaces.Visitor, context interface{}) interface
 func (this Mul) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitMul(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -80,7 +80,7 @@ func (this Mul) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this NEq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitNEq(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -88,7 +88,7 @@ func (this NEq) Accept(visitor interfaces.Visitor, context interface{}) interfac
 func (this Or) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitOr(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -96,7 +96,7 @@ func (this Or) Accept(visitor interfaces.Visitor, context interface{}) interface
 func (this Sub) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
 	visitor.VisitSub(this, context)
-	acceptLhsAndRhs(this, visitor, context)
+	acceptLHSAndRHS(this, visitor, context)
 
 	return nil
 }
@@ -170,10 +170,10 @@ func (this VarExpr) Accept(visitor interfaces.Visitor, context interface{}) inte
 	return nil
 }
 
-// acceptLhsAndRhs provides a convenient way to run Accept on both left-hand and right-hand sides of binary operands
-func acceptLhsAndRhs(binaryExpr interfaces.BinaryOperatorExpr, visitor interfaces.Visitor, context interface{}) {
-	binaryExpr.Lhs().Accept(visitor, context)
-	binaryExpr.Rhs().Accept(visitor, context)
+// acceptLHSAndRHS provides a convenient way to run Accept on both left-hand and right-hand sides of binary operands
+func acceptLHSAndRHS(binaryExpr interfaces.BinaryOperatorExpr, visitor interfaces.Visitor, context interface{}) {
+	binaryExpr.LHS().Accept(visitor, context)
+	binaryExpr.RHS().Accept(visitor, context)
 }
 
 /* expressions */

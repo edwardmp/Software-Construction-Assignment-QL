@@ -134,14 +134,14 @@ func (unaryExpression UnaryOperator) checkOperand(expectedType interfaces.ValueT
 
 // checkOperands checks if the left-hand and right-hand sides are of the expected type
 func (binaryExpr BinaryOperator) checkOperands(expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
-	checkIfOperandHasExpectedType(binaryExpr.Lhs(), expectedType, typeCheckArgs)
-	checkIfOperandHasExpectedType(binaryExpr.Rhs(), expectedType, typeCheckArgs)
+	checkIfOperandHasExpectedType(binaryExpr.LHS(), expectedType, typeCheckArgs)
+	checkIfOperandHasExpectedType(binaryExpr.RHS(), expectedType, typeCheckArgs)
 }
 
 // checkForEqualTypes checks if the operands in a BinaryOperator have the same type, and if the types are unequal adds an error to the typechecker
 func (binaryExpr BinaryOperator) checkForEqualTypes(expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
-	lhsType := binaryExpr.Lhs().TypeCheck(typeCheckArgs)
-	rhsType := binaryExpr.Rhs().TypeCheck(typeCheckArgs)
+	lhsType := binaryExpr.LHS().TypeCheck(typeCheckArgs)
+	rhsType := binaryExpr.RHS().TypeCheck(typeCheckArgs)
 
 	if lhsType == NewUnknownType() || rhsType == NewUnknownType() {
 		return

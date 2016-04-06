@@ -8,51 +8,51 @@ import (
 /* binary expressions */
 
 func (this Add) String() string {
-	return fmt.Sprintf("%s + %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s + %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this And) String() string {
-	return fmt.Sprintf("%s && %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s && %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this Div) String() string {
-	return fmt.Sprintf("%s / %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s / %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this Eq) String() string {
-	return fmt.Sprintf("%s == %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s == %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this GEq) String() string {
-	return fmt.Sprintf("%s >= %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s >= %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this GT) String() string {
-	return fmt.Sprintf("%s > %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s > %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this LEq) String() string {
-	return fmt.Sprintf("%s <= %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s <= %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this LT) String() string {
-	return fmt.Sprintf("%s < %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s < %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this Mul) String() string {
-	return fmt.Sprintf("%s () %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s () %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this NEq) String() string {
-	return fmt.Sprintf("%s != %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s != %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this Or) String() string {
-	return fmt.Sprintf("%s || %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s || %s", this.LHS().String(), this.RHS().String())
 }
 
 func (this Sub) String() string {
-	return fmt.Sprintf("%s - %s", this.Lhs().String(), this.Rhs().String())
+	return fmt.Sprintf("%s - %s", this.LHS().String(), this.RHS().String())
 }
 
 /* literals */

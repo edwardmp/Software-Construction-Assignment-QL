@@ -13,10 +13,10 @@ func NewBinaryOperator(lhs interfaces.Expr, rhs interfaces.Expr) BinaryOperator 
 	return BinaryOperator{lhs: lhs, rhs: rhs, Expr: NewExpr()}
 }
 
-func (this BinaryOperator) Lhs() interfaces.Expr {
+func (this BinaryOperator) LHS() interfaces.Expr {
 	return this.lhs
 }
 
-func (this BinaryOperator) Rhs() interfaces.Expr {
+func (this BinaryOperator) RHS() interfaces.Expr {
 	return this.rhs
 }

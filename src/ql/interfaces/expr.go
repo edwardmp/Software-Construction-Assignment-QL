@@ -39,8 +39,8 @@ type StringValue interface {
 
 type BinaryOperatorExpr interface {
 	Expr
-	Lhs() Expr
-	Rhs() Expr
+	LHS() Expr
+	RHS() Expr
 }
 
 type Add interface {
