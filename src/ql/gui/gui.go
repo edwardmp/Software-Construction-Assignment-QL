@@ -229,6 +229,7 @@ func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *G
 	return guiQuestion
 }
 
+// updateComputedQuestions is called after the input of a input question changes and updates computed questions' values
 func (this *GUI) updateComputedQuestions() {
 	for _, computedQuestion := range this.GUIForm.ComputedQuestions {
 		computedQuestionEvalValue := computedQuestion.Expr.Eval(this.Symbols).PrimitiveValue()
