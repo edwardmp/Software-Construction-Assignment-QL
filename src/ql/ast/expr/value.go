@@ -1,6 +1,7 @@
 package expr
 
 import (
+	"fmt"
 	"math"
 	"ql/interfaces"
 )
@@ -166,6 +167,26 @@ func (this StringValue) Eq(value interfaces.Value) interfaces.Value {
 
 func (this StringValue) NEq(value interfaces.Value) interfaces.Value {
 	return NewBoolValue(this.primitiveValue != value.PrimitiveValue())
+}
+
+func (this StringValue) GEq(value interfaces.Value) interfaces.Value {
+	return NewBoolValue(this.primitiveValue >= value.PrimitiveValue().(string))
+}
+
+func (this StringValue) LEq(value interfaces.Value) interfaces.Value {
+	return NewBoolValue(this.primitiveValue <= value.PrimitiveValue().(string))
+}
+
+func (this StringValue) GT(value interfaces.Value) interfaces.Value {
+	return NewBoolValue(this.primitiveValue > value.PrimitiveValue().(string))
+}
+
+func (this StringValue) LT(value interfaces.Value) interfaces.Value {
+	return NewBoolValue(this.primitiveValue < value.PrimitiveValue().(string))
+}
+
+func (this StringValue) Add(value interfaces.Value) interfaces.Value {
+	return NewStringValue(fmt.Sprintf("%s%s", this.primitiveValue, value.PrimitiveValue().(string)))
 }
 
 type BoolValue struct {

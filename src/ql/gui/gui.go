@@ -226,7 +226,13 @@ func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *G
 func (this *GUI) updateComputedQuestions() {
 	for _, computedQuestion := range this.GUIForm.ComputedQuestions {
 		computedQuestionEvalValue := computedQuestion.Expr.Eval(this.Symbols).PrimitiveValue()
-		computedQuestion.changeFieldValueText(fmt.Sprintf("%v", computedQuestionEvalValue))
+
+		switch computedQuestionEvalValueAsserted := computedQuestionEvalValue.(type) {
+		case bool:
+			computedQuestion.changeCheckboxValue(computedQuestionEvalValueAsserted)
+		case int, string:
+			computedQuestion.changeFieldValueText(fmt.Sprintf("%v", computedQuestionEvalValueAsserted))
+		}
 
 		// save the computed value to the symbol table
 		this.Symbols.SetExprForVarID(computedQuestion.Expr, computedQuestion.VarID)

@@ -21,92 +21,97 @@ func (this VarExpr) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces
 }
 
 func (this Add) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewIntType(), typeCheckArgs)
+	allowedTypes := []interfaces.ValueType{NewIntType(), NewStringType()}
+	actualType := this.checkOperands(allowedTypes, typeCheckArgs)
+
+	if typeIsInExpectedTypes(actualType, allowedTypes) {
+		return actualType
+	}
 
 	return NewIntType()
 }
 
 func (this And) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewBoolType(), typeCheckArgs)
+	allowedTypes := []interfaces.ValueType{NewBoolType()}
+	this.checkOperands(allowedTypes, typeCheckArgs)
 
 	return NewBoolType()
 }
 
 func (this Div) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewIntType(), typeCheckArgs)
+	allowedTypes := []interfaces.ValueType{NewIntType()}
+	this.checkOperands(allowedTypes, typeCheckArgs)
 
 	return NewIntType()
 }
 
 func (this Eq) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkForEqualTypes(NewBoolType(), typeCheckArgs)
+	this.checkForEqualTypes(typeCheckArgs)
+	this.checkOperands([]interfaces.ValueType{NewBoolType(), NewStringType(), NewIntType()}, typeCheckArgs)
 
 	return NewBoolType()
 }
 
 func (this GEq) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewBoolType(), typeCheckArgs)
+	this.checkOperands([]interfaces.ValueType{NewIntType(), NewStringType()}, typeCheckArgs)
 
 	return NewBoolType()
 }
 
 func (this GT) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewIntType(), typeCheckArgs)
-
+	this.checkOperands([]interfaces.ValueType{NewIntType(), NewStringType()}, typeCheckArgs)
 	return NewBoolType()
 }
 
 func (this LEq) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewIntType(), typeCheckArgs)
-
+	this.checkOperands([]interfaces.ValueType{NewIntType(), NewStringType()}, typeCheckArgs)
 	return NewBoolType()
 }
 
 func (this LT) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewIntType(), typeCheckArgs)
-
+	this.checkOperands([]interfaces.ValueType{NewIntType(), NewStringType()}, typeCheckArgs)
 	return NewBoolType()
 }
 
 func (this Mul) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewIntType(), typeCheckArgs)
-
+	allowedTypes := []interfaces.ValueType{NewIntType()}
+	this.checkOperands(allowedTypes, typeCheckArgs)
 	return NewIntType()
 }
 
 func (this Neg) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperand(NewIntType(), typeCheckArgs)
-
+	allowedTypes := []interfaces.ValueType{NewIntType()}
+	this.checkOperand(allowedTypes, typeCheckArgs)
 	return NewIntType()
 }
 
 func (this NEq) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkForEqualTypes(NewBoolType(), typeCheckArgs)
-
+	this.checkForEqualTypes(typeCheckArgs)
+	this.checkOperands([]interfaces.ValueType{NewBoolType(), NewStringType(), NewIntType()}, typeCheckArgs)
 	return NewBoolType()
 }
 
 func (this Not) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperand(NewBoolType(), typeCheckArgs)
-
+	allowedTypes := []interfaces.ValueType{NewBoolType()}
+	this.checkOperand(allowedTypes, typeCheckArgs)
 	return NewBoolType()
 }
 
 func (this Or) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewBoolType(), typeCheckArgs)
-
+	allowedTypes := []interfaces.ValueType{NewBoolType()}
+	this.checkOperands(allowedTypes, typeCheckArgs)
 	return NewBoolType()
 }
 
 func (this Pos) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperand(NewIntType(), typeCheckArgs)
-
+	allowedTypes := []interfaces.ValueType{NewIntType()}
+	this.checkOperand(allowedTypes, typeCheckArgs)
 	return NewIntType()
 }
 
 func (this Sub) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands(NewIntType(), typeCheckArgs)
-
+	allowedTypes := []interfaces.ValueType{NewIntType()}
+	this.checkOperands(allowedTypes, typeCheckArgs)
 	return NewIntType()
 }
 
@@ -125,21 +130,22 @@ func (this StringLiteral) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) inte
 // TypeCheck on Expr is the default implementation, which basically asserts that parent structs have overridden this method
 func (this Expr) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
 	panic("Expr TypeCheck method not overridden")
+	return nil
 }
 
 // checkOperand checks if the value of a unaryExpr is of the expected type
-func (unaryExpression UnaryOperator) checkOperand(expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
-	checkIfOperandHasExpectedType(unaryExpression.Value(), expectedType, typeCheckArgs)
+func (unaryExpression UnaryOperator) checkOperand(expectedTypes []interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
+	checkIfOperandHasExpectedType(unaryExpression.Value(), expectedTypes, typeCheckArgs)
 }
 
 // checkOperands checks if the left-hand and right-hand sides are of the expected type
-func (binaryExpr BinaryOperator) checkOperands(expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
-	checkIfOperandHasExpectedType(binaryExpr.LHS(), expectedType, typeCheckArgs)
-	checkIfOperandHasExpectedType(binaryExpr.RHS(), expectedType, typeCheckArgs)
+func (binaryExpr BinaryOperator) checkOperands(expectedTypes []interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
+	checkIfOperandHasExpectedType(binaryExpr.LHS(), expectedTypes, typeCheckArgs)
+	return checkIfOperandHasExpectedType(binaryExpr.RHS(), expectedTypes, typeCheckArgs)
 }
 
 // checkForEqualTypes checks if the operands in a BinaryOperator have the same type, and if the types are unequal adds an error to the typechecker
-func (binaryExpr BinaryOperator) checkForEqualTypes(expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
+func (binaryExpr BinaryOperator) checkForEqualTypes(typeCheckArgs interfaces.TypeCheckArgs) {
 	lhsType := binaryExpr.LHS().TypeCheck(typeCheckArgs)
 	rhsType := binaryExpr.RHS().TypeCheck(typeCheckArgs)
 
@@ -153,14 +159,27 @@ func (binaryExpr BinaryOperator) checkForEqualTypes(expectedType interfaces.Valu
 }
 
 // checkIfOperandHasExpectedType checks that an operand's actual type matches it expected type, and if not adds an error to the typechecker
-func checkIfOperandHasExpectedType(expr interfaces.Expr, expectedType interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) {
+func checkIfOperandHasExpectedType(expr interfaces.Expr, expectedTypes []interfaces.ValueType, typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
 	actualType := expr.TypeCheck(typeCheckArgs)
 
 	if actualType == NewUnknownType() {
-		return
+		return NewUnknownType()
 	}
 
-	if actualType != expectedType {
-		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewOperandWithUnexpectedTypeError(expr, expectedType, actualType))
+	if !typeIsInExpectedTypes(actualType, expectedTypes) {
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewOperandWithUnexpectedTypeError(expr, expectedTypes, actualType))
 	}
+
+	return actualType
+}
+
+// typeIsInExpectedTypes returns a bool indicating of a passed type is contained in a list of passed expected types
+func typeIsInExpectedTypes(typeToFind interfaces.ValueType, expectedTypes []interfaces.ValueType) bool {
+	for _, expectedType := range expectedTypes {
+		if expectedType == typeToFind {
+			return true
+		}
+	}
+
+	return false
 }

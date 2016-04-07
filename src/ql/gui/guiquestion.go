@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"errors"
 	log "github.com/Sirupsen/logrus"
 	"github.com/andlabs/ui"
 	"ql/ast/expr"
@@ -45,6 +44,12 @@ func (this *GUIQuestion) changeErrorLabelText(newText string) {
 	this.ErrorLabel.SetText(newText)
 }
 
+// changeCheckboxValue changes the displayed value of a checkbox
+func (this *GUIQuestion) changeCheckboxValue(newValue bool) {
+	log.WithFields(log.Fields{"newValue": newValue}).Debug("Changing checkbox value")
+	this.Element.(*ui.Checkbox).SetChecked(newValue)
+}
+
 // ResetErrorLabelText removes the error text presented to the user
 func (this *GUIQuestion) resetErrorLabelText() {
 	this.changeErrorLabelText("")
@@ -56,11 +61,13 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 
 	switch questionType.(type) {
 	case expr.BoolType:
-		checkbox := createCheckboxConditional()
+		checkbox := createCheckboxConditional(disabled)
 		checkbox.OnToggled(func(*ui.Checkbox) {
 			log.WithFields(log.Fields{"value": checkbox.Checked()}).Debug("Checkbox value changed")
 
-			callback(expr.NewBoolLiteral(checkbox.Checked()), nil)
+			if callback != nil {
+				callback(expr.NewBoolLiteral(checkbox.Checked()), nil)
+			}
 		})
 		UIEntity = checkbox
 	case expr.StringType:
@@ -70,7 +77,9 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 
 			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (string field)")
 
-			callback(expr.NewStringLiteral(inputText), nil)
+			if callback != nil {
+				callback(expr.NewStringLiteral(inputText), nil)
+			}
 		})
 		UIEntity = inputField
 	case expr.IntType:
@@ -102,7 +111,7 @@ func createQuestionElement(questionType interfaces.ValueType, callback func(inte
 		})
 		UIEntity = inputField
 	default:
-		errors.New("Unknown question type, can not create correct GUI object")
+		panic("Unknown question type, can not create correct GUI object")
 	}
 
 	return UIEntity

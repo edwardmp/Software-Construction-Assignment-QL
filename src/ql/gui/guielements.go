@@ -18,8 +18,14 @@ func createInputTextField(defaultText string, disabled bool) *ui.Entry {
 }
 
 // createCheckboxConditional returns a new checkbox
-func createCheckboxConditional() *ui.Checkbox {
-	return ui.NewCheckbox("")
+func createCheckboxConditional(disabled bool) *ui.Checkbox {
+	checkbox := ui.NewCheckbox("")
+
+	if disabled {
+		checkbox.Disable()
+	}
+
+	return checkbox
 }
 
 // createButton returns a new button with passed onClick callback

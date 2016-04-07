@@ -119,15 +119,15 @@ func (this OperandsOfDifferentTypesError) Error() string {
 
 type OperandWithUnexpectedTypeError struct {
 	TypeCheckError
-	ExpectedType       interfaces.ValueType
+	ExpectedTypes      []interfaces.ValueType
 	ActualType         interfaces.ValueType
 	AffectedExpression interfaces.Expr
 }
 
-func NewOperandWithUnexpectedTypeError(affectedExpression interfaces.Expr, expectedType interfaces.ValueType, actualType interfaces.ValueType) OperandWithUnexpectedTypeError {
-	return OperandWithUnexpectedTypeError{AffectedExpression: affectedExpression, ExpectedType: expectedType, ActualType: actualType, TypeCheckError: TypeCheckError{fmt.Errorf(operandWithUnexpectedTypeErrorString)}}
+func NewOperandWithUnexpectedTypeError(affectedExpression interfaces.Expr, expectedTypes []interfaces.ValueType, actualType interfaces.ValueType) OperandWithUnexpectedTypeError {
+	return OperandWithUnexpectedTypeError{AffectedExpression: affectedExpression, ExpectedTypes: expectedTypes, ActualType: actualType, TypeCheckError: TypeCheckError{fmt.Errorf(operandWithUnexpectedTypeErrorString)}}
 }
 
 func (this OperandWithUnexpectedTypeError) Error() string {
-	return fmt.Sprintf("%s: expected type of operand was %s but actual type is %s in expression %s", this.TypeCheckError.Error(), this.ExpectedType, this.ActualType, this.AffectedExpression)
+	return fmt.Sprintf("%s: expected type of operand was one of %s but actual type is %s in expression %s", this.TypeCheckError.Error(), this.ExpectedTypes, this.ActualType, this.AffectedExpression)
 }
