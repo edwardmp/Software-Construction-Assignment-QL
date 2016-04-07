@@ -16,6 +16,6 @@ func (this VarDecl) VariableIdentifier() interfaces.VarID {
 	return this.variableIdentifier
 }
 
-func (this VarDecl) Type() interfaces.ValueType {
+func (this VarDecl) ValueType() interfaces.ValueType {
 	return this.valueType
 }

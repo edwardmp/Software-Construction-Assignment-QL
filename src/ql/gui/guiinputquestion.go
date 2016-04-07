@@ -9,6 +9,6 @@ type GUIInputQuestion struct {
 }
 
 // newGUIInputQuestion is a construct method return a new GUIInputQuestion of the supplied question type
-func newGUIInputQuestion(label string, questionType interfaces.ValueType, callback func(interfaces.Expr, error)) *GUIInputQuestion {
-	return &GUIInputQuestion{GUIQuestion: createEnabledGUIQuestion(label, questionType, callback)}
+func newGUIInputQuestion(question interfaces.Question, callback func(interfaces.Expr, error)) *GUIInputQuestion {
+	return &GUIInputQuestion{GUIQuestion: createEnabledGUIQuestion(question, callback)}
 }

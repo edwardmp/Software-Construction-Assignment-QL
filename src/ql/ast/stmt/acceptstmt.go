@@ -3,54 +3,54 @@ package stmt
 import "ql/interfaces"
 
 func (this Form) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitForm(this, context)
+	returnValue := visitor.VisitForm(this, context)
 
 	this.Identifier().Accept(visitor, context)
 	this.Content().Accept(visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this If) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitIf(this, context)
+	returnValue := visitor.VisitIf(this, context)
 
 	this.Condition().Accept(visitor, context)
 	this.Body().Accept(visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this IfElse) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitIfElse(this, context)
+	returnValue := visitor.VisitIfElse(this, context)
 
 	this.Condition().Accept(visitor, context)
 	this.IfBody().Accept(visitor, context)
 	this.ElseBody().Accept(visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this InputQuestion) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitInputQuestion(this, context)
+	returnValue := visitor.VisitInputQuestion(this, context)
 
 	this.Label().Accept(visitor, context)
 	this.VarDecl().Accept(visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this ComputedQuestion) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitComputedQuestion(this, context)
+	returnValue := visitor.VisitComputedQuestion(this, context)
 
 	this.Label().Accept(visitor, context)
 	this.VarDecl().Accept(visitor, context)
 	this.Computation().Accept(visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this StmtList) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitStmtList(this, context)
+	returnValue := visitor.VisitStmtList(this, context)
 
 	for _, question := range this.Questions() {
 		question.Accept(visitor, context)
@@ -60,5 +60,5 @@ func (this StmtList) Accept(visitor interfaces.Visitor, context interface{}) int
 		conditional.Accept(visitor, context)
 	}
 
-	return nil
+	return returnValue
 }

@@ -4,33 +4,37 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/andlabs/ui"
 	"ql/ast/expr"
+	"ql/ast/visitor"
 	"ql/interfaces"
 	"strconv"
 )
 
+// GUIQuestion represents a question's elements in term of interface objects
 type GUIQuestion struct {
 	Label      *ui.Label
 	Element    ui.Control
 	ErrorLabel *ui.Label
+	Question   interfaces.Question
 }
 
 // createGUIQuestion creates a GUIQuestion, the last argument indicates if the question should be disabled (no entry allowed)
-func createGUIQuestion(label string, questionType interfaces.ValueType, callback func(interfaces.Expr, error), disabled bool) *GUIQuestion {
-	questionLabel := createLabel(label)
-	questionElement := createQuestionElement(questionType, callback, disabled)
+func createGUIQuestion(question interfaces.Question, callback func(interfaces.Expr, error), disabled bool) *GUIQuestion {
+	questionLabel := createLabel(question.LabelAsString())
+	guiElementVisitor := newQuestionTypeToGUIElementVisitor(question, callback, disabled)
+	questionElement := question.VarDeclValueType().Accept(guiElementVisitor, nil).(ui.Control)
 	errorLabel := createLabel("")
 
-	return &GUIQuestion{questionLabel, questionElement, errorLabel}
+	return &GUIQuestion{questionLabel, questionElement, errorLabel, question}
 }
 
 // createEnabledGUIQuestion is a convenience method for creating a GUIQuestion that is enabled
-func createEnabledGUIQuestion(label string, questionType interfaces.ValueType, callback func(interfaces.Expr, error)) *GUIQuestion {
-	return createGUIQuestion(label, questionType, callback, false)
+func createEnabledGUIQuestion(question interfaces.Question, callback func(interfaces.Expr, error)) *GUIQuestion {
+	return createGUIQuestion(question, callback, false)
 }
 
 // createDisabledGUIQuestion is a convenience method for creating a GUIQuestion that is disabled
-func createDisabledGUIQuestion(label string, questionType interfaces.ValueType, callback func(interfaces.Expr, error)) *GUIQuestion {
-	return createGUIQuestion(label, questionType, callback, true)
+func createDisabledGUIQuestion(question interfaces.Question) *GUIQuestion {
+	return createGUIQuestion(question, nil, true)
 }
 
 // changeFieldValueText changes the displayed value of an input field
@@ -55,64 +59,85 @@ func (this *GUIQuestion) resetErrorLabelText() {
 	this.changeErrorLabelText("")
 }
 
-// FIXME switch
-func createQuestionElement(questionType interfaces.ValueType, callback func(interfaces.Expr, error), disabled bool) ui.Control {
+type QuestionTypeToGUIElementVisitor struct {
+	callback func(interfaces.Expr, error)
+	disabled bool
+	interfaces.Question
+	*visitor.BaseVisitor
+}
+
+// newQuestionTypeToGUIElementVisitor returns a new QuestionTypeToGUIElementVisitor
+func newQuestionTypeToGUIElementVisitor(question interfaces.Question, callback func(interfaces.Expr, error), disabled bool) *QuestionTypeToGUIElementVisitor {
+	return &QuestionTypeToGUIElementVisitor{callback, disabled, question, visitor.NewBaseVisitor()}
+}
+
+// VisitIntType returns a GUI element for integers when question type is integer
+func (this *QuestionTypeToGUIElementVisitor) VisitIntType(i interfaces.IntType, context interface{}) interface{} {
 	var UIEntity ui.Control
+	inputField := createInputTextField("", this.disabled)
+	inputField.OnChanged(func(*ui.Entry) {
+		inputText := inputField.Text()
 
-	switch questionType.(type) {
-	case expr.BoolType:
-		checkbox := createCheckboxConditional(disabled)
-		checkbox.OnToggled(func(*ui.Checkbox) {
-			log.WithFields(log.Fields{"value": checkbox.Checked()}).Debug("Checkbox value changed")
+		log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (integer field)")
 
-			if callback != nil {
-				callback(expr.NewBoolLiteral(checkbox.Checked()), nil)
+		inputTextAsInt, err := strconv.Atoi(inputText)
+		if inputText == "" {
+			if this.callback != nil {
+				this.callback(expr.NewIntegerLiteral(inputTextAsInt), nil)
 			}
-		})
-		UIEntity = checkbox
-	case expr.StringType:
-		inputField := createInputTextField("", disabled)
-		inputField.OnChanged(func(*ui.Entry) {
-			inputText := inputField.Text()
+			return
+		} else if err != nil {
+			log.Warn("Could not convert input text string to int")
 
-			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (string field)")
-
-			if callback != nil {
-				callback(expr.NewStringLiteral(inputText), nil)
-			}
-		})
-		UIEntity = inputField
-	case expr.IntType:
-		inputField := createInputTextField("", disabled)
-		inputField.OnChanged(func(*ui.Entry) {
-			inputText := inputField.Text()
-
-			log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (integer field)")
-
-			inputTextAsInt, err := strconv.Atoi(inputText)
-			if inputText == "" {
-				if callback != nil {
-					callback(expr.NewIntegerLiteral(inputTextAsInt), nil)
-				}
-				return
-			} else if err != nil {
-				log.Warn("Could not convert input text string to int")
-
-				if callback != nil {
-					callback(nil, err)
-				}
-
-				return
+			if this.callback != nil {
+				this.callback(nil, err)
 			}
 
-			if callback != nil {
-				callback(expr.NewIntegerLiteral(inputTextAsInt), nil)
-			}
-		})
-		UIEntity = inputField
-	default:
-		panic("Unknown question type, can not create correct GUI object")
-	}
+			return
+		}
+
+		if this.callback != nil {
+			this.callback(expr.NewIntegerLiteral(inputTextAsInt), nil)
+		}
+	})
+
+	UIEntity = inputField
+
+	return UIEntity
+}
+
+// VisitBoolType creates a GUI element for booleans when question type is boolean
+func (this *QuestionTypeToGUIElementVisitor) VisitBoolType(bo interfaces.BoolType, context interface{}) interface{} {
+	var UIEntity ui.Control
+	checkbox := createCheckboxConditional(this.disabled)
+	checkbox.OnToggled(func(*ui.Checkbox) {
+		log.WithFields(log.Fields{"value": checkbox.Checked()}).Debug("Checkbox value changed")
+
+		if this.callback != nil {
+			this.callback(expr.NewBoolLiteral(checkbox.Checked()), nil)
+		}
+	})
+
+	UIEntity = checkbox
+
+	return UIEntity
+}
+
+// VisitStringType creates a GUI element for strings when question type is string
+func (this *QuestionTypeToGUIElementVisitor) VisitStringType(st interfaces.StringType, context interface{}) interface{} {
+	var UIEntity ui.Control
+	inputField := createInputTextField("", this.disabled)
+	inputField.OnChanged(func(*ui.Entry) {
+		inputText := inputField.Text()
+
+		log.WithFields(log.Fields{"value": inputText}).Debug("Input text value changed (string field)")
+
+		if this.callback != nil {
+			this.callback(expr.NewStringLiteral(inputText), nil)
+		}
+	})
+
+	UIEntity = inputField
 
 	return UIEntity
 }

@@ -18,7 +18,7 @@ type Question interface {
 	LabelAsString() string
 	VarDecl() VarDecl
 	VarDeclVariableIdentifier() VarID
-	VarDeclType() ValueType
+	VarDeclValueType() ValueType
 }
 
 type InputQuestion interface {

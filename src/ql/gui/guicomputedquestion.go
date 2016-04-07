@@ -11,7 +11,7 @@ type GUIComputedQuestion struct {
 }
 
 // newGUIComputedQuestion is a constructr method returning a new GUIComputedQuestion
-func newGUIComputedQuestion(label string, questionType interfaces.ValueType, expr interfaces.Expr, varID interfaces.VarID) *GUIComputedQuestion {
-	guiQuestion := createDisabledGUIQuestion(label, questionType, nil)
+func newGUIComputedQuestion(question interfaces.Question, expr interfaces.Expr, varID interfaces.VarID) *GUIComputedQuestion {
+	guiQuestion := createDisabledGUIQuestion(question)
 	return &GUIComputedQuestion{GUIQuestion: guiQuestion, Expr: expr, VarID: varID}
 }

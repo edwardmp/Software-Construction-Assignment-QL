@@ -77,7 +77,7 @@ func (this Stmt) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) {
 // checkIfQuestionTypeMatchesComputationType checks if the declared computed question type and its actual type match, and if not, adds an error to the typechecker
 func (this ComputedQuestion) checkIfQuestionTypeMatchesComputationType(typeCheckArgs interfaces.TypeCheckArgs) {
 	actualType := this.Computation().TypeCheck(typeCheckArgs)
-	expectedType := this.VarDeclType()
+	expectedType := this.VarDeclValueType()
 
 	// check if question declaration type matches the type of the computation
 	if actualType != expr.NewUnknownType() && actualType != expectedType {
@@ -135,7 +135,7 @@ func checkQuestionForRedeclarationWithDifferentTypes(question interfaces.Questio
 	varDecl := question.VarDecl()
 	varID := varDecl.VariableIdentifier()
 
-	if typeCheckArgs.Symbols().IsTypeSetForVarID(varID) && typeCheckArgs.Symbols().TypeForVarID(varID) != varDecl.Type() {
-		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewQuestionRedeclaredWithDifferentTypesError(varDecl.Type(), typeCheckArgs.Symbols().TypeForVarID(varID)))
+	if typeCheckArgs.Symbols().IsTypeSetForVarID(varID) && typeCheckArgs.Symbols().TypeForVarID(varID) != varDecl.ValueType() {
+		typeCheckArgs.TypeChecker().AddEncounteredError(errors.NewQuestionRedeclaredWithDifferentTypesError(varDecl.ValueType(), typeCheckArgs.Symbols().TypeForVarID(varID)))
 	}
 }

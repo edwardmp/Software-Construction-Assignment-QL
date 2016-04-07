@@ -96,16 +96,18 @@ func (this *GUI) ShowForm() {
 }
 
 // VisitForm creates the top level questions in the form's inner body
-func (this *GUI) VisitForm(f interfaces.Form, context interface{}) {
+func (this *GUI) VisitForm(f interfaces.Form, context interface{}) interface{} {
 	guiQuestions := handleQuestions(this, f.Questions())
 
 	this.registerOnShowCallback(func() {
 		this.GUIForm.addQuestionContainer(this.GUIForm.createQuestionTable(guiQuestions))
 	})
+
+	return nil
 }
 
 // VisitIf creates questions embedded in an its body and registers show/hide callbacks
-func (this *GUI) VisitIf(ifStmt interfaces.If, context interface{}) {
+func (this *GUI) VisitIf(ifStmt interfaces.If, context interface{}) interface{} {
 	guiQuestions := handleQuestions(this, ifStmt.Questions())
 	questionsEncompassingContainer := this.GUIForm.createQuestionTable(guiQuestions)
 
@@ -118,10 +120,12 @@ func (this *GUI) VisitIf(ifStmt interfaces.If, context interface{}) {
 		log.Debug("Received symbols update callback in If")
 		this.showOrHideContainerDependingOnIfEval(ifStmt, questionsEncompassingContainer)
 	})
+
+	return nil
 }
 
 // VisitIfElse creates questions embedded in an its bodies and registers show/hide callbacks
-func (this *GUI) VisitIfElse(ifElse interfaces.IfElse, context interface{}) {
+func (this *GUI) VisitIfElse(ifElse interfaces.IfElse, context interface{}) interface{} {
 	guiQuestionsIfBody := handleQuestions(this, ifElse.IfBodyQuestions())
 	guiQuestionsElseBody := handleQuestions(this, ifElse.ElseBodyQuestions())
 
@@ -139,6 +143,8 @@ func (this *GUI) VisitIfElse(ifElse interfaces.IfElse, context interface{}) {
 		log.Debug("Received symbols update callback in IfElse")
 		this.showOrHideContainerDependingOnIfElseEval(ifElse, ifQuestionsEncompassingContainer, elseQuestionsEncompassingContainer)
 	})
+
+	return nil
 }
 
 func (this *GUI) showOrHideContainerDependingOnIfEval(ifStmt interfaces.If, conditionalContainer *ui.Box) {
@@ -209,14 +215,14 @@ func (this *GUI) handleInputQuestion(question interfaces.InputQuestion) *GUIInpu
 		this.updateComputedQuestions()
 	}
 
-	guiQuestion = newGUIInputQuestion(question.LabelAsString(), question.VarDeclType(), questionCallback)
+	guiQuestion = newGUIInputQuestion(question, questionCallback)
 
 	return guiQuestion
 }
 
 func (this *GUI) handleComputedQuestion(question interfaces.ComputedQuestion) *GUIComputedQuestion {
 	computation := question.Computation()
-	guiQuestion := newGUIComputedQuestion(question.LabelAsString(), question.VarDeclType(), computation, question.VarDeclVariableIdentifier())
+	guiQuestion := newGUIComputedQuestion(question, computation, question.VarDeclVariableIdentifier())
 
 	this.GUIForm.addComputedQuestion(guiQuestion)
 

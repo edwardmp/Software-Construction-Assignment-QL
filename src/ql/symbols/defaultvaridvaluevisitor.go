@@ -20,7 +20,9 @@ func (this *DefaultVarIDValueVisitor) StartSettingDefaultValuesForVarIDs(form in
 	return varIDValueSymbols
 }
 
-func (this *DefaultVarIDValueVisitor) VisitVarDecl(varDecl interfaces.VarDecl, context interface{}) {
+func (this *DefaultVarIDValueVisitor) VisitVarDecl(varDecl interfaces.VarDecl, context interface{}) interface{} {
 	symbols := context.(interfaces.VarIDValueSymbols)
-	symbols.SetExprForVarID(varDecl.Type().DefaultValue(), varDecl.VariableIdentifier())
+	symbols.SetExprForVarID(varDecl.ValueType().DefaultValue(), varDecl.VariableIdentifier())
+
+	return nil
 }

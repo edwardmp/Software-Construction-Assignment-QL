@@ -28,6 +28,6 @@ func (this Question) VarDeclVariableIdentifier() interfaces.VarID {
 	return this.varDecl.VariableIdentifier()
 }
 
-func (this Question) VarDeclType() interfaces.ValueType {
-	return this.varDecl.Type()
+func (this Question) VarDeclValueType() interfaces.ValueType {
+	return this.varDecl.ValueType()
 }

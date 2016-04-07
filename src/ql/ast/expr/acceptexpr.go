@@ -5,169 +5,168 @@ import "ql/interfaces"
 /* binary expressions */
 
 func (this Add) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-
-	visitor.VisitAdd(this, context)
+	returnValue := visitor.VisitAdd(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this And) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitAnd(this, context)
+	returnValue := visitor.VisitAnd(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this Div) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitDiv(this, context)
+	returnValue := visitor.VisitDiv(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this Eq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitEq(this, context)
+	returnValue := visitor.VisitEq(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this GEq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitEq(this, context)
+	returnValue := visitor.VisitEq(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this GT) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitGT(this, context)
+	returnValue := visitor.VisitGT(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this LEq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitLEq(this, context)
+	returnValue := visitor.VisitLEq(this, context)
 
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this LT) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitLT(this, context)
+	returnValue := visitor.VisitLT(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this Mul) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitMul(this, context)
+	returnValue := visitor.VisitMul(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this NEq) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitNEq(this, context)
+	returnValue := visitor.VisitNEq(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this Or) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitOr(this, context)
+	returnValue := visitor.VisitOr(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this Sub) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitSub(this, context)
+	returnValue := visitor.VisitSub(this, context)
 	acceptLHSAndRHS(this, visitor, context)
 
-	return nil
+	return returnValue
 }
 
 /* literals */
 
 func (this BoolLiteral) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitBoolLiteral(this, context)
+	returnValue := visitor.VisitBoolLiteral(this, context)
 
-	return nil
+	return returnValue
 }
 
 func (this IntegerLiteral) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitIntegerLiteral(this, context)
+	returnValue := visitor.VisitIntegerLiteral(this, context)
 
-	return nil
+	return returnValue
 }
 
 func (this StringLiteral) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitStringLiteral(this, context)
+	returnValue := visitor.VisitStringLiteral(this, context)
 
-	return nil
+	return returnValue
 }
 
 /* value types */
 
 func (this IntType) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitIntType(this, context)
+	returnValue := visitor.VisitIntType(this, context)
 
-	return nil
+	return returnValue
 }
 
 func (this BoolType) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitBoolType(this, context)
+	returnValue := visitor.VisitBoolType(this, context)
 
-	return nil
+	return returnValue
 }
 
 func (this StringType) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	visitor.VisitStringType(this, context)
+	returnValue := visitor.VisitStringType(this, context)
 
-	return nil
+	return returnValue
 }
 
 /* unary expressions */
 
 func (this Not) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitNot(this, context)
+	returnValue := visitor.VisitNot(this, context)
 	this.Value().Accept(visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this Pos) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitPos(this, context)
+	returnValue := visitor.VisitPos(this, context)
 	this.Value().Accept(visitor, context)
 
-	return nil
+	return returnValue
 }
 
 func (this VarExpr) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
 
-	visitor.VisitVarExpr(this, context)
+	returnValue := visitor.VisitVarExpr(this, context)
 	this.VarIdentifier().Accept(visitor, context)
 
-	return nil
+	return returnValue
 }
 
 // acceptLHSAndRHS provides a convenient way to run Accept on both left-hand and right-hand sides of binary operands

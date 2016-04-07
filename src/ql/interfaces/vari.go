@@ -7,7 +7,7 @@ type Vari interface {
 type VarDecl interface {
 	Vari
 	VariableIdentifier() VarID
-	Type() ValueType
+	ValueType() ValueType
 	TypeCheck(TypeCheckArgs)
 }
 
