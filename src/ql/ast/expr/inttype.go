@@ -2,14 +2,14 @@ package expr
 
 import "ql/interfaces"
 
-type IntType struct {
+type IntegerType struct {
 	ValueType
 }
 
-func NewIntType() IntType {
-	return IntType{NewValueType("Integer")}
+func NewIntegerType() IntegerType {
+	return IntegerType{NewValueType("Integer")}
 }
 
-func (this IntType) DefaultValue() interfaces.LitExpr {
+func (this IntegerType) DefaultValue() interfaces.LitExpr {
 	return NewIntegerLiteral(0)
 }

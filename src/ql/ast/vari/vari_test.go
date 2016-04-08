@@ -15,9 +15,9 @@ func TestNewVarID(t *testing.T) {
 
 func TestNewVarDecl(t *testing.T) {
 	varID := NewVarID("testVarID")
-	valueType := expr.NewIntType()
+	valueType := expr.NewIntegerType()
 	varDecl := NewVarDecl(varID, valueType)
 
 	assert.Equal(t, varDecl.VariableIdentifier(), varID)
-	assert.Equal(t, varDecl.Type(), valueType)
+	assert.Equal(t, varDecl.ValueType(), valueType)
 }

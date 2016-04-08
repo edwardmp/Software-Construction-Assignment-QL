@@ -126,7 +126,7 @@ type UnknownType interface {
 	ValueType
 }
 
-type IntType interface {
+type IntegerType interface {
 	ValueType
 }
 

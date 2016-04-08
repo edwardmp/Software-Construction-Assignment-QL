@@ -125,8 +125,8 @@ func (this StringLiteral) Accept(visitor interfaces.Visitor, context interface{}
 
 /* value types */
 
-func (this IntType) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
-	returnValue := visitor.VisitIntType(this, context)
+func (this IntegerType) Accept(visitor interfaces.Visitor, context interface{}) interface{} {
+	returnValue := visitor.VisitIntegerType(this, context)
 
 	return returnValue
 }

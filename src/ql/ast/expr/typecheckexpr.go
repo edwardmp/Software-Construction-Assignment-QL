@@ -21,14 +21,14 @@ func (this VarExpr) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces
 }
 
 func (this Add) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	allowedTypes := []interfaces.ValueType{NewIntType(), NewStringType()}
+	allowedTypes := []interfaces.ValueType{NewIntegerType(), NewStringType()}
 	actualType := this.checkOperands(allowedTypes, typeCheckArgs)
 
 	if typeIsInExpectedTypes(actualType, allowedTypes) {
 		return actualType
 	}
 
-	return NewIntType()
+	return NewIntegerType()
 }
 
 func (this And) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
@@ -39,55 +39,55 @@ func (this And) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.Val
 }
 
 func (this Div) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	allowedTypes := []interfaces.ValueType{NewIntType()}
+	allowedTypes := []interfaces.ValueType{NewIntegerType()}
 	this.checkOperands(allowedTypes, typeCheckArgs)
 
-	return NewIntType()
+	return NewIntegerType()
 }
 
 func (this Eq) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
 	this.checkForEqualTypes(typeCheckArgs)
-	this.checkOperands([]interfaces.ValueType{NewBoolType(), NewStringType(), NewIntType()}, typeCheckArgs)
+	this.checkOperands([]interfaces.ValueType{NewBoolType(), NewStringType(), NewIntegerType()}, typeCheckArgs)
 
 	return NewBoolType()
 }
 
 func (this GEq) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands([]interfaces.ValueType{NewIntType(), NewStringType()}, typeCheckArgs)
+	this.checkOperands([]interfaces.ValueType{NewIntegerType(), NewStringType()}, typeCheckArgs)
 
 	return NewBoolType()
 }
 
 func (this GT) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands([]interfaces.ValueType{NewIntType(), NewStringType()}, typeCheckArgs)
+	this.checkOperands([]interfaces.ValueType{NewIntegerType(), NewStringType()}, typeCheckArgs)
 	return NewBoolType()
 }
 
 func (this LEq) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands([]interfaces.ValueType{NewIntType(), NewStringType()}, typeCheckArgs)
+	this.checkOperands([]interfaces.ValueType{NewIntegerType(), NewStringType()}, typeCheckArgs)
 	return NewBoolType()
 }
 
 func (this LT) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	this.checkOperands([]interfaces.ValueType{NewIntType(), NewStringType()}, typeCheckArgs)
+	this.checkOperands([]interfaces.ValueType{NewIntegerType(), NewStringType()}, typeCheckArgs)
 	return NewBoolType()
 }
 
 func (this Mul) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	allowedTypes := []interfaces.ValueType{NewIntType()}
+	allowedTypes := []interfaces.ValueType{NewIntegerType()}
 	this.checkOperands(allowedTypes, typeCheckArgs)
-	return NewIntType()
+	return NewIntegerType()
 }
 
 func (this Neg) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	allowedTypes := []interfaces.ValueType{NewIntType()}
+	allowedTypes := []interfaces.ValueType{NewIntegerType()}
 	this.checkOperand(allowedTypes, typeCheckArgs)
-	return NewIntType()
+	return NewIntegerType()
 }
 
 func (this NEq) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
 	this.checkForEqualTypes(typeCheckArgs)
-	this.checkOperands([]interfaces.ValueType{NewBoolType(), NewStringType(), NewIntType()}, typeCheckArgs)
+	this.checkOperands([]interfaces.ValueType{NewBoolType(), NewStringType(), NewIntegerType()}, typeCheckArgs)
 	return NewBoolType()
 }
 
@@ -104,19 +104,19 @@ func (this Or) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.Valu
 }
 
 func (this Pos) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	allowedTypes := []interfaces.ValueType{NewIntType()}
+	allowedTypes := []interfaces.ValueType{NewIntegerType()}
 	this.checkOperand(allowedTypes, typeCheckArgs)
-	return NewIntType()
+	return NewIntegerType()
 }
 
 func (this Sub) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	allowedTypes := []interfaces.ValueType{NewIntType()}
+	allowedTypes := []interfaces.ValueType{NewIntegerType()}
 	this.checkOperands(allowedTypes, typeCheckArgs)
-	return NewIntType()
+	return NewIntegerType()
 }
 
 func (this IntegerLiteral) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {
-	return NewIntType()
+	return NewIntegerType()
 }
 
 func (this BoolLiteral) TypeCheck(typeCheckArgs interfaces.TypeCheckArgs) interfaces.ValueType {

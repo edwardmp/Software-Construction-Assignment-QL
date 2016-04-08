@@ -146,9 +146,9 @@ func NewStringLiteralNode(valueToken attrib) (interfaces.Expr, error) {
 
 /* Value types */
 
-func NewIntTypeNode(typeTokenLit attrib) (interfaces.IntType, error) {
+func NewIntegerTypeNode(typeTokenLit attrib) (interfaces.IntegerType, error) {
 	token := typeTokenLit.(*token.Token)
-	expr := expr.NewIntType()
+	expr := expr.NewIntegerType()
 	expr.SetSourceInfo(token.Pos)
 
 	return expr, nil

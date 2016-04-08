@@ -94,7 +94,7 @@ func (suite *TypeCheckerTestSuite) TestInvalidOperandsCheckerForInvalidUnaryOper
 }
 
 func (suite *TypeCheckerTestSuite) TestUndefinedQuestionReferenceChecker() {
-	computedQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Value residue:"), vari.NewVarDecl(vari.NewVarID("valueResidue"), expr.NewIntType()), expr.NewSub(expr.NewIntegerLiteral(100), expr.NewVarExpr(vari.NewVarID("hasMaintLoan"))))
+	computedQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Value residue:"), vari.NewVarDecl(vari.NewVarID("valueResidue"), expr.NewIntegerType()), expr.NewSub(expr.NewIntegerLiteral(100), expr.NewVarExpr(vari.NewVarID("hasMaintLoan"))))
 	exampleBody := stmt.NewStmtList([]interfaces.Question{computedQuestion}, []interfaces.Conditional{})
 	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBody)
 
@@ -121,7 +121,7 @@ func (suite *TypeCheckerTestSuite) TestDuplicateLabelChecker() {
 
 func (suite *TypeCheckerTestSuite) TestDuplicateVarDeclChecker() {
 	firstQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
-	secondQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewIntType()))
+	secondQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewIntegerType()))
 	exampleBody := stmt.NewStmtList([]interfaces.Question{firstQuestion, secondQuestion}, []interfaces.Conditional{})
 	exampleForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBody)
 
@@ -157,7 +157,7 @@ func (suite *TypeCheckerTestSuite) TestQuestionTypeAndComputationTypeMismatch() 
 
 func (suite *TypeCheckerTestSuite) TestThatCorrectFormYieldsNoErrorsOrWarnings() {
 	firstQuestion := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
-	firstQuestionBody := stmt.NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntType()))
+	firstQuestionBody := stmt.NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntegerType()))
 	ifBody := stmt.NewStmtList([]interfaces.Question{firstQuestionBody}, []interfaces.Conditional{})
 	elseBody := stmt.NewStmtList([]interfaces.Question{firstQuestionBody}, []interfaces.Conditional{})
 	ifExample := stmt.NewIfElse(expr.NewBoolLiteral(true), ifBody, elseBody)

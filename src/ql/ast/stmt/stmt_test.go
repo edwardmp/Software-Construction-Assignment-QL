@@ -20,7 +20,7 @@ func TestFormWithEmptyContent(t *testing.T) {
 
 func TestFormWithNonEmptyContent(t *testing.T) {
 	identifier := vari.NewVarID("TestForm")
-	questionExample := NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntType()))
+	questionExample := NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntegerType()))
 	questionsListExample := []interfaces.Question{questionExample}
 	stmtListExample := NewStmtList(questionsListExample, []interfaces.Conditional{})
 	exampleForm := NewForm(identifier, stmtListExample)
@@ -40,7 +40,7 @@ func TestInputQuestion(t *testing.T) {
 
 func TestComputedQuestion(t *testing.T) {
 	exampleLabel := expr.NewStringLiteral("Value residue")
-	exampleVarDecl := vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewIntType())
+	exampleVarDecl := vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewIntegerType())
 	exampleComputation := expr.NewSub(expr.NewIntegerLiteral(10), expr.NewIntegerLiteral(5))
 
 	exampleQuestion := NewComputedQuestion(exampleLabel, exampleVarDecl, exampleComputation)
@@ -50,7 +50,7 @@ func TestComputedQuestion(t *testing.T) {
 }
 
 func TestIf(t *testing.T) {
-	questionExample := NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntType()))
+	questionExample := NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntegerType()))
 	ifBodyExample := NewStmtList([]interfaces.Question{questionExample}, []interfaces.Conditional{})
 	ifCondExample := expr.NewBoolLiteral(true)
 	ifExample := NewIf(ifCondExample, ifBodyExample)
@@ -65,7 +65,7 @@ func TestIfElse(t *testing.T) {
 	ifBodyExample := NewStmtList([]interfaces.Question{ifQuestionExample}, []interfaces.Conditional{})
 	ifCondExample := expr.NewBoolLiteral(true)
 
-	elseQuestionExample := NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntType()))
+	elseQuestionExample := NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntegerType()))
 	elseBodyExample := NewStmtList([]interfaces.Question{elseQuestionExample}, []interfaces.Conditional{})
 
 	ifElseExample := NewIfElse(ifCondExample, ifBodyExample, elseBodyExample)

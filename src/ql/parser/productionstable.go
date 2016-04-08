@@ -43,13 +43,13 @@ var productionsTable = ProdTab {
 		},
 	},
 	ProdTabEntry{
-		String: `Type : "integer"	<< ast.NewIntTypeNode(X[0]) >>`,
+		String: `Type : "integer"	<< ast.NewIntegerTypeNode(X[0]) >>`,
 		Id: "Type",
 		NTType: 2,
 		Index: 2,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.NewIntTypeNode(X[0])
+			return ast.NewIntegerTypeNode(X[0])
 		},
 	},
 	ProdTabEntry{

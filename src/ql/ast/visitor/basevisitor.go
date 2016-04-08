@@ -93,7 +93,7 @@ func (this *BaseVisitor) VisitVarID(va interfaces.VarID, context interface{}) in
 	return nil
 }
 
-func (this *BaseVisitor) VisitIntType(i interfaces.IntType, context interface{}) interface{} {
+func (this *BaseVisitor) VisitIntegerType(i interfaces.IntegerType, context interface{}) interface{} {
 	return nil
 }
 

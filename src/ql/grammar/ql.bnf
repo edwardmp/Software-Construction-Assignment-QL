@@ -51,7 +51,7 @@ ident           : ('a'-'z' | 'A'-'Z') {('a'-'z' | 'A'-'Z'| '0'-'9' | '_')} ;
 Form        : "form" VarID Block                        << ast.NewFormNode($1, $2, $0.(*token.Token).Pos) >> ;
 
 /* types */
-Type        : "integer"                                 << ast.NewIntTypeNode($0) >>
+Type        : "integer"                                 << ast.NewIntegerTypeNode($0) >>
             | "boolean"                                 << ast.NewBoolTypeNode($0) >>
             | "string"                                  << ast.NewStringTypeNode($0) >>
             ;

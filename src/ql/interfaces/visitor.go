@@ -24,7 +24,7 @@ type Visitor interface {
 	/* Vari */
 	VisitVarDecl(VarDecl, interface{}) interface{}
 	VisitVarID(VarID, interface{}) interface{}
-	VisitIntType(IntType, interface{}) interface{}
+	VisitIntegerType(IntegerType, interface{}) interface{}
 	VisitBoolType(BoolType, interface{}) interface{}
 	VisitStringType(StringType, interface{}) interface{}
 	/* Stmt */

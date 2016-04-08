@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestVarTypeDefaultValueForIntType(t *testing.T) {
-	varTypeExample := NewIntType()
+func TestVarTypeDefaultValueForIntegerType(t *testing.T) {
+	varTypeExample := NewIntegerType()
 	correctDefaultValue := NewIntegerLiteral(0)
 	assert.Equal(t, varTypeExample.DefaultValue(), correctDefaultValue)
 }

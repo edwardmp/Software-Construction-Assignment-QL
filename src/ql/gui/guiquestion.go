@@ -71,8 +71,8 @@ func newQuestionTypeToGUIElementVisitor(question interfaces.Question, callback f
 	return &QuestionTypeToGUIElementVisitor{callback, disabled, question, visitor.NewBaseVisitor()}
 }
 
-// VisitIntType returns a GUI element for integers when question type is integer
-func (this *QuestionTypeToGUIElementVisitor) VisitIntType(i interfaces.IntType, context interface{}) interface{} {
+// VisitIntegerType returns a GUI element for integers when question type is integer
+func (this *QuestionTypeToGUIElementVisitor) VisitIntegerType(i interfaces.IntegerType, context interface{}) interface{} {
 	var UIEntity ui.Control
 	inputField := createInputTextField("", this.disabled)
 	inputField.OnChanged(func(*ui.Entry) {
