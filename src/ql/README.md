@@ -56,10 +56,10 @@ make run
 ```
 
 ## Viewing documentation
-All documentation can be viewed in your browser by visiting the url [`http://localhost:6060`](http://localhost:6060) after you've executed:
+All documentation can be viewed in your browser by visiting the url [`http://localhost:8080`](http://localhost:8080) after you've executed:
 
 ```
-godoc -http=:6060
+make doc
 ```
 
 ## Update/install dependencies

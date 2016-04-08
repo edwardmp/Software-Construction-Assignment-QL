@@ -48,6 +48,9 @@ test: $(TEST_LIST)
 iref: $(IREF_LIST)
 fmt: $(FMT_TEST)
 run: $(RUN_LIST)
+doc:
+	godoc -http=:8080 &
+	open 'http://localhost:8080/pkg/ql/'
 
 $(BUILD_LIST): %_build: %_fmt %_iref
 	$(GOBUILD) $(TOPLEVEL_PKG)/$*
@@ -63,3 +66,5 @@ $(TEST_LIST): %_test:
 	$(GOTEST) $(TOPLEVEL_PKG)/$*
 $(FMT_TEST): %_fmt:
 	$(GOFMT)
+
+
