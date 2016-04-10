@@ -1,41 +1,46 @@
 package stmt
 
 import (
-	"fmt"
 	"ql/interfaces"
 )
 
 type StmtList struct {
-	questions    []interfaces.Question
-	conditionals []interfaces.Conditional
+	statements []interfaces.Stmt
 	Stmt
 }
 
-func NewStmtList(questions []interfaces.Question, conditionals []interfaces.Conditional) StmtList {
-	return StmtList{questions: questions, conditionals: conditionals, Stmt: NewStmt()}
+func NewStmtList(statements []interfaces.Stmt) StmtList {
+	return StmtList{statements: statements, Stmt: NewStmt()}
 }
 
 func NewEmptyStmtList() StmtList {
-	return NewStmtList(nil, nil)
+	return NewStmtList(nil)
 }
 
 func (this StmtList) Questions() []interfaces.Question {
-	return this.questions
+	var questions []interfaces.Question
+	for _, statement := range this.statements {
+		if question, isQuestion := statement.(interfaces.Question); isQuestion {
+			questions = append(questions, question)
+		}
+	}
+
+	return questions
 }
 
 func (this StmtList) Conditionals() []interfaces.Conditional {
-	return this.conditionals
+	var conditionals []interfaces.Conditional
+	for _, statement := range this.statements {
+		if conditional, isConditional := statement.(interfaces.Conditional); isConditional {
+			conditionals = append(conditionals, conditional)
+		}
+	}
+
+	return conditionals
 }
 
-func (this StmtList) AddToCorrectSlice(questionOrConditional interfaces.Stmt) StmtList {
-	switch assertedStmt := questionOrConditional.(type) {
-	case interfaces.Question:
-		this.questions = append(this.questions, assertedStmt)
-	case interfaces.Conditional:
-		this.conditionals = append(this.conditionals, assertedStmt)
-	default:
-		panic(fmt.Errorf("Unexpected StmtList type passed to AddToCorrectSlice %T\n", assertedStmt))
-	}
+func (this StmtList) AddStmt(questionOrConditional interfaces.Stmt) StmtList {
+	this.statements = append(this.statements, questionOrConditional)
 
 	return this
 }

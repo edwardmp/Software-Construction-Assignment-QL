@@ -209,7 +209,7 @@ func NewStmtListNode(stmtElt attrib) (interfaces.StmtList, error) {
 	stmtEltTypeAsserted := stmtElt.(interfaces.Stmt)
 	stmt := stmt.NewEmptyStmtList()
 	stmt.SetSourceInfo(stmtEltTypeAsserted.SourceInfo())
-	return stmt.AddToCorrectSlice(stmtEltTypeAsserted), nil
+	return stmt.AddStmt(stmtEltTypeAsserted), nil
 }
 
 func NewEmptyStmtListNode(sourcePosInfo attrib) (interfaces.StmtList, error) {
@@ -219,7 +219,7 @@ func NewEmptyStmtListNode(sourcePosInfo attrib) (interfaces.StmtList, error) {
 }
 
 func AppendStmt(stmtList, stmtElt attrib) (interfaces.StmtList, error) {
-	stmt := stmtList.(stmt.StmtList).AddToCorrectSlice(stmtElt.(interfaces.Stmt))
+	stmt := stmtList.(stmt.StmtList).AddStmt(stmtElt.(interfaces.Stmt))
 	return stmt, nil
 }
 
