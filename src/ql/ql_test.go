@@ -49,7 +49,7 @@ func TestFormQuestion(t *testing.T) {
 
 	firstQuestionOutput := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
 	secondQuestionOutput := stmt.NewInputQuestion(expr.NewStringLiteral("Did you enter a loan?"), vari.NewVarDecl(vari.NewVarID("hasMaintLoan"), expr.NewBoolType()))
-	exampleBodyOutput := stmt.NewStmtList([]interfaces.Question{firstQuestionOutput, secondQuestionOutput}, []interfaces.Conditional{})
+	exampleBodyOutput := stmt.NewStmtList([]interfaces.Stmt{firstQuestionOutput, secondQuestionOutput})
 	exampleOutputForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBodyOutput)
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
@@ -61,7 +61,7 @@ func TestFormComputedQuestion(t *testing.T) {
 	firstQuestionOutput := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewIntegerType()))
 	secondQuestionOutput := stmt.NewInputQuestion(expr.NewStringLiteral("Did you enter a loan?"), vari.NewVarDecl(vari.NewVarID("hasMaintLoan"), expr.NewIntegerType()))
 	computedQuestion := stmt.NewComputedQuestion(expr.NewStringLiteral("Value residue:"), vari.NewVarDecl(vari.NewVarID("valueResidue"), expr.NewIntegerType()), expr.NewSub(expr.NewVarExpr(vari.NewVarID("hasSoldHouse")), expr.NewVarExpr(vari.NewVarID("hasMaintLoan"))))
-	exampleBodyOutput := stmt.NewStmtList([]interfaces.Question{firstQuestionOutput, secondQuestionOutput, computedQuestion}, []interfaces.Conditional{})
+	exampleBodyOutput := stmt.NewStmtList([]interfaces.Stmt{firstQuestionOutput, secondQuestionOutput, computedQuestion})
 	exampleOutputForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBodyOutput)
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
@@ -72,9 +72,9 @@ func TestFormIf(t *testing.T) {
 
 	firstQuestionOutput := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
 	firstQuestionBodyInput := stmt.NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntegerType()))
-	ifBodyOutput := stmt.NewStmtList([]interfaces.Question{firstQuestionBodyInput}, []interfaces.Conditional{})
+	ifBodyOutput := stmt.NewStmtList([]interfaces.Stmt{firstQuestionBodyInput})
 	ifOutput := stmt.NewIf(expr.NewBoolLiteral(true), ifBodyOutput)
-	exampleBodyOutput := stmt.NewStmtList([]interfaces.Question{firstQuestionOutput}, []interfaces.Conditional{ifOutput})
+	exampleBodyOutput := stmt.NewStmtList([]interfaces.Stmt{firstQuestionOutput, ifOutput})
 	exampleOutputForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBodyOutput)
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)
@@ -84,10 +84,10 @@ func TestFormIfElse(t *testing.T) {
 	exampleFormInput := "form TestForm { \"Did you sell a house in 2010?\" hasSoldHouse: boolean if (true) { \"What was the selling price?\" sellingPrice: integer } else { \"What was the selling price?\" sellingPrice: integer } }"
 	firstQuestionOutput := stmt.NewInputQuestion(expr.NewStringLiteral("Did you sell a house in 2010?"), vari.NewVarDecl(vari.NewVarID("hasSoldHouse"), expr.NewBoolType()))
 	firstQuestionBodyInput := stmt.NewInputQuestion(expr.NewStringLiteral("What was the selling price?"), vari.NewVarDecl(vari.NewVarID("sellingPrice"), expr.NewIntegerType()))
-	ifBodyOutput := stmt.NewStmtList([]interfaces.Question{firstQuestionBodyInput}, []interfaces.Conditional{})
-	elseBodyOutput := stmt.NewStmtList([]interfaces.Question{firstQuestionBodyInput}, []interfaces.Conditional{})
+	ifBodyOutput := stmt.NewStmtList([]interfaces.Stmt{firstQuestionBodyInput})
+	elseBodyOutput := stmt.NewStmtList([]interfaces.Stmt{firstQuestionBodyInput})
 	ifOutput := stmt.NewIfElse(expr.NewBoolLiteral(true), ifBodyOutput, elseBodyOutput)
-	exampleBodyOutput := stmt.NewStmtList([]interfaces.Question{firstQuestionOutput}, []interfaces.Conditional{ifOutput})
+	exampleBodyOutput := stmt.NewStmtList([]interfaces.Stmt{firstQuestionOutput, ifOutput})
 	exampleOutputForm := stmt.NewForm(vari.NewVarID("TestForm"), exampleBodyOutput)
 
 	testStmtParse(t, exampleFormInput, exampleOutputForm)

@@ -1,18 +1,14 @@
 hash: 59916ff6ce906a3307fe72ad33765c6efed36e8274e95a1a5c67879a1e792914
-updated: 2016-04-02T23:33:51.187131992+02:00
+updated: 2016-04-14T21:18:27.896100624+02:00
 imports:
 - name: github.com/andlabs/ui
   version: 8dc672361ebc481cbe9418f7dd4d307095ee9f98
 - name: github.com/codegangsta/cli
-  version: 9fec0fad02befc9209347cc6d620e68e1b45f74d
+  version: 71f57d300dd6a780ac1856c005c4b518cfd498ec
 - name: github.com/goccmack/gocc
-  version: a150a4adbf3b19fe88efc310766ed3d643201560
+  version: c7163b52d2f23f5cae8af3b9fc81d0ea0fe8cd42
 - name: github.com/Sirupsen/logrus
-  version: a26f43589d737684363ff856c5a0f9f24b946510
+  version: 7e6f9765803ea8356f45fd9b3c62305fb36cca51
 - name: github.com/stretchr/testify
-  version: 6fe211e493929a8aac0469b93f28b1d0688a9a3a
-- name: golang.org/x/sys
-  version: 7a56174f0086b32866ebd746a794417edbc678a1
-  subpackages:
-  - unix
+  version: bcd9e3389dd03b0b668d11f4d462a6af6c2dfd60
 devImports: []

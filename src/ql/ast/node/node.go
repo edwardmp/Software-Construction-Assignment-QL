@@ -11,7 +11,7 @@ func NewNode() Node {
 }
 
 func (this Node) SetSourceInfo(sourceInfo token.Pos) {
-	this.SrcInfo = token.Pos{}
+	this.SrcInfo = sourceInfo
 }
 
 func (this Node) SourceInfo() token.Pos {
